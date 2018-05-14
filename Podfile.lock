@@ -1,0 +1,101 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - CYLTableViewPlaceHolder (1.0.8)
+  - JKCountDownButton (1.2.0)
+  - JSONModel (1.7.0)
+  - KMNavigationBarTransition (1.1.5)
+  - MJRefresh (3.1.15.3)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
+  - SDCycleScrollView (1.75):
+    - SDWebImage (>= 4.0.0)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
+  - SVProgressHUD (2.2.5)
+  - UICountingLabel (1.2.0)
+  - UMCCommon (1.5.0)
+  - UMCSecurityPlugins (1.0.6)
+  - UMCShare/Core (6.9.1):
+    - UMCCommon
+  - UMCShare/Social/ReducedQQ (6.9.1):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.9.1):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/UI (6.9.1):
+    - UMCCommon
+    - UMCShare/Core
+  - WMPageController (2.5.2)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.2.0)
+  - CYLTableViewPlaceHolder (~> 1.0.8)
+  - JKCountDownButton (~> 1.2.0)
+  - JSONModel (~> 1.7.0)
+  - KMNavigationBarTransition (~> 1.1.5)
+  - MJRefresh (~> 3.1.15.3)
+  - PNChart (~> 0.8.9)
+  - SDCycleScrollView (~> 1.75)
+  - SDWebImage (~> 4.3.3)
+  - SVProgressHUD (~> 2.2.5)
+  - UMCCommon
+  - UMCSecurityPlugins
+  - UMCShare/Social/ReducedQQ
+  - UMCShare/Social/ReducedSina
+  - UMCShare/UI
+  - WMPageController (~> 2.5.2)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - CYLTableViewPlaceHolder
+    - JKCountDownButton
+    - JSONModel
+    - KMNavigationBarTransition
+    - MJRefresh
+    - PNChart
+    - SDCycleScrollView
+    - SDWebImage
+    - SVProgressHUD
+    - UICountingLabel
+    - UMCCommon
+    - UMCSecurityPlugins
+    - UMCShare
+    - WMPageController
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  CYLTableViewPlaceHolder: 44075c119aab78bbc514c75d771d6565e19938e8
+  JKCountDownButton: cc72e24c8b73f232b15cc348277422b089d43bff
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
+  SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
+  UMCCommon: 82d21f4bb9532a5472cc533bbd8ed48aff376a14
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMCShare: f8be567946c3aa68deefd03b0ffaa0710a3b07ea
+  WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
+
+PODFILE CHECKSUM: e76b540f918ae4d4bbbcdd8a8b6afd5ee09682e4
+
+COCOAPODS: 1.5.0
