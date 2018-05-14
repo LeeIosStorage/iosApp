@@ -29,6 +29,8 @@ pod 'JSONModel', '~> 1.7.0'
 pod 'KMNavigationBarTransition', '~> 1.1.5'
 pod 'PNChart', '~> 0.8.9'
 pod 'SDCycleScrollView', '~> 1.75'
+pod 'Masonry', '~> 1.0.1'
+pod 'YYKit', '~> 1.0.6'
 
 pod 'UMCCommon'
 pod 'UMCSecurityPlugins'
