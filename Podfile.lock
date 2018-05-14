@@ -18,6 +18,7 @@ PODS:
   - JKCountDownButton (1.2.0)
   - JSONModel (1.7.0)
   - KMNavigationBarTransition (1.1.5)
+  - Masonry (1.0.2)
   - MJRefresh (3.1.15.3)
   - PNChart (0.8.9):
     - UICountingLabel (~> 1.2.0)
@@ -42,6 +43,9 @@ PODS:
     - UMCCommon
     - UMCShare/Core
   - WMPageController (2.5.2)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.0)
@@ -49,6 +53,7 @@ DEPENDENCIES:
   - JKCountDownButton (~> 1.2.0)
   - JSONModel (~> 1.7.0)
   - KMNavigationBarTransition (~> 1.1.5)
+  - Masonry (~> 1.0.1)
   - MJRefresh (~> 3.1.15.3)
   - PNChart (~> 0.8.9)
   - SDCycleScrollView (~> 1.75)
@@ -60,6 +65,7 @@ DEPENDENCIES:
   - UMCShare/Social/ReducedSina
   - UMCShare/UI
   - WMPageController (~> 2.5.2)
+  - YYKit (~> 1.0.6)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -68,6 +74,7 @@ SPEC REPOS:
     - JKCountDownButton
     - JSONModel
     - KMNavigationBarTransition
+    - Masonry
     - MJRefresh
     - PNChart
     - SDCycleScrollView
@@ -78,6 +85,7 @@ SPEC REPOS:
     - UMCSecurityPlugins
     - UMCShare
     - WMPageController
+    - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -85,6 +93,7 @@ SPEC CHECKSUMS:
   JKCountDownButton: cc72e24c8b73f232b15cc348277422b089d43bff
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
@@ -95,7 +104,8 @@ SPEC CHECKSUMS:
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: f8be567946c3aa68deefd03b0ffaa0710a3b07ea
   WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: e76b540f918ae4d4bbbcdd8a8b6afd5ee09682e4
+PODFILE CHECKSUM: 41dd6e0cce4dee63621b5aef4c7073a7280c2891
 
 COCOAPODS: 1.5.0
