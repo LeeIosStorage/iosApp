@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-
+//修复版本bug
 @interface AppDelegate ()
 
 @end
