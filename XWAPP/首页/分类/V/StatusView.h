@@ -12,10 +12,13 @@ typedef void(^DeleBlock)(void);
 
 @interface StatusView : UIView
 
+@property (weak, nonatomic) IBOutlet UILabel *tagLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sourceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+
 @property (nonatomic, copy) DeleBlock deleeBlock;
 
-
 - (void)deleblockAction:(DeleBlock)deleblock;
-
 
 @end

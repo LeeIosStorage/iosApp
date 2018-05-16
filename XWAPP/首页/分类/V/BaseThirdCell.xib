@@ -21,31 +21,31 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="如果你无法简洁的表达你的想法，那只说明你还不够了解它。阿尔伯特.爱因斯坦" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nTg-yH-I64">
-                        <rect key="frame" x="13" y="16" width="342" height="87"/>
+                        <rect key="frame" x="13" y="16" width="342" height="91.5"/>
                         <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="jf1-1v-M0h">
-                        <rect key="frame" x="13" y="115" width="106" height="79.5"/>
+                        <rect key="frame" x="13" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="jf1-1v-M0h" secondAttribute="height" multiplier="4:3" id="mDu-vW-dje"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="aOh-Xa-uoO">
-                        <rect key="frame" x="131" y="115" width="106" height="79.5"/>
+                        <rect key="frame" x="131" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="aOh-Xa-uoO" secondAttribute="height" multiplier="4:3" id="nDB-Hf-fPa"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="Vec-KS-7Pi">
-                        <rect key="frame" x="249" y="115" width="106" height="79.5"/>
+                        <rect key="frame" x="249" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Vec-KS-7Pi" secondAttribute="height" multiplier="4:3" id="4ra-9o-9zL"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3a-I8-oz6" customClass="StatusView">
-                        <rect key="frame" x="0.0" y="209.5" width="368" height="20"/>
+                        <rect key="frame" x="0.0" y="207" width="368" height="20"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="5AT-XU-Okq"/>
@@ -53,9 +53,9 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="azj-TT-XlB">
                         <rect key="frame" x="8" y="238" width="352" height="1"/>
-                        <color key="backgroundColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.85098039219999999" green="0.85098039219999999" blue="0.85098039219999999" alpha="0.6990582192" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="tn8-qm-jzI"/>
+                            <constraint firstAttribute="height" constant="0.5" id="tn8-qm-jzI"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -68,13 +68,13 @@
                     <constraint firstAttribute="trailing" secondItem="nTg-yH-I64" secondAttribute="trailing" constant="13" id="6MA-zA-D67"/>
                     <constraint firstAttribute="trailing" secondItem="g3a-I8-oz6" secondAttribute="trailing" id="B0M-pD-CrE"/>
                     <constraint firstItem="jf1-1v-M0h" firstAttribute="top" secondItem="nTg-yH-I64" secondAttribute="bottom" constant="12" id="B8h-TO-TPR"/>
-                    <constraint firstItem="g3a-I8-oz6" firstAttribute="top" secondItem="jf1-1v-M0h" secondAttribute="bottom" constant="15" id="BQj-Di-B2d"/>
+                    <constraint firstItem="g3a-I8-oz6" firstAttribute="top" secondItem="jf1-1v-M0h" secondAttribute="bottom" constant="8" id="BQj-Di-B2d"/>
                     <constraint firstItem="aOh-Xa-uoO" firstAttribute="width" secondItem="jf1-1v-M0h" secondAttribute="width" id="Drd-Vu-YKQ"/>
                     <constraint firstItem="aOh-Xa-uoO" firstAttribute="leading" secondItem="jf1-1v-M0h" secondAttribute="trailing" constant="12" id="Fca-pi-dL4"/>
                     <constraint firstAttribute="trailing" secondItem="azj-TT-XlB" secondAttribute="trailing" constant="8" id="IaK-SY-umw"/>
                     <constraint firstItem="nTg-yH-I64" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="Pbf-Yx-UaL"/>
                     <constraint firstItem="jf1-1v-M0h" firstAttribute="leading" secondItem="nTg-yH-I64" secondAttribute="leading" id="b06-gg-TT3"/>
-                    <constraint firstItem="azj-TT-XlB" firstAttribute="top" secondItem="g3a-I8-oz6" secondAttribute="bottom" constant="8.5" id="iJn-7v-iSw"/>
+                    <constraint firstItem="azj-TT-XlB" firstAttribute="top" secondItem="g3a-I8-oz6" secondAttribute="bottom" constant="11" id="iJn-7v-iSw"/>
                     <constraint firstAttribute="bottom" secondItem="azj-TT-XlB" secondAttribute="bottom" id="ley-cm-Qgg"/>
                     <constraint firstItem="Vec-KS-7Pi" firstAttribute="centerY" secondItem="aOh-Xa-uoO" secondAttribute="centerY" id="oAl-Fh-2Z6"/>
                     <constraint firstItem="aOh-Xa-uoO" firstAttribute="centerY" secondItem="jf1-1v-M0h" secondAttribute="centerY" id="q8R-q3-arO"/>
@@ -83,7 +83,11 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="coverImageView" destination="jf1-1v-M0h" id="jwu-E5-5si"/>
+                <outlet property="coverImageView1" destination="aOh-Xa-uoO" id="0h6-tD-eM3"/>
+                <outlet property="coverImageView2" destination="Vec-KS-7Pi" id="XH6-IT-usG"/>
                 <outlet property="statusView" destination="g3a-I8-oz6" id="npb-Xp-Gsj"/>
+                <outlet property="titleLabel" destination="nTg-yH-I64" id="dp3-gA-ItE"/>
             </connections>
             <point key="canvasLocation" x="50" y="149.5"/>
         </tableViewCell>

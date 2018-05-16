@@ -1,0 +1,20 @@
+{
+    "GetAllChannel": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetAllChannel"
+    },
+    "GetNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetNews"
+    },
+    "GetDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetDetail"
+    },
+}

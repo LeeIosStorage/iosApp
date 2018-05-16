@@ -21,19 +21,19 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="如果你无法简洁的表达你的想法，那只说明你还不够了解它。阿尔伯特" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zck-80-aKa">
-                        <rect key="frame" x="13" y="16" width="294" height="51.5"/>
+                        <rect key="frame" x="13" y="16" width="294" height="47.5"/>
                         <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="8pZ-4v-ho2">
-                        <rect key="frame" x="13" y="77.5" width="294" height="147"/>
+                        <rect key="frame" x="13" y="73.5" width="294" height="147"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="8pZ-4v-ho2" secondAttribute="height" multiplier="2:1" id="QTg-EH-LAK"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sLP-7f-q2L" customClass="StatusView">
-                        <rect key="frame" x="0.0" y="224.5" width="320" height="20"/>
+                        <rect key="frame" x="0.0" y="228.5" width="320" height="20"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="P8b-U8-tua"/>
@@ -41,9 +41,9 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HWt-t6-qgH">
                         <rect key="frame" x="8" y="259.5" width="304" height="1"/>
-                        <color key="backgroundColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.85098039219999999" green="0.85098039219999999" blue="0.85098039219999999" alpha="0.6990582192" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="EgD-eU-Wsu"/>
+                            <constraint firstAttribute="height" constant="0.5" id="EgD-eU-Wsu"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -56,16 +56,18 @@
                     <constraint firstItem="Zck-80-aKa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="RBi-Cv-WYw"/>
                     <constraint firstItem="sLP-7f-q2L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="VCM-iz-JQ6"/>
                     <constraint firstAttribute="trailing" secondItem="sLP-7f-q2L" secondAttribute="trailing" id="g1m-Qa-J8k"/>
-                    <constraint firstItem="HWt-t6-qgH" firstAttribute="top" secondItem="sLP-7f-q2L" secondAttribute="bottom" constant="15" id="lJs-5m-rox"/>
+                    <constraint firstItem="HWt-t6-qgH" firstAttribute="top" secondItem="sLP-7f-q2L" secondAttribute="bottom" constant="11" id="lJs-5m-rox"/>
                     <constraint firstItem="8pZ-4v-ho2" firstAttribute="top" secondItem="Zck-80-aKa" secondAttribute="bottom" constant="10" id="pAN-wE-qQX"/>
                     <constraint firstItem="8pZ-4v-ho2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="tWl-Of-FMx"/>
                     <constraint firstAttribute="trailing" secondItem="Zck-80-aKa" secondAttribute="trailing" constant="13" id="xfK-n2-aHH"/>
-                    <constraint firstItem="sLP-7f-q2L" firstAttribute="top" secondItem="8pZ-4v-ho2" secondAttribute="bottom" id="zqy-qf-gyt"/>
+                    <constraint firstItem="sLP-7f-q2L" firstAttribute="top" secondItem="8pZ-4v-ho2" secondAttribute="bottom" constant="8" id="zqy-qf-gyt"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="coverImageView" destination="8pZ-4v-ho2" id="gVr-PM-Y3J"/>
                 <outlet property="statusView" destination="sLP-7f-q2L" id="BRK-AX-OED"/>
+                <outlet property="titleLabel" destination="Zck-80-aKa" id="QM9-0h-cer"/>
             </connections>
             <point key="canvasLocation" x="26" y="160.5"/>
         </tableViewCell>

@@ -15,10 +15,13 @@
 
 #import "DetailController.h"
 #import "SYDetailController.h"
+#import "LENewsListModel.h"
 
 @interface SYBaseVC ()
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) NSMutableArray *newsList;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -26,15 +29,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setTB];
+    [self setupSubviews];
     [self addMJ];
+//    [self getNewsRequest];
+//    [self getNewsDetailRequest];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (void)setTB {
+#pragma mark -
+#pragma mark - Private
+- (void)setupSubviews{
     
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseOneCell" bundle:nil] forCellReuseIdentifier:@"BaseOneCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseTwoCell" bundle:nil] forCellReuseIdentifier:@"BaseTwoCell"];
@@ -44,6 +51,99 @@
     self.tableView.tableFooterView = [UIView new];
 }
 
+- (void)endRereshShowTipView{
+    
+    RefrestInfoView *refrest = [[[NSBundle mainBundle] loadNibNamed:@"RefrestInfoView" owner:self options:nil] firstObject];
+    refrest.titleLB.text = [NSString stringWithFormat:@"丨乐%@丨已为你更新 %d条信息", self.tagTitle, 10];
+    self.tableView.tableHeaderView = refrest;
+    
+    dispatch_time_t delayTime1 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime1, dispatch_get_main_queue(), ^{
+        
+        __block CGPoint offset = self.tableView.contentOffset;
+        CGFloat offsetY = refrest.frame.size.height-offset.y;
+        NSLog(@"%@",NSStringFromCGPoint(offset));
+        if (offsetY > 0) {
+//            CGRect frame = refrest.frame;
+//            frame.origin.y -= offsetY;
+            [UIView animateWithDuration:0.3 animations:^{
+//                offset.y = offsetY;
+//                [self.tableView setContentOffset:offset];
+//                refrest.frame = frame;
+//                self.tableView.tableHeaderView = refrest;
+                self.tableView.tableHeaderView = nil;
+            } completion:^(BOOL finished) {
+//                self.tableView.tableHeaderView = nil;
+//                offset.y = 0;
+//                [self.tableView setContentOffset:offset];
+            }];
+        }else{
+            self.tableView.tableHeaderView = nil;
+//            offset.y -= refrest.frame.size.height;
+//            [self.tableView setContentOffset:offset];
+        }
+        
+    });
+    
+}
+
+#pragma mark -
+#pragma mark - Request
+- (void)getNewsRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:self.channelId forKey:@"cid"];
+    [params setObject:[NSNumber numberWithInteger:20] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:1] forKey:@"limit"];
+    [self.networkManager GET:requestUrl needCache:YES caCheKey:@"GetNews" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        [WeakSelf.newsList removeAllObjects];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.tableView reloadData];
+        
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+}
+
+- (void)getNewsDetailRequest{
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetDetail"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"1" forKey:@"id"];
+    [self.networkManager GET:requesUrl needCache:YES caCheKey:@"GetDetail" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        [WeakSelf endRereshShowTipView];
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
+        [WeakSelf.newsList removeAllObjects];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.newsList addObjectsFromArray:array];
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        [WeakSelf.tableView.mj_header endRefreshing];
+    }];
+    
+}
 
 #pragma mark - TBDelegate&Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -51,12 +151,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return self.newsList.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
     
     MJWeakSelf;
     if (indexPath.row < 3) {
@@ -66,6 +167,7 @@
             [weakSelf deleNew:indexPath curCell:cell];
         }];
         
+        [cell updateCellWithData:newsModel];
         
         return cell;
     } else if (indexPath.row < 7) {
@@ -74,12 +176,17 @@
             [weakSelf deleNew:indexPath curCell:cell];
         }];
         
+        [cell updateCellWithData:newsModel];
+        
         return cell;
     } else {
         BaseThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseThirdCell"];
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
+        
+        [cell updateCellWithData:newsModel];
+        
         return cell;
     }
     
@@ -147,43 +254,25 @@
 #pragma mark - mj
 - (void)addMJ {
     //下拉刷新
-    
     MJWeakSelf;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [self.tableView.mj_header endRefreshing];
-            RefrestInfoView *refrest = [[[NSBundle mainBundle] loadNibNamed:@"RefrestInfoView" owner:self options:nil] firstObject];
-            refrest.titleLB.text = [NSString stringWithFormat:@"丨乐%@丨已为你更新 %d条信息", weakSelf.tagTitle, 10];
-            self.tableView.tableHeaderView = refrest;
-            
-            
-        });
-        
-        dispatch_time_t delayTime1 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime1, dispatch_get_main_queue(), ^{
-            
-            self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
-            
-            
-        });
-        
+        [weakSelf getNewsDetailRequest];
     }];
+    [self.tableView.mj_header beginRefreshing];
+    
     //上啦加载
     self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
         //
     }];
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark -
+#pragma mark - Set And Getters
+- (NSMutableArray *)newsList{
+    if (!_newsList) {
+        _newsList = [[NSMutableArray alloc] init];
+    }
+    return _newsList;
+}
 
 @end

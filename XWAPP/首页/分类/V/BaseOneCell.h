@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "StatusView.h"
-@interface BaseOneCell : UITableViewCell
+#import "LENewsListModel.h"
 
+@interface BaseOneCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet StatusView *statusView;
 
-
+- (void)updateCellWithData:(LENewsListModel *)newsModel;
 
 @end

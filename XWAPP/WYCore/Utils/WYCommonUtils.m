@@ -1,0 +1,137 @@
+//
+//  WYCommonUtils.m
+//  XWAPP
+//
+//  Created by hys on 2018/5/15.
+//  Copyright © 2018年 HuiYiShe. All rights reserved.
+//
+
+#import "WYCommonUtils.h"
+#import "UIImageView+WebCache.h"
+#import "UIImage+LEAdd.h"
+
+#define DAY_SECOND 60*60*24
+
+@implementation WYCommonUtils
+
+#pragma mark -
+#pragma mark - Time
+static NSDateFormatter *s_dateFormatterOFUS = nil;
+static bool dateFormatterOFUSInvalid;
++ (NSDate *)dateFromUSDateString:(NSString *)string{
+    if (![string isKindOfClass:[NSString class]]) {
+        return nil;
+    }
+    @synchronized(self){
+        if (s_dateFormatterOFUS == nil || dateFormatterOFUSInvalid) {
+            s_dateFormatterOFUS = [[NSDateFormatter alloc] init];
+            [s_dateFormatterOFUS setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+            [s_dateFormatterOFUS setLocale:usLocale];
+            dateFormatterOFUSInvalid = NO;
+        }
+    }
+    
+    NSDateFormatter *dateFormatter = s_dateFormatterOFUS;
+    NSDate *date = nil;
+    @synchronized(dateFormatter){
+        @try{
+            date = [dateFormatter dateFromString:string];
+        }
+        @catch (NSException *exception){
+            dateFormatterOFUSInvalid = YES;
+        }
+    }
+    return date;
+}
+
++ (NSString *)dateDiscriptionFromNowBk:(NSDate *)date{
+    NSString *timestamp = nil;
+    NSDate *nowDate = [NSDate date];
+    if (date == nil) {
+        return @"";
+    }
+    int distance = [nowDate timeIntervalSinceDate:date];
+    if (distance < 0) {
+        distance = 0;
+    }
+    NSCalendar *calender = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute |NSCalendarUnitSecond | NSCalendarUnitWeekday;
+    NSDateComponents *comps = [calender components:unitFlags fromDate:date];
+    NSDateComponents *compsNow = [calender components:unitFlags fromDate:nowDate];
+    
+//    NSDateComponents *tempComps = [calender components:unitFlags fromDate:nowDate toDate:date options:NSCalendarWrapComponents];
+    
+    if (distance > 0) {
+        if (distance < 60) {
+            timestamp = [NSString stringWithFormat:@"刚刚"];
+        }else if (distance < 60*60) {
+            timestamp = [NSString stringWithFormat:@"%d%@",distance/60,@"分钟前"];
+        }else if (distance < DAY_SECOND){
+            timestamp = [NSString stringWithFormat:@"%d%@",distance/(60*60),@"小时前"];
+        }else if (distance < DAY_SECOND*9){
+            timestamp = [NSString stringWithFormat:@"%d%@",distance/(DAY_SECOND),@"天前"];
+        }else{
+            if (comps.year == compsNow.year) {
+                timestamp = [NSString stringWithFormat:@"%d月%d日", (int)comps.month, (int)comps.day];
+            }else{
+                timestamp = [NSString stringWithFormat:@"%04d.%02d.%02d %02d:%02d", (int)comps.year, (int)comps.month, (int)comps.day, (int)comps.hour, (int)comps.minute];
+            }
+        }
+    }else{
+        timestamp = [NSString stringWithFormat:@"%04d.%02d.%02d %02d:%02d", (int)comps.year, (int)comps.month, (int)comps.day, (int)comps.hour, (int)comps.minute];
+    }
+    
+    return timestamp;
+}
+
+#pragma mark -
+#pragma mark - Other
++ (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage{
+    if (![url isEqual:[NSNull null]]) {
+        
+        __block BOOL isBig = NO;
+        [imageView sd_setImageWithURL:url placeholderImage:bitmapImage options:SDWebImageRetryFailed  progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+            
+            if(expectedSize / 1024 > 400) {
+                //如果图片过大,处理一下
+                isBig = YES;
+            }
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            if (!isBig) {
+                if (image && cacheType == SDImageCacheTypeNone) {
+                    imageView.alpha = 0.0;
+                    [UIView transitionWithView:imageView
+                                      duration:1.0
+                                       options:UIViewAnimationOptionTransitionCrossDissolve
+                                    animations:^{
+                                        [imageView setImage:image];
+                                        imageView.alpha = 1.0;
+                                    } completion:NULL];
+                }
+            } else {
+                imageView.alpha = 0.0;
+                [UIView transitionWithView:imageView
+                                  duration:1.0
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{
+                                    if(image.images.count >= 2) {
+                                        [imageView setImage:image];
+                                    } else {
+                                        //UIImage *image = [self ima];
+                                        [imageView setImage:[image imageCompressForTargetSize:imageView.size]];
+                                    }
+                                    
+                                    imageView.alpha = 1.0;
+                                } completion:NULL];
+                
+            }
+        }];
+    }else{
+        [imageView sd_setImageWithURL:nil];
+        [imageView setImage:bitmapImage];
+    }
+}
+
+@end

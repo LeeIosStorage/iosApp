@@ -28,6 +28,8 @@
     // UMConfigure 通用设置，请参考SDKs集成做统一初始化。
     // 以下仅列出U-Share初始化部分
     
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
+    
     // U-Share 平台设置
     [self configUSharePlatforms];
     [self confitUShareSettings];

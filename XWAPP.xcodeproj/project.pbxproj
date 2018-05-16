@@ -12,6 +12,15 @@
 		4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADF920A012C100893FC8 /* MyWallet.m */; };
 		4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADFC20A031F200893FC8 /* SearchHeaderSecond.m */; };
 		4C5FADFF20A031F200893FC8 /* SearchHeaderSecond.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C5FADFD20A031F200893FC8 /* SearchHeaderSecond.xib */; };
+		4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61862020AA92FE000D647F /* LENewsListModel.m */; };
+		4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61862420AAB7A5000D647F /* WYNetWorkExceptionHandling.m */; };
+		4C61863120AAB7A5000D647F /* WYNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61862520AAB7A5000D647F /* WYNetWorkManager.m */; };
+		4C61863220AAB7A5000D647F /* NetWorkConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C61862820AAB7A5000D647F /* NetWorkConfig.json */; };
+		4C61863320AAB7A5000D647F /* WYAPIGenerate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61862C20AAB7A5000D647F /* WYAPIGenerate.m */; };
+		4C61863420AAB7A5000D647F /* YTCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61862F20AAB7A5000D647F /* YTCache.m */; };
+		4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863720AACBDB000D647F /* LESuperViewController.m */; };
+		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
+		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
 		4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */; };
 		4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1B20A0614200FD9C4C /* MineSecondCell.m */; };
 		4CB8ED1F20A0615600FD9C4C /* MineThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1E20A0615600FD9C4C /* MineThirdCell.m */; };
@@ -140,6 +149,24 @@
 		4C5FADFB20A031F200893FC8 /* SearchHeaderSecond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchHeaderSecond.h; sourceTree = "<group>"; };
 		4C5FADFC20A031F200893FC8 /* SearchHeaderSecond.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchHeaderSecond.m; sourceTree = "<group>"; };
 		4C5FADFD20A031F200893FC8 /* SearchHeaderSecond.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchHeaderSecond.xib; sourceTree = "<group>"; };
+		4C61861F20AA92FE000D647F /* LENewsListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsListModel.h; sourceTree = "<group>"; };
+		4C61862020AA92FE000D647F /* LENewsListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsListModel.m; sourceTree = "<group>"; };
+		4C61862420AAB7A5000D647F /* WYNetWorkExceptionHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYNetWorkExceptionHandling.m; sourceTree = "<group>"; };
+		4C61862520AAB7A5000D647F /* WYNetWorkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYNetWorkManager.m; sourceTree = "<group>"; };
+		4C61862620AAB7A5000D647F /* WYAPIGenerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYAPIGenerate.h; sourceTree = "<group>"; };
+		4C61862820AAB7A5000D647F /* NetWorkConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetWorkConfig.json; sourceTree = "<group>"; };
+		4C61862920AAB7A5000D647F /* WYNetWorkExceptionHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYNetWorkExceptionHandling.h; sourceTree = "<group>"; };
+		4C61862A20AAB7A5000D647F /* WYNetWorkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYNetWorkManager.h; sourceTree = "<group>"; };
+		4C61862B20AAB7A5000D647F /* WYNetworkHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYNetworkHeader.h; sourceTree = "<group>"; };
+		4C61862C20AAB7A5000D647F /* WYAPIGenerate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYAPIGenerate.m; sourceTree = "<group>"; };
+		4C61862E20AAB7A5000D647F /* YTCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTCache.h; sourceTree = "<group>"; };
+		4C61862F20AAB7A5000D647F /* YTCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTCache.m; sourceTree = "<group>"; };
+		4C61863620AACBDB000D647F /* LESuperViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESuperViewController.h; sourceTree = "<group>"; };
+		4C61863720AACBDB000D647F /* LESuperViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESuperViewController.m; sourceTree = "<group>"; };
+		4C61863920AB10DB000D647F /* WYCommonUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYCommonUtils.h; sourceTree = "<group>"; };
+		4C61863A20AB10DB000D647F /* WYCommonUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCommonUtils.m; sourceTree = "<group>"; };
+		4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEAdd.h"; sourceTree = "<group>"; };
+		4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEAdd.m"; sourceTree = "<group>"; };
 		4CB8ED1720A060F600FD9C4C /* MineFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineFirstCell.h; sourceTree = "<group>"; };
 		4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineFirstCell.m; sourceTree = "<group>"; };
 		4CB8ED1A20A0614200FD9C4C /* MineSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineSecondCell.h; sourceTree = "<group>"; };
@@ -395,6 +422,61 @@
 				4C5FADF920A012C100893FC8 /* MyWallet.m */,
 			);
 			path = C;
+			sourceTree = "<group>";
+		};
+		4C61862220AAB7A5000D647F /* WYCore */ = {
+			isa = PBXGroup;
+			children = (
+				4C61863520AACAC5000D647F /* Base */,
+				4C61862320AAB7A5000D647F /* Network */,
+				4C61862D20AAB7A5000D647F /* Utils */,
+			);
+			path = WYCore;
+			sourceTree = "<group>";
+		};
+		4C61862320AAB7A5000D647F /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				4C61862720AAB7A5000D647F /* Resources */,
+				4C61862B20AAB7A5000D647F /* WYNetworkHeader.h */,
+				4C61862A20AAB7A5000D647F /* WYNetWorkManager.h */,
+				4C61862520AAB7A5000D647F /* WYNetWorkManager.m */,
+				4C61862620AAB7A5000D647F /* WYAPIGenerate.h */,
+				4C61862C20AAB7A5000D647F /* WYAPIGenerate.m */,
+				4C61862920AAB7A5000D647F /* WYNetWorkExceptionHandling.h */,
+				4C61862420AAB7A5000D647F /* WYNetWorkExceptionHandling.m */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		4C61862720AAB7A5000D647F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4C61862820AAB7A5000D647F /* NetWorkConfig.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4C61862D20AAB7A5000D647F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4C61862E20AAB7A5000D647F /* YTCache.h */,
+				4C61862F20AAB7A5000D647F /* YTCache.m */,
+				4C61863920AB10DB000D647F /* WYCommonUtils.h */,
+				4C61863A20AB10DB000D647F /* WYCommonUtils.m */,
+				4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */,
+				4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		4C61863520AACAC5000D647F /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				4C61863620AACBDB000D647F /* LESuperViewController.h */,
+				4C61863720AACBDB000D647F /* LESuperViewController.m */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		4CF22CA520A29A91000904F4 /* HTML */ = {
@@ -789,6 +871,8 @@
 		EC72BBA8208D6EA400FADE74 /* XWAPP */ = {
 			isa = PBXGroup;
 			children = (
+				EC72BBDC208D747D00FADE74 /* APPDelegate */,
+				4C61862220AAB7A5000D647F /* WYCore */,
 				4CF22CA520A29A91000904F4 /* HTML */,
 				4CF3161920A142E300E81E56 /* 任务中心 */,
 				EC4186BC2099BB1B00E57C17 /* TabBarController */,
@@ -800,7 +884,6 @@
 				EC72BBF3208D8D7900FADE74 /* CustomView */,
 				EC72BBE8208D781F00FADE74 /* Other */,
 				EC72BBE3208D772700FADE74 /* Marco */,
-				EC72BBDC208D747D00FADE74 /* APPDelegate */,
 				EC72BBDB208D742B00FADE74 /* 首页 */,
 				EC72BBAF208D6EA400FADE74 /* Main.storyboard */,
 				EC72BBB2208D6EAD00FADE74 /* Assets.xcassets */,
@@ -892,6 +975,8 @@
 		EC72BBFE208DBEA700FADE74 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4C61861F20AA92FE000D647F /* LENewsListModel.h */,
+				4C61862020AA92FE000D647F /* LENewsListModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -1165,6 +1250,7 @@
 				4CDE8AB520A3F5BE00679959 /* SearchView.xib in Resources */,
 				EC4186B4209995A300E57C17 /* SheetAlert.xib in Resources */,
 				EC72BC2B208EDD1F00FADE74 /* BaseTwoCell.xib in Resources */,
+				4C61863220AAB7A5000D647F /* NetWorkConfig.json in Resources */,
 				4CF3162B20A14A3C00E81E56 /* TaskCellHeader.xib in Resources */,
 				EC72BC3D208F255A00FADE74 /* DelAlertView.xib in Resources */,
 				4CF22CC720A2E38D000904F4 /* MineNaView.xib in Resources */,
@@ -1321,17 +1407,20 @@
 				4CF22CB420A2AE21000904F4 /* WalletBottomView.m in Sources */,
 				EC4186B22099959D00E57C17 /* SheetAlert.m in Sources */,
 				EC72BBFD208DBE8800FADE74 /* TagCollectionController.m in Sources */,
+				4C61863120AAB7A5000D647F /* WYNetWorkManager.m in Sources */,
 				EC4186AF20998DE900E57C17 /* SetNormal.m in Sources */,
 				4CF3163120A176E500E81E56 /* ForgetPassWord.m in Sources */,
 				EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */,
 				EC0DD9EE2092B25E006C7522 /* MineHeader.m in Sources */,
 				4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */,
+				4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */,
 				EC72BC16208EC01A00FADE74 /* XLChannelControl.m in Sources */,
 				4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */,
 				EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */,
 				4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */,
 				4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */,
 				EC72BC5B20907A6700FADE74 /* SearchCollecViewCell.m in Sources */,
+				4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */,
 				EC72BC06208DC74700FADE74 /* TagHeaderView.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,
@@ -1347,13 +1436,18 @@
 				EC72BC472090311C00FADE74 /* HotCell.m in Sources */,
 				EC72BBE2208D76E700FADE74 /* SYBaseController.m in Sources */,
 				EC72BBB9208D6EAD00FADE74 /* main.m in Sources */,
+				4C61863320AAB7A5000D647F /* WYAPIGenerate.m in Sources */,
 				4CDE8AC220A4540A00679959 /* CommentCell.m in Sources */,
+				4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */,
 				EC4186AC20998DDA00E57C17 /* SetBass.m in Sources */,
 				EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */,
+				4C61863420AAB7A5000D647F /* YTCache.m in Sources */,
+				4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */,
 				EC72BC5F2090845900FADE74 /* SearchHeader.m in Sources */,
 				EC4186A920998DC700E57C17 /* SetPortrait.m in Sources */,
 				EC72BC2A208EDD1F00FADE74 /* BaseTwoCell.m in Sources */,
 				4CDE8AB920A400CC00679959 /* SYDetailController.m in Sources */,
+				4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */,
 				EC72BBAB208D6EA400FADE74 /* AppDelegate.m in Sources */,
 				EC72BC09208DCDA300FADE74 /* CALayer+LayerColor.m in Sources */,
 			);

@@ -186,6 +186,9 @@
 
 #define HitoRedColor [UIColor redColor]
 
+//主题颜色
+#define kAppThemeColor [UIColor colorWithHexString:@"ff4b41"]
+
 ///颜色 a代表透明度,1为不透明,0为透明
 
 #define HitoRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
@@ -196,7 +199,7 @@
 
 //分割线颜色
 
-#define LineColor [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:0.2]
+#define LineColor [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:0.7]
 
 //加粗
 
@@ -250,7 +253,7 @@
 
 #define HitoDISPATCH_ONCE_BLOCK(onceBlock) static dispatch_once_t onceToken; dispatch_once(&onceToken, onceBlock);
 
-//强引用
+//弱引用
 
 #define HitoWeakSelf __weak typeof(self)WeakSelf = self;
 

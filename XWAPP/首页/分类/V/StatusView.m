@@ -9,6 +9,11 @@
 #import "StatusView.h"
 #import "UIView+Xib.h"
 
+@interface StatusView ()
+
+
+@end
+
 @implementation StatusView
 
 #if 1
