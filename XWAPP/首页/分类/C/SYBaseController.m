@@ -117,7 +117,7 @@ HitoPropertyNSMutableArray(dataArr);
     if (!_headerArr) {
         _headerArr = [[NSMutableArray alloc] init];
         [_headerArr addObject:@{@"id":@"255",@"name":@"推荐"}];
-//        _headerArr = [@[@"要闻",@"河北",@"财经",@"娱乐",@"体育",@"社会",@"NBA",@"视频",@"汽车",@"图片",@"科技",@"军事",@"国际",@"数码",@"星座",@"电影",@"时尚",@"文化",@"游戏",@"教育",@"动漫",@"政务",@"纪录片",@"房产",@"佛学",@"股票",@"理财"] mutableCopy];
+
     }
     return _headerArr;
 }
