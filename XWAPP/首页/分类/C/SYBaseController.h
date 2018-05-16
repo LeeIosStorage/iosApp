@@ -8,6 +8,7 @@
 
 #import "WMPageController.h"
 
+//哈哈哈哈
 @interface SYBaseController : WMPageController
 
 @end
