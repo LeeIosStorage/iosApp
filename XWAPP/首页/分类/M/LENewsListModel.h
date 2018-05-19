@@ -17,5 +17,8 @@
 @property (nonatomic, strong) NSString *public_time;
 @property (nonatomic, strong) NSArray *tags;
 @property (nonatomic, strong) NSArray *cover;
+@property (nonatomic, assign) int type;
+
+@property (nonatomic, strong) NSString *content;//正文
 
 @end

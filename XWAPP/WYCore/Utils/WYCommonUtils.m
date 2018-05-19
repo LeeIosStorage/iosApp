@@ -86,6 +86,27 @@ static bool dateFormatterOFUSInvalid;
     return timestamp;
 }
 
++ (NSString*)dateDiscriptionFromDate:(NSDate*)date{
+    NSString *_timestamp = nil;
+    NSDate* nowDate = [NSDate date];
+    if (date == nil) {
+        return @"";
+    }
+    NSCalendar * calender = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute |NSCalendarUnitSecond | NSCalendarUnitWeekday;
+    NSDateComponents *comps = [calender components:unitFlags fromDate:date];
+    NSDateComponents *compsNow = [calender components:unitFlags fromDate:nowDate];
+    
+    if (comps.year == compsNow.year){
+        _timestamp = [NSString stringWithFormat:@"%02d/%02d %02d:%02d", (int)comps.month, (int)comps.day, (int)comps.hour, (int)comps.minute];
+    } else {
+        _timestamp = [NSString stringWithFormat:@"%04d/%02d/%02d %02d:%02d", (int)comps.year, (int)comps.month, (int)comps.day, (int)comps.hour, (int)comps.minute];
+    }
+    
+    return _timestamp;
+}
+
 #pragma mark -
 #pragma mark - Other
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage{

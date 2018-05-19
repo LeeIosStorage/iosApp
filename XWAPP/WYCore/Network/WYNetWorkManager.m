@@ -120,7 +120,7 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"\n url = %@\n responseObject=%@",task.currentRequest.URL,responseObject);
+        LELog(@"\n url = %@\n responseObject=%@",task.currentRequest.URL,responseObject);
         
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             //[self handleResponseObject:responseObject];
@@ -173,7 +173,7 @@
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure error: %@",error);
+        LELog(@"failure error: %@",error);
         if (failure) {
             failure(nil, error);
         }
@@ -196,11 +196,11 @@
     AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
     jsonReponseSerializer.acceptableContentTypes = nil;
     manager.responseSerializer = jsonReponseSerializer;
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
     //    manager.securityPolicy.allowInvalidCertificates = YES;
     
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
-    NSLog(@"POST  url   %@",requestURLString);
+    LELog(@"POST  url   %@",requestURLString);
     YYCache *cache = [YTCache sharedCache].commonCache;
     //缓存处理
     if (needCache && URLString && success) {
@@ -229,7 +229,7 @@
     
     NSURLSessionDataTask *task = [manager POST:requestURLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"\nPOST url = %@\n",task.currentRequest.URL);
+        LELog(@"\nPOST url = %@\n responseObject=%@",task.currentRequest.URL,responseObject);
         
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             //[self handleResponseObject:responseObject];
@@ -280,7 +280,7 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure error: %@",error);
+        LELog(@"failure error: %@",error);
         if (failure) {
             failure(nil, error);
         }

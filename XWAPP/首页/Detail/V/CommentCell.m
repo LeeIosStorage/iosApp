@@ -7,6 +7,13 @@
 //
 
 #import "CommentCell.h"
+#import "LENewsCommentModel.h"
+
+@interface CommentCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+
+@end
 
 @implementation CommentCell
 
@@ -19,6 +26,12 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)updateHeaderData:(id)data{
+    
+    LEReplyCommentModel *commentModel = (LEReplyCommentModel *)data;
+    self.contentLabel.text = commentModel.content;
 }
 
 @end

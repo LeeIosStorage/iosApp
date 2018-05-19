@@ -56,7 +56,7 @@
     
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     if(newImage == nil){
-        NSLog(@"scale image fail");
+        LELog(@"scale image fail");
     }
     
     UIGraphicsEndImageContext();

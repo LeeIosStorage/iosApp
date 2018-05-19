@@ -17,4 +17,10 @@
         "control" : "news",
         "action"  : "GetDetail"
     },
+    "commentSave": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "Save"
+    },
 }

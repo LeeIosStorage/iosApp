@@ -12,12 +12,19 @@
 #import "SearchController.h"
 #import "WYNetWorkManager.h"
 #import "WYNetWorkManager.h"
-
+#import "LEChannelModel.h"
+#import "LEDataStoreManager.h"
+#import "DetailController.h"
 
 @interface SYBaseController () <UISearchBarDelegate>
+{
+    
+}
 
 HitoPropertyNSMutableArray(headerArr);
 HitoPropertyNSMutableArray(dataArr);
+HitoPropertyNSArray(localInUseChannelArray);
+HitoPropertyNSArray(allChannelArray);
 
 @property (nonatomic, strong) WYNetWorkManager *networkManager;
 @property (nonatomic, strong) UIView *addView;
@@ -36,22 +43,6 @@ HitoPropertyNSMutableArray(dataArr);
     
     [self getNewsChannelRequest];
     
-//    __weak typeof(self)weakSelf = self;
-//
-//    [AFNRequest requst:@"http://192.168.60.170:5001/api/news/GetAllChannel" parameters:nil complete:^(id jsonData) {
-//        //
-//        NSLog(@"^^^^^%@",jsonData);
-//        if ([jsonData isKindOfClass:[NSArray class]]) {
-////            NSDictionary *dic = (NSDictionary *)jsonData;
-//            NSArray *array = jsonData;
-//            [weakSelf.headerArr removeAllObjects];
-//            for (NSDictionary *dic in array) {
-////                NSString *name = dic[@"name"];
-//                [weakSelf.headerArr addObject:dic];
-//            }
-//            [weakSelf reloadData];
-//        }
-//    }];
 }
 
 #pragma mark -
@@ -60,17 +51,17 @@ HitoPropertyNSMutableArray(dataArr);
     
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAllChannel"];
-    [self.networkManager GET:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:nil responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:nil responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
-//        NSLog(@"^^^^^%@",dataObject);
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
+        
         if ([dataObject isKindOfClass:[NSArray class]]) {
-            NSArray *array = dataObject;
-            [WeakSelf.headerArr removeAllObjects];
-            for (NSDictionary *dic in array) {
-                [WeakSelf.headerArr addObject:dic];
+            WeakSelf.allChannelArray = [NSArray modelArrayWithClass:[LEChannelModel class] json:dataObject];
+            if (WeakSelf.localInUseChannelArray.count <= 0) {
+                [WeakSelf.headerArr removeAllObjects];
+                [WeakSelf.headerArr addObjectsFromArray:WeakSelf.allChannelArray];
             }
             [WeakSelf reloadData];
         }
@@ -87,15 +78,38 @@ HitoPropertyNSMutableArray(dataArr);
 #pragma mark - addBtn
 
 - (IBAction)addBtnAction:(UIButton *)sender {
+    
+    
+    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+    [self.navigationController pushViewController:detail animated:YES];
+    return;
+    
+    
+    
+    
+    
+    
     NSArray *arr1 = [NSArray arrayWithArray:self.headerArr];
-    NSArray *arr2 = @[@"有声",@"家居",@"电竞",@"美容",@"电视剧",@"搏击",@"健康",@"摄影",@"生活",@"旅游",@"韩流",@"探索",@"综艺",@"美食",@"育儿"];
+    
+    NSMutableArray *tmpAllArr = [NSMutableArray arrayWithArray:self.allChannelArray];
+    NSMutableArray *removeArr = [NSMutableArray array];
+    for (LEChannelModel *model in tmpAllArr) {
+        for (LEChannelModel *m in arr1) {
+            if ([model.channelId isEqualToString:m.channelId]) {
+                [removeArr addObject:model];
+                break;
+            }
+        }
+    }
+    
+    [tmpAllArr removeObjectsInArray:removeArr];
+    NSArray *arr2 = [NSArray arrayWithArray:tmpAllArr];
     
     HitoWeakSelf;
     [[XLChannelControl shareControl] showChannelViewWithInUseTitles:arr1 unUseTitles:arr2 finish:^(NSArray *inUseTitles, NSArray *unUseTitles) {
         WeakSelf.headerArr = [NSMutableArray arrayWithArray:inUseTitles];
-//        NSLog(@"inUseTitles = %@",inUseTitles);
-//        NSLog(@"unUseTitles = %@",unUseTitles);
-        WeakSelf.headerArr = [NSMutableArray arrayWithArray:inUseTitles];
+        [[LEDataStoreManager shareInstance] saveInUseChannelWithArray:inUseTitles];
+
         [WeakSelf reloadData];
     }];
 }
@@ -113,10 +127,27 @@ HitoPropertyNSMutableArray(dataArr);
     return _dataArr;
 }
 
+- (NSArray *)allChannelArray{
+    if (!_allChannelArray) {
+        _allChannelArray = [[NSArray alloc] init];
+    }
+    return _allChannelArray;
+}
+
 - (NSMutableArray *)headerArr {
     if (!_headerArr) {
         _headerArr = [[NSMutableArray alloc] init];
-        [_headerArr addObject:@{@"id":@"255",@"name":@"推荐"}];
+        
+        self.localInUseChannelArray = [[LEDataStoreManager shareInstance] getInUseChannelArray];
+        if (_localInUseChannelArray.count > 0) {
+            [_headerArr addObjectsFromArray:_localInUseChannelArray];
+            return _headerArr;
+        }
+        
+        LEChannelModel *channelModel = [[LEChannelModel alloc] init];
+        channelModel.channelId = @"255";
+        channelModel.name = @"推荐";
+        [_headerArr addObject:channelModel];
 
     }
     return _headerArr;
@@ -135,7 +166,8 @@ HitoPropertyNSMutableArray(dataArr);
     [super viewDidLoad];
     self.titleSizeNormal = 15;
     self.titleSizeSelected = 15;
-    self.menuViewStyle = WMMenuViewStyleLine;
+    self.menuViewStyle = WMMenuViewStyleDefault;
+    self.menuView.layoutMode = WMMenuViewLayoutModeLeft;
     self.menuItemWidth = 55;
     self.titleFontName = @"PingFangSC-Medium";
     self.titleColorSelected = kAppThemeColor;
@@ -188,9 +220,9 @@ HitoPropertyNSMutableArray(dataArr);
 - (UIViewController *)pageController:(WMPageController *)pageController viewControllerAtIndex:(NSInteger)index {
     SYBaseVC *baseVC = [[SYBaseVC alloc] initWithNibName:@"SYBaseVC" bundle:nil];
     
-    NSDictionary *dic = self.headerArr[index];
-    baseVC.tagTitle = dic[@"name"];
-    baseVC.channelId = dic[@"id"];
+    LEChannelModel *channelModel = self.headerArr[index];
+    baseVC.tagTitle = channelModel.name;
+    baseVC.channelId = channelModel.channelId;
     
     
 //    NSDictionary *dic = @{@"t1": @[@"1", @"2"], @"t2": @[@"3", @"4"]};
@@ -202,8 +234,8 @@ HitoPropertyNSMutableArray(dataArr);
 
 #pragma mark 返回index对应的标题
 - (NSString *)pageController:(WMPageController *)pageController titleAtIndex:(NSInteger)index {
-    NSDictionary *dic = self.headerArr[index];
-    return dic[@"name"];
+    LEChannelModel *channelModel = self.headerArr[index];
+    return channelModel.name;
 }
 
 - (CGRect)pageController:(WMPageController *)pageController preferredFrameForContentView:(WMScrollView *)contentView {

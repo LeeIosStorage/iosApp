@@ -16,6 +16,8 @@
 + (NSDate *)dateFromUSDateString:(NSString *)string;
 //显示时间格式:刚刚>>几分钟前>>几小时前>>几天前>>具体时间
 + (NSString *)dateDiscriptionFromNowBk:(NSDate *)date;
+//显示时间格式:MM/dd HH:mm
++ (NSString *)dateDiscriptionFromDate:(NSDate *)date;
 
 #pragma mark -
 #pragma mark - Other
