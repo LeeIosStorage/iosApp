@@ -9,6 +9,7 @@
 #import "XLChannelView.h"
 #import "XLChannelItem.h"
 #import "XLChannelHeader.h"
+#import "LEChannelModel.h"
 
 //菜单列数
 static NSInteger ColumnNumber = 3;
@@ -210,7 +211,10 @@ static CGFloat CellMarginY = 16.0f;
 {
     static NSString* cellId = @"XLChannelItem";
     XLChannelItem* item = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
-    item.title = indexPath.section == 0 ? _inUseTitles[indexPath.row] : _unUseTitles[indexPath.row];
+    
+    LEChannelModel *channelModel = indexPath.section == 0 ? _inUseTitles[indexPath.row] : _unUseTitles[indexPath.row];
+    
+    item.title = channelModel.name;
     item.isFixed = indexPath.section == 0 && indexPath.row == 0;
     if (indexPath.section == 0) {
         [item.rightTopBtn setImage:HitoImage(@"home_pinglun_nor") forState:UIControlStateNormal];

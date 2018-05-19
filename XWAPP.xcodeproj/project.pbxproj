@@ -9,6 +9,24 @@
 /* Begin PBXBuildFile section */
 		4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */; };
 		4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */; };
+		4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */; };
+		4C3F3BEF20AD575C00B754AF /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BEA20AD575C00B754AF /* TFHpple.m */; };
+		4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BED20AD575C00B754AF /* TFHppleElement.m */; };
+		4C3F3BF120AD575C00B754AF /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BEE20AD575C00B754AF /* XPathQuery.m */; };
+		4C3F3BF320AD5AC400B754AF /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3F3BF220AD5AC300B754AF /* libxml2.2.tbd */; };
+		4C3F3BF620AD740A00B754AF /* LENewsContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BF520AD740A00B754AF /* LENewsContentModel.m */; };
+		4C3F3BF920AD743500B754AF /* LEElementStyleBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BF820AD743500B754AF /* LEElementStyleBox.m */; };
+		4C3F3BFC20AD84AC00B754AF /* LENewsDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BFB20AD84AC00B754AF /* LENewsDetailModel.m */; };
+		4C3F3C0B20AD9C2000B754AF /* LENewsDetailContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C0A20AD9C2000B754AF /* LENewsDetailContentView.m */; };
+		4C3F3C0E20ADABA200B754AF /* LENewsDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C0D20ADABA200B754AF /* LENewsDetailHeaderView.m */; };
+		4C3F3C1220AEACCB00B754AF /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C1120AEACCA00B754AF /* YYPhotoGroupView.m */; };
+		4C3F3C1520AEC30B00B754AF /* LEChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C1420AEC30B00B754AF /* LEChannelModel.m */; };
+		4C3F3C1920AED31B00B754AF /* LEDataStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C1820AED31B00B754AF /* LEDataStoreManager.m */; };
+		4C3F3C1C20AEFB0400B754AF /* PathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C1B20AEFB0400B754AF /* PathHelper.m */; };
+		4C3F3C1F20AFC79600B754AF /* LENewsCommentHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */; };
+		4C3F3C2520AFDDC300B754AF /* LECommentFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2420AFDDC300B754AF /* LECommentFooterView.m */; };
+		4C3F3C2820B0054300B754AF /* LENewsCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2720B0054300B754AF /* LENewsCommentModel.m */; };
+		4C3F3C2B20B008DD00B754AF /* LECommentMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2A20B008DD00B754AF /* LECommentMoreCell.m */; };
 		4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADF920A012C100893FC8 /* MyWallet.m */; };
 		4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADFC20A031F200893FC8 /* SearchHeaderSecond.m */; };
 		4C5FADFF20A031F200893FC8 /* SearchHeaderSecond.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C5FADFD20A031F200893FC8 /* SearchHeaderSecond.xib */; };
@@ -144,6 +162,40 @@
 		4C0E5DB220A52FDC009DE9B6 /* CommontHFView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommontHFView.h; sourceTree = "<group>"; };
 		4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommontHFView.m; sourceTree = "<group>"; };
 		4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommontHFView.xib; sourceTree = "<group>"; };
+		4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DetailController+ContentControl.m"; sourceTree = "<group>"; };
+		4C3F3BE920AD575C00B754AF /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		4C3F3BEA20AD575C00B754AF /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		4C3F3BEB20AD575C00B754AF /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		4C3F3BEC20AD575C00B754AF /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		4C3F3BED20AD575C00B754AF /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		4C3F3BEE20AD575C00B754AF /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		4C3F3BF220AD5AC300B754AF /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
+		4C3F3BF420AD740A00B754AF /* LENewsContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsContentModel.h; sourceTree = "<group>"; };
+		4C3F3BF520AD740A00B754AF /* LENewsContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsContentModel.m; sourceTree = "<group>"; };
+		4C3F3BF720AD743500B754AF /* LEElementStyleBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEElementStyleBox.h; sourceTree = "<group>"; };
+		4C3F3BF820AD743500B754AF /* LEElementStyleBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEElementStyleBox.m; sourceTree = "<group>"; };
+		4C3F3BFA20AD84AC00B754AF /* LENewsDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsDetailModel.h; sourceTree = "<group>"; };
+		4C3F3BFB20AD84AC00B754AF /* LENewsDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsDetailModel.m; sourceTree = "<group>"; };
+		4C3F3C0920AD9C2000B754AF /* LENewsDetailContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsDetailContentView.h; sourceTree = "<group>"; };
+		4C3F3C0A20AD9C2000B754AF /* LENewsDetailContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsDetailContentView.m; sourceTree = "<group>"; };
+		4C3F3C0C20ADABA200B754AF /* LENewsDetailHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsDetailHeaderView.h; sourceTree = "<group>"; };
+		4C3F3C0D20ADABA200B754AF /* LENewsDetailHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsDetailHeaderView.m; sourceTree = "<group>"; };
+		4C3F3C1020AEACCA00B754AF /* YYPhotoGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPhotoGroupView.h; sourceTree = "<group>"; };
+		4C3F3C1120AEACCA00B754AF /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
+		4C3F3C1320AEC30B00B754AF /* LEChannelModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEChannelModel.h; sourceTree = "<group>"; };
+		4C3F3C1420AEC30B00B754AF /* LEChannelModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEChannelModel.m; sourceTree = "<group>"; };
+		4C3F3C1720AED31B00B754AF /* LEDataStoreManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEDataStoreManager.h; sourceTree = "<group>"; };
+		4C3F3C1820AED31B00B754AF /* LEDataStoreManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEDataStoreManager.m; sourceTree = "<group>"; };
+		4C3F3C1A20AEFB0300B754AF /* PathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathHelper.h; sourceTree = "<group>"; };
+		4C3F3C1B20AEFB0400B754AF /* PathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathHelper.m; sourceTree = "<group>"; };
+		4C3F3C1D20AFC79600B754AF /* LENewsCommentHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsCommentHeadView.h; sourceTree = "<group>"; };
+		4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsCommentHeadView.m; sourceTree = "<group>"; };
+		4C3F3C2320AFDDC300B754AF /* LECommentFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentFooterView.h; sourceTree = "<group>"; };
+		4C3F3C2420AFDDC300B754AF /* LECommentFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentFooterView.m; sourceTree = "<group>"; };
+		4C3F3C2620B0054300B754AF /* LENewsCommentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsCommentModel.h; sourceTree = "<group>"; };
+		4C3F3C2720B0054300B754AF /* LENewsCommentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsCommentModel.m; sourceTree = "<group>"; };
+		4C3F3C2920B008DD00B754AF /* LECommentMoreCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentMoreCell.h; sourceTree = "<group>"; };
+		4C3F3C2A20B008DD00B754AF /* LECommentMoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentMoreCell.m; sourceTree = "<group>"; };
 		4C5FADF820A012C000893FC8 /* MyWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWallet.h; sourceTree = "<group>"; };
 		4C5FADF920A012C100893FC8 /* MyWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWallet.m; sourceTree = "<group>"; };
 		4C5FADFB20A031F200893FC8 /* SearchHeaderSecond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchHeaderSecond.h; sourceTree = "<group>"; };
@@ -349,6 +401,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C3F3BF320AD5AC400B754AF /* libxml2.2.tbd in Frameworks */,
 				7A8321EA7755DD7DAE2B0714 /* libPods-XWAPP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,12 +428,44 @@
 		3204A20423635583C25E470E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F3BF220AD5AC300B754AF /* libxml2.2.tbd */,
 				ECC6C81D209C0B640015DDE0 /* libQLCharts.tbd */,
 				E36E51FE5E93E42C1B860A72 /* libPods-XWAPP.a */,
 				3281F87DD4499B479FB1DE93 /* libPods-XWAPPTests.a */,
 				8BE541F6EDF6A81D327CD89B /* libPods-XWAPPUITests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4C3F3BE820AD575C00B754AF /* HappleClasses */ = {
+			isa = PBXGroup;
+			children = (
+				4C3F3BEC20AD575C00B754AF /* TFHpple.h */,
+				4C3F3BEA20AD575C00B754AF /* TFHpple.m */,
+				4C3F3BE920AD575C00B754AF /* TFHppleElement.h */,
+				4C3F3BED20AD575C00B754AF /* TFHppleElement.m */,
+				4C3F3BEB20AD575C00B754AF /* XPathQuery.h */,
+				4C3F3BEE20AD575C00B754AF /* XPathQuery.m */,
+			);
+			path = HappleClasses;
+			sourceTree = "<group>";
+		};
+		4C3F3C0F20AEACCA00B754AF /* YYPhotoGroupView */ = {
+			isa = PBXGroup;
+			children = (
+				4C3F3C1020AEACCA00B754AF /* YYPhotoGroupView.h */,
+				4C3F3C1120AEACCA00B754AF /* YYPhotoGroupView.m */,
+			);
+			path = YYPhotoGroupView;
+			sourceTree = "<group>";
+		};
+		4C3F3C1620AED2E900B754AF /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				4C3F3C1720AED31B00B754AF /* LEDataStoreManager.h */,
+				4C3F3C1820AED31B00B754AF /* LEDataStoreManager.m */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		4C5FADF420A0129E00893FC8 /* 我的钱包 */ = {
@@ -427,6 +512,7 @@
 		4C61862220AAB7A5000D647F /* WYCore */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F3C1620AED2E900B754AF /* Manager */,
 				4C61863520AACAC5000D647F /* Base */,
 				4C61862320AAB7A5000D647F /* Network */,
 				4C61862D20AAB7A5000D647F /* Utils */,
@@ -466,6 +552,8 @@
 				4C61863A20AB10DB000D647F /* WYCommonUtils.m */,
 				4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */,
 				4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */,
+				4C3F3C1A20AEFB0300B754AF /* PathHelper.h */,
+				4C3F3C1B20AEFB0400B754AF /* PathHelper.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -810,6 +898,14 @@
 		EC4186CD209AB46400E57C17 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F3BFA20AD84AC00B754AF /* LENewsDetailModel.h */,
+				4C3F3BFB20AD84AC00B754AF /* LENewsDetailModel.m */,
+				4C3F3BF420AD740A00B754AF /* LENewsContentModel.h */,
+				4C3F3BF520AD740A00B754AF /* LENewsContentModel.m */,
+				4C3F3BF720AD743500B754AF /* LEElementStyleBox.h */,
+				4C3F3BF820AD743500B754AF /* LEElementStyleBox.m */,
+				4C3F3C2620B0054300B754AF /* LENewsCommentModel.h */,
+				4C3F3C2720B0054300B754AF /* LENewsCommentModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -828,9 +924,19 @@
 				4CDE8AC320A4558F00679959 /* CommontHeaderView.h */,
 				4CDE8AC420A4558F00679959 /* CommontHeaderView.m */,
 				4CDE8AC620A4559400679959 /* CommontHeaderView.xib */,
+				4C3F3C2320AFDDC300B754AF /* LECommentFooterView.h */,
+				4C3F3C2420AFDDC300B754AF /* LECommentFooterView.m */,
+				4C3F3C2920B008DD00B754AF /* LECommentMoreCell.h */,
+				4C3F3C2A20B008DD00B754AF /* LECommentMoreCell.m */,
 				4C0E5DB220A52FDC009DE9B6 /* CommontHFView.h */,
 				4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */,
 				4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */,
+				4C3F3C0920AD9C2000B754AF /* LENewsDetailContentView.h */,
+				4C3F3C0A20AD9C2000B754AF /* LENewsDetailContentView.m */,
+				4C3F3C0C20ADABA200B754AF /* LENewsDetailHeaderView.h */,
+				4C3F3C0D20ADABA200B754AF /* LENewsDetailHeaderView.m */,
+				4C3F3C1D20AFC79600B754AF /* LENewsCommentHeadView.h */,
+				4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -840,6 +946,7 @@
 			children = (
 				4CF22CA720A29ABD000904F4 /* DetailController.h */,
 				4CF22CA820A29ABD000904F4 /* DetailController.m */,
+				4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */,
 				4CDE8AB620A400CC00679959 /* SYDetailController.h */,
 				4CDE8AB720A400CC00679959 /* SYDetailController.m */,
 			);
@@ -975,6 +1082,8 @@
 		EC72BBFE208DBEA700FADE74 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F3C1320AEC30B00B754AF /* LEChannelModel.h */,
+				4C3F3C1420AEC30B00B754AF /* LEChannelModel.m */,
 				4C61861F20AA92FE000D647F /* LENewsListModel.h */,
 				4C61862020AA92FE000D647F /* LENewsListModel.m */,
 			);
@@ -1030,6 +1139,8 @@
 		EC72BC0A208EBFDD00FADE74 /* ThirdPart */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F3C0F20AEACCA00B754AF /* YYPhotoGroupView */,
+				4C3F3BE820AD575C00B754AF /* HappleClasses */,
 				EC72BC0D208EC01A00FADE74 /* XLChannelControl */,
 			);
 			path = ThirdPart;
@@ -1377,14 +1488,17 @@
 				EC72BC4A2090352A00FADE74 /* HotHeader.m in Sources */,
 				EC0DD9F32092B45A006C7522 /* MineBottom.m in Sources */,
 				EC4186D2209AB48800E57C17 /* SheetShare.m in Sources */,
+				4C3F3C1920AED31B00B754AF /* LEDataStoreManager.m in Sources */,
 				4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */,
 				EC0DD9D82091C970006C7522 /* AFNRequest.m in Sources */,
 				4CF3162620A1474B00E81E56 /* TaskCell.m in Sources */,
 				EC72BC18208EC01B00FADE74 /* XLChannelItem.m in Sources */,
 				EC72BC17208EC01B00FADE74 /* XLChannelHeader.m in Sources */,
 				EC418685209949D400E57C17 /* SetKeyBoard.m in Sources */,
+				4C3F3C0B20AD9C2000B754AF /* LENewsDetailContentView.m in Sources */,
 				EC72BC44209030EC00FADE74 /* HoitPointController.m in Sources */,
 				EC41869420994FE100E57C17 /* SetVC.m in Sources */,
+				4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */,
 				EC72BC3B208F255400FADE74 /* DelAlertView.m in Sources */,
 				EC4186BB2099B85F00E57C17 /* PhoneLogin.m in Sources */,
 				4CF3162E20A14BA900E81E56 /* TaskCellHeader.m in Sources */,
@@ -1393,22 +1507,28 @@
 				EC41869B2099534A00E57C17 /* UITableViewController+SetTBStyle.m in Sources */,
 				EC72BC03208DBED700FADE74 /* TagCell.m in Sources */,
 				4CDE8AC520A4558F00679959 /* CommontHeaderView.m in Sources */,
+				4C3F3C1520AEC30B00B754AF /* LEChannelModel.m in Sources */,
 				4CF22CC120A2D91A000904F4 /* YQMController.m in Sources */,
 				4CF3162320A145EF00E81E56 /* TaskCenterController.m in Sources */,
 				EC41869120994F6900E57C17 /* SetCell.m in Sources */,
+				4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */,
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
 				ECFC6A582092BE36003CE85D /* MineController.m in Sources */,
+				4C3F3BFC20AD84AC00B754AF /* LENewsDetailModel.m in Sources */,
 				4CDE8AB320A3F5B700679959 /* SearchView.m in Sources */,
 				EC72BBF1208D83C000FADE74 /* SYBaseVC.m in Sources */,
 				EC4186A62099733500E57C17 /* CompleteController.m in Sources */,
 				4CF22CBB20A2C6B8000904F4 /* WithdrawController.m in Sources */,
 				EC72BC6320916EDC00FADE74 /* SearchNoData.m in Sources */,
 				4CF22CB420A2AE21000904F4 /* WalletBottomView.m in Sources */,
+				4C3F3C0E20ADABA200B754AF /* LENewsDetailHeaderView.m in Sources */,
 				EC4186B22099959D00E57C17 /* SheetAlert.m in Sources */,
 				EC72BBFD208DBE8800FADE74 /* TagCollectionController.m in Sources */,
+				4C3F3C2B20B008DD00B754AF /* LECommentMoreCell.m in Sources */,
 				4C61863120AAB7A5000D647F /* WYNetWorkManager.m in Sources */,
 				EC4186AF20998DE900E57C17 /* SetNormal.m in Sources */,
+				4C3F3BF920AD743500B754AF /* LEElementStyleBox.m in Sources */,
 				4CF3163120A176E500E81E56 /* ForgetPassWord.m in Sources */,
 				EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */,
 				EC0DD9EE2092B25E006C7522 /* MineHeader.m in Sources */,
@@ -1425,21 +1545,28 @@
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,
 				EC72BC1D208EDCC800FADE74 /* BaseOneCell.m in Sources */,
+				4C3F3C1220AEACCB00B754AF /* YYPhotoGroupView.m in Sources */,
 				4CF22CC520A2E386000904F4 /* MineNaView.m in Sources */,
 				EC4186C82099C6CF00E57C17 /* NSObject+ZZBDS.m in Sources */,
 				4CF22CAC20A2A0BE000904F4 /* WalletHeader.m in Sources */,
+				4C3F3C2820B0054300B754AF /* LENewsCommentModel.m in Sources */,
 				4CB8ED1F20A0615600FD9C4C /* MineThirdCell.m in Sources */,
 				4CF22CB120A2A660000904F4 /* WalletCell.m in Sources */,
+				4C3F3C1C20AEFB0400B754AF /* PathHelper.m in Sources */,
 				EC4186BF2099BB4400E57C17 /* RootTabBar.m in Sources */,
 				EC4186A320996E4100E57C17 /* UIViewController+SetNavigationStyle.m in Sources */,
 				EC72BC25208EDCE300FADE74 /* BaseThirdCell.m in Sources */,
 				EC72BC472090311C00FADE74 /* HotCell.m in Sources */,
 				EC72BBE2208D76E700FADE74 /* SYBaseController.m in Sources */,
 				EC72BBB9208D6EAD00FADE74 /* main.m in Sources */,
+				4C3F3BF620AD740A00B754AF /* LENewsContentModel.m in Sources */,
 				4C61863320AAB7A5000D647F /* WYAPIGenerate.m in Sources */,
 				4CDE8AC220A4540A00679959 /* CommentCell.m in Sources */,
+				4C3F3C1F20AFC79600B754AF /* LENewsCommentHeadView.m in Sources */,
+				4C3F3BF120AD575C00B754AF /* XPathQuery.m in Sources */,
 				4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */,
 				EC4186AC20998DDA00E57C17 /* SetBass.m in Sources */,
+				4C3F3BEF20AD575C00B754AF /* TFHpple.m in Sources */,
 				EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */,
 				4C61863420AAB7A5000D647F /* YTCache.m in Sources */,
 				4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */,
@@ -1449,6 +1576,7 @@
 				4CDE8AB920A400CC00679959 /* SYDetailController.m in Sources */,
 				4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */,
 				EC72BBAB208D6EA400FADE74 /* AppDelegate.m in Sources */,
+				4C3F3C2520AFDDC300B754AF /* LECommentFooterView.m in Sources */,
 				EC72BC09208DCDA300FADE74 /* CALayer+LayerColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1555,6 +1683,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1607,6 +1736,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -1619,6 +1749,7 @@
 			baseConfigurationReference = D672B86271BD9655508F83EC /* Pods-XWAPP.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1640,6 +1771,7 @@
 			baseConfigurationReference = B2E326CFEE37B340AE1988A1 /* Pods-XWAPP.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

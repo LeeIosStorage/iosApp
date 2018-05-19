@@ -31,8 +31,7 @@
     [super viewDidLoad];
     [self setupSubviews];
     [self addMJ];
-//    [self getNewsRequest];
-//    [self getNewsDetailRequest];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,7 +61,7 @@
         
         __block CGPoint offset = self.tableView.contentOffset;
         CGFloat offsetY = refrest.frame.size.height-offset.y;
-        NSLog(@"%@",NSStringFromCGPoint(offset));
+        LELog(@"%@",NSStringFromCGPoint(offset));
         if (offsetY > 0) {
 //            CGRect frame = refrest.frame;
 //            frame.origin.y -= offsetY;
@@ -95,9 +94,15 @@
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:self.channelId forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:20] forKey:@"page"];
-    [params setObject:[NSNumber numberWithInteger:1] forKey:@"limit"];
-    [self.networkManager GET:requestUrl needCache:YES caCheKey:@"GetNews" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:20] forKey:@"limit"];
+    
+    NSString *caCheKey = [NSString stringWithFormat:@"GetNews%@",self.channelId];
+    [self.networkManager POST:requestUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        [WeakSelf endRereshShowTipView];
+        
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
@@ -106,38 +111,6 @@
         [WeakSelf.newsList addObjectsFromArray:array];
         [WeakSelf.tableView reloadData];
         
-        
-    } failure:^(id responseObject, NSError *error) {
-        
-    }];
-    
-}
-
-- (void)getNewsDetailRequest{
-    
-    HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetDetail"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"1" forKey:@"id"];
-    [self.networkManager GET:requesUrl needCache:YES caCheKey:@"GetDetail" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
-        
-        [WeakSelf.tableView.mj_header endRefreshing];
-        [WeakSelf endRereshShowTipView];
-        
-        if (requestType != WYRequestTypeSuccess) {
-            return ;
-        }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
-        [WeakSelf.newsList removeAllObjects];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.newsList addObjectsFromArray:array];
-        [WeakSelf.tableView reloadData];
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf.tableView.mj_header endRefreshing];
@@ -158,9 +131,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
-    
+    NSUInteger count = newsModel.cover.count;
     MJWeakSelf;
-    if (indexPath.row < 3) {
+    if (count == 1 && newsModel.type != 1) {
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseOneCell"];
         
         [cell.statusView deleblockAction:^{
@@ -170,8 +143,8 @@
         [cell updateCellWithData:newsModel];
         
         return cell;
-    } else if (indexPath.row < 7) {
-        BaseTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseTwoCell"];
+    } else if (count == 3) {
+        BaseThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseThirdCell"];
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
@@ -180,7 +153,7 @@
         
         return cell;
     } else {
-        BaseThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseThirdCell"];
+        BaseTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseTwoCell"];
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
@@ -193,7 +166,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+    detail.newsId = newsModel.newsId;
     [self.navigationController pushViewController:detail animated:YES];
 }
 
@@ -235,7 +211,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeView:)];
     [v addGestureRecognizer:tap];
     [UIView animateWithDuration:0.2 animations:^{
-        NSLog(@"%f", rect.origin.y);
+        LELog(@"%f", rect.origin.y);
         delView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, HitoScreenW, 160);
     }];
     
@@ -256,7 +232,7 @@
     //下拉刷新
     MJWeakSelf;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf getNewsDetailRequest];
+        [weakSelf getNewsRequest];
     }];
     [self.tableView.mj_header beginRefreshing];
     

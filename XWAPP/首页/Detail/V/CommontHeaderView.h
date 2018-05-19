@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CommontHeaderView : UIView
+@interface CommontHeaderView : UITableViewHeaderFooterView
+
 @property (weak, nonatomic) IBOutlet UILabel *contentLB;
+
+- (void)updateHeaderData:(id)data;
 
 @end

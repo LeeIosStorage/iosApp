@@ -43,6 +43,29 @@
     self.statusView.commentCountLabel.text = [NSString stringWithFormat:@"%d评论",0];
     self.statusView.timeLabel.text = [WYCommonUtils dateDiscriptionFromNowBk:[WYCommonUtils dateFromUSDateString:newsModel.public_time]];
     
+    if (newsModel.cover.count == 0) {
+        [self.coverImageView removeFromSuperview];
+        [self.contentView addSubview:self.coverImageView];
+        [self.coverImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView).offset(13);
+            make.right.equalTo(self.contentView).offset(-13);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
+            make.bottom.equalTo(self.statusView.mas_top).offset(-8);
+            make.height.mas_equalTo(0).priorityHigh;
+        }];
+    }else{
+//        self.coverImageView.backgroundColor = kAppThemeColor;
+        [self.coverImageView removeFromSuperview];
+        [self.contentView addSubview:self.coverImageView];
+        [self.coverImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView).offset(13);
+            make.right.equalTo(self.contentView).offset(-13);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
+            make.bottom.equalTo(self.statusView.mas_top).offset(-8);
+            make.height.equalTo(self.coverImageView.mas_width).multipliedBy(0.5).priorityHigh;
+        }];
+    }
+    
 }
 
 @end

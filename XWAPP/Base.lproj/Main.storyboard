@@ -1693,9 +1693,9 @@
                                                     <rect key="frame" x="71" y="0.0" width="292" height="62.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="张三：评论这条评论张三：评论这条评论张三：评论这条评论" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pbu-k4-K78">
-                                                            <rect key="frame" x="12" y="12" width="268" height="50.5"/>
+                                                            <rect key="frame" x="12" y="8" width="268" height="54.5"/>
                                                             <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -1703,7 +1703,7 @@
                                                     <constraints>
                                                         <constraint firstItem="Pbu-k4-K78" firstAttribute="leading" secondItem="350-1a-CGh" secondAttribute="leading" constant="12" id="K6N-q2-19u"/>
                                                         <constraint firstAttribute="bottom" secondItem="Pbu-k4-K78" secondAttribute="bottom" id="LJu-FY-iS8"/>
-                                                        <constraint firstItem="Pbu-k4-K78" firstAttribute="top" secondItem="350-1a-CGh" secondAttribute="top" constant="12" id="N1S-E8-oeL"/>
+                                                        <constraint firstItem="Pbu-k4-K78" firstAttribute="top" secondItem="350-1a-CGh" secondAttribute="top" constant="8" id="N1S-E8-oeL"/>
                                                         <constraint firstAttribute="trailing" secondItem="Pbu-k4-K78" secondAttribute="trailing" constant="12" id="TtP-No-i5f"/>
                                                     </constraints>
                                                 </view>
@@ -1715,6 +1715,9 @@
                                                 <constraint firstItem="350-1a-CGh" firstAttribute="leading" secondItem="9uN-eE-6CR" secondAttribute="leading" constant="71" id="tv2-Iy-9or"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="contentLabel" destination="Pbu-k4-K78" id="ygk-Lw-i4p"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -1731,7 +1734,7 @@
                                             <constraint firstAttribute="width" secondItem="Zt7-2S-5xB" secondAttribute="height" id="MDZ-mY-7hj"/>
                                             <constraint firstAttribute="height" constant="21" id="gOg-uo-7lA"/>
                                         </constraints>
-                                        <state key="normal" image="mine_btn_share"/>
+                                        <state key="normal" image="home_fenxiang_nor"/>
                                         <connections>
                                             <action selector="shareAction:" destination="ct7-Ih-m4p" eventType="touchUpInside" id="viZ-Od-7A0"/>
                                         </connections>
@@ -1753,7 +1756,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGh-O2-2mG">
                                         <rect key="frame" x="12" y="9.5" width="223" height="30"/>
                                         <subviews>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="我来说两句" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-bd-hkH">
+                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="     我来说两句..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-bd-hkH">
                                                 <rect key="frame" x="0.0" y="0.0" width="223" height="30"/>
                                                 <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="textColor"/>
@@ -1772,7 +1775,7 @@
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
+                                                <real key="value" value="0.5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColorFromUIColor">
                                                 <color key="value" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2562,6 +2565,7 @@
     <resources>
         <image name="btn_back_nor" width="20" height="20"/>
         <image name="btn_delete_nor" width="11" height="11"/>
+        <image name="home_fenxiang_nor" width="21" height="21"/>
         <image name="home_more_nor" width="14" height="14"/>
         <image name="home_nav_loge" width="20" height="20"/>
         <image name="home_nav_redian_nor" width="20" height="20"/>
@@ -2571,7 +2575,6 @@
         <image name="login_wangjimima" width="12" height="12"/>
         <image name="login_xieyi_nor" width="12" height="12"/>
         <image name="login_xieyi_pre" width="12" height="12"/>
-        <image name="mine_btn_share" width="12" height="12"/>
         <image name="mine_img_jinbi" width="37" height="37"/>
         <image name="mine_logo_weibo" width="28" height="28"/>
         <image name="mine_logo_weixin" width="20" height="20"/>

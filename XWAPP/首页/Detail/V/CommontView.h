@@ -8,7 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CommontViewDelegate;
+
 @interface CommontView : UIView
+
 @property (weak, nonatomic) IBOutlet UITextView *comTextView;
 
+@property (weak, nonatomic) id <CommontViewDelegate> delegate;
+
 @end
+
+@protocol CommontViewDelegate <NSObject>
+@optional
+- (void)commentWithCancelClick;
+- (void)commentWithSendClick:(NSString *)text;
+- (void)commentWithContentText:(NSString *)text;
+
+@end
+

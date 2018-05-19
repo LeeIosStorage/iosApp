@@ -64,11 +64,11 @@
 
 #ifdef DEBUG
 
-# define NSLog(FORMAT, ...) printf("[%s<%p>行号:%d]:\n%s\n",__FUNCTION__,self,__LINE__,[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
+# define LELog(FORMAT, ...) printf("[%s<%p>行号:%d]:\n%s\n",__FUNCTION__,self,__LINE__,[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
 
 #else
 
-# define NSLog(FORMAT, ...)
+# define LELog(FORMAT, ...)
 
 #endif
 
@@ -188,6 +188,12 @@
 
 //主题颜色
 #define kAppThemeColor [UIColor colorWithHexString:@"ff4b41"]
+//主背景颜色
+#define kAppBackgroundColor [UIColor colorWithHexString:@"f1f1f1"]
+//主标题颜色
+#define kAppTitleColor [UIColor blackColor]
+//主标题颜色
+#define kAppSubTitleColor [UIColor colorWithHexString:@"999999"]
 
 ///颜色 a代表透明度,1为不透明,0为透明
 
@@ -208,6 +214,8 @@
 //字号
 
 #define HitoSystemFontOfSize(FONTSIZE) [UIFont systemFontOfSize:FONTSIZE]
+
+#define HitoPFSCRegularOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Regular"size:FONTSIZE]
 
 #define HitoPFSCMediumOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Medium"size:FONTSIZE]
 
@@ -274,6 +282,8 @@
 //网络状态标识
 
 #define HitoFaiNetwork @"网络错误"
+
+#define HitoDataFileCatalog @"LEData"
 
 
 

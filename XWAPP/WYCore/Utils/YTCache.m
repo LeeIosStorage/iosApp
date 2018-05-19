@@ -26,7 +26,7 @@
     if (self) {
         self.commonCache = [YYCache cacheWithName:YTCache_Name];
         self.commonCache.memoryCache.didReceiveMemoryWarningBlock = ^(YYMemoryCache *cache){
-            NSLog(@"收到缓存警告====%lu",(unsigned long)cache.totalCost);
+            LELog(@"收到缓存警告====%lu",(unsigned long)cache.totalCost);
         };
     }
     return self;
