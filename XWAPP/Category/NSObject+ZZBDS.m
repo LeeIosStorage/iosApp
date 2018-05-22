@@ -26,7 +26,7 @@
 
 
 - (void)addAlertWithVC:(UIViewController *)alertVC title:(NSString *)title message:(NSString *)message {
-     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         LELog(@"点击了按钮1，进入按钮1的事件");
     }];

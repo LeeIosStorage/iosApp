@@ -275,12 +275,13 @@
 
 //登录状态标识
 
-#define HitoSucTitle @"登录成功"
+#define HitoLoginSucTitle @"登录成功"
 
-#define HitoFaiTitle @"登录失败"
+#define HitoLoginFaiTitle @"登录失败"
 
 //网络状态标识
 
+#define HitoFaiRequest @"请求失败"
 #define HitoFaiNetwork @"网络错误"
 
 #define HitoDataFileCatalog @"LEData"

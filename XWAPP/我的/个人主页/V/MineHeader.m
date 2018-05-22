@@ -29,10 +29,14 @@
 
 
 - (IBAction)leftTapAction:(UITapGestureRecognizer *)sender {
-    _leftClick();
+    if (_leftClick) {
+        _leftClick();
+    }
 }
 - (IBAction)centerTapAction:(UITapGestureRecognizer *)sender {
-    _centerClick();
+    if (_centerClick) {
+        _centerClick();
+    }
 }
 
 - (void)leftClickAction:(LeftClick)leftClick {

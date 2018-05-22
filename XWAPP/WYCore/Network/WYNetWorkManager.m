@@ -11,8 +11,6 @@
 #import "WYNetWorkExceptionHandling.h"
 #import "YTCache.h"
 
-
-
 @implementation WYNetWorkManager
 
 + (instancetype)sharedManager
@@ -243,6 +241,12 @@
             if (statusCode) {
                 status = statusCode.integerValue;
             }
+            if (!message && status != WYRequestTypeSuccess) {
+                message = responseObject[kResponseObjectKeyObject];
+                if (message.length > 0) {
+                   [SVProgressHUD showCustomInfoWithStatus:message];
+                }
+            }
             responseDataObject = responseObject[kResponseObjectKeyObject];
             //此处有两种情况发生，正常的是json，非正常是一个常规string
             if ([responseDataObject isKindOfClass:[NSString class]]) {
@@ -368,6 +372,14 @@ responseClass:(Class )classType
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     
     manger.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"html/json",@"text/plain",[NSString stringWithFormat:@"version/%@",app_Version], nil];
+    
+    
+    //将Token封装入请求头
+    if ([LELoginUserManager authToken]) {
+        manger.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manger.requestSerializer setValue:[LELoginUserManager authToken] forHTTPHeaderField:@"Authorization"];
+    }
+    
 }
 
 - (NSString *)urlStringAddCommonParamForSourceURLString:(NSString *)urlString outUserId:(BOOL)outUserId outToken:(BOOL)outToken
@@ -378,13 +390,13 @@ responseClass:(Class )classType
     
     NSMutableString *addString = [NSMutableString string];
     //添加uid
-    NSString *uid = nil;
+    NSString *uid = [LELoginUserManager userID];
     if (![urlString containsString:kParamUserInfoUID] && uid && !outUserId) {
         [addString appendFormat:@"%@=%@", kParamUserInfoUID, uid];
     }
     
     //添加token
-    NSString *token = nil;
+    NSString *token = [LELoginUserManager authToken];
     if (![urlString containsString:kParamUserInfoAuthToken] && token && !outToken) {
         [addString appendFormat:@"&%@=%@", kParamUserInfoAuthToken, token];
     }

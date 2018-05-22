@@ -25,11 +25,15 @@
 UITextViewDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
-CommontViewDelegate
+CommontViewDelegate,
+CommontHeaderViewDelegate
 >
 {
-    CGFloat _keyBoardHeight;
+    CommentCell *_selectedCommentCell;
+    LEReplyCommentModel *_currentReplyModel;
 }
+
+@property (assign, nonatomic) CGFloat keyBoardHeight;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *commentTF;
@@ -53,6 +57,7 @@ CommontViewDelegate
 #pragma mark - Lifecycle
 - (void)dealloc{
     LELog(@"dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (instancetype)initWithNewsId:(NSString *)newsId{
@@ -260,18 +265,22 @@ CommontViewDelegate
 
 - (void)sendCommentRequestWith:(NSString *)text{
     
-    LELog(@"准备评论<<<<%@>>>>",text);
+//    LELog(@"准备评论<<<<%@>>>>",text);
     if (text.length == 0) {
         return;
     }
     
-    [SVProgressHUD showInfoWithStatus:@"请求失败了!"];
+//    [SVProgressHUD showCustomInfoWithStatus:@"请求失败了!"];
     
     HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"commentSave"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if (_newsId.length) [params setObject:_newsId forKey:@"id"];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if (text.length) [params setObject:text forKey:@"content"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *parentId = _currentReplyModel.commentId;
+    if (parentId) [params setObject:parentId forKey:@"parentId"];
+    
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
@@ -285,12 +294,41 @@ CommontViewDelegate
     
 }
 
+- (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel{
+    
+    BOOL like = YES;
+    if (commentModel.favour) {
+        like = NO;
+    }
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"DoLikeOrUnLike"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:commentModel.commentId forKey:@"commentId"];
+    [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        commentModel.favour = !commentModel.favour;
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (CommontHFView *)huView {
     if (!_huView) {
         _huView = [[[NSBundle mainBundle] loadNibNamed:@"CommontHFView" owner:self options:nil] firstObject];
         _huView.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 49);
+        HitoWeakSelf;
+        _huView.commontViewWithSendBlcok = ^(NSString *message) {
+            [WeakSelf sendCommentRequestWith:message];
+        };
     }
     return _huView;
 }
@@ -353,6 +391,7 @@ CommontViewDelegate
         LECommentMoreCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (!cell) {
             cell = [[LECommentMoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
         if (commentModel.comments.count > 5) {
@@ -379,6 +418,9 @@ CommontViewDelegate
     
     LENewsCommentModel *commentModel = self.commentLists[section];
     [header updateHeaderData:commentModel];
+    header.section = section;
+    header.delegate = self;
+    
     return header;
 }
 
@@ -394,19 +436,29 @@ CommontViewDelegate
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CommentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
+    _currentReplyModel = commentModel.comments[indexPath.row];
+    if (indexPath.row == commentModel.comments.count-1) {
+        return;
+    }
+    
+    _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
     [_huView.hufuTF becomeFirstResponder];
     
-    CGRect rect = [cell convertRect:cell.frame toView:self.view];
+    NSString *placeholder = @"回复：张三";
+    _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
+    
+    CGRect rect = [_selectedCommentCell convertRect:_selectedCommentCell.frame toView:self.view];
 
     if (rect.origin.y / 2 + rect.size.height>= HitoScreenH - 216) {
-        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 216, 0); 
-        [_commentTF becomeFirstResponder];
-        [_tableView scrollToRowAtIndexPath:[_tableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        HitoWeakSelf;
-        [UIView animateWithDuration:0.3 animations:^{
-            WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - _keyBoardHeight - 49, HitoScreenW, 49);
-        }];
+        
+        UIWindow *window = HitoApplication;
+        [window addSubview:_huView];
+        if (_huView.hufuTF.isFirstResponder) {
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+            [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
     }
 }
 
@@ -444,6 +496,13 @@ CommontViewDelegate
     
 }
 
+#pragma mark -
+#pragma mark - CommontHeaderViewDelegate
+- (void)commentHeaderWithFavourClick:(NSInteger)section{
+    LENewsCommentModel *commentModel = self.commentLists[section];
+    [self favourRequestWithCommentModel:commentModel];
+}
+
 #pragma mark - 键盘
 - (void)keyBoardNoti {
     //增加监听，当键盘出现或改变时收出消息
@@ -476,9 +535,19 @@ CommontViewDelegate
     CGRect keyboardRect = [aValue CGRectValue];
     _keyBoardHeight = keyboardRect.size.height;
     HitoWeakSelf;
-    [UIView animateWithDuration:0.3 animations:^{
-        WeakSelf.comView.frame = CGRectMake(0, HitoScreenH - _keyBoardHeight - 107, HitoScreenW, 107);
-    }];
+    if (self.comView.comTextView.isFirstResponder) {
+        [UIView animateWithDuration:0.3 animations:^{
+            WeakSelf.comView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 107, HitoScreenW, 107);
+        }];
+    }else if (self.huView.hufuTF.isFirstResponder){
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 49, HitoScreenW, 49);
+        }];
+    }
 }
 
 
@@ -489,9 +558,13 @@ CommontViewDelegate
 
 //当键退出时调用
 - (void)keyboardWillHide:(NSNotification *)aNotification{
+    
 }
 
 - (IBAction)tapActionForBottomView:(UITapGestureRecognizer *)sender {
+    
+    _currentReplyModel = nil;
+    
     UIWindow *window = HitoApplication;
     _tempView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoScreenH)];
     _tempView.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.3];

@@ -6,10 +6,11 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
 
 
-@interface PhoneLogin : UIViewController
+@interface PhoneLogin : LESuperViewController
+
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 @property (weak, nonatomic) IBOutlet UITextField *codeTF;
 @property (weak, nonatomic) IBOutlet JKCountDownButton *codeBtn;

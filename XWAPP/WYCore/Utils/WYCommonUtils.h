@@ -11,6 +11,11 @@
 @interface WYCommonUtils : NSObject
 
 #pragma mark -
+#pragma mark - 富文本
+//颜色 字体
++(NSMutableAttributedString *)stringToColorAndFontAttributeString:(NSString *)text range:(NSRange)range font:(UIFont *)font color:(UIColor *)color;
+
+#pragma mark -
 #pragma mark - Time
 //时间格式化
 + (NSDate *)dateFromUSDateString:(NSString *)string;

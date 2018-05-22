@@ -22,20 +22,25 @@
 
 #pragma mark - setVC
 - (void)setVC {
-    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 24)];
-    UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(15, 0, 24, 24)];
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 20)];
+    UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(13, 0, 20, 20)];
     leftImage.image =[UIImage imageNamed:@"login_phone"];
     [leftView addSubview:leftImage];
     
     _phoneTF.leftView = leftView;
     _phoneTF.leftViewMode = UITextFieldViewModeAlways;
+    NSString *placeholder = @"请输入手机号";
+    _phoneTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(14) color:[UIColor colorWithHexString:@"a9a9aa"]];
+
     
-    UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 24)];
-    UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 24, 24)];
+    UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 21)];
+    UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 0, 21, 21)];
     codeImage.image = HitoImage(@"login_mima");
     [codeView addSubview:codeImage];
     _passWordTF.leftView = codeView;
     _passWordTF.leftViewMode = UITextFieldViewModeAlways;
+    placeholder = @"请输入6-20位密码";
+    _passWordTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(14) color:[UIColor colorWithHexString:@"a9a9aa"]];
 
 
     UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 75, 20)];
@@ -44,7 +49,7 @@
     [rightView addSubview:line];
     UILabel *lb = [[UILabel alloc] initWithFrame:CGRectMake(1, 0, 74, 20)];
     lb.textAlignment = NSTextAlignmentCenter;
-    lb.font = HitoPFSCMediumOfSize(12);
+    lb.font = HitoPFSCRegularOfSize(12);
     lb.textColor = HitoColorFromRGB(0X666666);
     lb.text = @"显示密码";
     [rightView addSubview:lb];

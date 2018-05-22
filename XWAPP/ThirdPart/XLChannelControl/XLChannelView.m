@@ -217,21 +217,32 @@ static CGFloat CellMarginY = 16.0f;
     item.title = channelModel.name;
     item.isFixed = indexPath.section == 0 && indexPath.row == 0;
     if (indexPath.section == 0) {
-        [item.rightTopBtn setImage:HitoImage(@"home_pinglun_nor") forState:UIControlStateNormal];
-            item.rightTopBtn.hidden = !hiddenBtn;
+        [item.rightTopBtn setImage:HitoImage(@"home_pindao_remove") forState:UIControlStateNormal];
+        item.rightTopBtn.hidden = !hiddenBtn;
+        if (item.isFixed) {
+            item.rightTopBtn.hidden = YES;
+        }
 
     } else {
         item.rightTopBtn.hidden = NO;
-        [item.rightTopBtn setImage:HitoImage(@"home_delete_nor") forState:UIControlStateNormal];
+        [item.rightTopBtn setImage:HitoImage(@"home_pindao_add") forState:UIControlStateNormal];
     }
-    [item rightTopBlockAction:^{
-
-    }];
+    
+    __weak typeof(item) weakItem = item;
+    item.rightTopAction = ^{
+        NSIndexPath *indexPath = [collectionView indexPathForCell:weakItem];
+        [self afreshSortItemWithIndexPath:indexPath];
+    };
     return  item;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self afreshSortItemWithIndexPath:indexPath];
+}
+
+- (void)afreshSortItemWithIndexPath:(NSIndexPath *)indexPath{
+    
     if (indexPath.section == 0) {
         //只剩一个的时候不可删除
         if ([_collectionView numberOfItemsInSection:0] == 1) {return;}
@@ -246,13 +257,13 @@ static CGFloat CellMarginY = 16.0f;
         [_collectionView moveItemAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
         
         [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]]];
-
+        
     }else{
         id obj = [_unUseTitles objectAtIndex:indexPath.row];
         [_unUseTitles removeObject:obj];
         [_inUseTitles addObject:obj];
         [_collectionView moveItemAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:_inUseTitles.count - 1 inSection:0]];
-
+        
         [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_inUseTitles.count - 1 inSection:0]]];
     }
 }

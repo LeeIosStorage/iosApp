@@ -15,6 +15,27 @@
 @implementation WYCommonUtils
 
 #pragma mark -
+#pragma mark - 富文本
++(NSMutableAttributedString *)stringToColorAndFontAttributeString:(NSString *)text range:(NSRange)range font:(UIFont *)font color:(UIColor *)color{
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:text];
+    if (color) {
+        [attStr addAttribute:NSForegroundColorAttributeName
+                       value:color
+                       range:range];
+    }
+    if (font) {
+        [attStr addAttribute:NSFontAttributeName
+                       value:font
+                       range:range];
+    }
+    if (color && font) {
+        NSDictionary *attributes = @{NSFontAttributeName:font, NSForegroundColorAttributeName:color};
+        [attStr addAttributes:attributes range:range];
+    }
+    return attStr;
+}
+
+#pragma mark -
 #pragma mark - Time
 static NSDateFormatter *s_dateFormatterOFUS = nil;
 static bool dateFormatterOFUSInvalid;

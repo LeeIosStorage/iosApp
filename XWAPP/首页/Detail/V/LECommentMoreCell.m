@@ -21,11 +21,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    [self.contentView addSubview:self.containerView];
-    [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 71, 0, 12));
-        make.height.mas_equalTo(14);
-    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -43,7 +38,7 @@
     
     [self.contentView addSubview:self.containerView];
     [self.containerView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 71, 0, 0));
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 71, 0, 12));
         if (commentMoreCellType == LECommentMoreCellTypeMore) {
             make.height.mas_equalTo(41);
         }else{

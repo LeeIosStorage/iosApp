@@ -8,10 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+//typedef void(^FavourClickBlock)(UIButton *favourButton);
+
+@protocol CommontHeaderViewDelegate;
+
 @interface CommontHeaderView : UITableViewHeaderFooterView
 
 @property (weak, nonatomic) IBOutlet UILabel *contentLB;
 
+//@property (copy, nonatomic) FavourClickBlock favourClickBlock;
+
+@property (weak, nonatomic) id <CommontHeaderViewDelegate> delegate;
+
+@property (assign, nonatomic) NSInteger section;
+
 - (void)updateHeaderData:(id)data;
+
+@end
+
+@protocol CommontHeaderViewDelegate <NSObject>
+@optional
+- (void)commentHeaderWithFavourClick:(NSInteger)section;
 
 @end

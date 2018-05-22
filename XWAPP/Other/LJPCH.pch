@@ -28,9 +28,8 @@
 #import <Masonry/Masonry.h>
 #import "WYAPIGenerate.h"
 #import "WYCommonUtils.h"
-#import <SVProgressHUD/SVProgressHUD.h>
-
-
+#import "SVProgressHUD+LETools.h"
+#import "LELoginUserManager.h"
 
 
 #endif /* LJPCH_pch */

@@ -31,7 +31,12 @@
 - (void)updateHeaderData:(id)data{
     
     LEReplyCommentModel *commentModel = (LEReplyCommentModel *)data;
-    self.contentLabel.text = commentModel.content;
+    NSString *content = commentModel.content;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:content];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(0, 2)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(4, 2)];
+    
+    self.contentLabel.attributedText = attributedString;
 }
 
 @end

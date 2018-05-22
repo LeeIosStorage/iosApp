@@ -104,7 +104,10 @@
 #pragma mark -
 #pragma mark - IBActions
 - (void)favourClickAction:(id)sender{
-    self.favourImageView.highlighted = !self.favourImageView.highlighted;
+//    self.favourImageView.highlighted = !self.favourImageView.highlighted;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(commentHeaderWithFavourClick:)]) {
+        [self.delegate commentHeaderWithFavourClick:self.section];
+    }
 }
 
 #pragma mark -

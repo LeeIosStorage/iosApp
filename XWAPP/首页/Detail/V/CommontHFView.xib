@@ -16,6 +16,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="167"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="woZ-9s-oWN">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.70980392156862748" green="0.70980392156862748" blue="0.70980392156862748" alpha="0.70058326198630139" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="jS6-xZ-Uib"/>
+                    </constraints>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6s-7i-Gqe">
                     <rect key="frame" x="333" y="68" width="30" height="32"/>
                     <constraints>
@@ -25,12 +32,15 @@
                     <state key="normal" title="发送">
                         <color key="titleColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="sendAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="X1I-ME-vPr"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9bs-kG-SkK">
                     <rect key="frame" x="12" y="68.5" width="309" height="30"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yma-uj-arX">
-                            <rect key="frame" x="5" y="0.0" width="304" height="30"/>
+                            <rect key="frame" x="12" y="0.0" width="285" height="30"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
@@ -41,22 +51,31 @@
                         <constraint firstItem="Yma-uj-arX" firstAttribute="centerY" secondItem="9bs-kG-SkK" secondAttribute="centerY" id="5nI-Hk-WQz"/>
                         <constraint firstItem="Yma-uj-arX" firstAttribute="height" secondItem="9bs-kG-SkK" secondAttribute="height" id="7kU-qd-hXj"/>
                         <constraint firstAttribute="height" constant="30" id="BAr-xw-Jba"/>
-                        <constraint firstItem="Yma-uj-arX" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="leading" constant="5" id="DDY-4M-9du"/>
-                        <constraint firstAttribute="trailing" secondItem="Yma-uj-arX" secondAttribute="trailing" id="Teb-Ig-lDD"/>
+                        <constraint firstItem="Yma-uj-arX" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="leading" constant="12" id="DDY-4M-9du"/>
+                        <constraint firstAttribute="trailing" secondItem="Yma-uj-arX" secondAttribute="trailing" constant="12" id="Teb-Ig-lDD"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="15"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <real key="value" value="0.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColorFromUIColor">
+                            <color key="value" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="woZ-9s-oWN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="W4P-N7-ezn"/>
                 <constraint firstItem="9bs-kG-SkK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="cfF-h9-1RG"/>
                 <constraint firstItem="g6s-7i-Gqe" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="trailing" constant="12" id="dgJ-8n-T3q"/>
                 <constraint firstItem="9bs-kG-SkK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="lZL-XM-VkT"/>
+                <constraint firstItem="woZ-9s-oWN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="mQl-du-dz0"/>
+                <constraint firstAttribute="trailing" secondItem="woZ-9s-oWN" secondAttribute="trailing" id="p4X-T8-kqt"/>
                 <constraint firstItem="g6s-7i-Gqe" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="u9J-KW-9Nc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="g6s-7i-Gqe" secondAttribute="trailing" constant="12" id="vKS-q7-3KQ"/>
             </constraints>

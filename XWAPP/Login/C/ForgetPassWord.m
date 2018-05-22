@@ -21,24 +21,24 @@
 
 #pragma mark - setVC
 - (void)setVC {
-    UIView *phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 24)];
-    UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(15, 0, 24, 24)];
+    UIView *phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 20)];
+    UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(13, 0, 20, 20)];
     leftImage.image =[UIImage imageNamed:@"login_phone"];
     [phone addSubview:leftImage];
     _foneTF.leftView = phone;
     _foneTF.leftViewMode = UITextFieldViewModeAlways;
     
     
-    UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 24)];
-    UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 24, 24)];
+    UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 19)];
+    UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 0, 19, 19)];
     codeImage.image = HitoImage(@"login_yanzheng");
     [codeView addSubview:codeImage];
     _codeTF.leftView = codeView;
     _codeTF.leftViewMode = UITextFieldViewModeAlways;
     
     
-    UIView *passWordView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 24)];
-    UIImageView *passWordImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 24, 24)];
+    UIView *passWordView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 21)];
+    UIImageView *passWordImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 0, 21, 21)];
     passWordImage.image = HitoImage(@"login_mima");
     [passWordView addSubview:passWordImage];
     _passWordTF.leftView = passWordView;
@@ -50,7 +50,7 @@
     [rightView addSubview:line];
     UILabel *lb = [[UILabel alloc] initWithFrame:CGRectMake(1, 0, 74, 20)];
     lb.textAlignment = NSTextAlignmentCenter;
-    lb.font = HitoPFSCMediumOfSize(12);
+    lb.font = HitoPFSCRegularOfSize(12);
     lb.textColor = HitoColorFromRGB(0X666666);
     lb.text = @"显示密码";
     [rightView addSubview:lb];

@@ -62,7 +62,10 @@
     
     LENewsListModel *model = (LENewsListModel *)data;
     
-    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:model.title];
+    NSMutableAttributedString *attString = nil;
+    if (model.title.length  > 0) {
+        attString = [[NSMutableAttributedString alloc] initWithString:model.title];
+    }
     NSRange range = NSMakeRange(0, attString.length);
     UIFont *font = HitoBoldSystemFontOfSize(25.0f);
     attString.font = font;

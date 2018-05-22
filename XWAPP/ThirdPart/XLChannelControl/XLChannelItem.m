@@ -49,8 +49,12 @@
     _textLabel.layer.borderColor = HitoColorFromRGB(0x999999).CGColor;//边框颜色
     _textLabel.layer.borderWidth = 1;//边框宽度
     
-    _rightTopBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 11, -11, 22, 22)];
-    _rightTopBtn.backgroundColor = [UIColor redColor];
+    _rightTopBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 12, -12, 24, 24)];
+    _rightTopBtn.backgroundColor = [UIColor whiteColor];
+    _rightTopBtn.layer.cornerRadius = 12;
+    _rightTopBtn.layer.masksToBounds = YES;
+    _rightTopBtn.layer.borderColor = HitoColorFromRGB(0x999999).CGColor;//边框颜色
+    _rightTopBtn.layer.borderWidth = 0.5;
     
     [_rightTopBtn addTarget:self action:@selector(rightTopAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_rightTopBtn];
@@ -59,7 +63,9 @@
 }
 
 - (void)rightTopAction:(UIButton *)sender {
-    _rightTopAction();
+    if (_rightTopAction) {
+        _rightTopAction();
+    }
 }
 
 - (void)rightTopBlockAction:(RightTopAction)rightTopAction {
@@ -84,6 +90,33 @@
     [super layoutSubviews];
     _textLabel.frame = self.bounds;
 }
+
+- (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event{
+    
+    /**
+     *  事件转发 应用场景:子视图超出父视图的部分也响应事件
+     */
+    // 触摸点在视图范围内 则交由父类处理
+    if ([self pointInside:point withEvent:event]) {
+        return [super hitTest:point withEvent:event];
+    }
+    
+    NSArray<UIView *> * superViews = self.subviews;
+    for (NSUInteger i = superViews.count; i > 0; i--) {
+        
+        UIView *subview = superViews[i - 1];
+        CGPoint newPoint = [self convertPoint:point toView:subview];
+        UIView *view = [subview hitTest:newPoint withEvent:event];
+        if (view) {
+            return view;
+        }
+    }
+    return nil;
+}
+
+//- (BOOL)pointInside:(CGPoint)point withEvent:(nullable UIEvent *)event{
+//    return YES;
+//}
 
 #pragma mark -
 #pragma mark 配置方法

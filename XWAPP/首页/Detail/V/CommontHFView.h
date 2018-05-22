@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LECommontViewWithSendBlcok)(NSString *message);
+
 @interface CommontHFView : UIView
+
 @property (weak, nonatomic) IBOutlet UITextField *hufuTF;
+
+@property (copy, nonatomic) LECommontViewWithSendBlcok commontViewWithSendBlcok;
 
 @end

@@ -23,4 +23,34 @@
         "control" : "comment",
         "action"  : "Save"
     },
+    "DoLikeOrUnLike": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "DoLikeOrUnLike"
+    },
+    "Login": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Login"
+    },
+    "Register": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Register"
+    },
+    "GetUserDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserDetail"
+    },
+    "SmsSend": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "sms",
+        "action"  : "Send"
+    },
 }
