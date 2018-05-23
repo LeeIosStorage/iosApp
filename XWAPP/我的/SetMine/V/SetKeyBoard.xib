@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SetKeyBoard">
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="SetKeyBoard">
             <rect key="frame" x="0.0" y="0.0" width="482" height="98"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -83,22 +82,21 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="2Da-GS-yes" firstAttribute="width" secondItem="nqF-gE-9QG" secondAttribute="width" id="3Dc-3Z-Zje"/>
-                <constraint firstItem="z4a-A8-HGy" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Mke-uI-eVU"/>
-                <constraint firstItem="0V2-st-ZW0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Os4-ch-xRa"/>
+                <constraint firstItem="z4a-A8-HGy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Mke-uI-eVU"/>
+                <constraint firstItem="0V2-st-ZW0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Os4-ch-xRa"/>
                 <constraint firstAttribute="bottom" secondItem="nqF-gE-9QG" secondAttribute="bottom" constant="9" id="QPa-jM-V67"/>
-                <constraint firstItem="5gs-tL-2FI" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="SOE-sv-M1m"/>
+                <constraint firstItem="5gs-tL-2FI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="SOE-sv-M1m"/>
                 <constraint firstItem="z4a-A8-HGy" firstAttribute="top" secondItem="0V2-st-ZW0" secondAttribute="bottom" constant="12" id="VjR-dA-QjP"/>
                 <constraint firstItem="0V2-st-ZW0" firstAttribute="top" secondItem="5gs-tL-2FI" secondAttribute="bottom" constant="12" id="XJc-Po-D6O"/>
                 <constraint firstItem="nqF-gE-9QG" firstAttribute="leading" secondItem="2Da-GS-yes" secondAttribute="trailing" constant="25" id="bxm-Y4-GEn"/>
-                <constraint firstItem="5gs-tL-2FI" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="e13-Zj-leq"/>
+                <constraint firstItem="5gs-tL-2FI" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="e13-Zj-leq"/>
                 <constraint firstItem="2Da-GS-yes" firstAttribute="centerY" secondItem="nqF-gE-9QG" secondAttribute="centerY" id="jBm-Ca-xrZ"/>
                 <constraint firstItem="2Da-GS-yes" firstAttribute="height" secondItem="nqF-gE-9QG" secondAttribute="height" id="jQT-oW-ksW"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nqF-gE-9QG" secondAttribute="trailing" constant="13" id="upY-TI-EgQ"/>
+                <constraint firstAttribute="trailing" secondItem="nqF-gE-9QG" secondAttribute="trailing" constant="13" id="upY-TI-EgQ"/>
                 <constraint firstItem="nqF-gE-9QG" firstAttribute="top" secondItem="0V2-st-ZW0" secondAttribute="bottom" constant="12" id="vxv-HP-aax"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0V2-st-ZW0" secondAttribute="trailing" constant="12" id="zqt-YL-Q56"/>
+                <constraint firstAttribute="trailing" secondItem="0V2-st-ZW0" secondAttribute="trailing" constant="12" id="zqt-YL-Q56"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="nameTF" destination="0V2-st-ZW0" id="nfP-4J-Czt"/>
                 <outlet property="titleLB" destination="5gs-tL-2FI" id="Xms-Wc-JpK"/>

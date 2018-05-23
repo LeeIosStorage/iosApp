@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -36,7 +35,7 @@
                         <action selector="sendAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="X1I-ME-vPr"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9bs-kG-SkK">
+                <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bs-kG-SkK">
                     <rect key="frame" x="12" y="68.5" width="309" height="30"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yma-uj-arX">
@@ -70,17 +69,16 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="woZ-9s-oWN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="W4P-N7-ezn"/>
-                <constraint firstItem="9bs-kG-SkK" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="cfF-h9-1RG"/>
+                <constraint firstItem="woZ-9s-oWN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="W4P-N7-ezn"/>
+                <constraint firstItem="9bs-kG-SkK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="cfF-h9-1RG"/>
                 <constraint firstItem="g6s-7i-Gqe" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="trailing" constant="12" id="dgJ-8n-T3q"/>
-                <constraint firstItem="9bs-kG-SkK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="lZL-XM-VkT"/>
-                <constraint firstItem="woZ-9s-oWN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="mQl-du-dz0"/>
+                <constraint firstItem="9bs-kG-SkK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="lZL-XM-VkT"/>
+                <constraint firstItem="woZ-9s-oWN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mQl-du-dz0"/>
                 <constraint firstAttribute="trailing" secondItem="woZ-9s-oWN" secondAttribute="trailing" id="p4X-T8-kqt"/>
-                <constraint firstItem="g6s-7i-Gqe" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="u9J-KW-9Nc"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="g6s-7i-Gqe" secondAttribute="trailing" constant="12" id="vKS-q7-3KQ"/>
+                <constraint firstItem="g6s-7i-Gqe" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="u9J-KW-9Nc"/>
+                <constraint firstAttribute="trailing" secondItem="g6s-7i-Gqe" secondAttribute="trailing" constant="12" id="vKS-q7-3KQ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="hufuTF" destination="Yma-uj-arX" id="ziJ-Np-Xqy"/>
             </connections>

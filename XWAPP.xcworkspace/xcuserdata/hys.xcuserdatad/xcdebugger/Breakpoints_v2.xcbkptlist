@@ -74,12 +74,12 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548753461.1657881"
+                  timestampString = "548754819.274455"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "93"
                   endingLineNumber = "93"
-                  offsetFromSymbolStart = "56">
+                  offsetFromSymbolStart = "52">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,7 +89,7 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548753461.170979"
+                  timestampString = "548754819.2907391"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"

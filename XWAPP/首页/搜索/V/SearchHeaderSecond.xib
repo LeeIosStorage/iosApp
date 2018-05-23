@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,13 +7,12 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="SearchHeaderSecond" reuseIdentifier="SearchHeaderSecond" id="U6b-Vx-4bR" customClass="SearchHeaderSecond">
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="SearchHeaderSecond" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="SearchHeaderSecond" id="U6b-Vx-4bR" customClass="SearchHeaderSecond">
             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
@@ -48,16 +47,15 @@
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="VOR-OV-7nm" firstAttribute="leading" secondItem="9Gg-ye-v9C" secondAttribute="leading" constant="8" id="Fed-Nx-Wdp"/>
-                <constraint firstItem="9Gg-ye-v9C" firstAttribute="trailing" secondItem="Fjd-t3-RTS" secondAttribute="trailing" id="LTC-Fc-m24"/>
-                <constraint firstItem="aYx-Pr-cZC" firstAttribute="centerY" secondItem="9Gg-ye-v9C" secondAttribute="centerY" id="Pex-e4-4SB"/>
+                <constraint firstItem="VOR-OV-7nm" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="8" id="Fed-Nx-Wdp"/>
+                <constraint firstAttribute="trailing" secondItem="Fjd-t3-RTS" secondAttribute="trailing" id="LTC-Fc-m24"/>
+                <constraint firstItem="aYx-Pr-cZC" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="Pex-e4-4SB"/>
                 <constraint firstItem="VOR-OV-7nm" firstAttribute="height" secondItem="U6b-Vx-4bR" secondAttribute="height" id="QoH-qH-iQl"/>
-                <constraint firstItem="Fjd-t3-RTS" firstAttribute="leading" secondItem="9Gg-ye-v9C" secondAttribute="leading" id="VzS-zd-IYB"/>
-                <constraint firstItem="9Gg-ye-v9C" firstAttribute="trailing" secondItem="aYx-Pr-cZC" secondAttribute="trailing" constant="12" id="adZ-BO-yCz"/>
-                <constraint firstItem="9Gg-ye-v9C" firstAttribute="bottom" secondItem="Fjd-t3-RTS" secondAttribute="bottom" id="k7q-DG-Fc4"/>
-                <constraint firstItem="VOR-OV-7nm" firstAttribute="centerY" secondItem="9Gg-ye-v9C" secondAttribute="centerY" id="sCz-zh-7TN"/>
+                <constraint firstItem="Fjd-t3-RTS" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="VzS-zd-IYB"/>
+                <constraint firstAttribute="trailing" secondItem="aYx-Pr-cZC" secondAttribute="trailing" constant="12" id="adZ-BO-yCz"/>
+                <constraint firstAttribute="bottom" secondItem="Fjd-t3-RTS" secondAttribute="bottom" id="k7q-DG-Fc4"/>
+                <constraint firstItem="VOR-OV-7nm" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="sCz-zh-7TN"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="9Gg-ye-v9C"/>
             <point key="canvasLocation" x="26" y="51.5"/>
         </collectionReusableView>
     </objects>

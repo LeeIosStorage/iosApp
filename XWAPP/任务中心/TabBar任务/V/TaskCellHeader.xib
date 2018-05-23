@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -44,15 +43,14 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="e0G-dO-8Sc" firstAttribute="leading" secondItem="4nD-Zu-Jkh" secondAttribute="trailing" constant="12" id="CTJ-Aj-lXh"/>
-                <constraint firstItem="jFk-0a-mwZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="L1C-ms-uQP"/>
+                <constraint firstItem="jFk-0a-mwZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="L1C-ms-uQP"/>
                 <constraint firstItem="4nD-Zu-Jkh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Q6v-xe-NhH"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="jFk-0a-mwZ" secondAttribute="trailing" id="X72-ft-uEg"/>
-                <constraint firstItem="e0G-dO-8Sc" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="bxs-ey-wSP"/>
-                <constraint firstItem="4nD-Zu-Jkh" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="j5m-m8-s78"/>
+                <constraint firstAttribute="trailing" secondItem="jFk-0a-mwZ" secondAttribute="trailing" id="X72-ft-uEg"/>
+                <constraint firstItem="e0G-dO-8Sc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="bxs-ey-wSP"/>
+                <constraint firstItem="4nD-Zu-Jkh" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="j5m-m8-s78"/>
                 <constraint firstAttribute="bottom" secondItem="jFk-0a-mwZ" secondAttribute="bottom" id="yE3-JL-slH"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="leftIM" destination="4nD-Zu-Jkh" id="pcp-zE-sWa"/>
                 <outlet property="leftLB" destination="e0G-dO-8Sc" id="Qhq-e5-Sji"/>
