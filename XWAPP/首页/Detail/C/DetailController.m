@@ -38,6 +38,7 @@ CommontHeaderViewDelegate
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *commentTF;
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIButton *collectButton;
 
 @property (strong, nonatomic) LENewsDetailHeaderView *newsDetailHeaderView;
 @property (strong, nonatomic) LENewsDetailContentView *newsDetailContentView;
@@ -190,7 +191,7 @@ CommontHeaderViewDelegate
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (_newsId.length) [params setObject:_newsId forKey:@"id"];
     NSString *caCheKey = [NSString stringWithFormat:@"GetDetail%@",_newsId];
-    [self.networkManager POST:requesUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -281,11 +282,12 @@ CommontHeaderViewDelegate
     NSString *parentId = _currentReplyModel.commentId;
     if (parentId) [params setObject:parentId forKey:@"parentId"];
     
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
+        [SVProgressHUD showCustomSuccessWithStatus:@"评论成功"];
         [WeakSelf getNewsCommentsRequest];
         
     } failure:^(id responseObject, NSError *error) {
@@ -305,7 +307,7 @@ CommontHeaderViewDelegate
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:commentModel.commentId forKey:@"commentId"];
     [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -317,6 +319,11 @@ CommontHeaderViewDelegate
         
     }];
     
+}
+
+- (void)collectRequest{
+    
+    self.collectButton.selected = !self.collectButton.selected;
 }
 
 #pragma mark -
@@ -357,12 +364,17 @@ CommontHeaderViewDelegate
 #pragma mark -
 #pragma mark - IBActions
 - (IBAction)favoAction:(UIButton *)sender {
-    
+    [self collectRequest];
 }
 
 
 - (IBAction)commentAction:(UIButton *)sender {
     
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    CGPoint offset = self.tableView.contentOffset;
+    offset.y = self.tableView.tableHeaderView.height-37;
+    [self.tableView setContentOffset:offset animated:YES];
 }
 
 - (IBAction)shareAction:(UIButton *)sender {
@@ -592,5 +604,8 @@ CommontHeaderViewDelegate
     self.huView.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 49);
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+}
 
 @end

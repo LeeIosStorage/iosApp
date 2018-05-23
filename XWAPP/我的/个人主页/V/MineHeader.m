@@ -10,12 +10,16 @@
 
 @implementation MineHeader
 
-
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    
+    self.avatarImageView.layer.cornerRadius = HitoActureHeight(70)/2;
+    self.avatarImageView.layer.masksToBounds = YES;
+}
 
 - (void)updateConstraints {
     [super updateConstraints];
     [self changeLB];
-    
 }
 
 

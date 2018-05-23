@@ -21,6 +21,9 @@
 
 #pragma mark - setVC
 - (void)setVC {
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     UIView *phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 20)];
     UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(13, 0, 20, 20)];
     leftImage.image =[UIImage imageNamed:@"login_phone"];

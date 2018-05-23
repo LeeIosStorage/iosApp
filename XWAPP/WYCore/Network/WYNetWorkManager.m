@@ -76,7 +76,7 @@
 {
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [self setHttpHeader:manager];
+    [self setHttpHeader:manager needHeaderAuth:NO];
     AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
     jsonReponseSerializer.acceptableContentTypes = nil;
     manager.responseSerializer = jsonReponseSerializer;
@@ -185,11 +185,12 @@
                       caCheKey:(NSString *)caCheKey
                     parameters:(id)parameters
                  responseClass:(Class)classType
+                needHeaderAuth:(BOOL)needHeaderAuth
                        success:(WYRequestSuccessBlock)success
                        failure:(WYRequestFailureBlock)failure{
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [self setHttpHeader:manager];
+    [self setHttpHeader:manager needHeaderAuth:needHeaderAuth];
     
     AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
     jsonReponseSerializer.acceptableContentTypes = nil;
@@ -285,6 +286,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         LELog(@"failure error: %@",error);
+        [SVProgressHUD showCustomErrorWithStatus:HitoFaiNetwork];
         if (failure) {
             failure(nil, error);
         }
@@ -365,7 +367,7 @@ responseClass:(Class )classType
 
 #pragma mark --- Utils Method
 
--(void)setHttpHeader:(AFHTTPSessionManager*) manger
+-(void)setHttpHeader:(AFHTTPSessionManager*) manger needHeaderAuth:(BOOL)needHeaderAuth
 {
     // app版本
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -375,9 +377,10 @@ responseClass:(Class )classType
     
     
     //将Token封装入请求头
-    if ([LELoginUserManager authToken]) {
-        manger.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manger.requestSerializer setValue:[LELoginUserManager authToken] forHTTPHeaderField:@"Authorization"];
+    if ([LELoginUserManager authToken] && needHeaderAuth) {
+//        manger.requestSerializer = [AFJSONRequestSerializer serializer];
+        NSString *authorization = [NSString stringWithFormat:@"Bearer %@",[LELoginUserManager authToken]];
+        [manger.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
     }
     
 }
@@ -391,12 +394,14 @@ responseClass:(Class )classType
     NSMutableString *addString = [NSMutableString string];
     //添加uid
     NSString *uid = [LELoginUserManager userID];
+    uid = nil;
     if (![urlString containsString:kParamUserInfoUID] && uid && !outUserId) {
         [addString appendFormat:@"%@=%@", kParamUserInfoUID, uid];
     }
     
     //添加token
     NSString *token = [LELoginUserManager authToken];
+    token = nil;
     if (![urlString containsString:kParamUserInfoAuthToken] && token && !outToken) {
         [addString appendFormat:@"&%@=%@", kParamUserInfoAuthToken, token];
     }

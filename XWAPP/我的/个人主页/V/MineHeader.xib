@@ -24,7 +24,7 @@
                         <constraint firstAttribute="width" secondItem="xfY-Nv-t3l" secondAttribute="height" multiplier="375:134" id="UzW-EH-1QQ"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="Sag-si-4io">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sag-si-4io">
                     <rect key="frame" x="152" y="12" width="70" height="70"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Sag-si-4io" secondAttribute="height" id="AGb-rn-asL"/>
@@ -93,6 +93,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="avatarImageView" destination="Sag-si-4io" id="Pq9-GW-qgX"/>
                 <outlet property="backIM" destination="xfY-Nv-t3l" id="WJq-gb-SX5"/>
                 <outlet property="centerBigView" destination="K0O-Wa-fUC" id="dTB-sE-K97"/>
                 <outlet property="centerMine" destination="81V-2q-5K9" id="Gyp-4c-lmm"/>
@@ -113,7 +114,6 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="jiji" width="624" height="435"/>
         <image name="mine_top_background" width="375" height="64"/>
     </resources>
 </document>

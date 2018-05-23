@@ -13,6 +13,8 @@
 		4C20CB9D20B26F9B003EC050 /* LELoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CB9C20B26F9B003EC050 /* LELoginModel.m */; };
 		4C20CBA020B27014003EC050 /* LELoginUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CB9F20B27014003EC050 /* LELoginUserManager.m */; };
 		4C20CBA420B2BD45003EC050 /* SVProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CBA320B2BD45003EC050 /* SVProgressHUD+LETools.m */; };
+		4C20CBA720B3A66A003EC050 /* LELoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CBA620B3A66A003EC050 /* LELoginManager.m */; };
+		4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CBAA20B51D56003EC050 /* LERefreshHeader.m */; };
 		4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */; };
 		4C3F3BEF20AD575C00B754AF /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BEA20AD575C00B754AF /* TFHpple.m */; };
 		4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3BED20AD575C00B754AF /* TFHppleElement.m */; };
@@ -174,6 +176,10 @@
 		4C20CB9F20B27014003EC050 /* LELoginUserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELoginUserManager.m; sourceTree = "<group>"; };
 		4C20CBA220B2BD45003EC050 /* SVProgressHUD+LETools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD+LETools.h"; sourceTree = "<group>"; };
 		4C20CBA320B2BD45003EC050 /* SVProgressHUD+LETools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SVProgressHUD+LETools.m"; sourceTree = "<group>"; };
+		4C20CBA520B3A66A003EC050 /* LELoginManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELoginManager.h; sourceTree = "<group>"; };
+		4C20CBA620B3A66A003EC050 /* LELoginManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELoginManager.m; sourceTree = "<group>"; };
+		4C20CBA920B51D56003EC050 /* LERefreshHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERefreshHeader.h; sourceTree = "<group>"; };
+		4C20CBAA20B51D56003EC050 /* LERefreshHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERefreshHeader.m; sourceTree = "<group>"; };
 		4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DetailController+ContentControl.m"; sourceTree = "<group>"; };
 		4C3F3BE920AD575C00B754AF /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
 		4C3F3BEA20AD575C00B754AF /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
@@ -463,6 +469,8 @@
 			children = (
 				4C20CB9520B26E98003EC050 /* Model */,
 				4C20CB9620B26E99003EC050 /* View */,
+				4C20CBA520B3A66A003EC050 /* LELoginManager.h */,
+				4C20CBA620B3A66A003EC050 /* LELoginManager.m */,
 				4C20CB9E20B27014003EC050 /* LELoginUserManager.h */,
 				4C20CB9F20B27014003EC050 /* LELoginUserManager.m */,
 			);
@@ -497,9 +505,20 @@
 		4C20CBA120B2BCB8003EC050 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4C20CBA820B51D1B003EC050 /* LERefresh */,
 			);
 			path = Common;
 			sourceTree = "<group>";
+		};
+		4C20CBA820B51D1B003EC050 /* LERefresh */ = {
+			isa = PBXGroup;
+			children = (
+				4C20CBA920B51D56003EC050 /* LERefreshHeader.h */,
+				4C20CBAA20B51D56003EC050 /* LERefreshHeader.m */,
+			);
+			name = LERefresh;
+			path = XWAPP/WYCore/Public/Common/LERefresh;
+			sourceTree = SOURCE_ROOT;
 		};
 		4C3F3BE820AD575C00B754AF /* HappleClasses */ = {
 			isa = PBXGroup;
@@ -1552,6 +1571,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C20CBA720B3A66A003EC050 /* LELoginManager.m in Sources */,
 				EC41868E20994E1B00E57C17 /* AboutUS.m in Sources */,
 				EC72BC4A2090352A00FADE74 /* HotHeader.m in Sources */,
 				EC0DD9F32092B45A006C7522 /* MineBottom.m in Sources */,
@@ -1612,6 +1632,7 @@
 				EC72BC5B20907A6700FADE74 /* SearchCollecViewCell.m in Sources */,
 				4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */,
 				EC72BC06208DC74700FADE74 /* TagHeaderView.m in Sources */,
+				4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,

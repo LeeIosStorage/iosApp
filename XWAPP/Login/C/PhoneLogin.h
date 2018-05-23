@@ -8,6 +8,9 @@
 
 #import "LESuperViewController.h"
 
+typedef void(^LELoginSuccessBlock)(void);
+typedef void(^LELoginFailureBlock)(NSString *errorMessage);
+typedef void(^LELoginCancelBlock)(void);
 
 @interface PhoneLogin : LESuperViewController
 
@@ -15,5 +18,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *codeTF;
 @property (weak, nonatomic) IBOutlet JKCountDownButton *codeBtn;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
+
+@property (nonatomic, copy) LELoginSuccessBlock loginSuccessBlock;
+@property (nonatomic, copy) LELoginCancelBlock loginCancelBlock;
+@property (nonatomic, copy) LELoginFailureBlock loginFailureBlock;
 
 @end

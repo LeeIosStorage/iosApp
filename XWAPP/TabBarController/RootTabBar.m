@@ -8,6 +8,7 @@
 
 #import "RootTabBar.h"
 #import "PhoneLogin.h"
+#import "LELoginManager.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -28,22 +29,20 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     if ([item.title isEqualToString:@"我的"]) {
-        UIViewController *vv = self.viewControllers.lastObject;
-        PhoneLogin *phone = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PhoneLogin"];
-        [vv presentViewController:phone animated:YES completion:^{
-            //
-        }];
+        
+        UIViewController *vc = self.viewControllers.lastObject;
+        [[LELoginManager sharedInstance] needUserLogin:vc];
     }
 
 }
 
 #pragma mark 判断是否登录若没登录跳转到登录页面
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{//每次点击都会执行的方法
-    //点击购物车tabbarItem时进行一次判断
-//    NSUserDefaults *userdefault =NSUserDefault;
-//    NSString* str = [userdefaultvalueForKey:@"LoginStatu"];
-    if([viewController.tabBarItem.title isEqualToString:@"我的"]){//判断点击的tabBarItem的title是不是购物车，如果是继续执行
-
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    
+    if([viewController.tabBarItem.title isEqualToString:@"我的"]){
+        if (![LELoginUserManager hasAccoutLoggedin]) {
+            return NO;
+        }
         return YES;
     }
     return YES;

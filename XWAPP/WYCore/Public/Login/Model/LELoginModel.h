@@ -11,8 +11,11 @@
 @interface LELoginModel : LEBaseModel
 
 @property (strong, nonatomic) NSString *userID;
-@property (strong, nonatomic) NSString *token;
-@property (strong, nonatomic) NSString *userName;
-@property (strong, nonatomic) NSString *icon;
-
+@property (strong, nonatomic) NSString *nickname;
+@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString *mobile;
+@property (strong, nonatomic) NSString *sex;
+@property (strong, nonatomic) NSString *age;
+@property (strong, nonatomic) NSString *headImgUrl;
+@property (strong, nonatomic) NSString *regTime;
 @end

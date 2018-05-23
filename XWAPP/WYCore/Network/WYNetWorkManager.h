@@ -59,6 +59,7 @@
                       caCheKey:(NSString *)caCheKey
                     parameters:(id)parameters
                  responseClass:(Class)classType
+                needHeaderAuth:(BOOL)needHeaderAuth
                        success:(WYRequestSuccessBlock)success
                        failure:(WYRequestFailureBlock)failure;
 

@@ -22,6 +22,9 @@
 
 #pragma mark - setVC
 - (void)setVC {
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 20)];
     UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(13, 0, 20, 20)];
     leftImage.image =[UIImage imageNamed:@"login_phone"];
@@ -64,6 +67,33 @@
     _passWordTF.secureTextEntry = !_passWordTF.secureTextEntry;
 }
 
+#pragma mark -
+#pragma mark - Request
+- (void)loginRequest{
+    
+    [SVProgressHUD showCustomWithStatus:@"登录中..."];
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"Login"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_phoneTF.text.length) [params setObject:_phoneTF.text forKey:@"mobile"];
+    [params setObject:_passWordTF.text forKey:@"pwd"];
+    [params setObject:@"0" forKey:@"isFastLogin"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+            return ;
+        }
+        [SVProgressHUD showCustomSuccessWithStatus:HitoLoginSucTitle];
+        
+        
+    } failure:^(id responseObject, NSError *error) {
+        [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+    }];
+    
+}
+
 #pragma mark - bthAction
 - (IBAction)dismissAction:(UIButton *)sender {
     [self dismissViewControllerAnimated:YES completion:^{
@@ -81,7 +111,7 @@
 - (IBAction)loginAction:(UIButton *)sender {
     [self resign];
     if ([self checkPhoneAndPassWord]) {
-        //
+        [self loginRequest];
     }
 }
 - (IBAction)forgetAction:(UIButton *)sender {
@@ -112,12 +142,12 @@
 }
 
 - (BOOL)checkPhoneAndPassWord {
-    if ([self checkoutPhoneNum:_phoneTF.text]) {
-        [self addAlertWithVC:self title:@"警告" message:@"请输入正确的手机号"];
+    if (![self checkoutPhoneNum:_phoneTF.text]) {
+        [self addAlertWithVC:self title:nil message:@"请输入正确的手机号"];
         return NO;
     }
     if (!_passWordTF.text || [_passWordTF.text isEqualToString:@""]) {
-        [self addAlertWithVC:self title:@"警告" message:@"请输入密码"];
+        [self addAlertWithVC:self title:nil message:@"请输入密码"];
         return NO;
     }
     return YES;

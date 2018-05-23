@@ -6,11 +6,12 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
 
 typedef void(^ForgetPW)(void);
 
-@interface PassWordLogin : UIViewController
+@interface PassWordLogin : LESuperViewController
+
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;

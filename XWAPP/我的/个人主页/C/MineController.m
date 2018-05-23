@@ -17,10 +17,18 @@
 
 
 
-@interface MineController () <SDCycleScrollViewDelegate>
+@interface MineController ()
+<
+SDCycleScrollViewDelegate,
+UITableViewDelegate,
+UITableViewDataSource,
+UIScrollViewDelegate
+>
 
 
 @property (nonatomic, strong) MineHeader *header;
+
+@property (strong, nonatomic) UIImageView *tableBackgroundView;
 
 @end
 
@@ -33,6 +41,7 @@
     [self setNaStyle];
     [self navAction];
     
+    [self refreshData];
 }
 
 - (void)updateViewConstraints {
@@ -43,8 +52,11 @@
     
 }
 
-#pragma mark - addTBHeaderView
+#pragma mark -
+#pragma mark - Request
 
+
+#pragma mark - addTBHeaderView
 - (void)addHeaderView {
     if (!_header) {
         _header = [[[NSBundle mainBundle] loadNibNamed:@"MineHeader" owner:self options:nil] firstObject];
@@ -65,15 +77,23 @@
     self.tableView.tableHeaderView = hh;
 }
 
+- (void)refreshData{
+    
+    _header.leftMine.bottomLB.text = @"20";
+    _header.centerMine.bottomLB.text = @"30";
+    _header.rightMine.bottomLB.text = @"40";
+    
+    [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:nil];
+    
+}
+
 #pragma mark - setTB
 
 - (void)setTB {
     [self addHeaderView];
     //防止TABBAR灰色
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-    self.tableView.backgroundColor= [UIColor clearColor];
-    UIImageView*imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"mine_back"]];
-    self.tableView.backgroundView = imageView;
+    self.tableView.backgroundColor = [UIColor clearColor];
     
     //初始化数据
     _secondArr = @[@"每收一名徒弟赚3500金币，可立即领取提现", @"新手任务", @"输入邀请码", @"微信绑定"];
@@ -194,45 +214,61 @@
 
 
 
-
+#pragma mark -
 #pragma mark - mj
 - (void)addMJ {
     //下拉刷新
     
     MJWeakSelf;
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [self.tableView.mj_header endRefreshing];
+        [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
             
-            
-            
-        });
-        
-        dispatch_time_t delayTime1 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime1, dispatch_get_main_queue(), ^{
-            
-            
-            
-        });
+            [weakSelf.tableView.mj_header endRefreshing];
+            if (isSuccess) {
+                
+            }else{
+                
+            }
+        }];
         
     }];
+    header.stateLabel.textColor = [UIColor whiteColor];
+    header.lastUpdatedTimeLabel.textColor = [UIColor whiteColor];
+    header.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    self.tableView.mj_header = header;
     //上啦加载
-    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
-        //
-    }];
+//    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
+//        //
+//    }];
 }
 
-#pragma mark - sdcycleDelegate
+#pragma mark -
+#pragma mark - Set And Getters
+- (UIImageView *)tableBackgroundView{
+    if (!_tableBackgroundView) {
+        _tableBackgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"mine_back"]];
 
+    }
+    return _tableBackgroundView;
+}
+
+#pragma mark -
 #pragma mark - SDCycleScrollViewDelegate  轮播图的点击事件
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     
 }
 
 
-
-
+#pragma mark -
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGPoint offset = scrollView.contentOffset;
+    if (offset.y <= 0) {
+        self.tableView.backgroundView = self.tableBackgroundView;
+    }else{
+        self.tableView.backgroundView = nil;
+    }
+}
 
 @end

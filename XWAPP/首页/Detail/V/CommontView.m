@@ -15,6 +15,8 @@ UITextViewDelegate
 
 @property (strong, nonatomic) NSString *textViewText;
 
+@property (weak, nonatomic) IBOutlet UILabel *textViewPlaceholderLabel;
+
 @end
 
 @implementation CommontView
@@ -52,6 +54,13 @@ UITextViewDelegate
 }
 
 - (void)textViewDidChange:(UITextView *)textView{
+    
+    if (textView.text.length > 0) {
+        self.textViewPlaceholderLabel.hidden = YES;
+    }else{
+        self.textViewPlaceholderLabel.hidden = NO;
+    }
+    
     self.textViewText = textView.text;
     if (self.delegate && [self.delegate respondsToSelector:@selector(commentWithContentText:)]) {
         [self.delegate commentWithContentText:self.textViewText];

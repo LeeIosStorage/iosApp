@@ -28,6 +28,13 @@
 }
 
 #pragma mark -
+#pragma mark - Public
+- (void)refreshViewWithObject:(id)object
+{
+    
+}
+
+#pragma mark -
 #pragma mark - Set And Getters
 - (WYNetWorkManager *)networkManager{
     if (!_networkManager) {

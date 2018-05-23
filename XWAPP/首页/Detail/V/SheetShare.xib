@@ -45,7 +45,7 @@
                     <constraints>
                         <constraint firstAttribute="width" secondItem="2Zr-Th-ndo" secondAttribute="height" multiplier="1:1" id="qLO-6u-mSy"/>
                     </constraints>
-                    <state key="normal" image="logo_wexin "/>
+                    <state key="normal" image="logo_wexin"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dff-CX-e1l">
                     <rect key="frame" x="475" y="45" width="100" height="100"/>
@@ -146,6 +146,6 @@
         <image name="logo_QQ" width="44" height="44"/>
         <image name="logo_pengyouquan" width="44" height="44"/>
         <image name="logo_weibo" width="44" height="44"/>
-        <image name="logo_wexin " width="44" height="44"/>
+        <image name="logo_wexin" width="44" height="44"/>
     </resources>
 </document>

@@ -13,6 +13,8 @@
 + (void)setCurrentDefaultStyle{
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setMinimumDismissTimeInterval:2.0];
+    [SVProgressHUD setCornerRadius:5];
+//    [SVProgressHUD setImageViewSize:CGSizeMake(14, 14)];
 }
 
 + (void)showCustomWithStatus:(NSString *)status{
@@ -22,6 +24,7 @@
 
 + (void)showCustomSuccessWithStatus:(NSString *)status{
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
+//    [SVProgressHUD setSuccessImage:nil];
     [SVProgressHUD showSuccessWithStatus:status];
 }
 
@@ -32,6 +35,7 @@
 
 + (void)showCustomInfoWithStatus:(NSString *)status{
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [SVProgressHUD setInfoImage:nil];
     [SVProgressHUD showInfoWithStatus:status];
 }
 

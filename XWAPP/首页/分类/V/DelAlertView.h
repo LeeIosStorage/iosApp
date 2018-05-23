@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^DelAlertViewShieldClickBlock)(NSArray *reasons);
+
 @interface DelAlertView : UIView
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLB;
-@property (nonatomic, assign) NSInteger count;
+
+@property (assign, nonatomic) NSInteger count;
+
+@property (copy, nonatomic) DelAlertViewShieldClickBlock delAlertViewShieldClickBlock;
 
 @end

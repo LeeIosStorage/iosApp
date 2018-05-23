@@ -20,6 +20,7 @@ typedef void(^CenterClick)(void);
 @property (weak, nonatomic) IBOutlet MineBottom *centerMine;
 @property (weak, nonatomic) IBOutlet MineBottom *rightMine;
 @property (weak, nonatomic) IBOutlet UIImageView *backIM;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *minImageBottom;
 
 @property (nonatomic, copy) LeftClick leftClick;

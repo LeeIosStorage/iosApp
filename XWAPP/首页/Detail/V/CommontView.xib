@@ -40,10 +40,16 @@
                         <outlet property="delegate" destination="-1" id="fFg-vG-zmV"/>
                     </connections>
                 </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请文明发表评论" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cM-WL-Ky5">
+                    <rect key="frame" x="20" y="20" width="93" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nb5-AE-lUR">
-                    <rect key="frame" x="12" y="82" width="30" height="13"/>
+                    <rect key="frame" x="0.0" y="70" width="55" height="37"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="13" id="7EZ-CV-Jws"/>
+                        <constraint firstAttribute="width" constant="55" id="CJk-UF-gGY"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="取消">
@@ -54,9 +60,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJ8-6s-peb">
-                    <rect key="frame" x="333" y="82" width="30" height="13"/>
+                    <rect key="frame" x="320" y="70" width="55" height="37"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="13" id="QkX-el-DvR"/>
+                        <constraint firstAttribute="width" constant="55" id="ELf-Ri-AYE"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="确定">
@@ -69,18 +75,23 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fJ8-6s-peb" firstAttribute="top" secondItem="4Ke-zC-bkK" secondAttribute="bottom" constant="12" id="60W-Ze-ruo"/>
+                <constraint firstAttribute="bottom" secondItem="fJ8-6s-peb" secondAttribute="bottom" id="5RI-7d-A3p"/>
+                <constraint firstItem="fJ8-6s-peb" firstAttribute="top" secondItem="4Ke-zC-bkK" secondAttribute="bottom" id="60W-Ze-ruo"/>
+                <constraint firstItem="0cM-WL-Ky5" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="IOT-La-Ya9"/>
+                <constraint firstAttribute="trailing" secondItem="fJ8-6s-peb" secondAttribute="trailing" id="IzR-Y1-3fV"/>
                 <constraint firstItem="4Ke-zC-bkK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="T2J-kD-0ww"/>
-                <constraint firstItem="fJ8-6s-peb" firstAttribute="trailing" secondItem="4Ke-zC-bkK" secondAttribute="trailing" id="XjA-x9-cIa"/>
-                <constraint firstItem="Nb5-AE-lUR" firstAttribute="leading" secondItem="4Ke-zC-bkK" secondAttribute="leading" id="ff8-yG-z7m"/>
-                <constraint firstItem="Nb5-AE-lUR" firstAttribute="top" secondItem="4Ke-zC-bkK" secondAttribute="bottom" constant="12" id="meS-x5-F0m"/>
+                <constraint firstItem="0cM-WL-Ky5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="ci2-aY-g68"/>
+                <constraint firstItem="Nb5-AE-lUR" firstAttribute="top" secondItem="4Ke-zC-bkK" secondAttribute="bottom" id="meS-x5-F0m"/>
                 <constraint firstItem="4Ke-zC-bkK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="qgB-Vt-uLd"/>
+                <constraint firstAttribute="bottom" secondItem="Nb5-AE-lUR" secondAttribute="bottom" id="wji-1h-kA6"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4Ke-zC-bkK" secondAttribute="trailing" constant="12" id="xYq-tG-2J0"/>
+                <constraint firstItem="Nb5-AE-lUR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zoy-y1-f2B"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="comTextView" destination="4Ke-zC-bkK" id="lSa-DP-Jeu"/>
+                <outlet property="textViewPlaceholderLabel" destination="0cM-WL-Ky5" id="Uph-li-oZj"/>
             </connections>
             <point key="canvasLocation" x="24.5" y="234"/>
         </view>

@@ -16,6 +16,7 @@
 #define Alt_key           @"alt"
 #define DataSize_key      @"data-size"
 #define DataImageUrl_key  @"data-src"
+#define TagVideo_key      @"script"
 
 @implementation DetailController (ContentControl)
 
@@ -46,12 +47,17 @@
             NSMutableAttributedString *childAttributed = nil;
             for (TFHppleElement *childrenElement in childrenArray) {
                 childAttributed = nil;
+                //文字解析
                 if ([[childrenElement content] length] > 0) {
                     if ([[[childrenElement content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0) {
                         
+                        //换行不显示
+                        if ([[childrenElement content] isEqualToString:@"\n"]) {
+                            continue;
+                        }
                         //兼容标签重复解析的错误
                         if ([WeakSelf.beforeContent isEqualToString:[childrenElement content]]) {
-                            break;
+                            continue;
                         }
                         
                         childAttributed = [WeakSelf mosaicContentWithContent:[childrenElement content]];
@@ -62,6 +68,7 @@
                         break;
                     }
                 }
+                //图片解析
                 if ([childrenElement.tagName isEqualToString:TagImage_Key]) {
 //                    NSString *altString = [childrenElement objectForKey:Alt_key];
 //                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
@@ -75,6 +82,11 @@
                     childAttributed = [WeakSelf mosaicImageAndVideoWithContentModel:contentModel];
                     
                 }
+                //视频解析
+                if ([childrenElement.tagName isEqualToString:TagVideo_key]) {
+                    
+                }
+                
                 if (childAttributed) {
                     NSRange childRange = NSMakeRange(contentAttributed.length, childAttributed.length);
                     [contentAttributed appendAttributedString:childAttributed];
@@ -107,20 +119,29 @@
 
 - (NSMutableAttributedString *)mosaicImageAndVideoWithContentModel:(LENewsContentModel *)contentModel{
     
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] init];
+    NSMutableAttributedString *attributedText = nil;
     
-    if (contentModel.content.length > 0) {
-        NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:contentModel.content];
-        contentAttributedString.color = kAppTitleColor;
-        contentAttributedString.font = [UIFont systemFontOfSize:16.0f];
-        contentAttributedString.alignment = NSTextAlignmentLeft;
-        [attributedText appendAttributedString:contentAttributedString];
-    }
+//    if (contentModel.content.length > 0) {
+//        if (!attributedText) {
+//            attributedText = [[NSMutableAttributedString alloc] init];
+//        }
+//        NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:contentModel.content];
+//        contentAttributedString.color = kAppTitleColor;
+//        contentAttributedString.font = [UIFont systemFontOfSize:16.0f];
+//        contentAttributedString.alignment = NSTextAlignmentLeft;
+//        [attributedText appendAttributedString:contentAttributedString];
+//    }
     if (contentModel.imageUrl.length > 0) {
+        if (!attributedText) {
+            attributedText = [[NSMutableAttributedString alloc] init];
+        }
         UIView *bgView = [UIView new];
         bgView.backgroundColor = [UIColor clearColor];
         YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
         CGFloat scale = contentModel.styleBox.height/contentModel.styleBox.width;
+        if (isnan(scale)) {
+            scale = 0.5;
+        }
         contentModel.styleBox.width = imageStandardWidth;
         contentModel.styleBox.height = imageStandardWidth*scale;
         imageView.size = CGSizeMake(contentModel.styleBox.width, contentModel.styleBox.height);

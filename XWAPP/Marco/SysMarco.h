@@ -195,6 +195,9 @@
 //主标题颜色
 #define kAppSubTitleColor [UIColor colorWithHexString:@"999999"]
 
+//蒙层黑色
+#define kAppMaskOpaqueBlackColor HitoRGBA(0,0,0,0.4)
+
 ///颜色 a代表透明度,1为不透明,0为透明
 
 #define HitoRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
@@ -286,6 +289,10 @@
 
 #define HitoDataFileCatalog @"LEData"
 
+// 每页加载数
+#define DATA_LOAD_PAGESIZE_COUNT 20
+
+#define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 
 
 #endif /* SysMarco_h */

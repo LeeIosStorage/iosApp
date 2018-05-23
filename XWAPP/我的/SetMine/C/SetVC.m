@@ -30,6 +30,19 @@ HitoPropertyNSArray(dataSource);
 
 - (void)btnAction:(UIButton *)sender {
     
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"确定退出登录?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [LELoginUserManager clearUserInfo];
+        [self.tabBarController setSelectedIndex:0];
+    }];
+    
+    [alertController addAction:action1];
+    [alertController addAction:action2];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 - (void)addBottonView {

@@ -178,7 +178,7 @@
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SmsSend"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (_phoneTF.text.length) [params setObject:_phoneTF.text forKey:@"mobile"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             [WeakSelf.codeBtn stopCountDown];
@@ -203,20 +203,47 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (_phoneTF.text.length) [params setObject:_phoneTF.text forKey:@"mobile"];
     [params setObject:_codeTF.text forKey:@"pwd"];
-    [params setObject:@"0" forKey:@"isFastLogin"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [params setObject:@"1" forKey:@"isFastLogin"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
             return ;
         }
-        [SVProgressHUD showCustomSuccessWithStatus:HitoLoginSucTitle];
+        if ([dataObject isKindOfClass:[NSDictionary class]]) {
+            [LELoginUserManager setUserID:dataObject[@"uid"]];
+            id token = dataObject[@"token"];
+            if ([token isKindOfClass:[NSString class]]) {
+                NSData *data = [token dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *error = nil;
+                id tokenObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                if ([tokenObject isKindOfClass:[NSDictionary class]]) {
+                    [LELoginUserManager setAuthToken:tokenObject[@"access_token"]];
+                }
+            }
+            [WeakSelf refreshUserInfoRequest];
+        }
         
         
     } failure:^(id responseObject, NSError *error) {
         [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
     }];
     
+}
+
+- (void)refreshUserInfoRequest{
+    //@"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMTM4MDM4MzM0NjYiLCJuYmYiOiIxNTI2OTgwMDQzIiwiZXhwIjoiMTUyNzA2NjQ0MyJ9.P40TcqhlIjTRCeLt9DF45U2RO9x0KMocmk0hpCS-0O4"
+    
+    [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
+        
+        if (isSuccess) {
+            self.loginSuccessBlock();
+            [SVProgressHUD showCustomSuccessWithStatus:HitoLoginSucTitle];
+        }else{
+//            self.loginFailureBlock(nil);
+            [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+        }
+    }];
 }
 
 @end
