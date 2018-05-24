@@ -10,6 +10,23 @@
 #define SysMarco_h
 
 
+#define QQ_ID                       @"1104513102"
+#define QQ_Key                      @"L3PVlr3bpXd9I63d"
+#define WX_ID                       @"wx9680cc8852c48ded"
+#define WX_Secret                   @"0c4dc0137c7c1b1f430df82292d76e06"
+#define SINA_ID                     @"3734649134"
+#define SINA_Secret                 @"57bba34da9bae335b351f2057283bbf1"
+#define Sina_RedirectURL            @"http://www.wangyuhudong.com"
+
+
+#define MAX_WX_IMAGE_SIZE 32*1024
+#define WY_IMAGE_COMPRESSION_QUALITY 0.4
+
+// 每页加载数
+#define DATA_LOAD_PAGESIZE_COUNT 20
+
+#define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
+
 /***************************系统版本*****************************/
 
 //获取手机系统的版本
@@ -288,11 +305,6 @@
 #define HitoFaiNetwork @"网络错误"
 
 #define HitoDataFileCatalog @"LEData"
-
-// 每页加载数
-#define DATA_LOAD_PAGESIZE_COUNT 20
-
-#define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 
 
 #endif /* SysMarco_h */

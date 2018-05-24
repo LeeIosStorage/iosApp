@@ -19,6 +19,8 @@
 #import "LECommentFooterView.h"
 #import "LECommentMoreCell.h"
 #import "LENewsCommentModel.h"
+#import "LEShareSheetView.h"
+#import "LEShareWindow.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -26,11 +28,14 @@ UITextViewDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 CommontViewDelegate,
-CommontHeaderViewDelegate
+CommontHeaderViewDelegate,
+LEShareSheetViewDelegate
 >
 {
     CommentCell *_selectedCommentCell;
     LEReplyCommentModel *_currentReplyModel;
+    
+    LEShareSheetView *_shareSheetView;
 }
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
@@ -379,6 +384,12 @@ CommontHeaderViewDelegate
 
 - (IBAction)shareAction:(UIButton *)sender {
     
+    _shareSheetView = [[LEShareSheetView alloc] init];
+    _shareSheetView.owner = self;
+    [_shareSheetView showShareAction];
+    
+//    LEShareWindow *shareWindow = [[LEShareWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    [shareWindow setCustomerSheet];
 }
 
 #pragma mark - UITableviewDelegate

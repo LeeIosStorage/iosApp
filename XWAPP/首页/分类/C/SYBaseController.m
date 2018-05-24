@@ -79,6 +79,12 @@ HitoPropertyNSArray(allChannelArray);
 
 - (IBAction)addBtnAction:(UIButton *)sender {
     
+    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+    [self.navigationController pushViewController:detail animated:YES];
+    
+    return;
+    
+    
     NSArray *arr1 = [NSArray arrayWithArray:self.headerArr];
     
     NSMutableArray *tmpAllArr = [NSMutableArray arrayWithArray:self.allChannelArray];

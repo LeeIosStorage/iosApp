@@ -32,12 +32,16 @@ pod 'SDCycleScrollView', '~> 1.75'
 pod 'Masonry', '~> 1.0.1'
 pod 'YYKit', '~> 1.0.6'
 
-pod 'UMCCommon'
-pod 'UMCSecurityPlugins'
-pod 'UMCShare/UI'
-pod 'UMCShare/UI'
-pod 'UMCShare/Social/ReducedQQ'
-pod 'UMCShare/Social/ReducedSina'
+#pod 'UMCCommon'
+#pod 'UMCSecurityPlugins'
+#pod 'UMCShare/UI'
+#pod 'UMCShare/UI'
+#pod 'UMCShare/Social/ReducedQQ'
+#pod 'UMCShare/Social/ReducedSina'
+
+pod 'UMengUShare/Social/WeChat'
+pod 'UMengUShare/Social/QQ'
+pod 'UMengUShare/Social/Sina'
 
 
 end
