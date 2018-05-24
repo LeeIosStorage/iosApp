@@ -15,6 +15,7 @@
 #import "LEChannelModel.h"
 #import "LEDataStoreManager.h"
 #import "DetailController.h"
+#import "LESearchBar.h"
 
 @interface SYBaseController () <UISearchBarDelegate>
 {
@@ -42,6 +43,14 @@ HitoPropertyNSArray(allChannelArray);
     [self setNaStyle];
     
     [self getNewsChannelRequest];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    //    self.navigationController.navigationBar.shadowImage = [UIImage new];
     
 }
 
@@ -79,10 +88,10 @@ HitoPropertyNSArray(allChannelArray);
 
 - (IBAction)addBtnAction:(UIButton *)sender {
     
-    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
-    [self.navigationController pushViewController:detail animated:YES];
-    
-    return;
+//    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+//    [self.navigationController pushViewController:detail animated:YES];
+//
+//    return;
     
     
     NSArray *arr1 = [NSArray arrayWithArray:self.headerArr];
@@ -173,13 +182,14 @@ HitoPropertyNSArray(allChannelArray);
 
 #pragma mark - 设置搜索条
 - (void)addSearchBar {
-    UISearchBar *search = [[UISearchBar alloc] initWithFrame:CGRectMake(38, 28, HitoScreenW - 76, 26)];
+    LESearchBar *search = [[LESearchBar alloc] initWithFrame:CGRectMake(42, 27, HitoScreenW - 84, 30)];
     search.searchBarStyle = UISearchBarStyleMinimal;
 //    self.navigationItem.titleView = search;
     search.userInteractionEnabled = YES;
     [self.view bringSubviewToFront:search];
     [self.view addSubview:search];
-    search.placeholder = @"123";
+    NSString *placeholder = @"搜索你感兴趣的内容";
+    search.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:HitoColorFromRGB(0x666666)];
     
     UIButton * button = [UIButton buttonWithType:(UIButtonTypeRoundedRect)];
     // 添加 按钮名字
@@ -187,25 +197,15 @@ HitoPropertyNSArray(allChannelArray);
     // 添加点击方法
     [button addTarget:self action:@selector(actionButton) forControlEvents:(UIControlEventTouchUpInside)];
     // 自适应大小
-    button.frame = CGRectMake(0, 0, HitoScreenW, 26);
+    button.frame = CGRectMake(0, 0, HitoScreenW, 30);
     // 添加到 表头 title
     self.navigationItem.titleView = button;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    self.navigationController.navigationBar.shadowImage = [UIImage new];
-
 }
 
 - (void)actionButton {
     SearchController *search = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SearchController"];
     [self.navigationController pushViewController:search animated:YES];
 }
-
-
 
 #pragma mark 返回子页面的个数
 - (NSInteger)numbersOfChildControllersInPageController:(WMPageController *)pageController {

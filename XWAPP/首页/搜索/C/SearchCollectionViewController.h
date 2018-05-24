@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SearchSelectTextBlock)(NSString *content);
+
 @interface SearchCollectionViewController : UICollectionViewController
 
 HitoPropertyNSMutableArray(dataArr);
 HitoPropertyNSMutableArray(historyArr);
+
+@property (copy, nonatomic) SearchSelectTextBlock searchSelectTextBlock;
 
 @end

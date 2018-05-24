@@ -45,6 +45,7 @@
 		4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863720AACBDB000D647F /* LESuperViewController.m */; };
 		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
+		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
@@ -240,6 +241,8 @@
 		4C61863A20AB10DB000D647F /* WYCommonUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCommonUtils.m; sourceTree = "<group>"; };
 		4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEAdd.h"; sourceTree = "<group>"; };
 		4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEAdd.m"; sourceTree = "<group>"; };
+		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
+		4CA6877B20B6A56B004588FC /* LESearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchBar.m; sourceTree = "<group>"; };
 		4CAA26D420B557AD00B7CF31 /* LEShareSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareSheetView.h; sourceTree = "<group>"; };
 		4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareSheetView.m; sourceTree = "<group>"; };
 		4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareWindow.h; sourceTree = "<group>"; };
@@ -514,6 +517,7 @@
 		4C20CBA120B2BCB8003EC050 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4CA6877920B6A555004588FC /* LESearchBar */,
 				4CAA26D320B5578700B7CF31 /* LEShareSheetView */,
 				4C20CBA820B51D1B003EC050 /* LERefresh */,
 			);
@@ -664,6 +668,15 @@
 				4C61863720AACBDB000D647F /* LESuperViewController.m */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		4CA6877920B6A555004588FC /* LESearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				4CA6877A20B6A56B004588FC /* LESearchBar.h */,
+				4CA6877B20B6A56B004588FC /* LESearchBar.m */,
+			);
+			path = LESearchBar;
 			sourceTree = "<group>";
 		};
 		4CAA26D320B5578700B7CF31 /* LEShareSheetView */ = {
@@ -1690,6 +1703,7 @@
 				4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */,
 				EC4186AC20998DDA00E57C17 /* SetBass.m in Sources */,
 				4C3F3BEF20AD575C00B754AF /* TFHpple.m in Sources */,
+				4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */,
 				EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */,
 				4C61863420AAB7A5000D647F /* YTCache.m in Sources */,
 				4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */,

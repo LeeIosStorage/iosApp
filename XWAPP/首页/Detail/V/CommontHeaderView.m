@@ -17,7 +17,6 @@
 @property (strong, nonatomic) UILabel *areaLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UILabel *favourLabel;
-@property (strong, nonatomic) UIImageView *favourImageView;
 @property (strong, nonatomic) UIButton *favourButton;
 
 @property (strong, nonatomic) UILabel *contentLabel;
@@ -105,8 +104,8 @@
 #pragma mark - IBActions
 - (void)favourClickAction:(id)sender{
 //    self.favourImageView.highlighted = !self.favourImageView.highlighted;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(commentHeaderWithFavourClick:)]) {
-        [self.delegate commentHeaderWithFavourClick:self.section];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(commentHeaderWithFavourClick:headerView:)]) {
+        [self.delegate commentHeaderWithFavourClick:self.section headerView:self];
     }
 }
 
@@ -177,6 +176,7 @@
         _favourImageView = [[UIImageView alloc] init];
         _favourImageView.image = [UIImage imageNamed:@"home_dianzan_nor"];
         _favourImageView.highlightedImage = [UIImage imageNamed:@"home_dianzan_pre"];
+        _favourImageView.tag = 100;
     }
     return _favourImageView;
 }

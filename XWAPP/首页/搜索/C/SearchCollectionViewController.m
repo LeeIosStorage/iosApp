@@ -11,14 +11,13 @@
 #import "SearchHeader.h"
 #import "SearchHeaderSecond.h"
 #import "YQMController.h"
+#import "LEDataStoreManager.h"
 
 @interface SearchCollectionViewController ()
 {
     BOOL hidden;
     BOOL second;
 }
-
-
 
 @end
 
@@ -29,10 +28,6 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setView];
-
-    
-
-    
 }
 
 - (void)setView {
@@ -55,16 +50,12 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
     
 
     [self.collectionView registerNib:[UINib nibWithNibName:@"SearchHeader" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchHeader"];
-        [self.collectionView registerNib:[UINib nibWithNibName:@"SearchHeaderSecond" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchHeaderSecond"];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"SearchHeaderSecond" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchHeaderSecond"];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer"];
-    
-    
     
 }
 
 #pragma mark - 懒加载
-
-
 
 - (NSMutableArray *)dataArr {
     if (!_dataArr) {
@@ -82,15 +73,10 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
     return _historyArr;
 }
 
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -100,7 +86,6 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
     }
     return 1;
 }
-
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (self.historyArr.count != 0) {
@@ -144,25 +129,28 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
     [cell clickBtn:^{
         if (WeakSelf.historyArr.count != 0 && WeakSelf.historyArr.count != 1) {
             NSLog(@"%zd", indexPath.row);
-            id objc = WeakSelf.historyArr[indexPath.row];
-            [WeakSelf.historyArr removeObject:objc];
-            [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+            if (indexPath.row < WeakSelf.historyArr.count) {
+                id objc = WeakSelf.historyArr[indexPath.row];
+                [WeakSelf.historyArr removeObject:objc];
+//                [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                [collectionView reloadData];
+            }else{
+                [collectionView reloadData];
+            }
         } else if (WeakSelf.historyArr.count == 1) {
             [WeakSelf.historyArr removeAllObjects];
             [collectionView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section]];
         }
+        
+        [[LEDataStoreManager shareInstance] saveSearchRecordWithArray:WeakSelf.historyArr];
+        
     }];
     return cell;
 }
 
-
-
 #pragma mark <UICollectionViewDelegate>
-
-
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if (kind == UICollectionElementKindSectionHeader) {
-
         
         if (self.historyArr.count != 0) {
             if (indexPath.section == 0) {
@@ -205,7 +193,6 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
             }
         }
         
-        
         return foot;
     }
 
@@ -213,7 +200,28 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    YQMController *yqm = [[YQMController alloc] initWithNibName:@"YQMController" bundle:nil];
-    [self.navigationController pushViewController:yqm animated:YES];
+//    YQMController *yqm = [[YQMController alloc] initWithNibName:@"YQMController" bundle:nil];
+//    [self.navigationController pushViewController:yqm animated:YES];
+    
+    NSString *content = nil;
+    if (self.historyArr.count != 0) {
+        if (indexPath.section == 0) {
+            content = [self.historyArr objectAtIndex:indexPath.row];
+        } else {
+            content = [self.dataArr objectAtIndex:indexPath.row];
+        }
+    } else {
+        content = [self.dataArr objectAtIndex:indexPath.row];
+    }
+    if (self.searchSelectTextBlock) {
+        self.searchSelectTextBlock(content);
+    }
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (scrollView == self.collectionView) {
+        [self.view endEditing:YES];
+    }
+}
+
 @end

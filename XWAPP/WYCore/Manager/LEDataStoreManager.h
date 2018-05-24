@@ -12,7 +12,12 @@
 
 + (LEDataStoreManager *)shareInstance;
 
+//首页栏目排序
 - (NSArray *)getInUseChannelArray;
 - (void)saveInUseChannelWithArray:(NSArray *)array;
+
+//新闻搜索记录
+- (NSArray *)getSearchRecordArray;
+- (void)saveSearchRecordWithArray:(NSArray *)array;
 
 @end

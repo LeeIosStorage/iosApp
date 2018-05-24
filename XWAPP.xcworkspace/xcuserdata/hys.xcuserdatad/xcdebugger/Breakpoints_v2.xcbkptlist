@@ -22,31 +22,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
-            timestampString = "548820222.7280329"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "-sendCommentRequestWith:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
-            timestampString = "548820222.7280869"
+            timestampString = "548856574.130953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "-setData"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,7 +58,7 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548820222.885224"
+                  timestampString = "548854048.0142291"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "93"
@@ -89,7 +73,7 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548820222.8878371"
+                  timestampString = "548854048.015999"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"

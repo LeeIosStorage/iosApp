@@ -12,6 +12,7 @@
 
 + (void)setCurrentDefaultStyle{
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
     [SVProgressHUD setMinimumDismissTimeInterval:2.0];
     [SVProgressHUD setCornerRadius:5];
 //    [SVProgressHUD setImageViewSize:CGSizeMake(14, 14)];

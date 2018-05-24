@@ -176,4 +176,36 @@ static bool dateFormatterOFUSInvalid;
     }
 }
 
+#pragma mark -
+#pragma mark - 动画
+//👍
++ (void)popOutsideWithDuration:(NSTimeInterval)duration view:(UIView *)view{
+    
+    view.transform = CGAffineTransformIdentity;
+    [UIView animateKeyframesWithDuration:duration delay:0 options:0 animations: ^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 / 3.0 animations: ^{
+            view.transform = CGAffineTransformMakeScale(1.7f, 1.7f); // 放大
+        }];
+        [UIView addKeyframeWithRelativeStartTime:1/3.0 relativeDuration:1/3.0 animations: ^{
+            view.transform = CGAffineTransformMakeScale(0.8f, 0.8f); // 放小
+        }];
+        [UIView addKeyframeWithRelativeStartTime:2/3.0 relativeDuration:1/3.0 animations: ^{
+            view.transform = CGAffineTransformMakeScale(1.0f, 1.0f); //恢复原样
+        }];
+    } completion:nil];
+}
+
++ (void)popInsideWithDuration:(NSTimeInterval)duration view:(UIView *)view{
+    
+    view.transform = CGAffineTransformIdentity;
+    [UIView animateKeyframesWithDuration:duration delay:0 options:0 animations: ^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 / 2.0 animations: ^{
+            view.transform = CGAffineTransformMakeScale(0.7f, 0.7f); // 放小
+        }];
+        [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1/2.0 animations: ^{
+            view.transform = CGAffineTransformMakeScale(1.0f, 1.0f); //恢复原样
+        }];
+    } completion:nil];
+}
+
 @end

@@ -24,14 +24,15 @@ static LEDataStoreManager *_instance = nil;
 
 //无关用户
 - (NSString *)getStorePath:(NSString *)name{
-//    NSString *fileName = [NSString stringWithFormat:@"%@/%@",HitoDataFileCatalog,name];
-    NSString *filePath = [PathHelper documentDirectoryPathWithName:HitoDataFileCatalog];
+    
+    NSString *filePath = [[PathHelper documentDirectoryPathWithName:HitoDataFileCatalog] stringByAppendingPathComponent:name];
     return filePath;
 }
 
+//栏目排序
 - (NSArray *)getInUseChannelArray{
     
-    NSString* path = [[self getStorePath:nil] stringByAppendingPathComponent:@"inUseChannel.data"];
+    NSString* path = [self getStorePath:@"inUseChannel.data"];
     NSData *data = [[NSData alloc] initWithContentsOfFile:path];
     if (!data) {
         return nil;
@@ -46,10 +47,41 @@ static LEDataStoreManager *_instance = nil;
     NSMutableArray *cacheChannel = [[NSMutableArray alloc] initWithArray:array];
     NSData *data = [cacheChannel modelToJSONData];
     
-    NSString* path = [[self getStorePath:nil] stringByAppendingPathComponent:@"inUseChannel.data"];
+    NSString* path = [self getStorePath:@"inUseChannel.data"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL b = [data writeToFile:path atomically:NO];
-//        NSLog(@"保存:%d",b);
+        [data writeToFile:path atomically:NO];
+    });
+    
+}
+
+//搜索记录
+- (NSArray *)getSearchRecordArray{
+    NSString *path = [self getStorePath:@"newsSearchRecord.xml"];
+    NSArray *recordArray = [[NSArray alloc] initWithContentsOfFile:path];
+    return recordArray;
+}
+
+- (void)saveSearchRecordWithArray:(NSArray *)array{
+    
+    NSMutableArray *recordArray = [NSMutableArray arrayWithArray:array];
+    if (!recordArray) {
+        recordArray = [NSMutableArray array];
+    }
+//    BOOL isAdd = YES;
+//    for (NSString *obj in recordArray) {
+//        if ([obj isEqualToString:content]) {
+//            isAdd = NO;
+//            break;
+//        }
+//    }
+//    if (!isAdd) {
+//        [recordArray removeObject:content];
+//    }
+//    [recordArray insertObject:content atIndex:0];
+    
+    NSString *path = [self getStorePath:@"newsSearchRecord.xml"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [recordArray writeToFile:path atomically:NO];
     });
     
 }

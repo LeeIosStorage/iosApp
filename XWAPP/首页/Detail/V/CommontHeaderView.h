@@ -22,12 +22,14 @@
 
 @property (assign, nonatomic) NSInteger section;
 
+@property (strong, nonatomic) UIImageView *favourImageView;
+
 - (void)updateHeaderData:(id)data;
 
 @end
 
 @protocol CommontHeaderViewDelegate <NSObject>
 @optional
-- (void)commentHeaderWithFavourClick:(NSInteger)section;
+- (void)commentHeaderWithFavourClick:(NSInteger)section headerView:(CommontHeaderView *)headerView;
 
 @end

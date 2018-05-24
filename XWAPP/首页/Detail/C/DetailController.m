@@ -139,7 +139,9 @@ LEShareSheetViewDelegate
     _bottomView.layer.shadowOffset = CGSizeMake(4,4);
     
     self.tableView.tableFooterView = [UIView new];
-    [[UITableViewHeaderFooterView appearance] setTintColor:kAppThemeColor];
+//    [[UITableViewHeaderFooterView appearance] setTintColor:kAppThemeColor];
+    
+    [self.tableView registerClass:[CommontHeaderView class] forHeaderFooterViewReuseIdentifier:@"CommontHeaderView"];
     
     [self keyBoardNoti];
     self.tableView.estimatedRowHeight = 70;
@@ -148,6 +150,8 @@ LEShareSheetViewDelegate
     self.tableView.estimatedSectionHeaderHeight = 70;
     self.tableView.sectionFooterHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedSectionFooterHeight = 24;
+    
+    
     
     self.newsDetailHeaderView.width = HitoScreenW;
 //    self.newsDetailHeaderView.height = 65;
@@ -301,7 +305,7 @@ LEShareSheetViewDelegate
     
 }
 
-- (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel{
+- (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel headerView:(CommontHeaderView *)headerView section:(NSInteger)section{
     
     BOOL like = YES;
     if (commentModel.favour) {
@@ -318,13 +322,27 @@ LEShareSheetViewDelegate
             return ;
         }
         commentModel.favour = !commentModel.favour;
-        [WeakSelf.tableView reloadData];
+//        [WeakSelf.tableView reloadData];
+        
+        headerView.favourImageView.highlighted = !headerView.favourImageView.highlighted;
+        if (headerView.favourImageView.highlighted) {
+            [WYCommonUtils popOutsideWithDuration:0.5 view:headerView.favourImageView];
+        }else{
+            [WYCommonUtils popInsideWithDuration:0.4 view:headerView.favourImageView];
+        }
+        
+        
         
     } failure:^(id responseObject, NSError *error) {
         
     }];
     
 }
+
+//- (void)popOutsideWithDuration:(NSTimeInterval)duration {
+//
+//
+//}
 
 - (void)collectRequest{
     
@@ -521,9 +539,12 @@ LEShareSheetViewDelegate
 
 #pragma mark -
 #pragma mark - CommontHeaderViewDelegate
-- (void)commentHeaderWithFavourClick:(NSInteger)section{
+- (void)commentHeaderWithFavourClick:(NSInteger)section headerView:(CommontHeaderView *)headerView{
+    
+//    CommontHeaderView *header = [self.tableView headerViewForSection:section];
+    
     LENewsCommentModel *commentModel = self.commentLists[section];
-    [self favourRequestWithCommentModel:commentModel];
+    [self favourRequestWithCommentModel:commentModel headerView:headerView section:section];
 }
 
 #pragma mark - 键盘
