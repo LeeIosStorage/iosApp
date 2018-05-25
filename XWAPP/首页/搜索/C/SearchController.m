@@ -86,7 +86,7 @@ HitoPropertyNSMutableArray(searchNewsList);
 
 - (void)addSearchBar {
     
-    UIView *title_ve = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    UIView *title_ve = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width-120, 44)];
     //设置titleview，不过这个view并不是我们需要的居中的view；
     self.navigationItem.titleView = title_ve;
     
@@ -97,7 +97,7 @@ HitoPropertyNSMutableArray(searchNewsList);
 //    });
     
     //要居中view的宽度
-    CGFloat width = HitoScreenW-41-70;
+    CGFloat width = title_ve.width;
     self.search = [[LESearchBar alloc] init];
     self.search.searchBarStyle = UISearchBarStyleMinimal;
     self.search.userInteractionEnabled = YES;
@@ -108,7 +108,6 @@ HitoPropertyNSMutableArray(searchNewsList);
     self.search.frame = CGRectMake(0, 7, width, 30);
     [self.navigationItem.titleView addSubview:self.search];
     
-    self.search.delegate = self;
     [self.search becomeFirstResponder];
 }
 

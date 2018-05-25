@@ -8,13 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LECommentMoreClickBolck)();
+
 typedef NS_ENUM(NSInteger, LECommentMoreCellType){
     LECommentMoreCellTypeNormal = 0,
     LECommentMoreCellTypeMore = 1,
+    LECommentMoreCellTypeALL = 2,
 };
 
 @interface LECommentMoreCell : UITableViewCell
 
 @property (assign, nonatomic) LECommentMoreCellType commentMoreCellType;
+
+@property (copy, nonatomic) LECommentMoreClickBolck commentMoreClickBolck;
 
 @end

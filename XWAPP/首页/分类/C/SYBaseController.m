@@ -48,7 +48,7 @@ HitoPropertyNSArray(allChannelArray);
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.translucent = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     //    self.navigationController.navigationBar.shadowImage = [UIImage new];
     
@@ -182,12 +182,16 @@ HitoPropertyNSArray(allChannelArray);
 
 #pragma mark - 设置搜索条
 - (void)addSearchBar {
-    LESearchBar *search = [[LESearchBar alloc] initWithFrame:CGRectMake(42, 27, HitoScreenW - 84, 30)];
+    
+    UIView *title_ve = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    self.navigationItem.titleView = title_ve;
+    
+    LESearchBar *search = [[LESearchBar alloc] initWithFrame:CGRectMake(0, 7, HitoScreenW - 110, 30)];
     search.searchBarStyle = UISearchBarStyleMinimal;
-//    self.navigationItem.titleView = search;
+    [self.navigationItem.titleView addSubview:search];
     search.userInteractionEnabled = YES;
-    [self.view bringSubviewToFront:search];
-    [self.view addSubview:search];
+//    [self.view bringSubviewToFront:search];
+//    [self.view addSubview:search];
     NSString *placeholder = @"搜索你感兴趣的内容";
     search.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:HitoColorFromRGB(0x666666)];
     
@@ -197,9 +201,9 @@ HitoPropertyNSArray(allChannelArray);
     // 添加点击方法
     [button addTarget:self action:@selector(actionButton) forControlEvents:(UIControlEventTouchUpInside)];
     // 自适应大小
-    button.frame = CGRectMake(0, 0, HitoScreenW, 30);
+    button.frame = CGRectMake(0, 7, HitoScreenW - 110, 30);
     // 添加到 表头 title
-    self.navigationItem.titleView = button;
+    [self.navigationItem.titleView addSubview:button];
 }
 
 - (void)actionButton {
@@ -235,30 +239,19 @@ HitoPropertyNSArray(allChannelArray);
 }
 
 - (CGRect)pageController:(WMPageController *)pageController preferredFrameForContentView:(WMScrollView *)contentView {
-    return CGRectMake(0, HitoNavBarHeight + HitoStatusBarHeight + 32, HitoScreenW, HitoScreenH - HitoTopHeight - 32 - 49);
+    return CGRectMake(0, 40, HitoScreenW, HitoScreenH - HitoTopHeight - 40 - 49);
 }
 
 
 - (CGRect)pageController:(WMPageController *)pageController preferredFrameForMenuView:(WMMenuView *)menuView {
-    return CGRectMake(0, HitoNavBarHeight + HitoStatusBarHeight, HitoScreenW - 50, 32);
+    return CGRectMake(0, 0, HitoScreenW - 50, 40);
     
 }
 
 #pragma mark - searchBarDelegate
-
-
-
-
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
-
-
 
 @end

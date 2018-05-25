@@ -99,7 +99,7 @@
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:self.channelId forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
     NSString *caCheKey = [NSString stringWithFormat:@"GetNews%@",self.channelId];

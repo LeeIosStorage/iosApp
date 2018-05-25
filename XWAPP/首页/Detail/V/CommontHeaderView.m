@@ -16,7 +16,6 @@
 @property (strong, nonatomic) UILabel *nickNameLabel;
 @property (strong, nonatomic) UILabel *areaLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
-@property (strong, nonatomic) UILabel *favourLabel;
 @property (strong, nonatomic) UIButton *favourButton;
 
 @property (strong, nonatomic) UILabel *contentLabel;
@@ -78,13 +77,14 @@
     [self addSubview:self.favourButton];
     [self.favourButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.favourLabel);
-        make.right.centerY.equalTo(self.favourImageView);
+        make.centerY.equalTo(self.favourImageView);
+        make.right.equalTo(self);
         make.height.mas_equalTo(30);
     }];
     
     [self addSubview:self.dateLabel];
     [self.dateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.areaLabel.mas_right).offset(16);
+        make.left.equalTo(self.areaLabel.mas_right).offset(0);
         make.top.equalTo(self.nickNameLabel.mas_bottom).offset(7);
         make.right.equalTo(self.favourLabel.mas_left).offset(-5);
     }];
@@ -115,10 +115,22 @@
     
     LENewsCommentModel *commentModel = (LENewsCommentModel *)data;
     
-    [WYCommonUtils setImageWithURL:[NSURL URLWithString:commentModel.avatarUrl] setImage:self.headImageView setbitmapImage:nil];
-    self.nickNameLabel.text = commentModel.userName;
-    self.areaLabel.text = commentModel.area;
-    self.dateLabel.text = [WYCommonUtils dateDiscriptionFromNowBk:[WYCommonUtils dateFromUSDateString:commentModel.date]];
+    [WYCommonUtils setImageWithURL:[NSURL URLWithString:commentModel.avatarUrl] setImage:self.headImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
+    NSString *userName = commentModel.userName;
+    if (userName.length == 0) {
+        userName = @"匿名用户";
+    }
+    self.nickNameLabel.text = userName;
+    self.areaLabel.text = nil;
+    NSString *areaAndDateString = @"";
+    if (commentModel.area.length > 0) {
+        areaAndDateString = [NSString stringWithFormat:@"%@  ",commentModel.area];
+    }
+    NSString *dateString = [WYCommonUtils dateDiscriptionFromNowBk:[WYCommonUtils dateFromUSDateString:commentModel.date]];
+    if (dateString.length > 0) {
+        areaAndDateString = [NSString stringWithFormat:@"%@%@",areaAndDateString,dateString];
+    }
+    self.dateLabel.text = areaAndDateString;
     self.favourLabel.text = [NSString stringWithFormat:@"%d",commentModel.favourNum];
     self.favourImageView.highlighted = commentModel.favour;
     self.contentLabel.text = commentModel.content;
@@ -195,6 +207,16 @@
         _contentLabel.numberOfLines = 0;
         _contentLabel.textColor = kAppTitleColor;
         _contentLabel.font = HitoPFSCRegularOfSize(16);
+        _contentLabel.userInteractionEnabled = YES;
+        
+        HitoWeakSelf;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
+            if (WeakSelf.delegate && [WeakSelf.delegate respondsToSelector:@selector(commentHeaderWithCommentClick:headerView:)]) {
+                [WeakSelf.delegate commentHeaderWithCommentClick:WeakSelf.section headerView:WeakSelf];
+            }
+        }];
+        [_contentLabel addGestureRecognizer:tap];
+        
     }
     return _contentLabel;
 }

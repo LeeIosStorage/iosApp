@@ -24,6 +24,8 @@
 
 @property (strong, nonatomic) UIImageView *favourImageView;
 
+@property (strong, nonatomic) UILabel *favourLabel;
+
 - (void)updateHeaderData:(id)data;
 
 @end
@@ -31,5 +33,6 @@
 @protocol CommontHeaderViewDelegate <NSObject>
 @optional
 - (void)commentHeaderWithFavourClick:(NSInteger)section headerView:(CommontHeaderView *)headerView;
+- (void)commentHeaderWithCommentClick:(NSInteger)section headerView:(CommontHeaderView *)headerView;
 
 @end

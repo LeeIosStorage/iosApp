@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
-            timestampString = "548856574.130953"
+            timestampString = "548937389.339076"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-setData"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,7 +58,7 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548854048.0142291"
+                  timestampString = "548937389.684409"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "93"
@@ -73,7 +73,7 @@
                   moduleName = "XWAPP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hys/iosApp/XWAPP/WYCore/Public/Login/LELoginManager.m"
-                  timestampString = "548854048.015999"
+                  timestampString = "548937389.68743"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"
@@ -96,6 +96,22 @@
             startingLineNumber = "271"
             endingLineNumber = "271"
             landmarkName = "-POST:needCache:caCheKey:parameters:responseClass:needHeaderAuth:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
+            timestampString = "548937389.339335"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "-getNewsCommentsRequest"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

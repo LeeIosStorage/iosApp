@@ -7,6 +7,7 @@
 //
 
 #import "LESuperViewController.h"
+#import "UIViewController+SetNavigationStyle.h"
 
 @interface LESuperViewController ()
 
@@ -20,6 +21,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = kAppBackgroundColor;
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    
+//    [self setNaStyle];
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -11,11 +11,54 @@
 
 @interface CommentCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+@property (strong, nonatomic) IBOutlet UIView *containerView;
+
+@property (strong, nonatomic) IBOutlet UILabel *contentLabel;
 
 @end
 
 @implementation CommentCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setupSubviews];
+    }
+    return self;
+}
+
+- (void)setupSubviews{
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    [self.contentView addSubview:self.containerView];
+    [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 71, 0, 12));
+    }];
+    
+    [self.containerView addSubview:self.contentLabel];
+    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(8, 12, 0, 12));
+    }];
+}
+
+- (UIView *)containerView{
+    if (!_containerView) {
+        _containerView = [[UIView alloc] init];
+        _containerView.backgroundColor = [UIColor colorWithHexString:@"f0f0f0"];
+    }
+    return _containerView;
+}
+
+- (UILabel *)contentLabel{
+    if (!_contentLabel) {
+        _contentLabel = [[UILabel alloc] init];
+        _contentLabel.numberOfLines = 0;
+        _contentLabel.font = HitoPFSCRegularOfSize(14);
+        _contentLabel.textColor = [UIColor colorWithHexString:@"666666"];
+    }
+    return _contentLabel;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

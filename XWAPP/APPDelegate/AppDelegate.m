@@ -42,14 +42,14 @@
     
     // Custom code
     
-    //    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-        [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
-        [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"btn_back_nor"]];
-        [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
-        [UINavigationBar appearance].topItem.title = @"";
     
-        [UINavigationBar appearance].barTintColor = [UIColor whiteColor];
-        [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
+    [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"btn_back_nor"]];
+    [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
+    [UINavigationBar appearance].barTintColor = [UIColor whiteColor];
+    
+    [UINavigationBar appearance].topItem.title = @"";
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:HitoPFSCRegularOfSize(17)}];
     
     return YES;
 }

@@ -46,6 +46,7 @@
 		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
+		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
@@ -243,6 +244,8 @@
 		4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEAdd.m"; sourceTree = "<group>"; };
 		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
 		4CA6877B20B6A56B004588FC /* LESearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchBar.m; sourceTree = "<group>"; };
+		4CA6877D20B79BAF004588FC /* LECommentDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentDetailViewController.h; sourceTree = "<group>"; };
+		4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentDetailViewController.m; sourceTree = "<group>"; };
 		4CAA26D420B557AD00B7CF31 /* LEShareSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareSheetView.h; sourceTree = "<group>"; };
 		4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareSheetView.m; sourceTree = "<group>"; };
 		4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareWindow.h; sourceTree = "<group>"; };
@@ -1070,6 +1073,8 @@
 				4CF22CA720A29ABD000904F4 /* DetailController.h */,
 				4CF22CA820A29ABD000904F4 /* DetailController.m */,
 				4C3F3BE620AD3CE200B754AF /* DetailController+ContentControl.m */,
+				4CA6877D20B79BAF004588FC /* LECommentDetailViewController.h */,
+				4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */,
 				4CDE8AB620A400CC00679959 /* SYDetailController.h */,
 				4CDE8AB720A400CC00679959 /* SYDetailController.m */,
 			);
@@ -1676,6 +1681,7 @@
 				EC72BC06208DC74700FADE74 /* TagHeaderView.m in Sources */,
 				4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
+				4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */,
 				4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,
 				EC72BC1D208EDCC800FADE74 /* BaseOneCell.m in Sources */,

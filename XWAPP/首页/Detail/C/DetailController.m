@@ -21,6 +21,7 @@
 #import "LENewsCommentModel.h"
 #import "LEShareSheetView.h"
 #import "LEShareWindow.h"
+#import "LECommentDetailViewController.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -34,6 +35,7 @@ LEShareSheetViewDelegate
 {
     CommentCell *_selectedCommentCell;
     LEReplyCommentModel *_currentReplyModel;
+    LENewsCommentModel *_currentCommentModel;
     
     LEShareSheetView *_shareSheetView;
 }
@@ -54,6 +56,7 @@ LEShareSheetViewDelegate
 @property (nonatomic, strong) CommontHFView *huView;
 
 @property (strong, nonatomic) NSMutableArray *commentLists;
+@property (assign, nonatomic) int nextCursor;
 
 @end
 
@@ -121,6 +124,7 @@ LEShareSheetViewDelegate
     
 //    self.view.backgroundColor = kAppThemeColor;
     
+    self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
     
     UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 8.5, 13, 13)];
@@ -191,6 +195,57 @@ LEShareSheetViewDelegate
     [self.tableView reloadData];
 }
 
+- (void)showCommentDetailVcWithSection:(NSInteger)section{
+    if (section < 0 || section >= self.commentLists.count) {
+        return;
+    }
+    LENewsCommentModel *commentModel = self.commentLists[section];
+    
+    LECommentDetailViewController *commentDetailVc = [[LECommentDetailViewController alloc] init];
+    commentDetailVc.commentModel = commentModel;
+    [self.navigationController pushViewController:commentDetailVc animated:YES];
+}
+
+- (void)addMJ {
+    
+    HitoWeakSelf;
+    //上拉加载
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        if (![WeakSelf.tableView.mj_footer isRefreshing]) {
+            return;
+        }
+        [WeakSelf getNewsCommentsRequest];
+    }];
+    [self.tableView.mj_footer setHidden:YES];
+}
+
+- (void)prepareCommentHandle{
+    
+    [_huView.hufuTF becomeFirstResponder];
+    NSString *placeholder = @"回复：";
+    if (_currentCommentModel) {
+        placeholder = [NSString stringWithFormat:@"回复：%@",_currentCommentModel.userName];
+    }else if (_currentReplyModel){
+        placeholder = [NSString stringWithFormat:@"回复：%@",@""];
+    }
+    
+    _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
+    
+    CGRect rect = [_selectedCommentCell convertRect:_selectedCommentCell.frame toView:self.view];
+    
+    UIWindow *window = HitoApplication;
+    [window addSubview:_huView];
+    if (_huView.hufuTF.isFirstResponder) {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+    
+    if (rect.origin.y / 2 + rect.size.height>= HitoScreenH - 216) {
+        
+        
+    }
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsDetailRequest{
@@ -220,6 +275,40 @@ LEShareSheetViewDelegate
 
 - (void)getNewsCommentsRequest{
     
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetComment"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+
+    NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
+    [self.networkManager POST:requestUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+
+        [WeakSelf.tableView.mj_footer endRefreshing];
+
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
+
+        [WeakSelf.commentLists addObjectsFromArray:array];
+
+        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
+        }else{
+            [WeakSelf.tableView.mj_footer setHidden:NO];
+            WeakSelf.nextCursor ++;
+        }
+
+        [WeakSelf.tableView reloadData];
+
+    } failure:^(id responseObject, NSError *error) {
+
+        [WeakSelf.tableView.mj_footer endRefreshing];
+    }];
+    
+    return;
     for (int i = 0; i < 100 ; i ++ ) {
     
         LENewsCommentModel *model = [[LENewsCommentModel alloc] init];
@@ -275,12 +364,10 @@ LEShareSheetViewDelegate
 
 - (void)sendCommentRequestWith:(NSString *)text{
     
-//    LELog(@"准备评论<<<<%@>>>>",text);
     if (text.length == 0) {
         return;
     }
-    
-//    [SVProgressHUD showCustomInfoWithStatus:@"请求失败了!"];
+    [self.huView.hufuTF resignFirstResponder];
     
     HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"commentSave"];
@@ -288,7 +375,12 @@ LEShareSheetViewDelegate
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if (text.length) [params setObject:text forKey:@"content"];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
-    NSString *parentId = _currentReplyModel.commentId;
+    NSString *parentId = nil;
+    if (_currentCommentModel) {
+        parentId = _currentCommentModel.commentId;
+    }else if (_currentReplyModel){
+        parentId = _currentReplyModel.commentId;
+    }
     if (parentId) [params setObject:parentId forKey:@"parentId"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
@@ -296,7 +388,11 @@ LEShareSheetViewDelegate
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
+        self->_currentReplyModel = nil;
+        self->_currentCommentModel = nil;
         [SVProgressHUD showCustomSuccessWithStatus:@"评论成功"];
+        
+        WeakSelf.commentLists = [[NSMutableArray alloc] init];
         [WeakSelf getNewsCommentsRequest];
         
     } failure:^(id responseObject, NSError *error) {
@@ -326,11 +422,16 @@ LEShareSheetViewDelegate
         
         headerView.favourImageView.highlighted = !headerView.favourImageView.highlighted;
         if (headerView.favourImageView.highlighted) {
+            commentModel.favourNum ++;
             [WYCommonUtils popOutsideWithDuration:0.5 view:headerView.favourImageView];
         }else{
+            commentModel.favourNum --;
             [WYCommonUtils popInsideWithDuration:0.4 view:headerView.favourImageView];
         }
-        
+        if (commentModel.favourNum <= 0) {
+            commentModel.favourNum = 0;
+        }
+        headerView.favourLabel.text = [NSString stringWithFormat:@"%d",commentModel.favourNum];
         
         
     } failure:^(id responseObject, NSError *error) {
@@ -413,21 +514,21 @@ LEShareSheetViewDelegate
 #pragma mark - UITableviewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     LENewsCommentModel *commentModel = self.commentLists[section];
-    return commentModel.comments.count;
+    if (commentModel.comments.count == 0) {
+        return commentModel.comments.count;
+    }
+    return commentModel.comments.count + 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.commentLists.count;
 }
 
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
-    LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
     
-    if (indexPath.row == commentModel.comments.count-1) {
+    if (indexPath.row == commentModel.comments.count) {
         static NSString *cellIdentifier = @"LECommentMoreCell";
         LECommentMoreCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (!cell) {
@@ -437,12 +538,20 @@ LEShareSheetViewDelegate
         
         if (commentModel.comments.count > 5) {
             [cell setCommentMoreCellType:LECommentMoreCellTypeMore];
+            
+            HitoWeakSelf;
+            cell.commentMoreClickBolck = ^{
+//                LELog(@"----%ld",indexPath.section);
+                [WeakSelf showCommentDetailVcWithSection:indexPath.section];
+            };
         }else{
             [cell setCommentMoreCellType:LECommentMoreCellTypeNormal];
         }
         
         return cell;
     }
+    
+    LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
     
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
     [cell updateHeaderData:replyModel];
@@ -479,28 +588,16 @@ LEShareSheetViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
-    _currentReplyModel = commentModel.comments[indexPath.row];
-    if (indexPath.row == commentModel.comments.count-1) {
+    
+    if (indexPath.row == commentModel.comments.count) {
         return;
     }
-    
+    _currentCommentModel = nil;
+    _currentReplyModel = commentModel.comments[indexPath.row];
     _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
-    [_huView.hufuTF becomeFirstResponder];
     
-    NSString *placeholder = @"回复：张三";
-    _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
     
-    CGRect rect = [_selectedCommentCell convertRect:_selectedCommentCell.frame toView:self.view];
-
-    if (rect.origin.y / 2 + rect.size.height>= HitoScreenH - 216) {
-        
-        UIWindow *window = HitoApplication;
-        [window addSubview:_huView];
-        if (_huView.hufuTF.isFirstResponder) {
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-            [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        }
-    }
+    [self prepareCommentHandle];
 }
 
 #pragma mark - textfielddelegate
@@ -545,6 +642,14 @@ LEShareSheetViewDelegate
     
     LENewsCommentModel *commentModel = self.commentLists[section];
     [self favourRequestWithCommentModel:commentModel headerView:headerView section:section];
+}
+
+- (void)commentHeaderWithCommentClick:(NSInteger)section headerView:(CommontHeaderView *)headerView{
+    
+    _currentCommentModel = self.commentLists[section];
+    _currentReplyModel = nil;
+    
+    [self prepareCommentHandle];
 }
 
 #pragma mark - 键盘

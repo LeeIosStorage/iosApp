@@ -21,6 +21,8 @@
 
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"commentId"  : @"id",
+             @"date"  : @"public_time",
+             @"favourNum" : @"like_count",
              };
 }
 

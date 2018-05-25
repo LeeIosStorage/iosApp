@@ -519,6 +519,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="m9W-Sc-oEv">
                         <barButtonItem key="rightBarButtonItem" title="搜索" id="LTr-Qt-Vix">
+                            <inset key="largeContentSizeImageInsets" minX="0.0" minY="-1" maxX="0.0" maxY="0.0"/>
                             <connections>
                                 <action selector="searchBarItem:" destination="7uh-gh-A4y" id="8xQ-cQ-2bQ"/>
                             </connections>
@@ -627,29 +628,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8VB-n6-MEg">
-                                <rect key="frame" x="340" y="72" width="20" height="20"/>
+                                <rect key="frame" x="335" y="64" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="H5z-AA-r7o"/>
+                                    <constraint firstAttribute="width" constant="40" id="H5z-AA-r7o"/>
                                     <constraint firstAttribute="width" secondItem="8VB-n6-MEg" secondAttribute="height" id="iyQ-d9-FXI"/>
                                 </constraints>
+                                <inset key="contentEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" image="home_more_nor"/>
                                 <connections>
                                     <action selector="addBtnAction:" destination="v97-VW-gnm" eventType="touchUpInside" id="Taw-AO-zdp"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5yA-H1-jNv">
-                                <rect key="frame" x="330" y="64" width="10" height="50"/>
+                                <rect key="frame" x="325" y="64" width="10" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="10" id="A4k-sE-sIS"/>
-                                    <constraint firstAttribute="height" constant="50" id="oro-I9-Baa"/>
+                                    <constraint firstAttribute="height" constant="40" id="oro-I9-Baa"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="8VB-n6-MEg" firstAttribute="trailing" secondItem="dlg-MA-WkL" secondAttribute="trailing" constant="-15" id="5mc-gd-gkR"/>
+                            <constraint firstItem="8VB-n6-MEg" firstAttribute="trailing" secondItem="dlg-MA-WkL" secondAttribute="trailing" id="5mc-gd-gkR"/>
                             <constraint firstItem="8VB-n6-MEg" firstAttribute="leading" secondItem="5yA-H1-jNv" secondAttribute="trailing" id="Kz6-k0-DBY"/>
-                            <constraint firstItem="8VB-n6-MEg" firstAttribute="top" secondItem="Je3-vg-j2p" secondAttribute="bottom" constant="8" id="h4S-Qd-5BX"/>
+                            <constraint firstItem="8VB-n6-MEg" firstAttribute="top" secondItem="Je3-vg-j2p" secondAttribute="bottom" id="h4S-Qd-5BX"/>
                             <constraint firstItem="5yA-H1-jNv" firstAttribute="top" secondItem="Je3-vg-j2p" secondAttribute="bottom" id="qPf-rr-zvU"/>
                         </constraints>
                     </view>
@@ -1734,6 +1736,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="containerView" destination="350-1a-CGh" id="t2G-0t-wNn"/>
                                             <outlet property="contentLabel" destination="Pbu-k4-K78" id="ygk-Lw-i4p"/>
                                         </connections>
                                     </tableViewCell>
@@ -1823,6 +1826,7 @@
                                     <constraint firstItem="Ebe-qq-JgG" firstAttribute="centerY" secondItem="pSx-1Z-7oa" secondAttribute="centerY" id="d4z-t1-dKb"/>
                                     <constraint firstItem="Ebe-qq-JgG" firstAttribute="leading" secondItem="YGh-O2-2mG" secondAttribute="trailing" constant="20" id="day-h2-aWE"/>
                                     <constraint firstItem="YGh-O2-2mG" firstAttribute="centerY" secondItem="pSx-1Z-7oa" secondAttribute="centerY" id="gcH-ud-6EA"/>
+                                    <constraint firstAttribute="height" constant="49" id="gwC-yQ-kmk"/>
                                     <constraint firstItem="Ebe-qq-JgG" firstAttribute="width" secondItem="Ebe-qq-JgG" secondAttribute="height" id="zZQ-gn-AhI"/>
                                 </constraints>
                             </view>
@@ -1831,11 +1835,10 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="pSx-1Z-7oa" secondAttribute="bottom" id="Hiy-Ja-B6U"/>
                             <constraint firstItem="O4E-dc-v67" firstAttribute="top" secondItem="cFT-zJ-7Qg" secondAttribute="bottom" id="I3v-wM-MLd"/>
-                            <constraint firstItem="pSx-1Z-7oa" firstAttribute="top" secondItem="O4E-dc-v67" secondAttribute="bottom" id="KS2-HN-ZcM"/>
                             <constraint firstAttribute="trailing" secondItem="pSx-1Z-7oa" secondAttribute="trailing" id="UVG-vE-Pig"/>
                             <constraint firstItem="O4E-dc-v67" firstAttribute="leading" secondItem="1vx-0D-px9" secondAttribute="leading" id="WLE-8Z-VDc"/>
                             <constraint firstItem="pSx-1Z-7oa" firstAttribute="leading" secondItem="1vx-0D-px9" secondAttribute="leading" id="enb-Kb-TQP"/>
-                            <constraint firstItem="l8C-VE-b6A" firstAttribute="top" secondItem="O4E-dc-v67" secondAttribute="bottom" constant="49" id="jQp-Ia-KZG"/>
+                            <constraint firstAttribute="bottom" secondItem="O4E-dc-v67" secondAttribute="bottom" constant="49" id="jQp-Ia-KZG"/>
                             <constraint firstAttribute="trailing" secondItem="O4E-dc-v67" secondAttribute="trailing" id="xlm-vr-JiV"/>
                         </constraints>
                     </view>
