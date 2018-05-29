@@ -12,7 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StatusView">
             <connections>
+                <outlet property="cancelCollectButton" destination="Bxs-Oj-ixm" id="QRH-sV-HXf"/>
                 <outlet property="commentCountLabel" destination="fAn-j8-x89" id="1hZ-z5-lNx"/>
+                <outlet property="deleButton" destination="eav-2C-HoM" id="Cxw-Sa-YST"/>
                 <outlet property="sourceLabel" destination="epx-eY-beo" id="WMr-4J-Kx3"/>
                 <outlet property="tagLabel" destination="jFb-T3-FRQ" id="kpv-4W-Hod"/>
                 <outlet property="timeLabel" destination="Leq-2E-9bk" id="ZKV-xw-qmu"/>
@@ -47,7 +49,7 @@
                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eav-2C-HoM">
+                <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eav-2C-HoM" customClass="HotUpButton">
                     <rect key="frame" x="327" y="61.5" width="33" height="33"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="33" id="4TP-lU-BCA"/>
@@ -59,10 +61,10 @@
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bxs-Oj-ixm">
-                    <rect key="frame" x="315" y="68" width="60" height="20"/>
+                    <rect key="frame" x="307" y="68" width="56" height="20"/>
                     <color key="backgroundColor" red="1" green="0.29411764705882354" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="60" id="GOx-U5-9pp"/>
+                        <constraint firstAttribute="width" constant="56" id="GOx-U5-9pp"/>
                         <constraint firstAttribute="height" constant="20" id="R93-Sv-9gg"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="10"/>
@@ -72,7 +74,7 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="5"/>
+                            <integer key="value" value="8"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
@@ -83,7 +85,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="eav-2C-HoM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="0Av-a7-j4Y"/>
-                <constraint firstAttribute="trailing" secondItem="Bxs-Oj-ixm" secondAttribute="trailing" id="8I2-Eg-res"/>
+                <constraint firstAttribute="trailing" secondItem="Bxs-Oj-ixm" secondAttribute="trailing" constant="12" id="8I2-Eg-res"/>
                 <constraint firstAttribute="trailing" secondItem="eav-2C-HoM" secondAttribute="trailing" constant="15" id="KXR-0k-ZBv"/>
                 <constraint firstItem="fAn-j8-x89" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Kr0-zE-pWP"/>
                 <constraint firstItem="epx-eY-beo" firstAttribute="leading" secondItem="jFb-T3-FRQ" secondAttribute="trailing" constant="15" id="NAl-rE-Id6"/>

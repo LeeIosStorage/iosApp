@@ -103,24 +103,38 @@
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
     NSString *caCheKey = [NSString stringWithFormat:@"GetNews%@",self.channelId];
-    [self.networkManager POST:requestUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    BOOL needCache = NO;
+    if (self.nextCursor == 1) needCache = YES;
+    
+    [self.networkManager POST:requestUrl needCache:needCache caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
-        [WeakSelf.tableView.mj_header endRefreshing];
-        [WeakSelf.tableView.mj_footer endRefreshing];
-        [WeakSelf endRereshShowTipView];
+        if (!isCache) {
+            [WeakSelf.tableView.mj_header endRefreshing];
+            [WeakSelf.tableView.mj_footer endRefreshing];
+            if (WeakSelf.nextCursor == 1) {
+                [WeakSelf endRereshShowTipView];
+            }
+        }
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
         
+        if (WeakSelf.nextCursor == 1) {
+            WeakSelf.newsList = [[NSMutableArray alloc] init];
+        }
         [WeakSelf.newsList addObjectsFromArray:array];
         
-        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
-            [WeakSelf.tableView.mj_footer setHidden:YES];
-        }else{
-            [WeakSelf.tableView.mj_footer setHidden:NO];
-            WeakSelf.nextCursor ++;
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                [WeakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.nextCursor ++;
+                [WeakSelf.tableView.mj_footer resetNoMoreData];
+            }
         }
         
         [WeakSelf.tableView reloadData];
@@ -136,7 +150,7 @@
 - (void)newsShieldRequestWithReasons:(NSArray *)reasons{
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:_indexPath.row];
-    HitoWeakSelf;
+//    HitoWeakSelf;
 //    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@""];
 //    NSMutableDictionary *params = [NSMutableDictionary dictionary];
 //    [params setObject:newsModel.newsId forKey:@"newsId"];
@@ -178,7 +192,7 @@
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseOneCell"];
         
         [cell.statusView deleblockAction:^{
-            [weakSelf deleNew:indexPath curCell:cell];
+            [weakSelf deleNewCurCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
@@ -187,7 +201,7 @@
     } else if (count == 3) {
         BaseThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseThirdCell"];
         [cell.statusView deleblockAction:^{
-            [weakSelf deleNew:indexPath curCell:cell];
+            [weakSelf deleNewCurCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
@@ -196,7 +210,7 @@
     } else {
         BaseTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseTwoCell"];
         [cell.statusView deleblockAction:^{
-            [weakSelf deleNew:indexPath curCell:cell];
+            [weakSelf deleNewCurCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
@@ -215,8 +229,9 @@
 }
 
 #pragma mark - 删除按钮
-- (void)deleNew:(NSIndexPath *)indexPath curCell:(UITableViewCell *)cell {
+- (void)deleNewCurCell:(UITableViewCell *)cell {
     
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     if ([_indexPath isEqual:indexPath]) {
         return;
     }
@@ -297,7 +312,7 @@
     [self.tableView.mj_header beginRefreshing];
     
     //上拉加载
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
         if (![weakSelf.tableView.mj_footer isRefreshing]) {
             return;
         }

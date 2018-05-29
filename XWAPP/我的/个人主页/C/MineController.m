@@ -13,7 +13,7 @@
 #import "MineSecondCell.h"
 #import "MineThirdCell.h"
 #import "MineNaView.h"
-
+#import "LECollectViewController.h"
 
 
 
@@ -34,6 +34,17 @@ UIScrollViewDelegate
 
 @implementation MineController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[HitoImage(@"mine_top_background") stretchableImageWithLeftCapWidth:HitoScreenW/2 topCapHeight:0] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setTB];
@@ -44,12 +55,15 @@ UIScrollViewDelegate
     [self refreshData];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (void)updateViewConstraints {
     [super updateViewConstraints];
     _header.allBottomViewTop.constant = HitoActureHeight(40) / 3;
     _header.centerBigView.constant = HitoActureHeight(60) / 2;
-
-    
 }
 
 #pragma mark -
@@ -83,7 +97,7 @@ UIScrollViewDelegate
     _header.centerMine.bottomLB.text = @"30";
     _header.rightMine.bottomLB.text = @"40";
     
-    [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:nil];
+    [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
 }
 
@@ -112,20 +126,6 @@ UIScrollViewDelegate
         //
     }];
     
-}
-
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:HitoImage(@"mine_background") forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
 }
 
 - (IBAction)leftBarButton:(UIBarButtonItem *)sender {
@@ -171,7 +171,7 @@ UIScrollViewDelegate
     } else if (indexPath.section == 2) {
         MineThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineThirdCell"];
 
-        SDCycleScrollView *cycle = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, HitoScreenW, cell.frame.size.height) delegate:self placeholderImage:HitoImage(@"mine_top_background")];
+        SDCycleScrollView *cycle = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, HitoScreenW, cell.frame.size.height) delegate:self placeholderImage:nil];
         cycle.imageURLStringsGroup = self.imageArr;
         [cell.centerView addSubview:cycle];
         return cell;
@@ -212,6 +212,22 @@ UIScrollViewDelegate
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == 0) {
+        
+    } else if (indexPath.section == 1) {
+        
+    } else if (indexPath.section == 2) {
+        
+    } else {
+        if (indexPath.row == 1) {
+            LECollectViewController *collectVc = [[LECollectViewController alloc] init];
+            collectVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:collectVc animated:YES];
+        }
+    }
+}
 
 
 #pragma mark -
@@ -266,8 +282,10 @@ UIScrollViewDelegate
     CGPoint offset = scrollView.contentOffset;
     if (offset.y <= 0) {
         self.tableView.backgroundView = self.tableBackgroundView;
+        [self setCustomTitle:@""];
     }else{
         self.tableView.backgroundView = nil;
+        [self setCustomTitle:[LELoginUserManager nickName]];
     }
 }
 

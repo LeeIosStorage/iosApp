@@ -39,7 +39,9 @@
 #endif
 
 - (IBAction)deleAction:(UIButton *)sender {
-    _deleeBlock();
+    if (_deleeBlock) {
+        _deleeBlock();
+    }
 }
 
 - (void)deleblockAction:(DeleBlock)deleblock {
@@ -47,6 +49,9 @@
 }
 
 - (IBAction)cancelAction:(UIButton *)sender {
+    if (_deleeBlock) {
+        _deleeBlock();
+    }
 }
 
 @end

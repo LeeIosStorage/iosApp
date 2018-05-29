@@ -21,4 +21,6 @@
 
 @property (nonatomic, strong) NSString *content;//正文
 
+@property (nonatomic, strong) NSString *favoriteId;//收藏id
+
 @end

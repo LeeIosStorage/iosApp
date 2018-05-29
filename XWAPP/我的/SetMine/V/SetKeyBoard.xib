@@ -39,7 +39,7 @@
                             <integer key="value" value="15"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                            <integer key="value" value="1"/>
+                            <real key="value" value="0.5"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColorFromUIColor">
                             <color key="value" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,7 +55,7 @@
                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nqF-gE-9QG">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nqF-gE-9QG" customClass="HotUpButton">
                     <rect key="frame" x="429" y="79" width="40" height="10"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="ZvP-ZS-UJt"/>
@@ -68,7 +68,7 @@
                         <action selector="clickSure:" destination="iN0-l3-epB" eventType="touchUpInside" id="XUw-UE-ozN"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Da-GS-yes">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Da-GS-yes" customClass="HotUpButton">
                     <rect key="frame" x="364" y="79" width="40" height="10"/>
                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
                     <state key="normal" title="取消">
@@ -101,7 +101,7 @@
                 <outlet property="nameTF" destination="0V2-st-ZW0" id="nfP-4J-Czt"/>
                 <outlet property="titleLB" destination="5gs-tL-2FI" id="Xms-Wc-JpK"/>
             </connections>
-            <point key="canvasLocation" x="-29" y="212"/>
+            <point key="canvasLocation" x="-51" y="113"/>
         </view>
     </objects>
 </document>

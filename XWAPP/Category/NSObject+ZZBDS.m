@@ -24,6 +24,15 @@
     }
 }
 
+- (NSString *)numberSuitScanf:(NSString*)number{
+    
+    if ([self checkoutPhoneNum:number]) {
+        
+        NSString *numberString = [number stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+        return numberString;
+    }
+    return number;
+}
 
 - (void)addAlertWithVC:(UIViewController *)alertVC title:(NSString *)title message:(NSString *)message {
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];

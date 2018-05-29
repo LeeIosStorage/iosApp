@@ -22,6 +22,7 @@
 #import "LEShareSheetView.h"
 #import "LEShareWindow.h"
 #import "LECommentDetailViewController.h"
+#import "LELoginManager.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -33,7 +34,8 @@ CommontHeaderViewDelegate,
 LEShareSheetViewDelegate
 >
 {
-    CommentCell *_selectedCommentCell;
+    CGRect _currentRect;
+    
     LEReplyCommentModel *_currentReplyModel;
     LENewsCommentModel *_currentCommentModel;
     
@@ -67,6 +69,7 @@ LEShareSheetViewDelegate
 - (void)dealloc{
     LELog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_huView removeFromSuperview];
 }
 
 - (instancetype)initWithNewsId:(NSString *)newsId{
@@ -167,6 +170,8 @@ LEShareSheetViewDelegate
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
     
+    [self addMJ];
+    
 }
 
 - (void)setData{
@@ -203,46 +208,53 @@ LEShareSheetViewDelegate
     
     LECommentDetailViewController *commentDetailVc = [[LECommentDetailViewController alloc] init];
     commentDetailVc.commentModel = commentModel;
+    commentDetailVc.newsId = self.newsId;
     [self.navigationController pushViewController:commentDetailVc animated:YES];
 }
 
-- (void)addMJ {
+- (void)addMJ{
     
     HitoWeakSelf;
     //上拉加载
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    LERefreshStateNoMoreDataText = @"评论已加载完";
+    LERefreshFooter *refreshFooter = [LERefreshFooter footerWithRefreshingBlock:^{
         if (![WeakSelf.tableView.mj_footer isRefreshing]) {
             return;
         }
         [WeakSelf getNewsCommentsRequest];
     }];
+    self.tableView.mj_footer = refreshFooter;
     [self.tableView.mj_footer setHidden:YES];
 }
 
 - (void)prepareCommentHandle{
     
-    [_huView.hufuTF becomeFirstResponder];
     NSString *placeholder = @"回复：";
     if (_currentCommentModel) {
-        placeholder = [NSString stringWithFormat:@"回复：%@",_currentCommentModel.userName];
+        NSString *userName = _currentCommentModel.userName;
+        if (userName.length == 0) userName = @"";
+        placeholder = [NSString stringWithFormat:@"回复：%@",userName];
+        
     }else if (_currentReplyModel){
-        placeholder = [NSString stringWithFormat:@"回复：%@",@""];
+        NSString *userName = _currentReplyModel.userName;
+        if (userName.length == 0) userName = @"";
+        placeholder = [NSString stringWithFormat:@"回复：%@",userName];
     }
     
     _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
     
-    CGRect rect = [_selectedCommentCell convertRect:_selectedCommentCell.frame toView:self.view];
+    [_huView.hufuTF becomeFirstResponder];
     
     UIWindow *window = HitoApplication;
     [window addSubview:_huView];
     if (_huView.hufuTF.isFirstResponder) {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    }
-    
-    if (rect.origin.y / 2 + rect.size.height>= HitoScreenH - 216) {
-        
-        
+        CGPoint offset = self.tableView.contentOffset;
+        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        [self.tableView setContentOffset:offset animated:YES];
+        HitoWeakSelf;
+        [UIView animateWithDuration:0.3 animations:^{
+            WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 49, HitoScreenW, 49);
+        }];
     }
 }
 
@@ -283,7 +295,10 @@ LEShareSheetViewDelegate
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
 
     NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
-    [self.networkManager POST:requestUrl needCache:YES caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    BOOL needCache = NO;
+    if (self.nextCursor == 1) needCache = YES;
+    
+    [self.networkManager POST:requestUrl needCache:needCache caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
 
         [WeakSelf.tableView.mj_footer endRefreshing];
 
@@ -291,14 +306,22 @@ LEShareSheetViewDelegate
             return ;
         }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
-
+        
+        if (WeakSelf.nextCursor == 1) {
+            WeakSelf.commentLists = [[NSMutableArray alloc] init];
+        }
+        
         [WeakSelf.commentLists addObjectsFromArray:array];
 
-        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
-            [WeakSelf.tableView.mj_footer setHidden:YES];
-        }else{
-            [WeakSelf.tableView.mj_footer setHidden:NO];
-            WeakSelf.nextCursor ++;
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                [WeakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.nextCursor ++;
+                [WeakSelf.tableView.mj_footer resetNoMoreData];
+            }
         }
 
         [WeakSelf.tableView reloadData];
@@ -307,67 +330,22 @@ LEShareSheetViewDelegate
 
         [WeakSelf.tableView.mj_footer endRefreshing];
     }];
-    
-    return;
-    for (int i = 0; i < 100 ; i ++ ) {
-    
-        LENewsCommentModel *model = [[LENewsCommentModel alloc] init];
-        if (i%2 == 0) {
-            
-            model.commentId = [NSString stringWithFormat:@"%d",i+1];
-            model.content = @"此时，就产生了一个问题：正常情况下， label2 的最右边是不可能只距离父视图20px的，这就使得肯定有一个 UILabel 不能使用它的 intrinsicContentSize 了，那么应该修改哪个 UILabel 的宽度来让 label2 满足这个约束呢？解决方案还是设置优先级，但这次我们需要设置的是两种约束的优先级";
-            model.userName = @"疯子";
-            model.avatarUrl = @"http://p1.qzone.la/upload/20150102/a3zs6l69.jpg";
-            model.date = @"2018-05-19 14:09:09";
-            model.area = @"浙江杭州";
-            model.favourNum = 2009;
-            model.favour = YES;
-            
-            LEReplyCommentModel *replyModel = [LEReplyCommentModel new];
-            replyModel.content = @"李旺回复张三: 当然，你也可以自己通过数字来设置它们的优先级。";
-            NSMutableArray *replyMA = [NSMutableArray array];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            model.comments = replyMA;
-        }else{
-            model.commentId = [NSString stringWithFormat:@"%d",i+1];
-            model.content = @"大家可能有时会发现，我们在设置 UILabel 的约束时，可以不设置它的大小约束，这样它就会根据自己的内容（文字）来确定它的大小。如一下场景：";
-            model.userName = @"用户昵称";
-            model.avatarUrl = @"http://www.qqxoo.com/uploads/allimg/161020/1356023128-13.jpg";
-            model.date = @"2018-05-20 14:09:09";
-            model.area = @"杭州西湖";
-            model.favourNum = 209;
-            model.favour = NO;
-            
-            LEReplyCommentModel *replyModel = [LEReplyCommentModel new];
-            replyModel.content = @"李旺回复张三: 两个 UILabel 的宽度和高度都根据它们的内容来设置了。而这是为什么呢？原来 UIView 具有一个属性：";
-            NSMutableArray *replyMA = [NSMutableArray array];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            [replyMA addObject:replyModel];
-            model.comments = replyMA;
-        }
-        
-        
-        [self.commentLists addObject:model];
-        
-    }
-    
-    [self.tableView reloadData];
-    
 }
 
 - (void)sendCommentRequestWith:(NSString *)text{
     
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
     if (text.length == 0) {
         return;
     }
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.huView.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 49);
     [self.huView.hufuTF resignFirstResponder];
+    
+    [SVProgressHUD showCustomWithStatus:nil];
     
     HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"commentSave"];
@@ -383,7 +361,7 @@ LEShareSheetViewDelegate
     }
     if (parentId) [params setObject:parentId forKey:@"parentId"];
     
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -392,6 +370,9 @@ LEShareSheetViewDelegate
         self->_currentCommentModel = nil;
         [SVProgressHUD showCustomSuccessWithStatus:@"评论成功"];
         
+        WeakSelf.huView.hufuTF.text = nil;
+        
+        WeakSelf.nextCursor = 1;
         WeakSelf.commentLists = [[NSMutableArray alloc] init];
         [WeakSelf getNewsCommentsRequest];
         
@@ -403,16 +384,21 @@ LEShareSheetViewDelegate
 
 - (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel headerView:(CommontHeaderView *)headerView section:(NSInteger)section{
     
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
     BOOL like = YES;
     if (commentModel.favour) {
         like = NO;
     }
-    HitoWeakSelf;
+//    HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"DoLikeOrUnLike"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:commentModel.commentId forKey:@"commentId"];
     [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -440,14 +426,29 @@ LEShareSheetViewDelegate
     
 }
 
-//- (void)popOutsideWithDuration:(NSTimeInterval)duration {
-//
-//
-//}
-
 - (void)collectRequest{
     
-    self.collectButton.selected = !self.collectButton.selected;
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SaveFavoriteNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD showCustomInfoWithStatus:@"收藏成功"];
+        WeakSelf.collectButton.selected = !WeakSelf.collectButton.selected;
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 #pragma mark -
@@ -536,7 +537,7 @@ LEShareSheetViewDelegate
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        if (commentModel.comments.count > 5) {
+        if (commentModel.comments.count > 9) {
             [cell setCommentMoreCellType:LECommentMoreCellTypeMore];
             
             HitoWeakSelf;
@@ -594,8 +595,8 @@ LEShareSheetViewDelegate
     }
     _currentCommentModel = nil;
     _currentReplyModel = commentModel.comments[indexPath.row];
-    _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
-    
+//    _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
+    _currentRect = [tableView rectForRowAtIndexPath:indexPath];
     
     [self prepareCommentHandle];
 }
@@ -648,6 +649,7 @@ LEShareSheetViewDelegate
     
     _currentCommentModel = self.commentLists[section];
     _currentReplyModel = nil;
+    _currentRect = [self.tableView rectForHeaderInSection:section];
     
     [self prepareCommentHandle];
 }
@@ -690,8 +692,9 @@ LEShareSheetViewDelegate
         }];
     }else if (self.huView.hufuTF.isFirstResponder){
         
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        CGPoint offset = self.tableView.contentOffset;
+        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        [self.tableView setContentOffset:offset animated:YES];
         
         [UIView animateWithDuration:0.3 animations:^{
             WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 49, HitoScreenW, 49);

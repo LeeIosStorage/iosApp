@@ -75,9 +75,23 @@
     
     LEReplyCommentModel *commentModel = (LEReplyCommentModel *)data;
     NSString *content = commentModel.content;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:content];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(0, 2)];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(4, 2)];
+    NSString *userName = commentModel.userName;
+    if (userName.length == 0) userName = @"匿名用户";
+    NSString *replyUserName = commentModel.replyUserName;
+    if (replyUserName.length == 0) replyUserName = @"";
+    
+    NSString *contentString = nil;
+    if (replyUserName.length > 0) {
+        contentString = [NSString stringWithFormat:@"%@回复%@：%@",userName,replyUserName,content];
+    }else{
+        contentString = [NSString stringWithFormat:@"%@：%@",userName,content];
+    }
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:contentString];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(0, userName.length)];
+    if (replyUserName.length > 0) {
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"3477c0"] range:NSMakeRange(userName.length+2, replyUserName.length)];
+    }
     
     self.contentLabel.attributedText = attributedString;
 }

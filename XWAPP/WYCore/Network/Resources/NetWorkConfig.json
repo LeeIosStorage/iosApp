@@ -59,4 +59,22 @@
         "control" : "sms",
         "action"  : "Send"
     },
+    "GetFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetFavoriteNews"
+    },
+    "SaveFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveFavoriteNews"
+    },
+    "DeleteFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteFavoriteNews"
+    },
 }

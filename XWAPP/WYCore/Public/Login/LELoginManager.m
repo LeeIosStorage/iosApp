@@ -7,6 +7,7 @@
 //
 
 #import "LELoginManager.h"
+#import "LENavigationController.h"
 
 @interface LELoginManager ()
 
@@ -52,10 +53,15 @@
     self.loginCancelBlock = cancel;
     
     PhoneLogin *phoneVc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PhoneLogin"];
+    phoneVc.hidesBottomBarWhenPushed = YES;
     if (!self.fromViewController) {
         self.fromViewController = fromViewController;
     }
-    [fromViewController presentViewController:phoneVc animated:YES completion:^{
+    
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:phoneVc];
+    nav.navigationBarHidden = YES;
+    
+    [fromViewController presentViewController:nav animated:YES completion:^{
         
     }];
     

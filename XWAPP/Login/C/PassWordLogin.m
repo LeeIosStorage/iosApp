@@ -7,6 +7,7 @@
 //
 
 #import "PassWordLogin.h"
+#import "LEWebViewController.h"
 
 @interface PassWordLogin ()
 
@@ -85,13 +86,41 @@
             [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
             return ;
         }
-        [SVProgressHUD showCustomSuccessWithStatus:HitoLoginSucTitle];
+        if ([dataObject isKindOfClass:[NSDictionary class]]) {
+            [LELoginUserManager setUserID:dataObject[@"uid"]];
+            id token = dataObject[@"token"];
+            if ([token isKindOfClass:[NSString class]]) {
+                NSData *data = [token dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *error = nil;
+                id tokenObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                if ([tokenObject isKindOfClass:[NSDictionary class]]) {
+                    [LELoginUserManager setAuthToken:tokenObject[@"access_token"]];
+                }
+            }
+            [WeakSelf refreshUserInfoRequest];
+        }
         
         
     } failure:^(id responseObject, NSError *error) {
         [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
     }];
     
+}
+
+- (void)refreshUserInfoRequest{
+    
+    [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
+        
+        if (isSuccess) {
+            if (self.loginSuccessBlock) {
+                self.loginSuccessBlock();
+            }
+            [SVProgressHUD showCustomSuccessWithStatus:HitoLoginSucTitle];
+        }else{
+            //            self.loginFailureBlock(nil);
+            [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+        }
+    }];
 }
 
 #pragma mark - bthAction
@@ -104,8 +133,13 @@
 #pragma mark - action
 
 - (IBAction)duigouAction:(UIButton *)sender {
+    
 }
+
 - (IBAction)xieyi:(UIButton *)sender {
+    [self resign];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+    [self.navigationController pushViewController:webVc animated:YES];
 }
 
 - (IBAction)loginAction:(UIButton *)sender {

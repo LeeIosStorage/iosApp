@@ -10,6 +10,28 @@
 
 @interface WYCommonUtils : NSObject
 
+/**
+ *  根据固定的Width 计算 AttributedString 的Size
+ *
+ *  @param text        文本
+ *  @param lineSpacing 行高（对应getAttributedStringWithString:lineSpacing:alignment:）
+ *  @param font        自定义字体
+ *  @param width       固定的Width
+ *
+ *  @return text的Size
+ */
++ (CGSize)sizeWithAttributedText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font width:(float)width;
+/**
+ *  NSString转为NSAttributedString
+ *
+ *  @param string      NSString
+ *  @param lineSpacing 行高（对应sizeWithAttributedText:lineSpacing:font:width方法）
+ *  @param alignment   NSTextAlignment
+ *
+ *  @return NSAttributedString
+ */
++ (NSAttributedString *)getAttributedStringWithString:(NSString*)string lineSpacing:(CGFloat)lineSpacing alignment:(NSTextAlignment)alignment;
+
 #pragma mark -
 #pragma mark - 富文本
 //颜色 字体

@@ -12,4 +12,7 @@
 
 - (UIImage *)imageCompressForTargetSize:(CGSize)size;
 
+//颜色生成图片
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
 @end

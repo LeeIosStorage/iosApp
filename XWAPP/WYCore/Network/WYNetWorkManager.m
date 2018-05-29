@@ -264,7 +264,7 @@
                     NSArray *array = [NSArray modelArrayWithClass:classType json:responseDataObject];
                     
                     if (needCache) {
-                        [cache setObject:array forKey:URLString];
+                        [cache setObject:array forKey:caCheKey];
                     }
                     success(status,message,NO,array);
                 } else {
@@ -273,13 +273,16 @@
                     id model = dic[kResponseObjectKeyObject];
                     
                     if (needCache) {
-                        [cache setObject:model forKey:URLString];
+                        [cache setObject:model forKey:caCheKey];
                         
                     }
                     success(status,message,NO,model);
                 }
             } else {
                 
+                if (needCache) {
+                    [cache setObject:responseDataObject forKey:caCheKey];
+                }
                 success(status,message,NO,responseDataObject);
             }
         }
