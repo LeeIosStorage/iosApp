@@ -12,6 +12,11 @@
 
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"commentId"  : @"id",
+             @"date"  : @"public_time",
+             @"favourNum" : @"like_count",
+             @"userName"  : @"nickname",
+             @"avatarUrl" : @"head_img_url",
+             @"userId"    : @"uid",
              };
 }
 
@@ -23,6 +28,16 @@
     return @{@"commentId"  : @"id",
              @"date"  : @"public_time",
              @"favourNum" : @"like_count",
+             @"userName"  : @"nickname",
+             @"avatarUrl" : @"head_img_url",
+             @"userId"    : @"uid",
+             @"comments"  : @"children",
+             };
+}
+
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{
+             @"comments"   : [LEReplyCommentModel class],
              };
 }
 

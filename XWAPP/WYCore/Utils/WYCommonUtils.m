@@ -14,6 +14,29 @@
 
 @implementation WYCommonUtils
 
++ (CGSize)sizeWithAttributedText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font width:(float)width{
+    
+    NSUInteger length = [text length];
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text];
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    style.lineSpacing = lineSpacing;
+    NSDictionary *attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:style};
+    [attrString addAttributes:attributes range:NSMakeRange(0, length)];
+    //NSStringDrawingUsesFontLeading 不需要这个属性
+    CGSize textSize = [attrString boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingTruncatesLastVisibleLine| NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+    return textSize;
+}
+
++ (NSAttributedString *)getAttributedStringWithString:(NSString*)string lineSpacing:(CGFloat)lineSpacing alignment:(NSTextAlignment)alignment{
+    NSUInteger length = [string length];
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    style.lineSpacing = lineSpacing;
+    style.alignment = alignment;
+    [attrString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, length)];
+    return attrString;
+}
+
 #pragma mark -
 #pragma mark - 富文本
 +(NSMutableAttributedString *)stringToColorAndFontAttributeString:(NSString *)text range:(NSRange)range font:(UIFont *)font color:(UIColor *)color{

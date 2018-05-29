@@ -13,4 +13,6 @@
 
 @property (strong, nonatomic) LENewsCommentModel *commentModel;
 
+@property (strong, nonatomic) NSString *newsId;
+
 @end

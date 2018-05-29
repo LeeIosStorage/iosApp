@@ -12,6 +12,7 @@
 
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"newsId"  : @"id",
+             @"favoriteId"  : @"fid",
              };
 }
 

@@ -23,9 +23,9 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6s-7i-Gqe">
-                    <rect key="frame" x="333" y="68" width="30" height="32"/>
+                    <rect key="frame" x="321" y="68" width="54" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="OZJ-yE-mhC"/>
+                        <constraint firstAttribute="width" constant="54" id="OZJ-yE-mhC"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
                     <state key="normal" title="发送">
@@ -71,12 +71,12 @@
             <constraints>
                 <constraint firstItem="woZ-9s-oWN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="W4P-N7-ezn"/>
                 <constraint firstItem="9bs-kG-SkK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="cfF-h9-1RG"/>
-                <constraint firstItem="g6s-7i-Gqe" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="trailing" constant="12" id="dgJ-8n-T3q"/>
+                <constraint firstItem="g6s-7i-Gqe" firstAttribute="leading" secondItem="9bs-kG-SkK" secondAttribute="trailing" id="dgJ-8n-T3q"/>
                 <constraint firstItem="9bs-kG-SkK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="lZL-XM-VkT"/>
                 <constraint firstItem="woZ-9s-oWN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mQl-du-dz0"/>
                 <constraint firstAttribute="trailing" secondItem="woZ-9s-oWN" secondAttribute="trailing" id="p4X-T8-kqt"/>
                 <constraint firstItem="g6s-7i-Gqe" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="u9J-KW-9Nc"/>
-                <constraint firstAttribute="trailing" secondItem="g6s-7i-Gqe" secondAttribute="trailing" constant="12" id="vKS-q7-3KQ"/>
+                <constraint firstAttribute="trailing" secondItem="g6s-7i-Gqe" secondAttribute="trailing" id="vKS-q7-3KQ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

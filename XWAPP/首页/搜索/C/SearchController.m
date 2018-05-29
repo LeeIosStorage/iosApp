@@ -249,6 +249,7 @@ HitoPropertyNSMutableArray(searchNewsList);
             cell = [cells objectAtIndex:0];
         }
         
+        cell.statusView.deleButton.hidden = YES;
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
@@ -265,6 +266,7 @@ HitoPropertyNSMutableArray(searchNewsList);
             cell = [cells objectAtIndex:0];
         }
         
+        cell.statusView.deleButton.hidden = YES;
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
@@ -280,6 +282,7 @@ HitoPropertyNSMutableArray(searchNewsList);
             cell = [cells objectAtIndex:0];
         }
         
+        cell.statusView.deleButton.hidden = YES;
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];

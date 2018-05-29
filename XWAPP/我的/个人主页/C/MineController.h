@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
+
 @class MineNaView;
 
-@interface MineController : UIViewController
+@interface MineController : LESuperViewController
+
 HitoPropertyNSArray(secondArr);
 HitoPropertyNSArray(fourArr);
 HitoPropertyNSArray(imageArr);
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet MineNaView *naView;
 

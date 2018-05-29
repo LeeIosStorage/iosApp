@@ -9,12 +9,28 @@
 #import "PhoneLogin.h"
 #import "PassWordLogin.h"
 #import "ForgetPassWord.h"
+#import "LEWebViewController.h"
 
 @interface PhoneLogin ()
 
 @end
 
 @implementation PhoneLogin
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -92,6 +108,8 @@
 
 - (IBAction)uerProtocol:(UIButton *)sender {
     [self resigBoard];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+    [self.navigationController pushViewController:webVc animated:YES];
 }
 - (IBAction)login:(UIButton *)sender {
     [self resigBoard];
@@ -111,6 +129,12 @@
         [WeakSelf.view addSubview:forgetPW.view];
         [WeakSelf addChildViewController:forgetPW];
     }];
+    
+    passWord.loginSuccessBlock = ^{
+        if (WeakSelf.loginSuccessBlock) {
+            WeakSelf.loginSuccessBlock();
+        }
+    };
     
     [self.view addSubview:passWord.view];
     [self addChildViewController:passWord];

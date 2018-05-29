@@ -12,6 +12,7 @@
 #import "CommontHeaderView.h"
 #import "LECommentFooterView.h"
 #import "CommontHFView.h"
+#import "LELoginManager.h"
 
 @interface LECommentDetailViewController ()
 <
@@ -20,9 +21,12 @@ UITableViewDataSource,
 CommontHeaderViewDelegate
 >
 {
-    CommentCell *_selectedCommentCell;
+    CGRect _currentRect;
+    
     LEReplyCommentModel *_currentReplyModel;
 }
+
+@property (assign, nonatomic) CGFloat keyBoardHeight;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -39,6 +43,7 @@ CommontHeaderViewDelegate
 {
     LELog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.huView removeFromSuperview];
 }
 
 - (void)viewDidLoad {
@@ -60,6 +65,8 @@ CommontHeaderViewDelegate
     
     [self setTitle:@"评论详情"];
     
+    _currentRect = CGRectZero;
+    
     //增加监听，当键盘出现或改变时收出消息
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -79,8 +86,30 @@ CommontHeaderViewDelegate
     }];
     [self.tableView reloadData];
     
-    UIWindow *window = HitoApplication;
-    [window addSubview:self.huView];
+//    UIWindow *window = HitoApplication;
+    [self.view addSubview:self.huView];
+    [self.huView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(49);
+    }];
+    
+    [self setTextFieldAttributedPlaceholder];
+    
+}
+
+- (void)setTextFieldAttributedPlaceholder{
+    
+    NSString *placeholder = @"回复：";
+    if (_currentReplyModel){
+        NSString *userName = _currentReplyModel.userName;
+        if (userName.length == 0) userName = @"";
+        placeholder = [NSString stringWithFormat:@"回复：%@",userName];
+    }else {
+        NSString *userName = _commentModel.userName;
+        if (userName.length == 0) userName = @"";
+        placeholder = [NSString stringWithFormat:@"回复：%@",userName];
+    }
+    _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
     
 }
 
@@ -88,28 +117,36 @@ CommontHeaderViewDelegate
 #pragma mark - Request
 - (void)sendCommentRequestWith:(NSString *)text{
     
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
     if (text.length == 0) {
         return;
     }
+    
+    [_huView.hufuTF resignFirstResponder];
     
     [SVProgressHUD showCustomWithStatus:nil];
     
     HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"commentSave"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if (text.length) [params setObject:text forKey:@"content"];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    
     NSString *parentId = _currentReplyModel.commentId;
+    if (parentId.length == 0) parentId = _commentModel.commentId;
     if (parentId) [params setObject:parentId forKey:@"parentId"];
     
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
         [SVProgressHUD showCustomSuccessWithStatus:@"评论成功"];
-        [WeakSelf.huView.hufuTF resignFirstResponder];
+        WeakSelf.huView.hufuTF.text = nil;
 //        [WeakSelf getNewsCommentsRequest];
         
     } failure:^(id responseObject, NSError *error) {
@@ -120,6 +157,10 @@ CommontHeaderViewDelegate
 
 - (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel headerView:(CommontHeaderView *)headerView section:(NSInteger)section{
     
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
     BOOL like = YES;
     if (commentModel.favour) {
         like = NO;
@@ -129,7 +170,7 @@ CommontHeaderViewDelegate
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:commentModel.commentId forKey:@"commentId"];
     [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -140,10 +181,15 @@ CommontHeaderViewDelegate
         headerView.favourImageView.highlighted = !headerView.favourImageView.highlighted;
         if (headerView.favourImageView.highlighted) {
             [WYCommonUtils popOutsideWithDuration:0.5 view:headerView.favourImageView];
+            commentModel.favourNum ++;
         }else{
             [WYCommonUtils popInsideWithDuration:0.4 view:headerView.favourImageView];
+            commentModel.favourNum --;
         }
-        
+        if (commentModel.favourNum <= 0) {
+            commentModel.favourNum = 0;
+        }
+        headerView.favourLabel.text = [NSString stringWithFormat:@"%d",commentModel.favourNum];
         
         
     } failure:^(id responseObject, NSError *error) {
@@ -176,7 +222,7 @@ CommontHeaderViewDelegate
 - (CommontHFView *)huView {
     if (!_huView) {
         _huView = [[[NSBundle mainBundle] loadNibNamed:@"CommontHFView" owner:self options:nil] firstObject];
-        _huView.frame = CGRectMake(0, HitoScreenH-49, HitoScreenW, 49);
+//        _huView.frame = CGRectMake(0, HitoScreenH-49, HitoScreenW, 49);
         HitoWeakSelf;
         _huView.commontViewWithSendBlcok = ^(NSString *message) {
             [WeakSelf sendCommentRequestWith:message];
@@ -193,14 +239,22 @@ CommontHeaderViewDelegate
     NSDictionary *userInfo = [aNotification userInfo];
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
-    CGFloat keyBoardHeight = keyboardRect.size.height;
+    self.keyBoardHeight = keyboardRect.size.height;
 //    HitoWeakSelf;
     if (self.huView.hufuTF.isFirstResponder){
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        
+        if (_currentRect.origin.y > 0) {
+            CGPoint offset = self.tableView.contentOffset;
+            offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+            [self.tableView setContentOffset:offset animated:YES];
+        }
         
         [UIView animateWithDuration:0.3 animations:^{
-            self.huView.frame = CGRectMake(0, HitoScreenH - keyBoardHeight - 49, HitoScreenW, 49);
+            [self.huView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(self.view).offset(-self.keyBoardHeight);
+            }];
+            [self.huView.superview layoutIfNeeded];
+//            self.huView.frame = CGRectMake(0, HitoScreenH - self.keyBoardHeight - 49, HitoScreenW, 49);
         }];
     }
 }
@@ -208,9 +262,18 @@ CommontHeaderViewDelegate
 //当键退出时调用
 - (void)keyboardWillHide:(NSNotification *)aNotification{
     
+    
+    _currentReplyModel = nil;
+    _currentRect = CGRectZero;
+    [self setTextFieldAttributedPlaceholder];
+    
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [UIView animateWithDuration:0.3 animations:^{
-        self.huView.frame = CGRectMake(0, HitoScreenH-49, HitoScreenW, 49);
+        [self.huView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.view);
+        }];
+        [self.huView.superview layoutIfNeeded];
+//        self.huView.frame = CGRectMake(0, HitoScreenH-49, HitoScreenW, 49);
     }];
 }
 
@@ -237,7 +300,7 @@ CommontHeaderViewDelegate
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        if (self.commentModel.comments.count > 5) {
+        if (self.commentModel.comments.count > 9) {
             [cell setCommentMoreCellType:LECommentMoreCellTypeALL];
             
         }else{
@@ -293,21 +356,25 @@ CommontHeaderViewDelegate
         return;
     }
     _currentReplyModel = self.commentModel.comments[indexPath.row];
-    _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
+    _currentRect = [tableView rectForRowAtIndexPath:indexPath];
+    
     [_huView.hufuTF becomeFirstResponder];
     
-    NSString *placeholder = @"回复：张三";
-    _huView.hufuTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(13) color:kAppSubTitleColor];
+    [self setTextFieldAttributedPlaceholder];
     
-    CGRect rect = [_selectedCommentCell convertRect:_selectedCommentCell.frame toView:self.view];
-    
-    if (rect.origin.y / 2 + rect.size.height>= HitoScreenH - 216) {
+    if (_huView.hufuTF.isFirstResponder) {
         
-        
-        if (_huView.hufuTF.isFirstResponder) {
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-            [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell:_selectedCommentCell] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        }
+        CGPoint offset = self.tableView.contentOffset;
+        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        [self.tableView setContentOffset:offset animated:YES];
+        HitoWeakSelf;
+        [UIView animateWithDuration:0.3 animations:^{
+            [WeakSelf.huView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(self.view).offset(-WeakSelf.keyBoardHeight);
+            }];
+            [WeakSelf.huView.superview layoutIfNeeded];
+//            WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 49, HitoScreenW, 49);
+        }];
     }
 }
 

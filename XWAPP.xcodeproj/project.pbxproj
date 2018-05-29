@@ -50,6 +50,27 @@
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
+		4CB76B3320BBE7830092503E /* LECollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B3220BBE7830092503E /* LECollectViewController.m */; };
+		4CB76B3620BC079A0092503E /* LESuperTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B3520BC079A0092503E /* LESuperTableViewController.m */; };
+		4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B3820BC2C0F0092503E /* LERefreshFooter.m */; };
+		4CB76B3D20BCE5C90092503E /* LEWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B3C20BCE5C90092503E /* LEWebViewController.m */; };
+		4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B3F20BCF17D0092503E /* HotUpButton.m */; };
+		4CB76B4420BD04420092503E /* LENavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B4320BD04420092503E /* LENavigationController.m */; };
+		4CB76B4D20BD281F0092503E /* LEChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B4B20BD281F0092503E /* LEChangePasswordViewController.m */; };
+		4CB76B4E20BD281F0092503E /* LEChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB76B4C20BD281F0092503E /* LEChangePasswordViewController.xib */; };
+		4CB76B5420BD49310092503E /* WYActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B5020BD49310092503E /* WYActionSheet.m */; };
+		4CB76B5520BD49310092503E /* WYCustomActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B5320BD49310092503E /* WYCustomActionSheet.m */; };
+		4CB76B5820BD50AE0092503E /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B5720BD50AE0092503E /* UIImage+ProportionalFill.m */; };
+		4CB76B6B20BD77320092503E /* Area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CB76B5B20BD77320092503E /* Area.plist */; };
+		4CB76B6C20BD77320092503E /* Province.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CB76B5D20BD77320092503E /* Province.plist */; };
+		4CB76B6D20BD77320092503E /* ZJSelectedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B5F20BD77320092503E /* ZJSelectedTextField.m */; };
+		4CB76B6E20BD77320092503E /* ZJMultipleAssociatedPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6320BD77320092503E /* ZJMultipleAssociatedPickerView.m */; };
+		4CB76B6F20BD77320092503E /* ZJMultiplePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6420BD77320092503E /* ZJMultiplePickerView.m */; };
+		4CB76B7020BD77320092503E /* City.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CB76B6520BD77320092503E /* City.plist */; };
+		4CB76B7120BD77320092503E /* ZJDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6620BD77320092503E /* ZJDatePickerView.m */; };
+		4CB76B7220BD77320092503E /* ZJUsefulPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6720BD77320092503E /* ZJUsefulPickerView.m */; };
+		4CB76B7320BD77320092503E /* ZJSinglePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6920BD77320092503E /* ZJSinglePickerView.m */; };
+		4CB76B7420BD77320092503E /* ZJToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6A20BD77320092503E /* ZJToolBar.m */; };
 		4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */; };
 		4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1B20A0614200FD9C4C /* MineSecondCell.m */; };
 		4CB8ED1F20A0615600FD9C4C /* MineThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1E20A0615600FD9C4C /* MineThirdCell.m */; };
@@ -252,6 +273,44 @@
 		4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareWindow.m; sourceTree = "<group>"; };
 		4CAA26DA20B595E100B7CF31 /* WYShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYShareManager.m; sourceTree = "<group>"; };
 		4CAA26DB20B595E100B7CF31 /* WYShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYShareManager.h; sourceTree = "<group>"; };
+		4CB76B3120BBE7830092503E /* LECollectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECollectViewController.h; sourceTree = "<group>"; };
+		4CB76B3220BBE7830092503E /* LECollectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECollectViewController.m; sourceTree = "<group>"; };
+		4CB76B3420BC079A0092503E /* LESuperTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESuperTableViewController.h; sourceTree = "<group>"; };
+		4CB76B3520BC079A0092503E /* LESuperTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESuperTableViewController.m; sourceTree = "<group>"; };
+		4CB76B3720BC2C0F0092503E /* LERefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERefreshFooter.h; sourceTree = "<group>"; };
+		4CB76B3820BC2C0F0092503E /* LERefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERefreshFooter.m; sourceTree = "<group>"; };
+		4CB76B3B20BCE5C90092503E /* LEWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWebViewController.h; sourceTree = "<group>"; };
+		4CB76B3C20BCE5C90092503E /* LEWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWebViewController.m; sourceTree = "<group>"; };
+		4CB76B3F20BCF17D0092503E /* HotUpButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotUpButton.m; sourceTree = "<group>"; };
+		4CB76B4020BCF17E0092503E /* HotUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotUpButton.h; sourceTree = "<group>"; };
+		4CB76B4220BD04420092503E /* LENavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENavigationController.h; sourceTree = "<group>"; };
+		4CB76B4320BD04420092503E /* LENavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENavigationController.m; sourceTree = "<group>"; };
+		4CB76B4A20BD281E0092503E /* LEChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEChangePasswordViewController.h; sourceTree = "<group>"; };
+		4CB76B4B20BD281F0092503E /* LEChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LEChangePasswordViewController.m; sourceTree = "<group>"; };
+		4CB76B4C20BD281F0092503E /* LEChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LEChangePasswordViewController.xib; sourceTree = "<group>"; };
+		4CB76B5020BD49310092503E /* WYActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYActionSheet.m; sourceTree = "<group>"; };
+		4CB76B5120BD49310092503E /* WYCustomActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYCustomActionSheet.h; sourceTree = "<group>"; };
+		4CB76B5220BD49310092503E /* WYActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYActionSheet.h; sourceTree = "<group>"; };
+		4CB76B5320BD49310092503E /* WYCustomActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYCustomActionSheet.m; sourceTree = "<group>"; };
+		4CB76B5620BD50AE0092503E /* UIImage+ProportionalFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ProportionalFill.h"; sourceTree = "<group>"; };
+		4CB76B5720BD50AE0092503E /* UIImage+ProportionalFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ProportionalFill.m"; sourceTree = "<group>"; };
+		4CB76B5A20BD77320092503E /* ZJMultiplePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJMultiplePickerView.h; sourceTree = "<group>"; };
+		4CB76B5B20BD77320092503E /* Area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Area.plist; sourceTree = "<group>"; };
+		4CB76B5C20BD77320092503E /* ZJMultipleAssociatedPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJMultipleAssociatedPickerView.h; sourceTree = "<group>"; };
+		4CB76B5D20BD77320092503E /* Province.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Province.plist; sourceTree = "<group>"; };
+		4CB76B5E20BD77320092503E /* ZJDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJDatePickerView.h; sourceTree = "<group>"; };
+		4CB76B5F20BD77320092503E /* ZJSelectedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJSelectedTextField.m; sourceTree = "<group>"; };
+		4CB76B6020BD77320092503E /* ZJUsefulPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJUsefulPickerView.h; sourceTree = "<group>"; };
+		4CB76B6120BD77320092503E /* ZJToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJToolBar.h; sourceTree = "<group>"; };
+		4CB76B6220BD77320092503E /* ZJSinglePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJSinglePickerView.h; sourceTree = "<group>"; };
+		4CB76B6320BD77320092503E /* ZJMultipleAssociatedPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJMultipleAssociatedPickerView.m; sourceTree = "<group>"; };
+		4CB76B6420BD77320092503E /* ZJMultiplePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJMultiplePickerView.m; sourceTree = "<group>"; };
+		4CB76B6520BD77320092503E /* City.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = City.plist; sourceTree = "<group>"; };
+		4CB76B6620BD77320092503E /* ZJDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJDatePickerView.m; sourceTree = "<group>"; };
+		4CB76B6720BD77320092503E /* ZJUsefulPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJUsefulPickerView.m; sourceTree = "<group>"; };
+		4CB76B6820BD77320092503E /* ZJSelectedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJSelectedTextField.h; sourceTree = "<group>"; };
+		4CB76B6920BD77320092503E /* ZJSinglePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJSinglePickerView.m; sourceTree = "<group>"; };
+		4CB76B6A20BD77320092503E /* ZJToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJToolBar.m; sourceTree = "<group>"; };
 		4CB8ED1720A060F600FD9C4C /* MineFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineFirstCell.h; sourceTree = "<group>"; };
 		4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineFirstCell.m; sourceTree = "<group>"; };
 		4CB8ED1A20A0614200FD9C4C /* MineSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineSecondCell.h; sourceTree = "<group>"; };
@@ -520,6 +579,9 @@
 		4C20CBA120B2BCB8003EC050 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4CB76B4F20BD49310092503E /* WYActionSheetWithBlock */,
+				4CB76B3E20BCF1710092503E /* LEButton */,
+				4CB76B3A20BCE59B0092503E /* LEWebView */,
 				4CA6877920B6A555004588FC /* LESearchBar */,
 				4CAA26D320B5578700B7CF31 /* LEShareSheetView */,
 				4C20CBA820B51D1B003EC050 /* LERefresh */,
@@ -532,6 +594,8 @@
 			children = (
 				4C20CBA920B51D56003EC050 /* LERefreshHeader.h */,
 				4C20CBAA20B51D56003EC050 /* LERefreshHeader.m */,
+				4CB76B3720BC2C0F0092503E /* LERefreshFooter.h */,
+				4CB76B3820BC2C0F0092503E /* LERefreshFooter.m */,
 			);
 			name = LERefresh;
 			path = XWAPP/WYCore/Public/Common/LERefresh;
@@ -660,6 +724,8 @@
 				4C20CBA320B2BD45003EC050 /* SVProgressHUD+LETools.m */,
 				4C3F3C1A20AEFB0300B754AF /* PathHelper.h */,
 				4C3F3C1B20AEFB0400B754AF /* PathHelper.m */,
+				4CB76B5620BD50AE0092503E /* UIImage+ProportionalFill.h */,
+				4CB76B5720BD50AE0092503E /* UIImage+ProportionalFill.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -669,6 +735,10 @@
 			children = (
 				4C61863620AACBDB000D647F /* LESuperViewController.h */,
 				4C61863720AACBDB000D647F /* LESuperViewController.m */,
+				4CB76B4220BD04420092503E /* LENavigationController.h */,
+				4CB76B4320BD04420092503E /* LENavigationController.m */,
+				4CB76B3420BC079A0092503E /* LESuperTableViewController.h */,
+				4CB76B3520BC079A0092503E /* LESuperTableViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -691,6 +761,60 @@
 				4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */,
 			);
 			path = LEShareSheetView;
+			sourceTree = "<group>";
+		};
+		4CB76B3A20BCE59B0092503E /* LEWebView */ = {
+			isa = PBXGroup;
+			children = (
+				4CB76B3B20BCE5C90092503E /* LEWebViewController.h */,
+				4CB76B3C20BCE5C90092503E /* LEWebViewController.m */,
+			);
+			name = LEWebView;
+			path = XWAPP/WYCore/Public/Common/LEWebView;
+			sourceTree = SOURCE_ROOT;
+		};
+		4CB76B3E20BCF1710092503E /* LEButton */ = {
+			isa = PBXGroup;
+			children = (
+				4CB76B4020BCF17E0092503E /* HotUpButton.h */,
+				4CB76B3F20BCF17D0092503E /* HotUpButton.m */,
+			);
+			path = LEButton;
+			sourceTree = "<group>";
+		};
+		4CB76B4F20BD49310092503E /* WYActionSheetWithBlock */ = {
+			isa = PBXGroup;
+			children = (
+				4CB76B5220BD49310092503E /* WYActionSheet.h */,
+				4CB76B5020BD49310092503E /* WYActionSheet.m */,
+				4CB76B5120BD49310092503E /* WYCustomActionSheet.h */,
+				4CB76B5320BD49310092503E /* WYCustomActionSheet.m */,
+			);
+			path = WYActionSheetWithBlock;
+			sourceTree = "<group>";
+		};
+		4CB76B5920BD77320092503E /* ZJUsefulPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				4CB76B6520BD77320092503E /* City.plist */,
+				4CB76B5B20BD77320092503E /* Area.plist */,
+				4CB76B5D20BD77320092503E /* Province.plist */,
+				4CB76B5C20BD77320092503E /* ZJMultipleAssociatedPickerView.h */,
+				4CB76B6320BD77320092503E /* ZJMultipleAssociatedPickerView.m */,
+				4CB76B6820BD77320092503E /* ZJSelectedTextField.h */,
+				4CB76B5F20BD77320092503E /* ZJSelectedTextField.m */,
+				4CB76B5A20BD77320092503E /* ZJMultiplePickerView.h */,
+				4CB76B6420BD77320092503E /* ZJMultiplePickerView.m */,
+				4CB76B5E20BD77320092503E /* ZJDatePickerView.h */,
+				4CB76B6620BD77320092503E /* ZJDatePickerView.m */,
+				4CB76B6220BD77320092503E /* ZJSinglePickerView.h */,
+				4CB76B6920BD77320092503E /* ZJSinglePickerView.m */,
+				4CB76B6120BD77320092503E /* ZJToolBar.h */,
+				4CB76B6A20BD77320092503E /* ZJToolBar.m */,
+				4CB76B6020BD77320092503E /* ZJUsefulPickerView.h */,
+				4CB76B6720BD77320092503E /* ZJUsefulPickerView.m */,
+			);
+			path = ZJUsefulPickerView;
 			sourceTree = "<group>";
 		};
 		4CF22CA520A29A91000904F4 /* HTML */ = {
@@ -890,6 +1014,8 @@
 			children = (
 				ECFC6A562092BE36003CE85D /* MineController.h */,
 				ECFC6A572092BE36003CE85D /* MineController.m */,
+				4CB76B3120BBE7830092503E /* LECollectViewController.h */,
+				4CB76B3220BBE7830092503E /* LECollectViewController.m */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -941,6 +1067,9 @@
 				EC41869320994FE100E57C17 /* SetVC.m */,
 				EC4186A42099733500E57C17 /* CompleteController.h */,
 				EC4186A52099733500E57C17 /* CompleteController.m */,
+				4CB76B4A20BD281E0092503E /* LEChangePasswordViewController.h */,
+				4CB76B4B20BD281F0092503E /* LEChangePasswordViewController.m */,
+				4CB76B4C20BD281F0092503E /* LEChangePasswordViewController.xib */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1267,6 +1396,7 @@
 		EC72BC0A208EBFDD00FADE74 /* ThirdPart */ = {
 			isa = PBXGroup;
 			children = (
+				4CB76B5920BD77320092503E /* ZJUsefulPickerView */,
 				4C3F3C0F20AEACCA00B754AF /* YYPhotoGroupView */,
 				4C3F3BE820AD575C00B754AF /* HappleClasses */,
 				EC72BC0D208EC01A00FADE74 /* XLChannelControl */,
@@ -1482,17 +1612,21 @@
 			files = (
 				EC72BBB6208D6EAD00FADE74 /* LaunchScreen.storyboard in Resources */,
 				EC0DD9F02092B269006C7522 /* MineHeader.xib in Resources */,
+				4CB76B6B20BD77320092503E /* Area.plist in Resources */,
 				EC72BBF2208D83C000FADE74 /* SYBaseVC.xib in Resources */,
 				EC72BC4C2090353000FADE74 /* HotHeader.xib in Resources */,
 				4C5FADFF20A031F200893FC8 /* SearchHeaderSecond.xib in Resources */,
 				4CF22CC220A2D91A000904F4 /* YQMController.xib in Resources */,
+				4CB76B4E20BD281F0092503E /* LEChangePasswordViewController.xib in Resources */,
 				4CDE8AB520A3F5BE00679959 /* SearchView.xib in Resources */,
 				EC4186B4209995A300E57C17 /* SheetAlert.xib in Resources */,
 				EC72BC2B208EDD1F00FADE74 /* BaseTwoCell.xib in Resources */,
 				4C61863220AAB7A5000D647F /* NetWorkConfig.json in Resources */,
 				4CF3162B20A14A3C00E81E56 /* TaskCellHeader.xib in Resources */,
 				EC72BC3D208F255A00FADE74 /* DelAlertView.xib in Resources */,
+				4CB76B6C20BD77320092503E /* Province.plist in Resources */,
 				4CF22CC720A2E38D000904F4 /* MineNaView.xib in Resources */,
+				4CB76B7020BD77320092503E /* City.plist in Resources */,
 				4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */,
 				4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */,
 				EC72BC26208EDCE300FADE74 /* BaseThirdCell.xib in Resources */,
@@ -1632,12 +1766,19 @@
 				4C3F3C0B20AD9C2000B754AF /* LENewsDetailContentView.m in Sources */,
 				EC72BC44209030EC00FADE74 /* HoitPointController.m in Sources */,
 				EC41869420994FE100E57C17 /* SetVC.m in Sources */,
+				4CB76B7120BD77320092503E /* ZJDatePickerView.m in Sources */,
+				4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */,
+				4CB76B3620BC079A0092503E /* LESuperTableViewController.m in Sources */,
 				4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */,
 				EC72BC3B208F255400FADE74 /* DelAlertView.m in Sources */,
+				4CB76B7420BD77320092503E /* ZJToolBar.m in Sources */,
+				4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */,
 				EC4186BB2099B85F00E57C17 /* PhoneLogin.m in Sources */,
 				4CF3162E20A14BA900E81E56 /* TaskCellHeader.m in Sources */,
 				EC72BC19208EC01B00FADE74 /* XLChannelView.m in Sources */,
+				4CB76B4D20BD281F0092503E /* LEChangePasswordViewController.m in Sources */,
 				EC72BC5320905AEF00FADE74 /* SearchController.m in Sources */,
+				4CB76B4420BD04420092503E /* LENavigationController.m in Sources */,
 				EC41869B2099534A00E57C17 /* UITableViewController+SetTBStyle.m in Sources */,
 				EC72BC03208DBED700FADE74 /* TagCell.m in Sources */,
 				4CDE8AC520A4558F00679959 /* CommontHeaderView.m in Sources */,
@@ -1649,6 +1790,7 @@
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
 				ECFC6A582092BE36003CE85D /* MineController.m in Sources */,
+				4CB76B6F20BD77320092503E /* ZJMultiplePickerView.m in Sources */,
 				4C3F3BFC20AD84AC00B754AF /* LENewsDetailModel.m in Sources */,
 				4CDE8AB320A3F5B700679959 /* SearchView.m in Sources */,
 				4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */,
@@ -1665,26 +1807,32 @@
 				4C3F3C2B20B008DD00B754AF /* LECommentMoreCell.m in Sources */,
 				4C61863120AAB7A5000D647F /* WYNetWorkManager.m in Sources */,
 				EC4186AF20998DE900E57C17 /* SetNormal.m in Sources */,
+				4CB76B7320BD77320092503E /* ZJSinglePickerView.m in Sources */,
 				4C3F3BF920AD743500B754AF /* LEElementStyleBox.m in Sources */,
 				4CF3163120A176E500E81E56 /* ForgetPassWord.m in Sources */,
+				4CB76B5820BD50AE0092503E /* UIImage+ProportionalFill.m in Sources */,
 				EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */,
 				EC0DD9EE2092B25E006C7522 /* MineHeader.m in Sources */,
 				4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */,
 				4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */,
 				EC72BC16208EC01A00FADE74 /* XLChannelControl.m in Sources */,
 				4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */,
+				4CB76B3D20BCE5C90092503E /* LEWebViewController.m in Sources */,
+				4CB76B6E20BD77320092503E /* ZJMultipleAssociatedPickerView.m in Sources */,
 				EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */,
 				4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */,
 				4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */,
 				EC72BC5B20907A6700FADE74 /* SearchCollecViewCell.m in Sources */,
 				4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */,
 				EC72BC06208DC74700FADE74 /* TagHeaderView.m in Sources */,
+				4CB76B5420BD49310092503E /* WYActionSheet.m in Sources */,
 				4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */,
 				4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,
 				EC72BC1D208EDCC800FADE74 /* BaseOneCell.m in Sources */,
+				4CB76B7220BD77320092503E /* ZJUsefulPickerView.m in Sources */,
 				4C3F3C1220AEACCB00B754AF /* YYPhotoGroupView.m in Sources */,
 				4CF22CC520A2E386000904F4 /* MineNaView.m in Sources */,
 				EC4186C82099C6CF00E57C17 /* NSObject+ZZBDS.m in Sources */,
@@ -1710,6 +1858,9 @@
 				EC4186AC20998DDA00E57C17 /* SetBass.m in Sources */,
 				4C3F3BEF20AD575C00B754AF /* TFHpple.m in Sources */,
 				4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */,
+				4CB76B6D20BD77320092503E /* ZJSelectedTextField.m in Sources */,
+				4CB76B3320BBE7830092503E /* LECollectViewController.m in Sources */,
+				4CB76B5520BD49310092503E /* WYCustomActionSheet.m in Sources */,
 				EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */,
 				4C61863420AAB7A5000D647F /* YTCache.m in Sources */,
 				4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */,

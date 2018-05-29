@@ -6,8 +6,8 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperTableViewController.h"
 
-@interface SetVC : UITableViewController
+@interface SetVC : LESuperTableViewController
 
 @end

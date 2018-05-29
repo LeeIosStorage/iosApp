@@ -10,7 +10,7 @@
 #define RequestURL_h
 
 
-
+#define kAppPrivacyProtocolURL   @"http://www.huiyishe.cn/"
 
 
 #endif /* RequestURL_h */

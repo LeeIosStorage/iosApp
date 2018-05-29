@@ -12,6 +12,11 @@
 
 @property (strong, nonatomic) NSString *commentId;
 @property (strong, nonatomic) NSString *content;
+@property (strong, nonatomic) NSString *avatarUrl;
+@property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic) NSString *replyUserName;
+@property (strong, nonatomic) NSString *replyuId;
 
 @end
 
@@ -23,11 +28,12 @@
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSString *avatarUrl;
 @property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *area;
 @property (strong, nonatomic) NSString *date;
 @property (assign, nonatomic) int favourNum;
 @property (assign, nonatomic) BOOL favour;
 
-@property (strong, nonatomic) NSArray <LEReplyCommentModel> *comments;
+@property (strong, nonatomic) NSArray *comments;
 
 @end
