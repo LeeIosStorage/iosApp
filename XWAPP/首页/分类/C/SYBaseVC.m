@@ -29,15 +29,34 @@
 
 @implementation SYBaseVC
 
+#pragma mark -
+#pragma mark - Lifecycle
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
-    [self addMJ];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)refreshData{
+    [self addMJ];
+}
+
+- (void)tabBarSelectRefreshData{
+    if (![self.tableView.mj_header isRefreshing] && !self.tableView.mj_header.hidden) {
+        [self.tableView.mj_header beginRefreshing];
+    }
 }
 
 #pragma mark -

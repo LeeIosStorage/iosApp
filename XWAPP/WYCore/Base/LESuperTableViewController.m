@@ -10,9 +10,17 @@
 
 @interface LESuperTableViewController ()
 
+@property (strong, nonatomic) WYNetWorkManager *networkManager;
+
 @end
 
 @implementation LESuperTableViewController
+
+#pragma mark -
+#pragma mark - Lifecycle
+- (void)dealloc{
+    LELog(@"!!!!!");
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -40,6 +48,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+#pragma mark - Set And Getters
+- (WYNetWorkManager *)networkManager{
+    if (!_networkManager) {
+        _networkManager = [[WYNetWorkManager alloc] init];
+    }
+    return _networkManager;
 }
 
 #pragma mark - Table view data source

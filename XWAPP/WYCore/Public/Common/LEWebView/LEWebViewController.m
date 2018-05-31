@@ -103,12 +103,12 @@ WKNavigationDelegate
     [self.view addSubview:webView];
     
     [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-    UIView *progress = [[UIView alloc]initWithFrame:CGRectMake(0, 0, HitoScreenW, 3)];
+    UIView *progress = [[UIView alloc]initWithFrame:CGRectMake(0, 0, HitoScreenW, 2)];
     progress.backgroundColor = [UIColor clearColor];
     [self.view addSubview:progress];
     
     CALayer *layer = [CALayer layer];
-    layer.frame = CGRectMake(0, 0, 0, 3);
+    layer.frame = CGRectMake(0, 0, 0, 2);
     layer.backgroundColor = kAppThemeColor.CGColor;
     [progress.layer addSublayer:layer];
     self.progresslayer = layer;
@@ -163,13 +163,13 @@ WKNavigationDelegate
         if ([change[@"new"] floatValue] < [change[@"old"] floatValue]) {
             return;
         }
-        self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[@"new"] floatValue], 3);
+        self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[@"new"] floatValue], 2);
         if ([change[@"new"] floatValue] == 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.progresslayer.opacity = 0;
             });
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.progresslayer.frame = CGRectMake(0, 0, 0, 3);
+                self.progresslayer.frame = CGRectMake(0, 0, 0, 2);
             });
         }
     }else{

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +31,7 @@
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6q-AV-5pO">
-                    <rect key="frame" x="37" y="104" width="300" height="60"/>
+                    <rect key="frame" x="37" y="101" width="300" height="60"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yfP-7V-17f" customClass="MineBottom">
                             <rect key="frame" x="0.0" y="0.0" width="100" height="60"/>
@@ -55,11 +56,11 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="60" id="2nr-G4-mbZ"/>
                         <constraint firstItem="Bg0-Rx-BKY" firstAttribute="leading" secondItem="81V-2q-5K9" secondAttribute="trailing" id="Bmd-FC-AgB"/>
                         <constraint firstItem="81V-2q-5K9" firstAttribute="top" secondItem="l6q-AV-5pO" secondAttribute="top" id="CKH-mB-huJ"/>
                         <constraint firstAttribute="bottom" secondItem="yfP-7V-17f" secondAttribute="bottom" id="CLT-yD-edH"/>
                         <constraint firstItem="Bg0-Rx-BKY" firstAttribute="top" secondItem="l6q-AV-5pO" secondAttribute="top" id="J2x-yM-j63"/>
-                        <constraint firstAttribute="width" secondItem="l6q-AV-5pO" secondAttribute="height" multiplier="5:1" id="ZQ6-hu-FCr"/>
                         <constraint firstAttribute="trailing" secondItem="Bg0-Rx-BKY" secondAttribute="trailing" id="bGA-L3-kcA"/>
                         <constraint firstAttribute="bottom" secondItem="81V-2q-5K9" secondAttribute="bottom" id="cpc-MD-dFT"/>
                         <constraint firstAttribute="bottom" secondItem="Bg0-Rx-BKY" secondAttribute="bottom" id="hUC-QF-0Ao"/>
@@ -72,7 +73,7 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="5"/>
+                            <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
@@ -82,7 +83,7 @@
                 <constraint firstItem="l6q-AV-5pO" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="300:375" id="4bw-k1-TdY"/>
                 <constraint firstItem="l6q-AV-5pO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="726-Qg-ZMY"/>
                 <constraint firstItem="xfY-Nv-t3l" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FSC-6P-Az8"/>
-                <constraint firstItem="l6q-AV-5pO" firstAttribute="bottom" secondItem="xfY-Nv-t3l" secondAttribute="bottom" constant="30" id="K0O-Wa-fUC"/>
+                <constraint firstItem="l6q-AV-5pO" firstAttribute="centerY" secondItem="xfY-Nv-t3l" secondAttribute="bottom" constant="-3" id="K0O-Wa-fUC"/>
                 <constraint firstItem="Sag-si-4io" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bIQ-f3-1pV"/>
                 <constraint firstItem="xfY-Nv-t3l" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dG5-Mb-VLf"/>
                 <constraint firstItem="Sag-si-4io" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="70:375" id="fIf-tC-ubK"/>

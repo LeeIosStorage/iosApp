@@ -290,6 +290,9 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         LELog(@"failure error: %@",error);
         [SVProgressHUD showCustomErrorWithStatus:HitoFaiNetwork];
+        
+        NSInteger statusCode = [error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode];
+        [WYNetWorkExceptionHandling judgeReuqestStatus:statusCode URLString:URLString];
         if (failure) {
             failure(nil, error);
         }

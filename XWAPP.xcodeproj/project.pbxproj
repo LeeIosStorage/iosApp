@@ -71,6 +71,9 @@
 		4CB76B7220BD77320092503E /* ZJUsefulPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6720BD77320092503E /* ZJUsefulPickerView.m */; };
 		4CB76B7320BD77320092503E /* ZJSinglePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6920BD77320092503E /* ZJSinglePickerView.m */; };
 		4CB76B7420BD77320092503E /* ZJToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B6A20BD77320092503E /* ZJToolBar.m */; };
+		4CB76B7720BE49180092503E /* LEAttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7620BE49180092503E /* LEAttentionViewController.m */; };
+		4CB76B7A20BE49900092503E /* LECommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7920BE49900092503E /* LECommentListViewController.m */; };
+		4CB76B7D20C011720092503E /* LELoginAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7C20C011720092503E /* LELoginAuthManager.m */; };
 		4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */; };
 		4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1B20A0614200FD9C4C /* MineSecondCell.m */; };
 		4CB8ED1F20A0615600FD9C4C /* MineThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1E20A0615600FD9C4C /* MineThirdCell.m */; };
@@ -311,6 +314,12 @@
 		4CB76B6820BD77320092503E /* ZJSelectedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJSelectedTextField.h; sourceTree = "<group>"; };
 		4CB76B6920BD77320092503E /* ZJSinglePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJSinglePickerView.m; sourceTree = "<group>"; };
 		4CB76B6A20BD77320092503E /* ZJToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJToolBar.m; sourceTree = "<group>"; };
+		4CB76B7520BE49180092503E /* LEAttentionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEAttentionViewController.h; sourceTree = "<group>"; };
+		4CB76B7620BE49180092503E /* LEAttentionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEAttentionViewController.m; sourceTree = "<group>"; };
+		4CB76B7820BE49900092503E /* LECommentListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentListViewController.h; sourceTree = "<group>"; };
+		4CB76B7920BE49900092503E /* LECommentListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentListViewController.m; sourceTree = "<group>"; };
+		4CB76B7B20C011720092503E /* LELoginAuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELoginAuthManager.h; sourceTree = "<group>"; };
+		4CB76B7C20C011720092503E /* LELoginAuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELoginAuthManager.m; sourceTree = "<group>"; };
 		4CB8ED1720A060F600FD9C4C /* MineFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineFirstCell.h; sourceTree = "<group>"; };
 		4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineFirstCell.m; sourceTree = "<group>"; };
 		4CB8ED1A20A0614200FD9C4C /* MineSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineSecondCell.h; sourceTree = "<group>"; };
@@ -630,6 +639,8 @@
 				4C3F3C1820AED31B00B754AF /* LEDataStoreManager.m */,
 				4CAA26DB20B595E100B7CF31 /* WYShareManager.h */,
 				4CAA26DA20B595E100B7CF31 /* WYShareManager.m */,
+				4CB76B7B20C011720092503E /* LELoginAuthManager.h */,
+				4CB76B7C20C011720092503E /* LELoginAuthManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1016,6 +1027,10 @@
 				ECFC6A572092BE36003CE85D /* MineController.m */,
 				4CB76B3120BBE7830092503E /* LECollectViewController.h */,
 				4CB76B3220BBE7830092503E /* LECollectViewController.m */,
+				4CB76B7520BE49180092503E /* LEAttentionViewController.h */,
+				4CB76B7620BE49180092503E /* LEAttentionViewController.m */,
+				4CB76B7820BE49900092503E /* LECommentListViewController.h */,
+				4CB76B7920BE49900092503E /* LECommentListViewController.m */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1238,17 +1253,17 @@
 				EC72BBDC208D747D00FADE74 /* APPDelegate */,
 				4C61862220AAB7A5000D647F /* WYCore */,
 				4CF22CA520A29A91000904F4 /* HTML */,
-				4CF3161920A142E300E81E56 /* 任务中心 */,
 				EC4186BC2099BB1B00E57C17 /* TabBarController */,
 				EC4186B52099B08600E57C17 /* Login */,
+				EC72BBDB208D742B00FADE74 /* 首页 */,
+				4CF3161920A142E300E81E56 /* 任务中心 */,
+				EC0DD9DA2091DFA6006C7522 /* 我的 */,
 				EC4186982099532100E57C17 /* Category */,
 				EC4186952099521400E57C17 /* Extension */,
-				EC0DD9DA2091DFA6006C7522 /* 我的 */,
 				EC72BC0A208EBFDD00FADE74 /* ThirdPart */,
 				EC72BBF3208D8D7900FADE74 /* CustomView */,
 				EC72BBE8208D781F00FADE74 /* Other */,
 				EC72BBE3208D772700FADE74 /* Marco */,
-				EC72BBDB208D742B00FADE74 /* 首页 */,
 				EC72BBAF208D6EA400FADE74 /* Main.storyboard */,
 				EC72BBB2208D6EAD00FADE74 /* Assets.xcassets */,
 				EC72BBB4208D6EAD00FADE74 /* LaunchScreen.storyboard */,
@@ -1765,6 +1780,7 @@
 				EC418685209949D400E57C17 /* SetKeyBoard.m in Sources */,
 				4C3F3C0B20AD9C2000B754AF /* LENewsDetailContentView.m in Sources */,
 				EC72BC44209030EC00FADE74 /* HoitPointController.m in Sources */,
+				4CB76B7A20BE49900092503E /* LECommentListViewController.m in Sources */,
 				EC41869420994FE100E57C17 /* SetVC.m in Sources */,
 				4CB76B7120BD77320092503E /* ZJDatePickerView.m in Sources */,
 				4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */,
@@ -1817,10 +1833,12 @@
 				4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */,
 				EC72BC16208EC01A00FADE74 /* XLChannelControl.m in Sources */,
 				4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */,
+				4CB76B7D20C011720092503E /* LELoginAuthManager.m in Sources */,
 				4CB76B3D20BCE5C90092503E /* LEWebViewController.m in Sources */,
 				4CB76B6E20BD77320092503E /* ZJMultipleAssociatedPickerView.m in Sources */,
 				EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */,
 				4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */,
+				4CB76B7720BE49180092503E /* LEAttentionViewController.m in Sources */,
 				4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */,
 				EC72BC5B20907A6700FADE74 /* SearchCollecViewCell.m in Sources */,
 				4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */,

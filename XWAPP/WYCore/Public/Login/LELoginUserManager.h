@@ -37,6 +37,9 @@ typedef void(^LELoginUserInfoBlock)(BOOL isSuccess, NSString *message);
 + (NSString *)regTime;
 + (void)setRegTime:(NSString *)regTime;
 
++ (NSString *)wxNickname;
++ (void)setWxNickname:(NSString *)wxNickname;
+
 /**
  *  用户登录后授权令牌
  *

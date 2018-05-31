@@ -45,6 +45,10 @@
 + (NSString *)dateDiscriptionFromNowBk:(NSDate *)date;
 //显示时间格式:MM/dd HH:mm
 + (NSString *)dateDiscriptionFromDate:(NSDate *)date;
+//年龄
++ (int)getAgeWithBirthdayDate:(NSDate *)date;
+//倒计时 dateStr:秒数
++ (NSString *)secondChangToDateString:(NSString *)dateStr;
 
 #pragma mark -
 #pragma mark - Other

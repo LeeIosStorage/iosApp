@@ -15,4 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *bottomLB;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomHeight;
 
+@property (weak, nonatomic) IBOutlet UIView *lineView;
+
 @end

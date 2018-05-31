@@ -245,12 +245,17 @@ static CGFloat CellMarginY = 16.0f;
     
     if (indexPath.section == 0) {
         //只剩一个的时候不可删除
-        if ([_collectionView numberOfItemsInSection:0] == 1) {return;}
+//        if ([_collectionView numberOfItemsInSection:0] == 1) {return;}
         //第一个不可删除
-        if (indexPath.row  == 0) {return;}
+        
         if (!hiddenBtn) {
+            if (self.channelSelectBlock) {
+                self.channelSelectBlock(indexPath.row);
+            }
             return;
         }
+        if (indexPath.row  == 0) {return;}
+        
         id obj = [_inUseTitles objectAtIndex:indexPath.row];
         [_inUseTitles removeObject:obj];
         [_unUseTitles insertObject:obj atIndex:0];

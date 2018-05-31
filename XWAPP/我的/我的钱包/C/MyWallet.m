@@ -82,26 +82,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 1)];
-    backView.backgroundColor = HitoColorFromRGB(0Xd9d9d9);
-    self.navigationController.navigationBar.shadowImage = [self convertViewToImage:backView];
-}
-
-// get image
--(UIImage*)convertViewToImage:(UIView*)v{
-    CGSize s = v.bounds.size;
-    // 下面方法，第一个参数表示区域大小。第二个参数表示是否是非透明的。如果需要显示半透明效果，需要传NO，否则传YES。第三个参数就是屏幕密度了
-    UIGraphicsBeginImageContextWithOptions(s, NO, [UIScreen mainScreen].scale);
-    [v.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage*image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 - (void)setView {
-
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     self.title = @"我的钱包";
     self.tableView.rowHeight = 44;
     [self setAAChartView];

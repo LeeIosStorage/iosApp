@@ -16,6 +16,7 @@
 #import "UIImage+ProportionalFill.h"
 #import "LELoginModel.h"
 #import "ZJUsefulPickerView.h"
+#import "LELoginAuthManager.h"
 
 @interface CompleteController ()
 <
@@ -29,6 +30,8 @@ HitoPropertyFloat(keyBoardHeight);
 HitoPropertyNSMutableArray(educationData);
 HitoPropertyNSMutableArray(jobData);
 
+@property (strong, nonatomic) ZJUsefulPickerView *datePickerView;
+
 @property (strong, nonatomic) LELoginModel *userModel;
 
 @end
@@ -39,7 +42,6 @@ HitoPropertyNSMutableArray(jobData);
 #pragma mark - Lifecycle
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    LELog(@"");
 }
 
 - (void)viewDidLoad {
@@ -127,6 +129,21 @@ HitoPropertyNSMutableArray(jobData);
     imagePickerController.delegate = self;
     imagePickerController.navigationController.delegate = self;
     [self presentViewController:imagePickerController animated:YES completion:nil];
+}
+
+- (void)calculateAgeWithBirthdayDate:(NSDate *)birthdayDate save:(BOOL)save{
+    
+    NSString *ageString = [NSString stringWithFormat:@"%d岁",[WYCommonUtils getAgeWithBirthdayDate:birthdayDate]];
+    self.datePickerView.toolBar.label.text = ageString;
+    if (save) {
+        self.userModel.age = [NSString stringWithFormat:@"%d",[WYCommonUtils getAgeWithBirthdayDate:birthdayDate]];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *birth = [dateFormatter stringFromDate:birthdayDate];
+        self.userModel.birthdayDate = birth;
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark -
@@ -238,9 +255,12 @@ HitoPropertyNSMutableArray(jobData);
                 cell.rightIM.image = nil;
                 rightText = [self numberSuitScanf:[LELoginUserManager mobile]];
             }else if ([title isEqualToString:@"微信"]) {
+                rightText = [LELoginUserManager wxNickname];
                 if (rightText.length == 0) {
                     rightText = @"绑定微信";
                     cell.rightLB.textColor = [UIColor colorWithHexString:@"999999"];
+                }else{
+                    rightText = [NSString stringWithFormat:@"已绑定(%@)",[LELoginUserManager wxNickname]];
                 }
             }
             
@@ -309,7 +329,7 @@ HitoPropertyNSMutableArray(jobData);
     }else if ([title isEqualToString:@"电话"]) {
         
     }else if ([title isEqualToString:@"微信"]) {
-        
+        [self authWXAction];
     }
 }
 
@@ -346,10 +366,27 @@ HitoPropertyNSMutableArray(jobData);
 
 - (void)editAgeShow{
     
-    ZJUsefulPickerView *pickerView = [ZJUsefulPickerView showDatePickerWithToolBarText:nil withStyle:nil withCancelHandler:^{
+    HitoWeakSelf;
+    ZJDatePickerStyle *style = [ZJDatePickerStyle new];
+    style.datePickerMode = UIDatePickerModeDate;
+    style.maximumDate = [NSDate date];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *birthdayDate = [dateFormatter dateFromString:self.userModel.birthdayDate];
+    if (birthdayDate == nil) {
+        birthdayDate = [NSDate date];
+    }
+    
+    style.date = birthdayDate;
+    self.datePickerView = [ZJUsefulPickerView showDatePickerWithToolBarText:@"" withStyle:style withValueDidChangedHandler:^(NSDate *selectedDate) {
+        
+        [WeakSelf calculateAgeWithBirthdayDate:selectedDate save:NO];
+        
+    } withCancelHandler:^{
         
     } withDoneHandler:^(NSDate *selectedDate) {
-//        pickerView
+        [WeakSelf calculateAgeWithBirthdayDate:selectedDate save:YES];
     }];
     
 }
@@ -370,6 +407,17 @@ HitoPropertyNSMutableArray(jobData);
     } withDoneHandler:^(NSInteger selectedIndex, NSString *selectedValue) {
         NSLog(@"%@---%ld", selectedValue, selectedIndex);
         
+    }];
+}
+
+- (void)authWXAction{
+    HitoWeakSelf;
+    [SVProgressHUD showCustomWithStatus:nil];
+    [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
+        if (success) {
+            [SVProgressHUD dismiss];
+        }
+        [WeakSelf.tableView reloadData];
     }];
 }
 

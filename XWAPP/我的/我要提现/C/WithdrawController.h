@@ -6,9 +6,10 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
 
-@interface WithdrawController : UIViewController
+@interface WithdrawController : LESuperViewController
+
 @property (weak, nonatomic) IBOutlet UIButton *zfbBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *wxBtn;

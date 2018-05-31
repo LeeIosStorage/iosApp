@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "WYShareManager.h"
+#import "SDImageCache.h"
 
 @interface LEShareSheetView ()
 <
@@ -58,16 +59,26 @@ LEShareWindowDelegate
 }
 
 - (void)shareContent{
-    self.shareTitle = @"分享测试";
-    self.shareDescription = @"测试描述信息";
-    self.shareWebpageUrl = @"http://www.baidu.com";
-    self.shareImage = nil;
+    if (self.newsModel) {
+        self.shareTitle = self.newsModel.title;
+        self.shareDescription = self.newsModel.share_url;
+        self.shareWebpageUrl = self.newsModel.share_url;
+        
+        NSString *imageUrl = NULL;
+        if (self.newsModel.cover.count > 0) {
+            imageUrl = [self.newsModel.cover objectAtIndex:0];
+        }
+        if (imageUrl) {
+            self.shareImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];
+        }
+        
+    }
 }
 
 #pragma mark -
 #pragma mark - Private
 -(void)shareToWX:(int)scene{
-    [[WYShareManager shareInstance] shareToWXWithScene:WXSceneTimeline title:self.shareTitle description:self.shareDescription webpageUrl:self.shareWebpageUrl image:self.shareImage isVideo:_isVideo];
+    [[WYShareManager shareInstance] shareToWXWithScene:scene title:self.shareTitle description:self.shareDescription webpageUrl:self.shareWebpageUrl image:self.shareImage isVideo:_isVideo];
 }
 
 - (void)shareToWXTimeline{

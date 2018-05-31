@@ -17,6 +17,7 @@ NSString *const kUserInfoMobile = @"kUserInfoMobile";
 NSString *const kUserInfoSex = @"kUserInfoSex";
 NSString *const kUserInfoAge = @"kUserInfoAge";
 NSString *const kUserInfoRegTime = @"kUserInfoRegTime";
+NSString *const kUserInfoWxNickname = @"kUserInfoWxNickname";
 
 NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
 
@@ -75,6 +76,13 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
 }
 + (void)setRegTime:(NSString *)regTime{
     [self saveToUserDefaultsObject:regTime forKey:kUserInfoRegTime];
+}
+
++ (NSString *)wxNickname{
+    return [self objectFromUserDefaultsKey:kUserInfoWxNickname];
+}
++ (void)setWxNickname:(NSString *)wxNickname{
+    [self saveToUserDefaultsObject:wxNickname forKey:kUserInfoWxNickname];
 }
 
 + (NSString *)authToken{
@@ -143,12 +151,20 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setHeadImgUrl:loginModel.headImgUrl];
     [LELoginUserManager setSex:loginModel.sex];
     [LELoginUserManager setAge:loginModel.age];
+    [LELoginUserManager setWxNickname:loginModel.wxNickname];
     
 }
 
 + (void)clearUserInfo{
     
     [LELoginUserManager setUserID:nil];
+    [LELoginUserManager setAuthToken:nil];
+    [LELoginUserManager setNickName:nil];
+    [LELoginUserManager setMobile:nil];
+    [LELoginUserManager setHeadImgUrl:nil];
+    [LELoginUserManager setSex:nil];
+    [LELoginUserManager setAge:nil];
+    [LELoginUserManager setWxNickname:nil];
 }
 
 #pragma mark -

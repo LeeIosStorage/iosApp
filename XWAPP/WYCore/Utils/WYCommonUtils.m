@@ -151,6 +151,39 @@ static bool dateFormatterOFUSInvalid;
     return _timestamp;
 }
 
++ (int)getAgeWithBirthdayDate:(NSDate *)date{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *birth = [dateFormatter stringFromDate:date];
+    //生日
+    NSDate *birthDay = [dateFormatter dateFromString:birth];
+    
+    //当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    NSDate *currentDate = [dateFormatter dateFromString:currentDateStr];
+    NSLog(@"currentDate %@ birthDay %@",currentDateStr,birth);
+    NSTimeInterval time = [currentDate timeIntervalSinceDate:birthDay];
+    int age = ((int)time)/(3600*24*365);
+    NSLog(@"year %d",age);
+    return age;
+}
+
++ (NSString *)secondChangToDateString:(NSString *)dateStr {
+    
+    if (dateStr.length == 0) {
+        return @"";
+    }
+    
+    long long time = [dateStr longLongValue];
+    int hour = (int)time/(60*60);
+    int minute = (time/60)%60;
+    int second = time%60;
+    
+    NSString *ts = [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute,second];
+    return ts;
+}
+
 #pragma mark -
 #pragma mark - Other
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage{

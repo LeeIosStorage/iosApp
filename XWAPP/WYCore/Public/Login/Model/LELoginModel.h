@@ -12,10 +12,14 @@
 
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *nickname;
+@property (strong, nonatomic) NSString *headImgUrl;
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *mobile;
 @property (strong, nonatomic) NSString *sex;
+@property (strong, nonatomic) NSString *birthdayDate;
 @property (strong, nonatomic) NSString *age;
-@property (strong, nonatomic) NSString *headImgUrl;
 @property (strong, nonatomic) NSString *regTime;
+
+@property (strong, nonatomic) NSString *wxNickname;
+
 @end

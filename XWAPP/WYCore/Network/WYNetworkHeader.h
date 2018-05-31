@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, WYRequestType) {
     WYRequestTypeTokenInvalid = -1,//token失效
     WYRequestTypeNotLogin = -4, //未登录
     WYRequestTypeFailed = 404, //主机地址未找到
+    WYRequestTypeUnauthorized = 401, //未授权
 };
 
 typedef void(^WYRequestSuccessBlock)(WYRequestType requestType,NSString* message,BOOL isCache,id dataObject);

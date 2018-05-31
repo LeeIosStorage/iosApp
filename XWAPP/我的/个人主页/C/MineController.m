@@ -14,8 +14,13 @@
 #import "MineThirdCell.h"
 #import "MineNaView.h"
 #import "LECollectViewController.h"
-
-
+#import "YQMController.h"
+#import "LEWebViewController.h"
+#import "LEAttentionViewController.h"
+#import "LECommentListViewController.h"
+#import "WithdrawController.h"
+#import "WXApi.h"
+#import "LELoginAuthManager.h"
 
 @interface MineController ()
 <
@@ -24,7 +29,9 @@ UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate
 >
-
+{
+    BOOL _viewDidAppear;
+}
 
 @property (nonatomic, strong) MineHeader *header;
 
@@ -40,9 +47,14 @@ UIScrollViewDelegate
     self.navigationController.navigationBar.shadowImage = [UIImage new];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    _viewDidAppear = YES;
+}
+
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    
+    _viewDidAppear = NO;
 }
 
 - (void)viewDidLoad {
@@ -52,7 +64,7 @@ UIScrollViewDelegate
     [self setNaStyle];
     [self navAction];
     
-    [self refreshData];
+    [self refreshViewUI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,13 +74,32 @@ UIScrollViewDelegate
 
 - (void)updateViewConstraints {
     [super updateViewConstraints];
-    _header.allBottomViewTop.constant = HitoActureHeight(40) / 3;
-    _header.centerBigView.constant = HitoActureHeight(60) / 2;
+//    _header.allBottomViewTop.constant = HitoActureHeight(40) / 3;
+//    _header.centerBigView.constant = HitoActureHeight(60) / 2;
+}
+
+- (void)tabBarSelectRefreshData{
+    if (![self.tableView.mj_header isRefreshing] && _viewDidAppear) {
+        [self.tableView.mj_header beginRefreshing];
+    }
 }
 
 #pragma mark -
 #pragma mark - Request
-
+- (void)refreshUserInfo{
+    
+    HitoWeakSelf;
+    [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        if (isSuccess) {
+            [WeakSelf refreshViewUI];
+        }else{
+            
+        }
+    }];
+    
+}
 
 #pragma mark - addTBHeaderView
 - (void)addHeaderView {
@@ -77,21 +108,28 @@ UIScrollViewDelegate
 
         _header.leftMine.topLB.text = @"我的金币(个)";
         _header.centerMine.topLB.text = @"我的零钱(元)";
-        _header.rightMine.topLB.text = @"阅读市场(分钟)";
-
+        _header.rightMine.topLB.text = @"阅读时长(分钟)";
+        _header.rightMine.lineView.hidden = YES;
+        
+        HitoWeakSelf;
         [_header leftClickAction:^{
             MyWallet *wallet = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyWallet"];
-            [self.navigationController pushViewController:wallet animated:YES];
+            [WeakSelf.navigationController pushViewController:wallet animated:YES];
+        }];
+        
+        [_header centerClickAction:^{
+            MyWallet *wallet = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyWallet"];
+            [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
     }
     
-    UIView *hh = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoActureHeight(173))];
+    UIView *hh = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoActureHeight(134)+39)];
     self.header.frame = hh.frame;
     [hh addSubview:self.header];
     self.tableView.tableHeaderView = hh;
 }
 
-- (void)refreshData{
+- (void)refreshViewUI{
     
     _header.leftMine.bottomLB.text = @"20";
     _header.centerMine.bottomLB.text = @"30";
@@ -99,6 +137,18 @@ UIScrollViewDelegate
     
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
+}
+
+-(void)sendAuthRequest
+{
+    HitoWeakSelf;
+    [SVProgressHUD showCustomWithStatus:nil];
+    [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
+        if (success) {
+            [SVProgressHUD dismiss];
+        }
+        [WeakSelf.tableView reloadData];
+    }];
 }
 
 #pragma mark - setTB
@@ -112,7 +162,7 @@ UIScrollViewDelegate
     //初始化数据
     _secondArr = @[@"每收一名徒弟赚3500金币，可立即领取提现", @"新手任务", @"输入邀请码", @"微信绑定"];
     _fourArr = @[@"我的关注", @"我的收藏", @"我的评论"];
-    _imageArr = @[@"https://img3.duitang.com/uploads/item/201410/02/20141002100803_ndjUZ.jpeg", @"https://img3.duitang.com/uploads/item/201410/02/20141002100803_ndjUZ.jpeg", @"https://img3.duitang.com/uploads/item/201410/02/20141002100803_ndjUZ.jpeg", @"https://img3.duitang.com/uploads/item/201410/02/20141002100803_ndjUZ.jpeg"];
+    _imageArr = @[@"http://pic.qiantucdn.com/58pic/17/39/70/64M58PICnFh_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center", @"http://pic.qiantucdn.com/58pic/17/23/89/08y58PIC4HC_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center"];
     
 }
 
@@ -134,6 +184,11 @@ UIScrollViewDelegate
 - (IBAction)rightBarButton:(UIBarButtonItem *)sender {
 }
 
+-(void)handleClickAt:(id)sender event:(id)event{
+    
+    WithdrawController *withdrawVc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"WithdrawController"];
+    [self.navigationController pushViewController:withdrawVc animated:YES];
+}
 
 #pragma mark -TBDelegate
 #pragma mark - TBDelegate&Datasource
@@ -163,20 +218,33 @@ UIScrollViewDelegate
 
     if (indexPath.section == 0) {
         MineFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineFirstCell"];
+        
+        [cell.rightButton addTarget:self action:@selector(handleClickAt:event:) forControlEvents:UIControlEventTouchUpInside];
+        
         return cell;
     } else if (indexPath.section == 1) {
         MineSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineSecondCell"];
-        cell.leftLB.text = _secondArr[indexPath.row];
+        NSString *title = _secondArr[indexPath.row];
+        cell.leftLB.text = title;
+        cell.rightLabel.hidden = YES;
+        if ([title isEqualToString:@"微信绑定"]) {
+            if ([LELoginUserManager wxNickname].length > 0) {
+                cell.rightLabel.hidden = NO;
+                cell.rightLabel.text = [NSString stringWithFormat:@"已绑定(%@)",[LELoginUserManager wxNickname]];
+            }
+        }
         return cell;
     } else if (indexPath.section == 2) {
         MineThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineThirdCell"];
 
         SDCycleScrollView *cycle = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, HitoScreenW, cell.frame.size.height) delegate:self placeholderImage:nil];
+        cycle.backgroundColor = [UIColor whiteColor];
         cycle.imageURLStringsGroup = self.imageArr;
         [cell.centerView addSubview:cycle];
         return cell;
     } else {
         MineSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineSecondCell"];
+        cell.rightLabel.hidden = YES;
         cell.leftLB.text = _fourArr[indexPath.row];
         return cell;
     }
@@ -218,13 +286,42 @@ UIScrollViewDelegate
         
     } else if (indexPath.section == 1) {
         
+        if (indexPath.row == 0) {
+            //邀请活动
+            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppInviteActivityWebURL];
+            webVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:webVc animated:YES];
+        }else if (indexPath.row == 1){
+            [self.tabBarController setSelectedIndex:1];
+        }else if (indexPath.row == 2){
+            YQMController *yqm = [[YQMController alloc] init];
+            yqm.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:yqm animated:YES];
+        }else if (indexPath.row == 3){
+            [self sendAuthRequest];
+        }
+        
     } else if (indexPath.section == 2) {
         
     } else {
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
+            
+            LEAttentionViewController *attentionVc = [[LEAttentionViewController alloc] init];
+            attentionVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:attentionVc animated:YES];
+            
+        }else if (indexPath.row == 1) {
+            
             LECollectViewController *collectVc = [[LECollectViewController alloc] init];
             collectVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:collectVc animated:YES];
+            
+        }else if (indexPath.row == 2) {
+            
+            LECommentListViewController *commentVc = [[LECommentListViewController alloc] init];
+            commentVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:commentVc animated:YES];
+            
         }
     }
 }
@@ -238,15 +335,7 @@ UIScrollViewDelegate
     MJWeakSelf;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
-        [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
-            
-            [weakSelf.tableView.mj_header endRefreshing];
-            if (isSuccess) {
-                
-            }else{
-                
-            }
-        }];
+        [weakSelf refreshUserInfo];
         
     }];
     header.stateLabel.textColor = [UIColor whiteColor];
@@ -272,6 +361,10 @@ UIScrollViewDelegate
 #pragma mark -
 #pragma mark - SDCycleScrollViewDelegate  轮播图的点击事件
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
+    
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:@"http://github.com"];
+    webVc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:webVc animated:YES];
     
 }
 

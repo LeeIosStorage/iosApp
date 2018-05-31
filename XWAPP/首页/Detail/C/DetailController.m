@@ -67,7 +67,6 @@ LEShareSheetViewDelegate
 #pragma mark -
 #pragma mark - Lifecycle
 - (void)dealloc{
-    LELog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_huView removeFromSuperview];
 }
@@ -506,6 +505,7 @@ LEShareSheetViewDelegate
     
     _shareSheetView = [[LEShareSheetView alloc] init];
     _shareSheetView.owner = self;
+    _shareSheetView.newsModel = self.newsDetailModel.info;
     [_shareSheetView showShareAction];
     
 //    LEShareWindow *shareWindow = [[LEShareWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

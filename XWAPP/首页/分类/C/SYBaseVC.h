@@ -14,4 +14,8 @@
 @property (nonatomic, copy) NSString *channelId;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
+- (void)refreshData;
+/** 点击tabBar主动刷新页面 */
+- (void)tabBarSelectRefreshData;
+
 @end

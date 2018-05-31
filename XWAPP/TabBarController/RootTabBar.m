@@ -9,6 +9,9 @@
 #import "RootTabBar.h"
 #import "PhoneLogin.h"
 #import "LELoginManager.h"
+#import "SYBaseController.h"
+#import "TaskCenterController.h"
+#import "MineController.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -48,12 +51,21 @@
     return YES;
 }
 
-
-
-
-
-
-
-
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)viewController;
+        UIViewController *currentVc = [nav.viewControllers lastObject];
+        if ([currentVc isKindOfClass:[SYBaseController class]]) {
+            SYBaseController *vc = (SYBaseController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }else if ([currentVc isKindOfClass:[TaskCenterController class]]){
+            TaskCenterController *vc = (TaskCenterController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }else if ([currentVc isKindOfClass:[MineController class]]){
+            MineController *vc = (MineController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }
+    }
+}
 
 @end

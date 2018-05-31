@@ -12,11 +12,12 @@
 
 #define QQ_ID                       @"1104513102"
 #define QQ_Key                      @"L3PVlr3bpXd9I63d"
-#define WX_ID                       @"wx9680cc8852c48ded"
-#define WX_Secret                   @"0c4dc0137c7c1b1f430df82292d76e06"
+#define WX_ID                       @"wx5313693d6d2d863e"
+#define WX_Secret                   @"6d250dc360fac1acfed6bba0c62939f4"
 #define SINA_ID                     @"3734649134"
 #define SINA_Secret                 @"57bba34da9bae335b351f2057283bbf1"
 #define Sina_RedirectURL            @"http://www.wangyuhudong.com"
+#define UMS_APPKEY                  @"5b0fe262f43e481d740001f5"
 
 
 #define MAX_WX_IMAGE_SIZE 32*1024

@@ -41,7 +41,6 @@ CommontHeaderViewDelegate
 
 - (void)dealloc
 {
-    LELog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.huView removeFromSuperview];
 }

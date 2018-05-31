@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LENewsListModel.h"
 
 @protocol LEShareSheetViewDelegate <NSObject>
 @optional
@@ -18,6 +19,8 @@
 @property (nonatomic, weak) UIViewController<LEShareSheetViewDelegate> *owner;
 
 @property (nonatomic, assign) BOOL isVideo;//是否是视频分享
+
+@property (nonatomic, strong) LENewsListModel *newsModel;
 
 //分享框
 - (void)showShareAction;

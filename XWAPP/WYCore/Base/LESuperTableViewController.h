@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WYNetWorkManager.h"
 
 @interface LESuperTableViewController : UITableViewController
+
+/** 请求类
+ *  EX: self.networkManager
+ */
+- (WYNetWorkManager *)networkManager;
 
 @end

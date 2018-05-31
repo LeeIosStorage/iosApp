@@ -14,6 +14,7 @@ typedef void(^SingleDoneHandler)(NSInteger selectedIndex, NSString *selectedValu
 typedef void(^MultipleDoneHandler)(NSArray *selectedIndexs, NSArray *selectedValues);
 typedef void(^MultipleAssoCiatedDoneHandler)(NSArray *selectedValues);
 typedef void(^DateDoneHandler)(NSDate *selectedDate);
+typedef void(^DateSelectedHandler)(NSDate *selectedDate);
 /** toolBar 可利用下面的方法返回的ZJUsefulPickerView来自定义样式 */
 @property (strong, nonatomic, readonly)ZJToolBar *toolBar;
 /**
@@ -55,7 +56,7 @@ typedef void(^DateDoneHandler)(NSDate *selectedDate);
  *  @param cancelHandler 取消操作
  *  @param doneHandler   完成操作
  */
-+ (ZJUsefulPickerView *)showDatePickerWithToolBarText:(NSString *)toolBarText withStyle:(ZJDatePickerStyle *)style withCancelHandler:(CancelHandler)cancelHandler withDoneHandler: (DateDoneHandler)doneHandler;
++ (ZJUsefulPickerView *)showDatePickerWithToolBarText:(NSString *)toolBarText withStyle:(ZJDatePickerStyle *)style withValueDidChangedHandler:(DateSelectedHandler)valueDidChangedHandler withCancelHandler:(CancelHandler)cancelHandler withDoneHandler: (DateDoneHandler)doneHandler;
 /**
  *  弹出城市选择器-- 数据来自本地的plist 可修改
  *

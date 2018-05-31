@@ -16,7 +16,12 @@
     XLChannelView *_channelView;
     
     ChannelBlock _block;
+    
+    NSMutableArray *_inUseTitles;
 }
+
+@property (assign, nonatomic) NSInteger currentIndex;
+
 @end
 
 @implementation XLChannelControl
@@ -40,7 +45,13 @@
 
 -(void)buildChannelView{
     
+    self.currentIndex = -1;
     _channelView = [[XLChannelView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    __weak typeof(self) weakSelf = self;
+    _channelView.channelSelectBlock = ^(NSInteger index) {
+        weakSelf.currentIndex = index;
+        [weakSelf backMethod];
+    };
     
     _nav = [[UINavigationController alloc] initWithRootViewController:[UIViewController new]];
     _nav.navigationBar.tintColor = [UIColor blackColor];
@@ -58,12 +69,20 @@
     }completion:^(BOOL finished) {
         [self->_nav.view removeFromSuperview];
     }];
-    _block(_channelView.inUseTitles,_channelView.unUseTitles);
+    
+    BOOL needRefresh = YES;
+    if ([_channelView.inUseTitles isEqual:_inUseTitles]) {
+        needRefresh = NO;
+    }
+    
+    _block(_channelView.inUseTitles,_channelView.unUseTitles,self.currentIndex,needRefresh);
 }
 
 -(void)showChannelViewWithInUseTitles:(NSArray*)inUseTitles unUseTitles:(NSArray*)unUseTitles finish:(ChannelBlock)block{
+    self.currentIndex = -1;
     _block = block;
     _channelView.inUseTitles = [NSMutableArray arrayWithArray:inUseTitles];
+    _inUseTitles = [NSMutableArray arrayWithArray:inUseTitles];
     _channelView.unUseTitles = [NSMutableArray arrayWithArray:unUseTitles];
     [_channelView reloadData];
 

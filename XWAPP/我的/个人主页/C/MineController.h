@@ -20,4 +20,7 @@ HitoPropertyNSArray(imageArr);
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet MineNaView *naView;
 
+/** 点击tabBar主动刷新页面 */
+- (void)tabBarSelectRefreshData;
+
 @end

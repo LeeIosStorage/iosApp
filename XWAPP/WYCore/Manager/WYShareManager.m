@@ -176,31 +176,7 @@ static WYShareManager* wy_shareManager = nil;
 
     self.shareBlock = result;
     
-    /*****多媒体
-    WBWebpageObject *msg = [WBWebpageObject object];
-    msg.title = title;
-    msg.description = description;
-    [msg setObjectID:@"identifier1"];
-    if (msg.description.length>1024) {
-        msg.description = [msg.description substringToIndex:1024];
-    }
-    NSData *imgData = nil;
-    if (!image) {
-        image = [UIImage imageNamed:@"LOGO"];
-    }
-    if (image) {
-        imgData = UIImageJPEGRepresentation(image, WY_IMAGE_COMPRESSION_QUALITY);
-        if (imgData.length > MAX_WX_IMAGE_SIZE) {//try again
-            imgData = UIImageJPEGRepresentation(image, WY_IMAGE_COMPRESSION_QUALITY/2);
-        }
-    }
-    if (imgData && imgData.length < MAX_WX_IMAGE_SIZE) {
-        [msg setThumbnailData:imgData];
-    }else{
-    }
-    msg.webpageUrl = webpageUrl;
-    */
-    
+    //带图片分享
     WBImageObject *msg = [WBImageObject object];
     NSData *imgData = nil;
     if (!image) {
@@ -218,32 +194,37 @@ static WYShareManager* wy_shareManager = nil;
     }
     
     WBMessageObject *sendMsg = [WBMessageObject message];
+    NSString* shareTitle = [NSString stringWithFormat:@"%@  %@ %@",title,@"(分享自@乐头条)",webpageUrl];
+    sendMsg.text = shareTitle;
+    
     if (imgData) {
         sendMsg.imageObject = msg;
     }
-//    if (isVideo) {
-//        WBVideoObject *video = [WBVideoObject object];
-//        video.objectID = @"";
-//        video.title = title;
-//        video.videoUrl = webpageUrl;
-//        video.videoLowBandUrl = video.videoUrl;
-//        video.videoStreamUrl = video.videoUrl;
-//        video.videoLowBandStreamUrl = video.videoUrl;
-//        sendMsg.mediaObject = video;
-//        
-////        WBWebpageObject *webpage = [WBWebpageObject object];
-////        webpage.objectID = @"";
-////        webpage.title = title;
-//////        webpage.description = [NSString stringWithFormat:NSLocalizedString(@"分享网页内容简介-%.0f", nil), [[NSDate date] timeIntervalSince1970]];
-////        webpage.thumbnailData = imgData;
-////        webpage.webpageUrl = webpageUrl;
-////        sendMsg.mediaObject = webpage;
-//        
-//    }else{
-//        sendMsg.imageObject = msg;
-//    }
-    NSString* shareTitle = [NSString stringWithFormat:@"%@  %@ %@",title,@"(分享自@乐头条)",webpageUrl];
-    sendMsg.text = shareTitle;
+    
+    /*****多媒体
+    WBWebpageObject *webpage = [WBWebpageObject object];
+    webpage.objectID = @"identifier1";
+    webpage.title = NSLocalizedString(title, nil);
+    webpage.description = @"O(∩_∩)O哈哈~";
+    webpage.thumbnailData = imgData;
+    webpage.webpageUrl = webpageUrl;//webpageUrl长度不能超过255
+    sendMsg.mediaObject = webpage;
+    sendMsg.text = @"O(∩_∩)O哈哈~";
+     */
+    
+    /**视频
+    if (isVideo) {
+        WBNewVideoObject *videoObject = [WBNewVideoObject object];
+        NSURL *videoUrl = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"apm" ofType:@"mov"]];
+        videoObject.delegate = self;
+        [videoObject addVideo:videoUrl];
+        message.videoObject = videoObject;
+    }else{
+        sendMsg.imageObject = msg;
+    }
+     */
+    
+    
     
     //不能SSO分享
 //    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest request];
@@ -401,7 +382,7 @@ static WYShareManager* wy_shareManager = nil;
 }
 
 - (void)shareTaskWithTitle:(NSString *)title{
-    
+    [SVProgressHUD showCustomInfoWithStatus:title];
 }
 
 @end

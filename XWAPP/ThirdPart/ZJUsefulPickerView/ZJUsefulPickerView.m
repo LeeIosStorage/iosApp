@@ -127,11 +127,15 @@ static const CGFloat kPickerViewHeight = 260.0f;
     return usefulPickerView;
 }
 
-+ (ZJUsefulPickerView *)showDatePickerWithToolBarText:(NSString *)toolBarText withStyle:(ZJDatePickerStyle *)style withCancelHandler:(CancelHandler)cancelHandler withDoneHandler: (DateDoneHandler)doneHandler {
++ (ZJUsefulPickerView *)showDatePickerWithToolBarText:(NSString *)toolBarText withStyle:(ZJDatePickerStyle *)style withValueDidChangedHandler:(DateSelectedHandler)valueDidChangedHandler withCancelHandler:(CancelHandler)cancelHandler withDoneHandler: (DateDoneHandler)doneHandler {
     ZJUsefulPickerView *usefulPickerView = [ZJUsefulPickerView new];
     __weak ZJUsefulPickerView *weakUsefulPickerView = usefulPickerView;
 
-    ZJDatePickerView *datePicker = [[ZJDatePickerView alloc] initWithToolBarText:toolBarText withStyle:style withValueDidChangedHandler:nil cancelAction:^{
+    ZJDatePickerView *datePicker = [[ZJDatePickerView alloc] initWithToolBarText:toolBarText withStyle:style withValueDidChangedHandler:^(NSDate *selectedDate) {
+        if (valueDidChangedHandler) {
+            valueDidChangedHandler(selectedDate);
+        }
+    } cancelAction:^{
         if (cancelHandler) {
             cancelHandler();
         }

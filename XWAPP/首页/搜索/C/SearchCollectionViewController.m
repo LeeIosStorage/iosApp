@@ -200,8 +200,6 @@ static NSString * const reuseIdentifier = @"SearchCollecViewCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    YQMController *yqm = [[YQMController alloc] initWithNibName:@"YQMController" bundle:nil];
-//    [self.navigationController pushViewController:yqm animated:YES];
     
     NSString *content = nil;
     if (self.historyArr.count != 0) {

@@ -7,6 +7,8 @@
 //
 
 #import "WYNetWorkExceptionHandling.h"
+#import "LELoginManager.h"
+#import "LESuperViewController.h"
 
 @implementation WYNetWorkExceptionHandling
 
@@ -16,7 +18,8 @@
             case WYRequestTypeSuccess:
             return YES;
             break;
-            case WYRequestTypeTokenInvalid:
+            case WYRequestTypeUnauthorized:
+            [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
             break;
             case WYRequestTypeNotLogin:
@@ -40,7 +43,7 @@
     }
     
     if (isNeedGotoLogin) {
-        if (type == WYRequestTypeTokenInvalid) {
+        if (type == WYRequestTypeUnauthorized) {
             [WYNetWorkExceptionHandling delayLogin];
         }else if (type == WYRequestTypeNotLogin){
             //未登录,需要登录
@@ -53,7 +56,55 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         //延迟登录
+        [self resetLogin];
     });
+}
+
++ (void)resetLogin{
+    
+    __weak UIViewController *currentVC = [WYNetWorkExceptionHandling getCurrentVC];
+    [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:currentVC showCancelButton:YES success:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
+        if ([currentVC isKindOfClass:[LESuperViewController class]]) {
+            LESuperViewController *superVc = (LESuperViewController *)currentVC;
+            [superVc refreshViewWithObject:nil];
+        }
+        
+    } failure:^(NSString *errorMessage) {
+        
+    } cancel:^{
+        
+    }];
+}
+
++ (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    if ([nextResponder isKindOfClass:[UITabBarController class]]) {
+        NSInteger index = ((UITabBarController *)nextResponder).selectedIndex;
+        UINavigationController *nav = [(UITabBarController *)nextResponder viewControllers][index];
+        nextResponder = [nav.viewControllers lastObject];
+    }
+    result = nextResponder;
+    
+    return result;
 }
 
 @end

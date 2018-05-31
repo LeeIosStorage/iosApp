@@ -7,6 +7,7 @@
 //
 
 #import "AboutUS.h"
+#import "WeiboSDK.h"
 
 @interface AboutUS ()
 
@@ -18,8 +19,6 @@
     [super viewDidLoad];
     [self setVC];
     [self setNaStyle];
-
-    
 }
 
 - (void)setVC {
@@ -32,14 +31,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark -
+#pragma mark - IBActions
+- (IBAction)gotoWeibo:(id)sender{
+     [WeiboSDK linkToUser:@"5701065233"];
 }
-*/
 
 @end

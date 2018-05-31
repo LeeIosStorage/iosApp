@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/WMPageController/WMPageController/WMPageController.m"
-            timestampString = "548326944.56023"
+            timestampString = "549434365.9408129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "115"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
-            timestampString = "549291543.5421261"
+            timestampString = "549463774.2676229"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "-setData"
             landmarkType = "7">
          </BreakpointContent>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/Login/C/PassWordLogin.m"
-            timestampString = "549291543.542295"
+            filePath = "XWAPP/WYCore/Manager/WYShareManager.m"
+            timestampString = "549463774.26773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "-loginRequest"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "-shareToWb:title:description:webpageUrl:image:VC:isVideo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

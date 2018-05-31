@@ -19,7 +19,7 @@
 
 @interface SYBaseController () <UISearchBarDelegate>
 {
-    
+    BOOL _viewDidAppear;
 }
 
 HitoPropertyNSMutableArray(headerArr);
@@ -36,6 +36,17 @@ HitoPropertyNSArray(allChannelArray);
 
 #pragma mark -
 #pragma mark - Lifecycle
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    _viewDidAppear = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    _viewDidAppear = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -52,6 +63,14 @@ HitoPropertyNSArray(allChannelArray);
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     //    self.navigationController.navigationBar.shadowImage = [UIImage new];
     
+}
+
+- (void)tabBarSelectRefreshData{
+    if (_viewDidAppear) {
+        
+        SYBaseVC *vc = (SYBaseVC *)self.currentViewController;
+        [vc tabBarSelectRefreshData];
+    }
 }
 
 #pragma mark -
@@ -88,12 +107,6 @@ HitoPropertyNSArray(allChannelArray);
 
 - (IBAction)addBtnAction:(UIButton *)sender {
     
-//    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
-//    [self.navigationController pushViewController:detail animated:YES];
-//
-//    return;
-    
-    
     NSArray *arr1 = [NSArray arrayWithArray:self.headerArr];
     
     NSMutableArray *tmpAllArr = [NSMutableArray arrayWithArray:self.allChannelArray];
@@ -111,11 +124,18 @@ HitoPropertyNSArray(allChannelArray);
     NSArray *arr2 = [NSArray arrayWithArray:tmpAllArr];
     
     HitoWeakSelf;
-    [[XLChannelControl shareControl] showChannelViewWithInUseTitles:arr1 unUseTitles:arr2 finish:^(NSArray *inUseTitles, NSArray *unUseTitles) {
+    [[XLChannelControl shareControl] showChannelViewWithInUseTitles:arr1 unUseTitles:arr2 finish:^(NSArray *inUseTitles, NSArray *unUseTitles, NSInteger currentIndex, BOOL needRefresh) {
+        
         WeakSelf.headerArr = [NSMutableArray arrayWithArray:inUseTitles];
         [[LEDataStoreManager shareInstance] saveInUseChannelWithArray:inUseTitles];
 
-        [WeakSelf reloadData];
+        if (needRefresh) {
+            [WeakSelf reloadData];
+        }
+        
+        if (currentIndex >= 0 && currentIndex < WeakSelf.headerArr.count) {
+            [WeakSelf setSelectIndex:(int)currentIndex];
+        }
     }];
 }
 
@@ -224,11 +244,6 @@ HitoPropertyNSArray(allChannelArray);
     baseVC.tagTitle = channelModel.name;
     baseVC.channelId = channelModel.channelId;
     
-    
-//    NSDictionary *dic = @{@"t1": @[@"1", @"2"], @"t2": @[@"3", @"4"]};
-//    HitoUserDefaults(dic, @"DIC");
-    
-    
     return baseVC;
 }
 
@@ -246,6 +261,27 @@ HitoPropertyNSArray(allChannelArray);
 - (CGRect)pageController:(WMPageController *)pageController preferredFrameForMenuView:(WMMenuView *)menuView {
     return CGRectMake(0, 0, HitoScreenW - 50, 40);
     
+}
+
+#pragma mark -
+#pragma mark - WMPageControllerDelegate
+- (void)pageController:(WMPageController *)pageController lazyLoadViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+//    LELog(@"<<<<lazyLoadViewController>>>>%@",info);
+    if ([viewController isKindOfClass:[SYBaseVC class]]) {
+        [viewController refreshData];
+    }
+}
+
+- (void)pageController:(WMPageController *)pageController willCachedViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+//    LELog(@"<<<<willCachedViewController>>>>%@",info);
+}
+
+- (void)pageController:(WMPageController *)pageController willEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+//    LELog(@"<<<<willEnterViewController>>>>%@",info);
+}
+
+- (void)pageController:(WMPageController *)pageController didEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+//    LELog(@"<<<<didEnterViewController>>>>%@",info);
 }
 
 #pragma mark - searchBarDelegate

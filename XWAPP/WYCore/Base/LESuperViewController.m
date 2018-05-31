@@ -24,6 +24,12 @@ UIGestureRecognizerDelegate
 
 @implementation LESuperViewController
 
+#pragma mark -
+#pragma mark - Lifecycle
+- (void)dealloc{
+    LELog(@"!!!!!");
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
