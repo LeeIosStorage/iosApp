@@ -10,7 +10,7 @@
 
 @interface TaskCenterController : LESuperTableViewController
 
-HitoPropertyNSArray(dataArr);
+HitoPropertyNSMutableArray(taskLists);
 @property (weak, nonatomic) IBOutlet UIView *daySuper;
 @property (weak, nonatomic) IBOutlet UIButton *qiandaoBtn;
 

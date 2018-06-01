@@ -32,7 +32,7 @@
         make.right.equalTo(self).offset(0);
         make.top.equalTo(self).offset(23);
         make.bottom.equalTo(self).offset(0);
-        make.height.mas_equalTo(1);
+        make.height.mas_equalTo(0.5);
     }];
     
 }

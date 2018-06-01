@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LETaskListModel.h"
 
 @interface TaskCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *leftLB;
 @property (weak, nonatomic) IBOutlet UILabel *rightLB;
 @property (weak, nonatomic) IBOutlet UIImageView *rightIM;
 @property (weak, nonatomic) IBOutlet UIView *longLine;
 @property (weak, nonatomic) IBOutlet UIView *shortView;
+
+- (void)updateCellData:(LETaskListModel *)taskModel;
 
 @end

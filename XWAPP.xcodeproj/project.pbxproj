@@ -74,6 +74,7 @@
 		4CB76B7720BE49180092503E /* LEAttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7620BE49180092503E /* LEAttentionViewController.m */; };
 		4CB76B7A20BE49900092503E /* LECommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7920BE49900092503E /* LECommentListViewController.m */; };
 		4CB76B7D20C011720092503E /* LELoginAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7C20C011720092503E /* LELoginAuthManager.m */; };
+		4CB76B8020C12BE40092503E /* LETaskListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76B7F20C12BE40092503E /* LETaskListModel.m */; };
 		4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */; };
 		4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1B20A0614200FD9C4C /* MineSecondCell.m */; };
 		4CB8ED1F20A0615600FD9C4C /* MineThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB8ED1E20A0615600FD9C4C /* MineThirdCell.m */; };
@@ -320,6 +321,8 @@
 		4CB76B7920BE49900092503E /* LECommentListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentListViewController.m; sourceTree = "<group>"; };
 		4CB76B7B20C011720092503E /* LELoginAuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELoginAuthManager.h; sourceTree = "<group>"; };
 		4CB76B7C20C011720092503E /* LELoginAuthManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELoginAuthManager.m; sourceTree = "<group>"; };
+		4CB76B7E20C12BE40092503E /* LETaskListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LETaskListModel.h; sourceTree = "<group>"; };
+		4CB76B7F20C12BE40092503E /* LETaskListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LETaskListModel.m; sourceTree = "<group>"; };
 		4CB8ED1720A060F600FD9C4C /* MineFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineFirstCell.h; sourceTree = "<group>"; };
 		4CB8ED1820A060F600FD9C4C /* MineFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineFirstCell.m; sourceTree = "<group>"; };
 		4CB8ED1A20A0614200FD9C4C /* MineSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineSecondCell.h; sourceTree = "<group>"; };
@@ -900,6 +903,8 @@
 		4CF3161B20A1431600E81E56 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4CB76B7E20C12BE40092503E /* LETaskListModel.h */,
+				4CB76B7F20C12BE40092503E /* LETaskListModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -1862,6 +1867,7 @@
 				EC4186BF2099BB4400E57C17 /* RootTabBar.m in Sources */,
 				EC4186A320996E4100E57C17 /* UIViewController+SetNavigationStyle.m in Sources */,
 				EC72BC25208EDCE300FADE74 /* BaseThirdCell.m in Sources */,
+				4CB76B8020C12BE40092503E /* LETaskListModel.m in Sources */,
 				EC72BC472090311C00FADE74 /* HotCell.m in Sources */,
 				EC72BBE2208D76E700FADE74 /* SYBaseController.m in Sources */,
 				EC72BBB9208D6EAD00FADE74 /* main.m in Sources */,

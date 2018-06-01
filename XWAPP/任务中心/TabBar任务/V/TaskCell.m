@@ -21,4 +21,14 @@
     // Configure the view for the selected state
 }
 
+- (void)updateCellData:(LETaskListModel *)taskModel{
+    
+    self.leftLB.text = taskModel.taskTitle;
+    self.rightLB.text = taskModel.coin;
+    self.rightIM.image = HitoImage(@"task_jinbi");
+    if (taskModel.coinType == 1) {
+        self.rightIM.image = HitoImage(@"task_hongbao");
+    }
+}
+
 @end

@@ -244,7 +244,7 @@ CommontHeaderViewDelegate
         
         if (_currentRect.origin.y > 0) {
             CGPoint offset = self.tableView.contentOffset;
-            offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+            offset.y = _currentRect.origin.y + _currentRect.size.height - (self.view.bounds.size.height - _keyBoardHeight - 49);
             [self.tableView setContentOffset:offset animated:YES];
         }
         
@@ -364,7 +364,7 @@ CommontHeaderViewDelegate
     if (_huView.hufuTF.isFirstResponder) {
         
         CGPoint offset = self.tableView.contentOffset;
-        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        offset.y = _currentRect.origin.y + _currentRect.size.height - (self.view.bounds.size.height - _keyBoardHeight - 49);
         [self.tableView setContentOffset:offset animated:YES];
         HitoWeakSelf;
         [UIView animateWithDuration:0.3 animations:^{

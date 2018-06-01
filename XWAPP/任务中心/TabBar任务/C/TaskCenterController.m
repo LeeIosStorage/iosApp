@@ -11,6 +11,12 @@
 #import "TaskCellHeader.h"
 #import "YQMController.h"
 #import "LERefreshHeader.h"
+#import "LETaskListModel.h"
+#import "LELoginAuthManager.h"
+#import "LEWebViewController.h"
+#import "MyWallet.h"
+#import "WYShareManager.h"
+#import <SDWebImageManager.h>
 
 @interface TaskCenterController ()
 <
@@ -158,13 +164,130 @@ UITabBarControllerDelegate
     _countDownTimer = nil;
 }
 
+- (void)setTaskListData{
+
+    [self.taskLists removeAllObjects];
+    NSMutableArray *mutArray1 = [NSMutableArray arrayWithCapacity:3];
+    NSMutableArray *mutArray2 = [NSMutableArray arrayWithCapacity:8];
+    for (int i = 0; i < 11; i ++ ) {
+        
+        LETaskListModel *taskModel = [LETaskListModel new];
+        taskModel.taskId = [NSString stringWithFormat:@"%d",i + 1];
+        taskModel.taskType = i+1;
+        taskModel.taskStatus = 0;
+        if (i < 3) {
+            if (i == 0) {
+                taskModel.taskTitle = @"新手阅读奖励";
+                taskModel.taskDescription = @"新手阅读奖励新手阅读奖励新手阅读奖励新手阅读奖励新手阅读奖励";
+                taskModel.coin = @"+100";
+                taskModel.coinType = 0;
+            }else if (i == 1){
+                taskModel.taskTitle = @"绑定微信";
+                taskModel.taskDescription = @"绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信";
+                taskModel.coin = @"+8元";
+                taskModel.coinType = 1;
+            }else if (i == 2){
+                taskModel.taskTitle = @"输入邀请码得红包";
+                taskModel.taskDescription = @"新输入邀请码得红包输入邀请码得红包手阅读奖输入邀请码得红包励新手阅读奖励新手阅读输入邀请码得红包奖励新手阅读奖励新手阅读奖励";
+                taskModel.coin = @"+10元";
+                taskModel.coinType = 1;
+            }
+            [mutArray1 addObject:taskModel];
+        }else{
+            if (i == 3) {
+                taskModel.taskTitle = @"邀请收徒";
+                taskModel.taskDescription = @"邀请收徒邀请收徒邀请收徒邀请收徒邀请收徒";
+                taskModel.coin = @"+1000";
+                taskModel.coinType = 0;
+            }else if (i == 4){
+                taskModel.taskTitle = @"晒晒收入";
+                taskModel.taskDescription = @"晒晒收入晒晒收入奖励新手阅读奖励新手阅读奖励新手阅读奖励";
+                taskModel.coin = @"+50";
+                taskModel.coinType = 0;
+            }else if (i == 5){
+                taskModel.taskTitle = @"唤醒徒弟";
+                taskModel.taskDescription = @"唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟";
+                taskModel.coin = @"+30";
+                taskModel.coinType = 0;
+            }else if (i == 6){
+                taskModel.taskTitle = @"分享到朋友圈";
+                taskModel.taskDescription = @"分享到朋友圈奖励新手阅分享到朋友圈读奖励分享到朋友圈阅读奖励分享到朋友圈";
+                taskModel.coin = @"+20";
+                taskModel.coinType = 0;
+            }else if (i == 7){
+                taskModel.taskTitle = @"阅读资讯";
+                taskModel.taskDescription = @"新阅读资讯手阅读奖励新阅读资讯奖励";
+                taskModel.coin = @"+10";
+                taskModel.coinType = 0;
+            }else if (i == 8){
+                taskModel.taskTitle = @"优质评论";
+                taskModel.taskDescription = @"优质评论";
+                taskModel.coin = @"+10";
+                taskModel.coinType = 0;
+            }else if (i == 9){
+                taskModel.taskTitle = @"阅读推送咨询";
+                taskModel.taskDescription = @"阅读推送咨询";
+                taskModel.coin = @"+10";
+                taskModel.coinType = 0;
+            }else if (i == 10){
+                taskModel.taskTitle = @"问券调查";
+                taskModel.taskDescription = @"问券调查励问券调查问券调查问券调查问券调查";
+                taskModel.coin = @"+200";
+                taskModel.coinType = 0;
+            }
+            [mutArray2 addObject:taskModel];
+        }
+    }
+    
+    [self.taskLists addObject:mutArray1];
+    [self.taskLists addObject:mutArray2];
+    
+    [self.tableView reloadData];
+    
+}
+
+-(void)sendAuthRequest
+{
+    HitoWeakSelf;
+    [SVProgressHUD showCustomWithStatus:nil];
+    [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
+        if (success) {
+            [SVProgressHUD showCustomInfoWithStatus:@"微信绑定成功"];
+        }
+        [WeakSelf.tableView reloadData];
+    }];
+}
+
+- (void)pushWebViewController:(NSString *)url{
+    //邀请活动
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:url];
+    webVc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:webVc animated:YES];
+}
+
+- (void)shareImageToWXTimeline{
+    
+//    UIImage *shareImage = nil;
+    [SVProgressHUD showCustomWithStatus:nil];
+    [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527856210447&di=82ac636ef350de01ef175ad25a6fd144&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F58%2Fd%2F2.jpg"] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+        
+    } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        if (image) {
+            [SVProgressHUD dismiss];
+            [[WYShareManager shareInstance] shareToWXWithImage:image scene:WXSceneTimeline];
+        }else{
+            [SVProgressHUD showCustomErrorWithStatus:@"网络问题请重试"];
+        }
+    }];
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
-- (NSArray *)dataArr {
-    if (!_dataArr) {
-        _dataArr = @[@[@"新手阅读奖励", @"绑定微信", @"输入邀请码得红包"], @[@"邀请收徒", @"晒晒收入", @"唤醒徒弟", @"分享到朋友圈", @"阅读资讯", @"优质评论", @"阅读推送咨询", @"问券调查"]];
+- (NSMutableArray *)taskLists {
+    if (!_taskLists) {
+        _taskLists = [NSMutableArray arrayWithCapacity:0];
     }
-    return _dataArr;
+    return _taskLists;
 }
 
 #pragma mark -
@@ -186,6 +309,7 @@ UITabBarControllerDelegate
             return;
         }
         [WeakSelf refreshSignInButtonStatus:YES];
+        [WeakSelf setTaskListData];
         
         
     } failure:^(id responseObject, NSError *error) {
@@ -245,28 +369,32 @@ UITabBarControllerDelegate
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataArr.count;
+    return self.taskLists.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *arr = self.dataArr[section];
+    NSArray *arr = self.taskLists[section];
     return arr.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
-    cell.leftLB.text = self.dataArr[indexPath.section][indexPath.row];
-    if (indexPath.section == 0) {
-        if (indexPath.row == 2) {
-            cell.longLine.hidden = NO;
-        } else if (indexPath.row == 1) {
-            cell.rightIM.image = HitoImage(@"task_hongbao");
-        }
-    } else {
-
+    NSArray *sectionArray = [self.taskLists objectAtIndex:indexPath.section];
+    LETaskListModel *taskModel = [sectionArray objectAtIndex:indexPath.row];
+    [cell updateCellData:taskModel];
+    
+    cell.longLine.hidden = YES;
+    cell.shortView.hidden = YES;
+    if (indexPath.section != 0) {
         cell.shortView.hidden = NO;
     }
+    if (indexPath.row == sectionArray.count-1) {
+        cell.shortView.hidden = YES;
+        cell.longLine.hidden = NO;
+    }
+    
     return cell;
 }
 
@@ -285,9 +413,73 @@ UITabBarControllerDelegate
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    YQMController *yqm = [[YQMController alloc] init];
-    yqm.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:yqm animated:YES];
+    
+    NSArray *sectionArray = [self.taskLists objectAtIndex:indexPath.section];
+    LETaskListModel *taskModel = [sectionArray objectAtIndex:indexPath.row];
+    
+    switch (taskModel.taskType) {
+        case LETaskCenterTypeGreenHandRead:
+        {
+            [self.tabBarController setSelectedIndex:0];
+        }
+            break;
+        case LETaskCenterTypeReadInformation:
+        {
+            [self.tabBarController setSelectedIndex:0];
+        }
+            break;
+        case LETaskCenterTypeHighComment:
+        {
+            [self.tabBarController setSelectedIndex:0];
+        }
+            break;
+        case LETaskCenterTypeBindingWeixin:
+        {
+            [self sendAuthRequest];
+        }
+            break;
+        case LETaskCenterTypeInvitationCode:
+        {
+            YQMController *yqm = [[YQMController alloc] init];
+            yqm.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:yqm animated:YES];
+        }
+            break;
+        case LETaskCenterTypeInvitationRecruit:
+        {
+            [self pushWebViewController:kAppInviteActivityWebURL];
+        }
+            break;
+        case LETaskCenterTypeShowIncome:
+        {
+            MyWallet *wallet = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyWallet"];
+            [self.navigationController pushViewController:wallet animated:YES];
+        }
+            break;
+        case LETaskCenterTypeWakeApprentice:
+        {
+            [self pushWebViewController:kAppInviteActivityWebURL];
+        }
+            break;
+        case LETaskCenterTypeShareTimeline:
+        {
+            [self shareImageToWXTimeline];
+        }
+            break;
+        case LETaskCenterTypeReadPushInformation:
+        {
+            [self.tabBarController setSelectedIndex:0];
+        }
+            break;
+        case LETaskCenterTypeQuestionnaire:
+        {
+            [self pushWebViewController:kAppInviteActivityWebURL];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -295,7 +487,7 @@ UITabBarControllerDelegate
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 45;
+    return 44;
 }
 
 #pragma mark -SBAction

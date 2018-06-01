@@ -266,22 +266,19 @@ HitoPropertyNSArray(allChannelArray);
 #pragma mark -
 #pragma mark - WMPageControllerDelegate
 - (void)pageController:(WMPageController *)pageController lazyLoadViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
-//    LELog(@"<<<<lazyLoadViewController>>>>%@",info);
-    if ([viewController isKindOfClass:[SYBaseVC class]]) {
-        [viewController refreshData];
-    }
+    
 }
 
 - (void)pageController:(WMPageController *)pageController willCachedViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
-//    LELog(@"<<<<willCachedViewController>>>>%@",info);
 }
 
 - (void)pageController:(WMPageController *)pageController willEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
-//    LELog(@"<<<<willEnterViewController>>>>%@",info);
 }
 
 - (void)pageController:(WMPageController *)pageController didEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
-//    LELog(@"<<<<didEnterViewController>>>>%@",info);
+    if ([viewController isKindOfClass:[SYBaseVC class]]) {
+        [viewController refreshData];
+    }
 }
 
 #pragma mark - searchBarDelegate

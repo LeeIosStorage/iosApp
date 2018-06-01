@@ -248,7 +248,7 @@ LEShareSheetViewDelegate
     [window addSubview:_huView];
     if (_huView.hufuTF.isFirstResponder) {
         CGPoint offset = self.tableView.contentOffset;
-        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        offset.y = _currentRect.origin.y + _currentRect.size.height - (self.view.bounds.size.height - _keyBoardHeight - 49);
         [self.tableView setContentOffset:offset animated:YES];
         HitoWeakSelf;
         [UIView animateWithDuration:0.3 animations:^{
@@ -321,6 +321,10 @@ LEShareSheetViewDelegate
                 WeakSelf.nextCursor ++;
                 [WeakSelf.tableView.mj_footer resetNoMoreData];
             }
+        }
+        if (WeakSelf.commentLists.count == 0) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
+            [WeakSelf.tableView.mj_footer resetNoMoreData];
         }
 
         [WeakSelf.tableView reloadData];
@@ -681,22 +685,26 @@ LEShareSheetViewDelegate
 //当键盘出现或改变时调用
 - (void)keyboardWillShow:(NSNotification *)aNotification
 {
-    NSDictionary *userInfo = [aNotification userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    _keyBoardHeight = keyboardRect.size.height;
+    CGRect keyboardBounds;
+    [[aNotification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [aNotification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+//    NSNumber *curve = [aNotification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    _keyBoardHeight = keyboardBounds.size.height;
     HitoWeakSelf;
     if (self.comView.comTextView.isFirstResponder) {
-        [UIView animateWithDuration:0.3 animations:^{
+        [UIView animateWithDuration:[duration doubleValue] animations:^{
             WeakSelf.comView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 107, HitoScreenW, 107);
         }];
     }else if (self.huView.hufuTF.isFirstResponder){
         
         CGPoint offset = self.tableView.contentOffset;
-        offset.y = (_currentRect.origin.y + _currentRect.size.height-_keyBoardHeight+49);
+        offset.y = _currentRect.origin.y + _currentRect.size.height - (self.view.bounds.size.height - _keyBoardHeight - 49);
         [self.tableView setContentOffset:offset animated:YES];
         
-        [UIView animateWithDuration:0.3 animations:^{
+        [UIView animateWithDuration:[duration doubleValue] animations:^{
             WeakSelf.huView.frame = CGRectMake(0, HitoScreenH - WeakSelf.keyBoardHeight - 49, HitoScreenW, 49);
         }];
     }

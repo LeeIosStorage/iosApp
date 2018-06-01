@@ -50,12 +50,24 @@
 }
 
 - (void)refreshData{
-    [self addMJ];
+    if (!self.tableView.mj_header) {
+        [self addMJ];
+    }
 }
 
 - (void)tabBarSelectRefreshData{
     if (![self.tableView.mj_header isRefreshing] && !self.tableView.mj_header.hidden) {
-        [self.tableView.mj_header beginRefreshing];
+        CGPoint offset = self.tableView.contentOffset;
+        if (offset.y > 200) {
+            offset.y = 0;
+            [self.tableView setContentOffset:offset animated:NO];
+            HitoWeakSelf;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [WeakSelf.tableView.mj_header beginRefreshing];
+            });
+        }else{
+            [self.tableView.mj_header beginRefreshing];
+        }
     }
 }
 
@@ -154,6 +166,11 @@
                 WeakSelf.nextCursor ++;
                 [WeakSelf.tableView.mj_footer resetNoMoreData];
             }
+        }
+        
+        if (WeakSelf.newsList.count == 0) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
+            [WeakSelf.tableView.mj_footer resetNoMoreData];
         }
         
         [WeakSelf.tableView reloadData];
@@ -274,9 +291,11 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     
-    CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:_indexPath];
-    CGRect rect1 = [self.tableView convertRect:rectInTableView toView:[UIApplication sharedApplication].delegate.window];
-    [self addTempView:rect1];
+    if (_indexPath) {
+        CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:_indexPath];
+        CGRect rect1 = [self.tableView convertRect:rectInTableView toView:[UIApplication sharedApplication].delegate.window];
+        [self addTempView:rect1];
+    }
 }
 
 - (void)addTempView:(CGRect)rect {
