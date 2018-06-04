@@ -113,12 +113,14 @@ UIScrollViewDelegate
         
         HitoWeakSelf;
         [_header leftClickAction:^{
-            MyWallet *wallet = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyWallet"];
+            MyWallet *wallet = [[MyWallet alloc] init];
+            wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
         
         [_header centerClickAction:^{
-            MyWallet *wallet = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyWallet"];
+            MyWallet *wallet = [[MyWallet alloc] init];
+            wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
     }

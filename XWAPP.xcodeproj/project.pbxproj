@@ -33,6 +33,9 @@
 		4C3F3C2520AFDDC300B754AF /* LECommentFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2420AFDDC300B754AF /* LECommentFooterView.m */; };
 		4C3F3C2820B0054300B754AF /* LENewsCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2720B0054300B754AF /* LENewsCommentModel.m */; };
 		4C3F3C2B20B008DD00B754AF /* LECommentMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F3C2A20B008DD00B754AF /* LECommentMoreCell.m */; };
+		4C4D704C20C4E03700DD542B /* LEWalletHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D704B20C4E03700DD542B /* LEWalletHeaderView.m */; };
+		4C4D704F20C5133C00DD542B /* LEGoldRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D704E20C5133C00DD542B /* LEGoldRecordModel.m */; };
+		4C4D705220C535D500DD542B /* LEShareModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D705120C535D500DD542B /* LEShareModel.m */; };
 		4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADF920A012C100893FC8 /* MyWallet.m */; };
 		4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FADFC20A031F200893FC8 /* SearchHeaderSecond.m */; };
 		4C5FADFF20A031F200893FC8 /* SearchHeaderSecond.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C5FADFD20A031F200893FC8 /* SearchHeaderSecond.xib */; };
@@ -244,6 +247,12 @@
 		4C3F3C2720B0054300B754AF /* LENewsCommentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsCommentModel.m; sourceTree = "<group>"; };
 		4C3F3C2920B008DD00B754AF /* LECommentMoreCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentMoreCell.h; sourceTree = "<group>"; };
 		4C3F3C2A20B008DD00B754AF /* LECommentMoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentMoreCell.m; sourceTree = "<group>"; };
+		4C4D704A20C4E03700DD542B /* LEWalletHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWalletHeaderView.h; sourceTree = "<group>"; };
+		4C4D704B20C4E03700DD542B /* LEWalletHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWalletHeaderView.m; sourceTree = "<group>"; };
+		4C4D704D20C5133C00DD542B /* LEGoldRecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEGoldRecordModel.h; sourceTree = "<group>"; };
+		4C4D704E20C5133C00DD542B /* LEGoldRecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEGoldRecordModel.m; sourceTree = "<group>"; };
+		4C4D705020C535D500DD542B /* LEShareModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareModel.h; sourceTree = "<group>"; };
+		4C4D705120C535D500DD542B /* LEShareModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareModel.m; sourceTree = "<group>"; };
 		4C5FADF820A012C000893FC8 /* MyWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWallet.h; sourceTree = "<group>"; };
 		4C5FADF920A012C100893FC8 /* MyWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWallet.m; sourceTree = "<group>"; };
 		4C5FADFB20A031F200893FC8 /* SearchHeaderSecond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchHeaderSecond.h; sourceTree = "<group>"; };
@@ -661,6 +670,8 @@
 		4C5FADF520A012AB00893FC8 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4C4D704D20C5133C00DD542B /* LEGoldRecordModel.h */,
+				4C4D704E20C5133C00DD542B /* LEGoldRecordModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -668,6 +679,8 @@
 		4C5FADF620A012B400893FC8 /* V */ = {
 			isa = PBXGroup;
 			children = (
+				4C4D704A20C4E03700DD542B /* LEWalletHeaderView.h */,
+				4C4D704B20C4E03700DD542B /* LEWalletHeaderView.m */,
 				4CF22CAA20A2A0BE000904F4 /* WalletHeader.h */,
 				4CF22CAB20A2A0BE000904F4 /* WalletHeader.m */,
 				4CF22CAD20A2A0C4000904F4 /* WalletHeader.xib */,
@@ -773,6 +786,8 @@
 				4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */,
 				4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */,
 				4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */,
+				4C4D705020C535D500DD542B /* LEShareModel.h */,
+				4C4D705120C535D500DD542B /* LEShareModel.m */,
 			);
 			path = LEShareSheetView;
 			sourceTree = "<group>";
@@ -1791,6 +1806,7 @@
 				4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */,
 				4CB76B3620BC079A0092503E /* LESuperTableViewController.m in Sources */,
 				4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */,
+				4C4D704F20C5133C00DD542B /* LEGoldRecordModel.m in Sources */,
 				EC72BC3B208F255400FADE74 /* DelAlertView.m in Sources */,
 				4CB76B7420BD77320092503E /* ZJToolBar.m in Sources */,
 				4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */,
@@ -1849,6 +1865,7 @@
 				4C61863020AAB7A5000D647F /* WYNetWorkExceptionHandling.m in Sources */,
 				EC72BC06208DC74700FADE74 /* TagHeaderView.m in Sources */,
 				4CB76B5420BD49310092503E /* WYActionSheet.m in Sources */,
+				4C4D705220C535D500DD542B /* LEShareModel.m in Sources */,
 				4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */,
@@ -1867,6 +1884,7 @@
 				EC4186BF2099BB4400E57C17 /* RootTabBar.m in Sources */,
 				EC4186A320996E4100E57C17 /* UIViewController+SetNavigationStyle.m in Sources */,
 				EC72BC25208EDCE300FADE74 /* BaseThirdCell.m in Sources */,
+				4C4D704C20C4E03700DD542B /* LEWalletHeaderView.m in Sources */,
 				4CB76B8020C12BE40092503E /* LETaskListModel.m in Sources */,
 				EC72BC472090311C00FADE74 /* HotCell.m in Sources */,
 				EC72BBE2208D76E700FADE74 /* SYBaseController.m in Sources */,

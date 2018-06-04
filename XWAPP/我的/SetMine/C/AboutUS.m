@@ -37,4 +37,12 @@
      [WeiboSDK linkToUser:@"5701065233"];
 }
 
+- (IBAction)onlineServiceAction:(id)sender{
+    
+}
+
+- (IBAction)businessAction:(id)sender{
+    
+}
+
 @end

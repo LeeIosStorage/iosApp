@@ -6,8 +6,8 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import "LESuperTableViewController.h"
+#import "LESuperViewController.h"
 
-@interface MyWallet : LESuperTableViewController
+@interface MyWallet : LESuperViewController
 
 @end

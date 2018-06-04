@@ -72,6 +72,11 @@ LEShareWindowDelegate
             self.shareImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];
         }
         
+    }else if (self.shareModel){
+        self.shareTitle = self.shareModel.shareTitle;
+        self.shareDescription = self.shareModel.shareDescription;
+        self.shareWebpageUrl = self.shareModel.shareWebpageUrl;
+        self.shareImage = self.shareModel.shareImage;
     }
 }
 

@@ -24,4 +24,6 @@ typedef void(^RightBtnAction)(void);
 - (void)leftBlockAction:(LeftBtnAction)leftBlock;
 - (void)rightBlockAction:(RightBtnAction)rightBlock;
 
+- (void)refreshUIWithIndex:(NSInteger)index;
+
 @end

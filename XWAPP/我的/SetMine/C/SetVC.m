@@ -54,9 +54,11 @@ HitoPropertyNSArray(dataSource);
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];
+    HitoWeakSelf;
     UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [LELoginUserManager clearUserInfo];
-        [self.tabBarController setSelectedIndex:0];
+        [WeakSelf.tabBarController setSelectedIndex:0];
+        [WeakSelf.navigationController popToRootViewControllerAnimated:NO];
     }];
     
     [alertController addAction:action1];
@@ -156,6 +158,12 @@ HitoPropertyNSArray(dataSource);
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 8;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 8)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
