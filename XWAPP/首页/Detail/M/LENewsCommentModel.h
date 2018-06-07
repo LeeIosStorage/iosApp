@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSString *replyUserName;
 @property (strong, nonatomic) NSString *replyuId;
 
+@property (strong, nonatomic) NSArray *children;
+
 @end
 
 @protocol LEReplyCommentModel

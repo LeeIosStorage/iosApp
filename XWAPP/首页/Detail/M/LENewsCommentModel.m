@@ -20,6 +20,12 @@
              };
 }
 
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{
+             @"children"   : [LEReplyCommentModel class],
+             };
+}
+
 @end
 
 @implementation LENewsCommentModel

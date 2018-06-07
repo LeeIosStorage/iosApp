@@ -306,12 +306,40 @@ LEShareSheetViewDelegate
         }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
         
+        //重新计算评论array
+        NSMutableArray *comments = [NSMutableArray array];
+        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSMutableArray *children = [NSMutableArray array];
+            if ([obj isKindOfClass:[LENewsCommentModel class]]) {
+                LENewsCommentModel *commentModel = (LENewsCommentModel *)obj;
+                [commentModel.comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+                        LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+                        [children addObject:replyModel];
+                        
+                        for (LEReplyCommentModel *childrenModel in replyModel.children) {
+                            childrenModel.replyuId = replyModel.userId;
+                            childrenModel.replyUserName = replyModel.userName;
+                            [children addObject:childrenModel];
+                        }
+                    }
+                    if ([commentModel.comments lastObject] == obj) {
+                        commentModel.comments = children;
+                        *stop = YES;
+                    }
+                }];
+                [comments addObject:commentModel];
+            }
+        }];
+        
+        
         if (WeakSelf.nextCursor == 1) {
             WeakSelf.commentLists = [[NSMutableArray alloc] init];
         }
-        
-        [WeakSelf.commentLists addObjectsFromArray:array];
+        [WeakSelf.commentLists addObjectsFromArray:comments];
 
+        
         if (!isCache) {
             if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
                 [WeakSelf.tableView.mj_footer setHidden:NO];
@@ -337,16 +365,15 @@ LEShareSheetViewDelegate
 
 - (void)sendCommentRequestWith:(NSString *)text{
     
+    [self hufuTFResignFirstResponder];
     if ([[LELoginManager sharedInstance] needUserLogin:self]) {
         return;
     }
     
-    if (text.length == 0) {
+    if (text.length == 0 || text.length > COMMENT_MAX_COUNT) {
+        [SVProgressHUD showCustomInfoWithStatus:@"评论内容须在1到255字之内"];
         return;
     }
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.huView.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 49);
-    [self.huView.hufuTF resignFirstResponder];
     
     [SVProgressHUD showCustomWithStatus:nil];
     
@@ -387,6 +414,7 @@ LEShareSheetViewDelegate
 
 - (void)favourRequestWithCommentModel:(LENewsCommentModel *)commentModel headerView:(CommontHeaderView *)headerView section:(NSInteger)section{
     
+    [self hufuTFResignFirstResponder];
     if ([[LELoginManager sharedInstance] needUserLogin:self]) {
         return;
     }
@@ -516,13 +544,20 @@ LEShareSheetViewDelegate
 //    [shareWindow setCustomerSheet];
 }
 
+static int commentMaxCount = 10;
 #pragma mark - UITableviewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     LENewsCommentModel *commentModel = self.commentLists[section];
     if (commentModel.comments.count == 0) {
         return commentModel.comments.count;
     }
-    return commentModel.comments.count + 1;
+    
+    //最多显示评论数
+    int count = (int)commentModel.comments.count;
+    if (count > commentMaxCount) {
+        count = commentMaxCount;
+    }
+    return count + 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -533,7 +568,12 @@ LEShareSheetViewDelegate
     
     LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
     
-    if (indexPath.row == commentModel.comments.count) {
+    int count = (int)commentModel.comments.count;
+    if (count > commentMaxCount) {
+        count = commentMaxCount;
+    }
+    
+    if (indexPath.row == count) {
         static NSString *cellIdentifier = @"LECommentMoreCell";
         LECommentMoreCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (!cell) {
@@ -541,7 +581,7 @@ LEShareSheetViewDelegate
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        if (commentModel.comments.count > 9) {
+        if (commentModel.comments.count > count) {
             [cell setCommentMoreCellType:LECommentMoreCellTypeMore];
             
             HitoWeakSelf;
@@ -599,6 +639,11 @@ LEShareSheetViewDelegate
     }
     _currentCommentModel = nil;
     _currentReplyModel = commentModel.comments[indexPath.row];
+    if ([WYCommonUtils isEqualWithUserId:_currentReplyModel.userId]) {
+        _currentReplyModel = nil;
+        [SVProgressHUD showCustomInfoWithStatus:@"不能回复自己"];
+        return;
+    }
 //    _selectedCommentCell = [tableView cellForRowAtIndexPath:indexPath];
     _currentRect = [tableView rectForRowAtIndexPath:indexPath];
     
@@ -746,10 +791,14 @@ LEShareSheetViewDelegate
     [_tempView removeFromSuperview];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+- (void)hufuTFResignFirstResponder{
     [_huView.hufuTF resignFirstResponder];
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.huView.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 49);
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self hufuTFResignFirstResponder];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{

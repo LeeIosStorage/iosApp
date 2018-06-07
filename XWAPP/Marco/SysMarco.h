@@ -25,6 +25,8 @@
 
 // 每页加载数
 #define DATA_LOAD_PAGESIZE_COUNT 20
+//评论最大数
+#define COMMENT_MAX_COUNT 255
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 
@@ -243,7 +245,6 @@
 #define HitoPFSCLightOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Light"size:FONTSIZE]
 
 #define HitoPFSCThinOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Thin"size:FONTSIZE]
-
 
 
 /***************************通知和本地存储*****************************/

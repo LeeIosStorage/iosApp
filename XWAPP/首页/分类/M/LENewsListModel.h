@@ -17,7 +17,10 @@
 @property (nonatomic, strong) NSString *public_time;
 @property (nonatomic, strong) NSArray *tags;
 @property (nonatomic, strong) NSArray *cover;
+@property (nonatomic, assign) int commentCount;
 @property (nonatomic, assign) int type;
+@property (nonatomic, assign) BOOL is_hot;
+@property (nonatomic, assign) BOOL is_top;
 
 @property (nonatomic, strong) NSString *content;//正文
 

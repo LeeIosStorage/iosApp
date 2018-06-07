@@ -1,17 +1,17 @@
 //
-//  LETaskListModel.m
+//  LEMessageModel.m
 //  XWAPP
 //
-//  Created by hys on 2018/6/1.
+//  Created by hys on 2018/6/6.
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import "LETaskListModel.h"
+#import "LEMessageModel.h"
 
-@implementation LETaskListModel
+@implementation LEMessageModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"taskId"  : @"id",
+    return @{@"messageId"  : @"id",
              };
 }
 

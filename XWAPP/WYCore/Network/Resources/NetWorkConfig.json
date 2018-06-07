@@ -77,4 +77,10 @@
         "control" : "user",
         "action"  : "DeleteFavoriteNews"
     },
+    "GetUserComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetComment"
+    },
 }

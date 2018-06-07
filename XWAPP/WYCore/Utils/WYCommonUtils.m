@@ -279,4 +279,12 @@ static bool dateFormatterOFUSInvalid;
     } completion:nil];
 }
 
+#pragma mark - string 比较
++ (BOOL)isEqualWithUserId:(NSString *)uid{
+    if ([[uid description] isEqualToString:[[LELoginUserManager userID] description]]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

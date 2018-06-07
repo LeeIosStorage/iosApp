@@ -32,6 +32,8 @@ CommontHeaderViewDelegate
 
 @property (strong, nonatomic) CommontHFView *huView;
 
+@property (assign, nonatomic) int nextCursor;
+
 @end
 
 @implementation LECommentDetailViewController
@@ -94,6 +96,27 @@ CommontHeaderViewDelegate
     
     [self setTextFieldAttributedPlaceholder];
     
+    [self addMJ];
+    
+}
+
+- (void)addMJ {
+    //下拉刷新
+    MJWeakSelf;
+    self.tableView.mj_header = [LERefreshHeader headerWithRefreshingBlock:^{
+        
+        weakSelf.nextCursor = 1;
+        [weakSelf getNewsCommentsRequest];
+    }];
+    [self.tableView.mj_header beginRefreshing];
+    
+    //上拉加载
+    self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
+        
+        [weakSelf getNewsCommentsRequest];
+    }];
+    [self.tableView.mj_footer setHidden:YES];
+    
 }
 
 - (void)setTextFieldAttributedPlaceholder{
@@ -114,17 +137,83 @@ CommontHeaderViewDelegate
 
 #pragma mark -
 #pragma mark - Request
+- (void)getNewsCommentsRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetComment"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    [params setObject:self.commentModel.commentId forKey:@"parentId"];
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        [WeakSelf.tableView.mj_footer endRefreshing];
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LEReplyCommentModel class] json:[dataObject objectForKey:@"data"]];
+        
+        //重新计算评论array
+        NSMutableArray *children = [NSMutableArray array];
+        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+                LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+                [children addObject:replyModel];
+                
+                for (LEReplyCommentModel *childrenModel in replyModel.children) {
+                    childrenModel.replyuId = replyModel.userId;
+                    childrenModel.replyUserName = replyModel.userName;
+                    [children addObject:childrenModel];
+                }
+            }
+            if ([array lastObject] == obj) {
+                *stop = YES;
+            }
+        }];
+        
+//        WeakSelf.commentModel = [[LENewsCommentModel alloc] init];
+        
+        NSMutableArray *comments = [NSMutableArray arrayWithArray:WeakSelf.commentModel.comments];
+        if (WeakSelf.nextCursor == 1) {
+            comments = [NSMutableArray array];
+        }
+        [comments addObjectsFromArray:children];
+        WeakSelf.commentModel.comments = comments;
+        
+        
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:YES];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.nextCursor ++;
+            }
+        }
+        
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        [WeakSelf.tableView.mj_footer endRefreshing];
+    }];
+}
+
 - (void)sendCommentRequestWith:(NSString *)text{
     
+    [_huView.hufuTF resignFirstResponder];
     if ([[LELoginManager sharedInstance] needUserLogin:self]) {
         return;
     }
     
-    if (text.length == 0) {
+    if (text.length == 0 || text.length > COMMENT_MAX_COUNT) {
+        [SVProgressHUD showCustomInfoWithStatus:@"评论内容须在1到255字之内"];
         return;
     }
-    
-    [_huView.hufuTF resignFirstResponder];
     
     [SVProgressHUD showCustomWithStatus:nil];
     
@@ -299,7 +388,7 @@ CommontHeaderViewDelegate
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        if (self.commentModel.comments.count > 9) {
+        if (self.tableView.mj_footer.hidden) {
             [cell setCommentMoreCellType:LECommentMoreCellTypeALL];
             
         }else{
@@ -355,6 +444,12 @@ CommontHeaderViewDelegate
         return;
     }
     _currentReplyModel = self.commentModel.comments[indexPath.row];
+    if ([WYCommonUtils isEqualWithUserId:_currentReplyModel.userId]) {
+        _currentReplyModel = nil;
+        [SVProgressHUD showCustomInfoWithStatus:@"不能回复自己"];
+        return;
+    }
+    
     _currentRect = [tableView rectForRowAtIndexPath:indexPath];
     
     [_huView.hufuTF becomeFirstResponder];

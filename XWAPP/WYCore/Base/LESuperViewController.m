@@ -56,11 +56,6 @@ UIGestureRecognizerDelegate
 
 #pragma mark -
 #pragma mark - Public
-- (void)refreshViewWithObject:(id)object
-{
-    
-}
-
 - (void)setCustomTitle:(NSString *)customTitle{
     _customTitle = customTitle;
     
@@ -70,11 +65,39 @@ UIGestureRecognizerDelegate
     _customTitleLabel.frame = self.navigationItem.titleView.bounds;
 }
 
+- (void)setRightButton:(UIButton *)rightButton{
+    
+    rightButton.frame = CGRectMake(0, 0, 44, 44);
+    [rightButton addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    _rightButton = rightButton;
+}
+
+- (void)setRightBarButtonItemWithTitle:(NSString *)title color:(UIColor *)color{
+    
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonClicked:)];
+    rightBarButtonItem.tintColor = color;
+    [rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:HitoPFSCRegularOfSize(14)} forState:UIControlStateNormal];
+    [rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:HitoPFSCRegularOfSize(14)} forState:UIControlStateSelected];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+}
+
 - (void)needTapGestureRecognizer
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped)];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
+    
+}
+
+- (void)refreshViewWithObject:(id)object
+{
+    
+}
+
+- (void)rightButtonClicked:(id)sender
+{
     
 }
 

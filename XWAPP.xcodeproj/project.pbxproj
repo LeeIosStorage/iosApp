@@ -89,6 +89,19 @@
 		4CDE8AC220A4540A00679959 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CDE8AC120A4540A00679959 /* CommentCell.m */; };
 		4CDE8AC520A4558F00679959 /* CommontHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CDE8AC420A4558F00679959 /* CommontHeaderView.m */; };
 		4CDE8AC720A4559400679959 /* CommontHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CDE8AC620A4559400679959 /* CommontHeaderView.xib */; };
+		4CE90CFC20C6B24100337617 /* LEMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90CFB20C6B24100337617 /* LEMessageViewController.m */; };
+		4CE90CFF20C6B29100337617 /* LEEarningRankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90CFE20C6B29100337617 /* LEEarningRankViewController.m */; };
+		4CE90D0220C6B5DC00337617 /* LESegmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D0120C6B5DC00337617 /* LESegmentedView.m */; };
+		4CE90D0520C6BB5900337617 /* LERedpointView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D0420C6BB5900337617 /* LERedpointView.m */; };
+		4CE90D0920C792C000337617 /* LENoticeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D0720C792C000337617 /* LENoticeViewCell.m */; };
+		4CE90D0A20C792C000337617 /* LENoticeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CE90D0820C792C000337617 /* LENoticeViewCell.xib */; };
+		4CE90D0D20C7935D00337617 /* LEMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D0C20C7935D00337617 /* LEMessageModel.m */; };
+		4CE90D1020C7CC3100337617 /* LEEarningRankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D0F20C7CC3100337617 /* LEEarningRankModel.m */; };
+		4CE90D1420C7CCD700337617 /* LEEarningRankViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1220C7CCD700337617 /* LEEarningRankViewCell.m */; };
+		4CE90D1520C7CCD700337617 /* LEEarningRankViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CE90D1320C7CCD700337617 /* LEEarningRankViewCell.xib */; };
+		4CE90D1820C7DA6700337617 /* LEEarningRankBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1720C7DA6700337617 /* LEEarningRankBottomView.m */; };
+		4CE90D1C20C7FFBA00337617 /* LEMineCommentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1A20C7FFBA00337617 /* LEMineCommentViewCell.m */; };
+		4CE90D1D20C7FFBA00337617 /* LEMineCommentViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CE90D1B20C7FFBA00337617 /* LEMineCommentViewCell.xib */; };
 		4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CA820A29ABD000904F4 /* DetailController.m */; };
 		4CF22CAC20A2A0BE000904F4 /* WalletHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CAB20A2A0BE000904F4 /* WalletHeader.m */; };
 		4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CF22CAD20A2A0C4000904F4 /* WalletHeader.xib */; };
@@ -351,6 +364,29 @@
 		4CDE8AC320A4558F00679959 /* CommontHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommontHeaderView.h; sourceTree = "<group>"; };
 		4CDE8AC420A4558F00679959 /* CommontHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommontHeaderView.m; sourceTree = "<group>"; };
 		4CDE8AC620A4559400679959 /* CommontHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommontHeaderView.xib; sourceTree = "<group>"; };
+		4CE90CFA20C6B24100337617 /* LEMessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEMessageViewController.h; sourceTree = "<group>"; };
+		4CE90CFB20C6B24100337617 /* LEMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEMessageViewController.m; sourceTree = "<group>"; };
+		4CE90CFD20C6B29100337617 /* LEEarningRankViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEEarningRankViewController.h; sourceTree = "<group>"; };
+		4CE90CFE20C6B29100337617 /* LEEarningRankViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEEarningRankViewController.m; sourceTree = "<group>"; };
+		4CE90D0020C6B5DC00337617 /* LESegmentedView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESegmentedView.h; sourceTree = "<group>"; };
+		4CE90D0120C6B5DC00337617 /* LESegmentedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESegmentedView.m; sourceTree = "<group>"; };
+		4CE90D0320C6BB5900337617 /* LERedpointView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERedpointView.h; sourceTree = "<group>"; };
+		4CE90D0420C6BB5900337617 /* LERedpointView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERedpointView.m; sourceTree = "<group>"; };
+		4CE90D0620C792C000337617 /* LENoticeViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENoticeViewCell.h; sourceTree = "<group>"; };
+		4CE90D0720C792C000337617 /* LENoticeViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENoticeViewCell.m; sourceTree = "<group>"; };
+		4CE90D0820C792C000337617 /* LENoticeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LENoticeViewCell.xib; sourceTree = "<group>"; };
+		4CE90D0B20C7935D00337617 /* LEMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEMessageModel.h; sourceTree = "<group>"; };
+		4CE90D0C20C7935D00337617 /* LEMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEMessageModel.m; sourceTree = "<group>"; };
+		4CE90D0E20C7CC3100337617 /* LEEarningRankModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEEarningRankModel.h; sourceTree = "<group>"; };
+		4CE90D0F20C7CC3100337617 /* LEEarningRankModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEEarningRankModel.m; sourceTree = "<group>"; };
+		4CE90D1120C7CCD700337617 /* LEEarningRankViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEEarningRankViewCell.h; sourceTree = "<group>"; };
+		4CE90D1220C7CCD700337617 /* LEEarningRankViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEEarningRankViewCell.m; sourceTree = "<group>"; };
+		4CE90D1320C7CCD700337617 /* LEEarningRankViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LEEarningRankViewCell.xib; sourceTree = "<group>"; };
+		4CE90D1620C7DA6700337617 /* LEEarningRankBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEEarningRankBottomView.h; sourceTree = "<group>"; };
+		4CE90D1720C7DA6700337617 /* LEEarningRankBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEEarningRankBottomView.m; sourceTree = "<group>"; };
+		4CE90D1920C7FFB900337617 /* LEMineCommentViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEMineCommentViewCell.h; sourceTree = "<group>"; };
+		4CE90D1A20C7FFBA00337617 /* LEMineCommentViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEMineCommentViewCell.m; sourceTree = "<group>"; };
+		4CE90D1B20C7FFBA00337617 /* LEMineCommentViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LEMineCommentViewCell.xib; sourceTree = "<group>"; };
 		4CF22CA720A29ABD000904F4 /* DetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailController.h; sourceTree = "<group>"; };
 		4CF22CA820A29ABD000904F4 /* DetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailController.m; sourceTree = "<group>"; };
 		4CF22CAA20A2A0BE000904F4 /* WalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHeader.h; sourceTree = "<group>"; };
@@ -672,6 +708,8 @@
 			children = (
 				4C4D704D20C5133C00DD542B /* LEGoldRecordModel.h */,
 				4C4D704E20C5133C00DD542B /* LEGoldRecordModel.m */,
+				4CE90D0E20C7CC3100337617 /* LEEarningRankModel.h */,
+				4CE90D0F20C7CC3100337617 /* LEEarningRankModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -689,6 +727,11 @@
 				4CF22CB220A2AE21000904F4 /* WalletBottomView.h */,
 				4CF22CB320A2AE21000904F4 /* WalletBottomView.m */,
 				4CF22CB520A2AE25000904F4 /* WalletBottomView.xib */,
+				4CE90D1120C7CCD700337617 /* LEEarningRankViewCell.h */,
+				4CE90D1220C7CCD700337617 /* LEEarningRankViewCell.m */,
+				4CE90D1320C7CCD700337617 /* LEEarningRankViewCell.xib */,
+				4CE90D1620C7DA6700337617 /* LEEarningRankBottomView.h */,
+				4CE90D1720C7DA6700337617 /* LEEarningRankBottomView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -698,6 +741,8 @@
 			children = (
 				4C5FADF820A012C000893FC8 /* MyWallet.h */,
 				4C5FADF920A012C100893FC8 /* MyWallet.m */,
+				4CE90CFD20C6B29100337617 /* LEEarningRankViewController.h */,
+				4CE90CFE20C6B29100337617 /* LEEarningRankViewController.m */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1014,6 +1059,8 @@
 		EC0DD9E92092B22B006C7522 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4CE90D0B20C7935D00337617 /* LEMessageModel.h */,
+				4CE90D0C20C7935D00337617 /* LEMessageModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -1036,6 +1083,16 @@
 				4CF22CC320A2E386000904F4 /* MineNaView.h */,
 				4CF22CC420A2E386000904F4 /* MineNaView.m */,
 				4CF22CC620A2E38D000904F4 /* MineNaView.xib */,
+				4CE90D0620C792C000337617 /* LENoticeViewCell.h */,
+				4CE90D0720C792C000337617 /* LENoticeViewCell.m */,
+				4CE90D0820C792C000337617 /* LENoticeViewCell.xib */,
+				4CE90D0020C6B5DC00337617 /* LESegmentedView.h */,
+				4CE90D0120C6B5DC00337617 /* LESegmentedView.m */,
+				4CE90D0320C6BB5900337617 /* LERedpointView.h */,
+				4CE90D0420C6BB5900337617 /* LERedpointView.m */,
+				4CE90D1920C7FFB900337617 /* LEMineCommentViewCell.h */,
+				4CE90D1A20C7FFBA00337617 /* LEMineCommentViewCell.m */,
+				4CE90D1B20C7FFBA00337617 /* LEMineCommentViewCell.xib */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -1051,6 +1108,8 @@
 				4CB76B7620BE49180092503E /* LEAttentionViewController.m */,
 				4CB76B7820BE49900092503E /* LECommentListViewController.h */,
 				4CB76B7920BE49900092503E /* LECommentListViewController.m */,
+				4CE90CFA20C6B24100337617 /* LEMessageViewController.h */,
+				4CE90CFB20C6B24100337617 /* LEMessageViewController.m */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1657,11 +1716,13 @@
 				EC4186B4209995A300E57C17 /* SheetAlert.xib in Resources */,
 				EC72BC2B208EDD1F00FADE74 /* BaseTwoCell.xib in Resources */,
 				4C61863220AAB7A5000D647F /* NetWorkConfig.json in Resources */,
+				4CE90D1520C7CCD700337617 /* LEEarningRankViewCell.xib in Resources */,
 				4CF3162B20A14A3C00E81E56 /* TaskCellHeader.xib in Resources */,
 				EC72BC3D208F255A00FADE74 /* DelAlertView.xib in Resources */,
 				4CB76B6C20BD77320092503E /* Province.plist in Resources */,
 				4CF22CC720A2E38D000904F4 /* MineNaView.xib in Resources */,
 				4CB76B7020BD77320092503E /* City.plist in Resources */,
+				4CE90D0A20C792C000337617 /* LENoticeViewCell.xib in Resources */,
 				4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */,
 				4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */,
 				EC72BC26208EDCE300FADE74 /* BaseThirdCell.xib in Resources */,
@@ -1677,6 +1738,7 @@
 				4CDE8ABF20A431AD00679959 /* CommontView.xib in Resources */,
 				EC4186D4209AB48F00E57C17 /* SheetShare.xib in Resources */,
 				EC72BBB1208D6EA400FADE74 /* Main.storyboard in Resources */,
+				4CE90D1D20C7FFBA00337617 /* LEMineCommentViewCell.xib in Resources */,
 				EC72BC38208F1D2A00FADE74 /* RefrestInfoView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1809,20 +1871,26 @@
 				4C4D704F20C5133C00DD542B /* LEGoldRecordModel.m in Sources */,
 				EC72BC3B208F255400FADE74 /* DelAlertView.m in Sources */,
 				4CB76B7420BD77320092503E /* ZJToolBar.m in Sources */,
+				4CE90D0220C6B5DC00337617 /* LESegmentedView.m in Sources */,
 				4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */,
 				EC4186BB2099B85F00E57C17 /* PhoneLogin.m in Sources */,
+				4CE90D1820C7DA6700337617 /* LEEarningRankBottomView.m in Sources */,
+				4CE90D0920C792C000337617 /* LENoticeViewCell.m in Sources */,
 				4CF3162E20A14BA900E81E56 /* TaskCellHeader.m in Sources */,
+				4CE90D0D20C7935D00337617 /* LEMessageModel.m in Sources */,
 				EC72BC19208EC01B00FADE74 /* XLChannelView.m in Sources */,
 				4CB76B4D20BD281F0092503E /* LEChangePasswordViewController.m in Sources */,
 				EC72BC5320905AEF00FADE74 /* SearchController.m in Sources */,
 				4CB76B4420BD04420092503E /* LENavigationController.m in Sources */,
 				EC41869B2099534A00E57C17 /* UITableViewController+SetTBStyle.m in Sources */,
 				EC72BC03208DBED700FADE74 /* TagCell.m in Sources */,
+				4CE90D1C20C7FFBA00337617 /* LEMineCommentViewCell.m in Sources */,
 				4CDE8AC520A4558F00679959 /* CommontHeaderView.m in Sources */,
 				4C3F3C1520AEC30B00B754AF /* LEChannelModel.m in Sources */,
 				4CF22CC120A2D91A000904F4 /* YQMController.m in Sources */,
 				4CF3162320A145EF00E81E56 /* TaskCenterController.m in Sources */,
 				EC41869120994F6900E57C17 /* SetCell.m in Sources */,
+				4CE90CFF20C6B29100337617 /* LEEarningRankViewController.m in Sources */,
 				4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */,
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
@@ -1830,6 +1898,7 @@
 				4CB76B6F20BD77320092503E /* ZJMultiplePickerView.m in Sources */,
 				4C3F3BFC20AD84AC00B754AF /* LENewsDetailModel.m in Sources */,
 				4CDE8AB320A3F5B700679959 /* SearchView.m in Sources */,
+				4CE90CFC20C6B24100337617 /* LEMessageViewController.m in Sources */,
 				4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */,
 				EC72BBF1208D83C000FADE74 /* SYBaseVC.m in Sources */,
 				EC4186A62099733500E57C17 /* CompleteController.m in Sources */,
@@ -1848,10 +1917,12 @@
 				4C3F3BF920AD743500B754AF /* LEElementStyleBox.m in Sources */,
 				4CF3163120A176E500E81E56 /* ForgetPassWord.m in Sources */,
 				4CB76B5820BD50AE0092503E /* UIImage+ProportionalFill.m in Sources */,
+				4CE90D0520C6BB5900337617 /* LERedpointView.m in Sources */,
 				EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */,
 				EC0DD9EE2092B25E006C7522 /* MineHeader.m in Sources */,
 				4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */,
 				4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */,
+				4CE90D1020C7CC3100337617 /* LEEarningRankModel.m in Sources */,
 				EC72BC16208EC01A00FADE74 /* XLChannelControl.m in Sources */,
 				4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */,
 				4CB76B7D20C011720092503E /* LELoginAuthManager.m in Sources */,
@@ -1902,6 +1973,7 @@
 				4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */,
 				4CB76B6D20BD77320092503E /* ZJSelectedTextField.m in Sources */,
 				4CB76B3320BBE7830092503E /* LECollectViewController.m in Sources */,
+				4CE90D1420C7CCD700337617 /* LEEarningRankViewCell.m in Sources */,
 				4CB76B5520BD49310092503E /* WYCustomActionSheet.m in Sources */,
 				EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */,
 				4C61863420AAB7A5000D647F /* YTCache.m in Sources */,

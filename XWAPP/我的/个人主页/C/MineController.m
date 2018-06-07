@@ -21,6 +21,7 @@
 #import "WithdrawController.h"
 #import "WXApi.h"
 #import "LELoginAuthManager.h"
+#import "LEMessageViewController.h"
 
 @interface MineController ()
 <
@@ -181,9 +182,13 @@ UIScrollViewDelegate
 }
 
 - (IBAction)leftBarButton:(UIBarButtonItem *)sender {
+    LEMessageViewController *messageVc = [[LEMessageViewController alloc] init];
+    messageVc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:messageVc animated:YES];
 }
 
 - (IBAction)rightBarButton:(UIBarButtonItem *)sender {
+    
 }
 
 -(void)handleClickAt:(id)sender event:(id)event{
@@ -204,13 +209,13 @@ UIScrollViewDelegate
             return 1;
             break;
         case 1:
-            return 4;
+            return _secondArr.count;
             break;
         case 2:
             return 1;
             break;
         default:
-            return 3;
+            return _fourArr.count;
             break;
     }
 }
@@ -306,19 +311,21 @@ UIScrollViewDelegate
     } else if (indexPath.section == 2) {
         
     } else {
-        if (indexPath.row == 0) {
+        NSString *title = _fourArr[indexPath.row];
+        
+        if ([title isEqualToString:@"我的关注"]) {
             
             LEAttentionViewController *attentionVc = [[LEAttentionViewController alloc] init];
             attentionVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:attentionVc animated:YES];
             
-        }else if (indexPath.row == 1) {
+        }else if ([title isEqualToString:@"我的收藏"]) {
             
             LECollectViewController *collectVc = [[LECollectViewController alloc] init];
             collectVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:collectVc animated:YES];
             
-        }else if (indexPath.row == 2) {
+        }else if ([title isEqualToString:@"我的评论"]) {
             
             LECommentListViewController *commentVc = [[LECommentListViewController alloc] init];
             commentVc.hidesBottomBarWhenPushed = YES;

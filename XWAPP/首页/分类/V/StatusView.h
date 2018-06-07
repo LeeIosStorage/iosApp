@@ -24,4 +24,6 @@ typedef void(^DeleBlock)(void);
 
 - (void)deleblockAction:(DeleBlock)deleblock;
 
+- (void)updateSourceConstraints:(NSInteger)type;
+
 @end

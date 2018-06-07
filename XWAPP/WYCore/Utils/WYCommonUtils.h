@@ -64,4 +64,7 @@
 //👎
 + (void)popInsideWithDuration:(NSTimeInterval)duration view:(UIView *)view;
 
+#pragma mark - string 比较
++ (BOOL)isEqualWithUserId:(NSString *)uid;
+
 @end

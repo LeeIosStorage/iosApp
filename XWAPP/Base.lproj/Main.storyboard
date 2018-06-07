@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZCd-Wk-CSh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZCd-Wk-CSh">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -849,7 +849,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tWS-hV-6x0">
-                        <barButtonItem key="leftBarButtonItem" title="        " image="mine_msg_nor" id="zMh-Gm-19E"/>
+                        <barButtonItem key="leftBarButtonItem" title="        " image="mine_msg_nor" id="zMh-Gm-19E">
+                            <connections>
+                                <action selector="leftBarButton:" destination="u4L-dM-uKP" id="dFx-zW-HxJ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="mine_set_nor" id="YDS-IS-LoN">
                             <connections>
                                 <segue destination="5Xn-RV-2mH" kind="show" id="qHY-wr-gJL"/>

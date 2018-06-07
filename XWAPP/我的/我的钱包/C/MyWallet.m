@@ -15,6 +15,7 @@
 #import "LEGoldRecordModel.h"
 #import "WithdrawController.h"
 #import "LEShareSheetView.h"
+#import "LEEarningRankViewController.h"
 
 @interface MyWallet ()
 <
@@ -132,7 +133,8 @@ LEShareSheetViewDelegate
 #pragma mark -
 #pragma mark - IBActions
 - (void)btnAction:(UIButton *)sender {
-    
+    LEEarningRankViewController *rankVc = [[LEEarningRankViewController alloc] init];
+    [self.navigationController pushViewController:rankVc animated:YES];
 }
 
 - (void)rightBtnAction:(UIButton *)sender {
