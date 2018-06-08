@@ -38,6 +38,9 @@
              @"avatarUrl" : @"head_img_url",
              @"userId"    : @"uid",
              @"comments"  : @"children",
+             @"newsId"  : @"news_id",
+             @"newsUrl"  : @"news_img",
+             @"newsTitle"  : @"news_title",
              };
 }
 

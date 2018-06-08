@@ -18,6 +18,8 @@ NSString *const kUserInfoSex = @"kUserInfoSex";
 NSString *const kUserInfoAge = @"kUserInfoAge";
 NSString *const kUserInfoRegTime = @"kUserInfoRegTime";
 NSString *const kUserInfoWxNickname = @"kUserInfoWxNickname";
+NSString *const kUserInfoOccupation = @"kUserInfoOccupation";
+NSString *const kUserInfoEducation = @"kUserInfoEducation";
 
 NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
 
@@ -85,6 +87,20 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [self saveToUserDefaultsObject:wxNickname forKey:kUserInfoWxNickname];
 }
 
++ (NSString *)occupation{
+    return [self objectFromUserDefaultsKey:kUserInfoOccupation];
+}
++ (void)setOccupation:(NSString *)occupation{
+    [self saveToUserDefaultsObject:occupation forKey:kUserInfoOccupation];
+}
+
++ (NSString *)education{
+    return [self objectFromUserDefaultsKey:kUserInfoEducation];
+}
++ (void)setEducation:(NSString *)education{
+    [self saveToUserDefaultsObject:education forKey:kUserInfoEducation];
+}
+
 + (NSString *)authToken{
     return [self objectFromUserDefaultsKey:kUserInfoAuthToken];
 }
@@ -128,7 +144,7 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
         }
         
         LELoginModel *loginModel = [LELoginModel modelWithJSON:dataObject];
-        loginModel.headImgUrl = @"http://p1.qzone.la/upload/20150102/a3zs6l69.jpg";
+//        loginModel.headImgUrl = @"http://p1.qzone.la/upload/20150102/a3zs6l69.jpg";
         [WeakSelf updateUserInfoWithLoginModel:loginModel];
         
         if (success) {
@@ -152,6 +168,8 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setSex:loginModel.sex];
     [LELoginUserManager setAge:loginModel.age];
     [LELoginUserManager setWxNickname:loginModel.wxNickname];
+    [LELoginUserManager setOccupation:loginModel.occupation];
+    [LELoginUserManager setEducation:loginModel.education];
     
 }
 
@@ -165,6 +183,8 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setSex:nil];
     [LELoginUserManager setAge:nil];
     [LELoginUserManager setWxNickname:nil];
+    [LELoginUserManager setOccupation:nil];
+    [LELoginUserManager setEducation:nil];
 }
 
 #pragma mark -

@@ -11,6 +11,9 @@
 
 @interface AboutUS ()
 
+@property (strong, nonatomic) IBOutlet UILabel *aboutVersionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *aboutLabel;
+
 @end
 
 @implementation AboutUS
@@ -24,6 +27,12 @@
 - (void)setVC {
     [self setNaStyle];
     [self setTitle:@"关于我们"];
+    
+    NSString *localVserion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    self.aboutVersionLabel.text = [NSString stringWithFormat:@"%@ %@",appName,localVserion];
+    
+    self.aboutLabel.text = @"Copyright © 2018\n杭州哈妞科技有限公司";
 }
 
 - (void)didReceiveMemoryWarning {

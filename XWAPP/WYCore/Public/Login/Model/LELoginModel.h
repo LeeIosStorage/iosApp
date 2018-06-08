@@ -20,6 +20,8 @@
 @property (strong, nonatomic) NSString *age;
 @property (strong, nonatomic) NSString *regTime;
 
+@property (strong, nonatomic) NSString *occupation;
+@property (strong, nonatomic) NSString *education;
 @property (strong, nonatomic) NSString *wxNickname;
 
 @end

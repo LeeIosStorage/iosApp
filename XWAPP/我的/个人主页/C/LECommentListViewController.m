@@ -8,6 +8,8 @@
 
 #import "LECommentListViewController.h"
 #import "LEMineCommentViewCell.h"
+#import "LENewsCommentModel.h"
+#import "DetailController.h"
 
 @interface LECommentListViewController ()
 <
@@ -100,7 +102,7 @@ UITableViewDataSource
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[NSDictionary class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
         
         if (WeakSelf.nextCursor == 1) {
             WeakSelf.commentLists = [[NSMutableArray alloc] init];
@@ -128,6 +130,25 @@ UITableViewDataSource
 
 - (void)clearRecordRequest{
     
+    [SVProgressHUD showCustomWithStatus:nil];
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"DeleteAllComment"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD dismiss];
+        [WeakSelf.commentLists removeAllObjects];
+        [WeakSelf.tableView.mj_footer setHidden:YES];
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 #pragma mark -
@@ -140,6 +161,7 @@ UITableViewDataSource
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.rowHeight = UITableViewAutomaticDimension;
         _tableView.estimatedRowHeight = 50;
+        _tableView.backgroundColor = self.view.backgroundColor;;
     }
     return _tableView;
 }
@@ -147,6 +169,11 @@ UITableViewDataSource
 #pragma mark -
 #pragma mark - IBActions
 - (void)rightButtonClicked:(id)sender{
+    
+    if (self.commentLists.count == 0) {
+        return;
+    }
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定清空记录吗?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
@@ -160,6 +187,15 @@ UITableViewDataSource
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)pushNewsDetailWith:(NSIndexPath *)indexPath{
+    
+    LENewsCommentModel *commentModel = self.commentLists[indexPath.row];
+//    commentModel.newsId = @"2540";
+    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+    detail.newsId = commentModel.newsId;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
 #pragma mark -
 #pragma mark - UITableViewDatasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -167,7 +203,7 @@ UITableViewDataSource
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return self.commentLists.count;
 }
 
 
@@ -180,6 +216,13 @@ UITableViewDataSource
         cell = [cells objectAtIndex:0];
         
     }
+    
+    [cell updateViewCellData:self.commentLists[indexPath.row]];
+    
+    HitoWeakSelf;
+    cell.clickNewsDetailBlock = ^{
+        [WeakSelf pushNewsDetailWith:indexPath];
+    };
     
     return cell;
 }

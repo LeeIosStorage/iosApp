@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ClickNewsDetailBlock)(void);
+
 @interface LEMineCommentViewCell : UITableViewCell
+
+@property (copy, nonatomic) ClickNewsDetailBlock clickNewsDetailBlock;
+
+- (void)updateViewCellData:(id)data;
 
 @end

@@ -38,4 +38,9 @@
 
 @property (strong, nonatomic) NSArray *comments;
 
+//关于我的评论的字段
+@property (strong, nonatomic) NSString *newsId;
+@property (strong, nonatomic) NSString *newsUrl;
+@property (strong, nonatomic) NSString *newsTitle;
+
 @end

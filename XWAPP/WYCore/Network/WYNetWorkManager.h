@@ -17,7 +17,7 @@
 /**
  *  自动添加uid&token参数
  *
- *  @param cacheKey 最好以在config.json文件中请求Path的key作为caCheKey
+ *  @param caCheKey 最好以在config.json文件中请求Path的key作为caCheKey
  *  @param needCache 如果在返回结果中需要获取到缓存需要设置为YES，只有设置为YES才会开启缓存
  *  @return to provide lexical differentiation from download and upload tasks
  */

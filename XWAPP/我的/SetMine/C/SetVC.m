@@ -191,6 +191,9 @@ HitoPropertyNSArray(dataSource);
     }else if ([title isEqualToString:@"完善资料"]){
         CompleteController *complete = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"CompleteController"];
         [self.navigationController pushViewController:complete animated:YES];
+        
+    }else if ([title isEqualToString:@"给乐头条评分"]){
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//
     }
     
 }

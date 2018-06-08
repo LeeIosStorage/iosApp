@@ -47,6 +47,8 @@
 + (NSString *)dateDiscriptionFromDate:(NSDate *)date;
 //显示时间格式:yyyy-MM-dd HH:mm:ss
 + (NSString*)dateYearToSecondDiscriptionFromDate:(NSDate*)date;
+//显示时间格式:HH:mm
++ (NSString*)dateHourToMinuteDiscriptionFromDate:(NSDate*)date;
 //年龄
 + (int)getAgeWithBirthdayDate:(NSDate *)date;
 //倒计时 dateStr:秒数

@@ -31,7 +31,7 @@
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    if ([item.title isEqualToString:@"我的"]) {
+    if ([item.title isEqualToString:@"我的"] || [item.title isEqualToString:@"任务中心"]) {
         
         UIViewController *vc = self.viewControllers.lastObject;
         [[LELoginManager sharedInstance] needUserLogin:vc];
@@ -42,7 +42,7 @@
 #pragma mark 判断是否登录若没登录跳转到登录页面
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
     
-    if([viewController.tabBarItem.title isEqualToString:@"我的"]){
+    if([viewController.tabBarItem.title isEqualToString:@"我的"] || [viewController.tabBarItem.title isEqualToString:@"任务中心"]){
         if (![LELoginUserManager hasAccoutLoggedin]) {
             return NO;
         }

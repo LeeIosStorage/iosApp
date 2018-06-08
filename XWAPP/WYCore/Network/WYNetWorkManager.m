@@ -190,13 +190,21 @@
                        failure:(WYRequestFailureBlock)failure{
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    NSString *urlPath = [[NSURL URLWithString:URLString] path];
+    if ([urlPath isEqualToString:@"/api/user/SaveUserDetail"]) {
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    }
+//    manager.securityPolicy.allowInvalidCertificates = YES;
     [self setHttpHeader:manager needHeaderAuth:needHeaderAuth];
     
     AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
     jsonReponseSerializer.acceptableContentTypes = nil;
     manager.responseSerializer = jsonReponseSerializer;
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    //    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+//    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    [manager.requestSerializer requestWithMethod:@"POST" URLString:URLString parameters:parameters error:nil];
     
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
     LELog(@"POST  url   %@",requestURLString);
@@ -315,6 +323,7 @@ responseClass:(Class )classType
         return;
     }
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
@@ -322,6 +331,12 @@ responseClass:(Class )classType
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:requestURLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:fileData name:formFileName fileName:fileName mimeType:mimeType];
     } error:nil];
+    //将Token封装入请求头
+    if ([LELoginUserManager authToken]) {
+        //        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        NSString *authorization = [NSString stringWithFormat:@"Bearer %@",[LELoginUserManager authToken]];
+        [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+    }
     
     NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         
@@ -339,9 +354,9 @@ responseClass:(Class )classType
             responseDataObject = jsonValue[kResponseObjectKeyObject];
             //此处有两种情况发生，正常的是json，非正常是一个常规string
             if ([responseDataObject isKindOfClass:[NSString class]]) {
-                NSData *data = [responseDataObject dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *error = nil;
-                responseDataObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+//                NSData *data = [responseDataObject dataUsingEncoding:NSUTF8StringEncoding];
+//                NSError *error = nil;
+//                responseDataObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
             }
         }
         
@@ -373,7 +388,7 @@ responseClass:(Class )classType
 
 #pragma mark --- Utils Method
 
--(void)setHttpHeader:(AFHTTPSessionManager*) manger needHeaderAuth:(BOOL)needHeaderAuth
+-(void)setHttpHeader:(AFHTTPSessionManager*)manger needHeaderAuth:(BOOL)needHeaderAuth
 {
     // app版本
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -384,9 +399,9 @@ responseClass:(Class )classType
     
     //将Token封装入请求头
     if ([LELoginUserManager authToken] && needHeaderAuth) {
-//        manger.requestSerializer = [AFJSONRequestSerializer serializer];
         NSString *authorization = [NSString stringWithFormat:@"Bearer %@",[LELoginUserManager authToken]];
         [manger.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
+        
     }
     
 }

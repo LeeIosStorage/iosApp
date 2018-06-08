@@ -16,6 +16,7 @@
 #define Alt_key           @"alt"
 #define DataSize_key      @"data-size"
 #define DataImageUrl_key  @"data-src"
+#define DataImageUrl2_key @"src"
 #define TagVideo_key      @"script"
 
 @implementation DetailController (ContentControl)
@@ -32,6 +33,8 @@
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements = [xpathParser searchWithXPathQuery:@"//p"];
     
+    
+//    __block int testImageCount = 0;
     HitoWeakSelf;
     [elements enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[TFHppleElement class]]) {
@@ -64,15 +67,20 @@
                         WeakSelf.beforeContent = [childrenElement content];
                         
                     }else{
-                        NSLog(@"is white space");
-                        break;
+//                        NSLog(@"is white space!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        continue;
                     }
                 }
                 //图片解析
                 if ([childrenElement.tagName isEqualToString:TagImage_Key]) {
+                    
+//                    testImageCount ++;
 //                    NSString *altString = [childrenElement objectForKey:Alt_key];
 //                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
                     NSString *dataImgUrl = [childrenElement objectForKey:DataImageUrl_key];
+                    if (dataImgUrl.length == 0) {
+                        dataImgUrl = [childrenElement objectForKey:DataImageUrl2_key];
+                    }
                     
                     [box setPropertyWithStyleDic:childrenElement.attributes];
 //                    contentModel.content = altString;
@@ -95,6 +103,7 @@
             }
             
             if ([elements lastObject] == obj) {
+//                LELog(@"此篇新闻图片数量-------------------------(%d)",testImageCount);
                 successBlock(contentAttributed);
                 *stop = YES;
             }
@@ -138,6 +147,8 @@
         UIView *bgView = [UIView new];
         bgView.backgroundColor = [UIColor clearColor];
         YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         CGFloat scale = contentModel.styleBox.height/contentModel.styleBox.width;
         if (isnan(scale)) {
             scale = 0.5;

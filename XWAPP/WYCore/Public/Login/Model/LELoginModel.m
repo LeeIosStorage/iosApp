@@ -14,6 +14,7 @@
     return @{@"userID":@"id",
              @"headImgUrl":@"head_img_url",
              @"regTime":@"reg_time",
+             @"wxNickname" : @"wechat",
              };
 }
 

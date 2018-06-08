@@ -189,11 +189,11 @@ HitoPropertyNSArray(allChannelArray);
 #pragma mark - 基础设置
 - (void)setPGController {
     [super viewDidLoad];
-    self.titleSizeNormal = 15;
-    self.titleSizeSelected = 15;
+    self.titleSizeNormal = 17;
+    self.titleSizeSelected = 17;
     self.menuViewStyle = WMMenuViewStyleDefault;
     self.menuView.layoutMode = WMMenuViewLayoutModeLeft;
-    self.menuItemWidth = 55;
+    self.menuItemWidth = 60;
     self.titleFontName = @"PingFangSC-Medium";
     self.titleColorSelected = kAppThemeColor;
     self.progressColor = HitoBlueColor;

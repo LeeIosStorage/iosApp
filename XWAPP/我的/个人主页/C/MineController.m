@@ -164,7 +164,7 @@ UIScrollViewDelegate
     
     //初始化数据
     _secondArr = @[@"每收一名徒弟赚3500金币，可立即领取提现", @"新手任务", @"输入邀请码", @"微信绑定"];
-    _fourArr = @[@"我的关注", @"我的收藏", @"我的评论"];
+    _fourArr = @[@"我的收藏", @"我的评论"];//@"我的关注"
     _imageArr = @[@"http://pic.qiantucdn.com/58pic/17/39/70/64M58PICnFh_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center", @"http://pic.qiantucdn.com/58pic/17/23/89/08y58PIC4HC_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center"];
     
 }
@@ -340,21 +340,15 @@ UIScrollViewDelegate
 #pragma mark - mj
 - (void)addMJ {
     //下拉刷新
-    
     MJWeakSelf;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
         [weakSelf refreshUserInfo];
-        
     }];
     header.stateLabel.textColor = [UIColor whiteColor];
     header.lastUpdatedTimeLabel.textColor = [UIColor whiteColor];
     header.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     self.tableView.mj_header = header;
-    //上啦加载
-//    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
-//        //
-//    }];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 #pragma mark -

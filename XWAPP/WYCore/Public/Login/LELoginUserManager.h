@@ -40,6 +40,12 @@ typedef void(^LELoginUserInfoBlock)(BOOL isSuccess, NSString *message);
 + (NSString *)wxNickname;
 + (void)setWxNickname:(NSString *)wxNickname;
 
++ (NSString *)occupation;
++ (void)setOccupation:(NSString *)occupation;
+
++ (NSString *)education;
++ (void)setEducation:(NSString *)education;
+
 /**
  *  用户登录后授权令牌
  *

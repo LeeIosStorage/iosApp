@@ -166,6 +166,23 @@ static bool dateFormatterOFUSInvalid;
     return _timestamp;
 }
 
++ (NSString*)dateHourToMinuteDiscriptionFromDate:(NSDate*)date{
+    
+    NSString *_timestamp = nil;
+    if (date == nil) {
+        return @"";
+    }
+    NSCalendar * calender = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute |NSCalendarUnitSecond | NSCalendarUnitWeekday;
+    NSDateComponents *comps = [calender components:unitFlags fromDate:date];
+    
+    _timestamp = [NSString stringWithFormat:@"%02d:%02d", (int)comps.hour, (int)comps.minute];
+    
+    return _timestamp;
+    
+}
+
 + (int)getAgeWithBirthdayDate:(NSDate *)date{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];

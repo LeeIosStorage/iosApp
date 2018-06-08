@@ -83,4 +83,28 @@
         "control" : "user",
         "action"  : "GetComment"
     },
+    "DeleteAllComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteAllComment"
+    },
+    "DeleteComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteComment"
+    },
+    "SaveUserDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveUserDetail"
+    },
+    "UploadUserHeadImg": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "UploadUserHeadImg"
+    },
 }

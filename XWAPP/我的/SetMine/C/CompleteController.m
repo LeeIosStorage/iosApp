@@ -66,6 +66,9 @@ HitoPropertyNSMutableArray(jobData);
     self.userModel.headImgUrl = [LELoginUserManager headImgUrl];
     self.userModel.sex = [LELoginUserManager sex];
     self.userModel.age = [LELoginUserManager age];
+    self.userModel.occupation = [LELoginUserManager occupation];
+    self.userModel.education = [LELoginUserManager education];
+    self.userModel.wxNickname = [LELoginUserManager wxNickname];
 }
 
 - (void)keyBoardNoti {
@@ -142,13 +145,71 @@ HitoPropertyNSMutableArray(jobData);
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         NSString *birth = [dateFormatter stringFromDate:birthdayDate];
         self.userModel.birthdayDate = birth;
-        [self.tableView reloadData];
+        [self saveUserInfoRequest];
+//        [self.tableView reloadData];
     }
 }
 
 #pragma mark -
 #pragma mark - Request
+- (void)refreshUserInfo{
+    [LELoginUserManager refreshUserInfoRequestSuccess:^(BOOL isSuccess, NSString *message) {
+        
+    }];
+}
+
+- (void)saveUserInfoRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"SaveUserDetail"];
+    
+    NSMutableDictionary *jsonDic = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [jsonDic setObject:[LELoginUserManager userID] forKey:@"id"];
+    [jsonDic setObject:self.userModel.nickname?self.userModel.nickname:@"" forKey:@"nickname"];
+    [jsonDic setObject:self.userModel.headImgUrl?self.userModel.headImgUrl:@"" forKey:@"headimg"];
+    [jsonDic setObject:self.userModel.sex?self.userModel.sex:@"1" forKey:@"sex"];
+    [jsonDic setObject:[NSNumber numberWithInt:[self.userModel.age intValue]] forKey:@"age"];
+    [jsonDic setObject:self.userModel.occupation?self.userModel.occupation:@"" forKey:@"occupation"];
+    [jsonDic setObject:self.userModel.education?self.userModel.education:@"" forKey:@"education"];
+    [jsonDic setObject:self.userModel.wxNickname?self.userModel.wxNickname:@"" forKey:@"wechat"];
+    
+//    NSString *jsonString = [jsonDic jsonStringEncoded];
+//    LELog(@"jsonString = %@",jsonString);
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    if (jsonString) [params setObject:jsonString forKey:@"data"];
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:jsonDic responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD showCustomInfoWithStatus:@"设置成功"];
+        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshUserInfo];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
 - (void)uploadWithImageData:(NSData *)imageData{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"UploadUserHeadImg"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    [params setObject:imageData forKey:@"img"];
+    [self.networkManager POST:requestUrl formFileName:@"img" fileName:@"img.jpg" fileData:imageData mimeType:@"image/jpeg" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+//        LELog(@"上传文件:%@",dataObject);
+        WeakSelf.userModel.headImgUrl = dataObject;
+        [WeakSelf saveUserInfoRequest];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
     
 }
 
@@ -156,7 +217,7 @@ HitoPropertyNSMutableArray(jobData);
 
 - (NSArray *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[@[@"头像", @"昵称", @"年龄", @"性别", @"职业", @"教育经历"], @[@"账户绑定", @"电话", @"微信"]];
+        _dataSource = @[@[@"头像", @"昵称", @"年龄", @"性别"], @[@"账户绑定", @"电话", @"微信"]];//@"职业", @"教育经历"
     }
     return _dataSource;
 }
@@ -223,9 +284,9 @@ HitoPropertyNSMutableArray(jobData);
                     rightText = @"男";
                 }
             }else if ([title isEqualToString:@"职业"]) {
-                
+                rightText = self.userModel.occupation;
             }else if ([title isEqualToString:@"教育经历"]) {
-                
+                rightText = self.userModel.education;
             }
             
             if (rightText.length == 0) {
@@ -318,6 +379,7 @@ HitoPropertyNSMutableArray(jobData);
                 WeakSelf.userModel.sex = @"1";
             }
             [WeakSelf.tableView reloadData];
+            [WeakSelf saveUserInfoRequest];
         } cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"男",@"女"]];
         
         [actionSheet showInView:self.view];
@@ -352,8 +414,14 @@ HitoPropertyNSMutableArray(jobData);
     }];
     HitoWeakSelf;
     [_board clickSureBlock:^{
+        WeakSelf.board.nameTF.text = [WeakSelf.board.nameTF.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (WeakSelf.board.nameTF.text.length == 0) {
+            [SVProgressHUD showCustomInfoWithStatus:@"请输入昵称"];
+            return;
+        }
         WeakSelf.userModel.nickname = WeakSelf.board.nameTF.text;
-        [WeakSelf.tableView reloadData];
+//        [WeakSelf.tableView reloadData];
+        [WeakSelf saveUserInfoRequest];
         [backView removeFromSuperview];
     }];
     [backView addSubview:_board];
@@ -393,31 +461,61 @@ HitoPropertyNSMutableArray(jobData);
 
 - (void)editJobShow{
     
+    HitoWeakSelf;
     [ZJUsefulPickerView showMultipleAssociatedColPickerWithToolBarText:nil withDefaultValues:nil withData:self.jobData withCancelHandler:^{
         
     } withDoneHandler:^(NSArray *selectedValues) {
         NSLog(@"%@---", selectedValues);
+        if (selectedValues.count > 1) {
+            WeakSelf.userModel.occupation = [selectedValues objectAtIndex:1];
+            [WeakSelf saveUserInfoRequest];
+        }
     }];
 }
 
 - (void)editEducationShow{
+    HitoWeakSelf;
     [ZJUsefulPickerView showSingleColPickerWithToolBarText:nil withData:self.educationData withDefaultIndex:0 withCancelHandler:^{
         
         
     } withDoneHandler:^(NSInteger selectedIndex, NSString *selectedValue) {
         NSLog(@"%@---%ld", selectedValue, selectedIndex);
+        WeakSelf.userModel.education = selectedValue;
+        [WeakSelf saveUserInfoRequest];
         
     }];
 }
 
 - (void)authWXAction{
+    
+    if (self.userModel.wxNickname.length > 0) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"是否更换当前已绑定微信（%@）",self.userModel.wxNickname] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        HitoWeakSelf;
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"立即更换" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [WeakSelf beginAuthWeixin];
+        }];
+        
+        [alertController addAction:action1];
+        [alertController addAction:action2];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    [self beginAuthWeixin];
+    
+}
+
+- (void)beginAuthWeixin{
     HitoWeakSelf;
     [SVProgressHUD showCustomWithStatus:nil];
     [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
         if (success) {
             [SVProgressHUD dismiss];
+            WeakSelf.userModel.wxNickname = [LELoginUserManager wxNickname];
+            [WeakSelf saveUserInfoRequest];
         }
-        [WeakSelf.tableView reloadData];
     }];
 }
 

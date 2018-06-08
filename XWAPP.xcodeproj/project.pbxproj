@@ -102,6 +102,7 @@
 		4CE90D1820C7DA6700337617 /* LEEarningRankBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1720C7DA6700337617 /* LEEarningRankBottomView.m */; };
 		4CE90D1C20C7FFBA00337617 /* LEMineCommentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1A20C7FFBA00337617 /* LEMineCommentViewCell.m */; };
 		4CE90D1D20C7FFBA00337617 /* LEMineCommentViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CE90D1B20C7FFBA00337617 /* LEMineCommentViewCell.xib */; };
+		4CE90D2020C9281F00337617 /* LEHotNewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE90D1F20C9281F00337617 /* LEHotNewsModel.m */; };
 		4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CA820A29ABD000904F4 /* DetailController.m */; };
 		4CF22CAC20A2A0BE000904F4 /* WalletHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CAB20A2A0BE000904F4 /* WalletHeader.m */; };
 		4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CF22CAD20A2A0C4000904F4 /* WalletHeader.xib */; };
@@ -387,6 +388,8 @@
 		4CE90D1920C7FFB900337617 /* LEMineCommentViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEMineCommentViewCell.h; sourceTree = "<group>"; };
 		4CE90D1A20C7FFBA00337617 /* LEMineCommentViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEMineCommentViewCell.m; sourceTree = "<group>"; };
 		4CE90D1B20C7FFBA00337617 /* LEMineCommentViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LEMineCommentViewCell.xib; sourceTree = "<group>"; };
+		4CE90D1E20C9281F00337617 /* LEHotNewsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEHotNewsModel.h; sourceTree = "<group>"; };
+		4CE90D1F20C9281F00337617 /* LEHotNewsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEHotNewsModel.m; sourceTree = "<group>"; };
 		4CF22CA720A29ABD000904F4 /* DetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailController.h; sourceTree = "<group>"; };
 		4CF22CA820A29ABD000904F4 /* DetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailController.m; sourceTree = "<group>"; };
 		4CF22CAA20A2A0BE000904F4 /* WalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHeader.h; sourceTree = "<group>"; };
@@ -1526,6 +1529,8 @@
 		EC72BC3F209030CA00FADE74 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				4CE90D1E20C9281F00337617 /* LEHotNewsModel.h */,
+				4CE90D1F20C9281F00337617 /* LEHotNewsModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -1860,6 +1865,7 @@
 				EC72BC18208EC01B00FADE74 /* XLChannelItem.m in Sources */,
 				EC72BC17208EC01B00FADE74 /* XLChannelHeader.m in Sources */,
 				EC418685209949D400E57C17 /* SetKeyBoard.m in Sources */,
+				4CE90D2020C9281F00337617 /* LEHotNewsModel.m in Sources */,
 				4C3F3C0B20AD9C2000B754AF /* LENewsDetailContentView.m in Sources */,
 				EC72BC44209030EC00FADE74 /* HoitPointController.m in Sources */,
 				4CB76B7A20BE49900092503E /* LECommentListViewController.m in Sources */,
