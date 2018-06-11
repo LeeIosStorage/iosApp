@@ -25,7 +25,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="xNC-x6-DPz">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xNC-x6-DPz">
                         <rect key="frame" x="216" y="12" width="92" height="69"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="69" id="79q-00-sdJ"/>
@@ -70,7 +70,4 @@
             <point key="canvasLocation" x="-21" y="72"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="jiji" width="624" height="435"/>
-    </resources>
 </document>

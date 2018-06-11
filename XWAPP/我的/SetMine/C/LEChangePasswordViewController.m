@@ -60,7 +60,7 @@
     [passwordView addSubview:passwordImage];
     _passwordTextField.leftView = passwordView;
     _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
-    placeholder = @"请输入密码，6-13位英文字母或数字";
+    placeholder = @"请输入密码，6-20位英文字母或数字";
     _passwordTextField.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(14) color:[UIColor colorWithHexString:@"a9a9aa"]];
     
 }
@@ -96,12 +96,13 @@
     [SVProgressHUD showCustomWithStatus:@"修改中..."];
     
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"11"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"ChangePwd"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if ([LELoginUserManager mobile].length) [params setObject:[LELoginUserManager mobile] forKey:@"mobile"];
-    [params setObject:_passwordTextField.text forKey:@"new_pwd"];
-    [params setObject:_codeTextField.text forKey:@"smsCode"];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"uid"];
+    [params setObject:_passwordTextField.text forKey:@"pwd"];
+    [params setObject:_codeTextField.text forKey:@"code"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             
@@ -143,6 +144,10 @@
     }
     if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
         [SVProgressHUD showCustomInfoWithStatus:@"请输入新密码"];
+        return;
+    }
+    if (_passwordTextField.text.length < 6 || _passwordTextField.text.length > 20) {
+        [SVProgressHUD showCustomInfoWithStatus:@"密码格式不正确"];
         return;
     }
     [self.view endEditing:YES];

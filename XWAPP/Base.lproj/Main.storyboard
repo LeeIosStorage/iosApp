@@ -2171,6 +2171,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="codeBtn" destination="5UN-GG-HaS" id="Jlj-BR-aXk"/>
                         <outlet property="codeTF" destination="TAN-hJ-zNb" id="71z-5c-DL5"/>
                         <outlet property="foneTF" destination="OaJ-iI-CLh" id="Egc-SO-IJ0"/>
                         <outlet property="passWordTF" destination="u2z-QO-V4t" id="cP4-Jx-cVi"/>

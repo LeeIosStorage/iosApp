@@ -60,6 +60,8 @@
     placeholder = @"请输入短信验证码";
     _codeTF.attributedPlaceholder = [WYCommonUtils stringToColorAndFontAttributeString:placeholder range:NSMakeRange(0, placeholder.length) font:HitoPFSCRegularOfSize(14) color:[UIColor colorWithHexString:@"a9a9aa"]];
     
+    _phoneTF.text = [LELoginUserManager mobile];
+    
 //    UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 75, 20)];
 //    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 20)];
 //    line.backgroundColor = HitoColorFromRGB(0Xd9d9d9);
@@ -231,7 +233,7 @@
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
-            [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+            [SVProgressHUD showCustomErrorWithStatus:message];
             return ;
         }
         if ([dataObject isKindOfClass:[NSDictionary class]]) {

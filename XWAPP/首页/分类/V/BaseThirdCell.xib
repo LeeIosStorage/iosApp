@@ -25,19 +25,19 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="jf1-1v-M0h">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jf1-1v-M0h">
                         <rect key="frame" x="13" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="jf1-1v-M0h" secondAttribute="height" multiplier="4:3" id="mDu-vW-dje"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="aOh-Xa-uoO">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aOh-Xa-uoO">
                         <rect key="frame" x="131" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="aOh-Xa-uoO" secondAttribute="height" multiplier="4:3" id="nDB-Hf-fPa"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiji" translatesAutoresizingMaskIntoConstraints="NO" id="Vec-KS-7Pi">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vec-KS-7Pi">
                         <rect key="frame" x="249" y="119.5" width="106" height="79.5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Vec-KS-7Pi" secondAttribute="height" multiplier="4:3" id="4ra-9o-9zL"/>
@@ -90,7 +90,4 @@
             <point key="canvasLocation" x="50" y="149.5"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="jiji" width="624" height="435"/>
-    </resources>
 </document>

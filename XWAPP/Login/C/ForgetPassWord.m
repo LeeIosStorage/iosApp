@@ -10,6 +10,8 @@
 
 @interface ForgetPassWord ()
 
+@property (weak, nonatomic) IBOutlet JKCountDownButton *codeBtn;
+
 @end
 
 @implementation ForgetPassWord
@@ -23,6 +25,7 @@
 - (void)setVC {
     
     self.view.backgroundColor = [UIColor whiteColor];
+    [self needTapGestureRecognizer];
     
     UIView *phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 20)];
     UIImageView *leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(13, 0, 20, 20)];
@@ -61,6 +64,8 @@
     _passWordTF.rightViewMode = UITextFieldViewModeAlways;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [rightView addGestureRecognizer:tap];
+    
+    _foneTF.text = [LELoginUserManager mobile];
 }
 
 - (void)tap:(UITapGestureRecognizer *)sender {
@@ -76,7 +81,7 @@
         sender.enabled = NO;
         [sender startCountDownWithSecond:60];
         [sender countDownChanging:^NSString *(JKCountDownButton *countDownButton,NSUInteger second) {
-            NSString *title = [NSString stringWithFormat:@"剩余%zd秒",second];
+            NSString *title = [NSString stringWithFormat:@"%zd秒",second];
             return title;
         }];
         [sender countDownFinished:^NSString *(JKCountDownButton *countDownButton, NSUInteger second) {
@@ -84,13 +89,18 @@
             return @"点击重新获取";
             
         }];
+        
+        [self getSmsCodeRequest];
+        
     } else {
         //提醒
         [self addAlertWithVC:self title:@"警告" message:@"请输入正确的手机号"];
     }
 }
 - (IBAction)dismissAction:(UIButton *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
 }
 //回收键盘
 - (void)resign {
@@ -125,8 +135,60 @@
 - (IBAction)loginAction:(UIButton *)sender {
     [self resign];
     if ([self checkPhoneCodeAndPW]) {
-        //
+        [self affirmRequest];
     }
+}
+
+#pragma mark -
+#pragma mark - Request
+- (void)getSmsCodeRequest{
+    
+    [SVProgressHUD showCustomWithStatus:@"请求中..."];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SmsSend"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:_foneTF.text forKey:@"mobile"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            [WeakSelf.codeBtn stopCountDown];
+            [SVProgressHUD showCustomErrorWithStatus:@"发送失败"];
+            return ;
+        }
+        [SVProgressHUD showCustomSuccessWithStatus:@"发送成功"];
+        
+    } failure:^(id responseObject, NSError *error) {
+        [WeakSelf.codeBtn stopCountDown];
+        [SVProgressHUD showCustomErrorWithStatus:@"发送失败"];
+    }];
+    
+}
+
+- (void)affirmRequest{
+    
+    [SVProgressHUD showCustomWithStatus:@"设置中..."];
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"ChangePwd"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:_foneTF.text forKey:@"mobile"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"uid"];
+    [params setObject:_passWordTF.text forKey:@"pwd"];
+    [params setObject:_codeTF.text forKey:@"code"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            
+            return ;
+        }
+        [SVProgressHUD showCustomSuccessWithStatus:@"密码设置成功"];
+        [WeakSelf dismissAction:nil];
+//        [WeakSelf.navigationController popViewControllerAnimated:YES];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
 }
 
 @end

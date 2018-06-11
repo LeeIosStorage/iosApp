@@ -29,6 +29,8 @@ HitoPropertyNSMutableArray(searchNewsList);
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (assign, nonatomic) int nextCursor;
+
 @end
 
 @implementation SearchController
@@ -56,6 +58,7 @@ HitoPropertyNSMutableArray(searchNewsList);
     [self addSearchBar];
     [self addChildVC];
     
+    self.nextCursor = 1;
     self.searchNewsList = [[NSMutableArray alloc] init];
     
     [self.view addSubview:self.tableView];
@@ -65,6 +68,7 @@ HitoPropertyNSMutableArray(searchNewsList);
     }];
     [self.tableView reloadData];
     
+    [self addMJ];
 }
 
 - (void)addChildVC {
@@ -111,6 +115,16 @@ HitoPropertyNSMutableArray(searchNewsList);
     [self.search becomeFirstResponder];
 }
 
+- (void)addMJ {
+    MJWeakSelf;
+    //上拉加载
+    self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
+        
+        [weakSelf searchRequest];
+    }];
+    [self.tableView.mj_footer setHidden:YES];
+}
+
 - (void)beginSearchAction:(NSString *)searchText{
     
     [_search resignFirstResponder];
@@ -132,6 +146,8 @@ HitoPropertyNSMutableArray(searchNewsList);
     _collecVC.historyArr = self.historyArr;
     [_collecVC.collectionView reloadData];
     
+    self.nextCursor = 1;
+    [self.tableView.mj_footer setHidden:YES];
     [self searchRequest];
     
 }
@@ -144,39 +160,47 @@ HitoPropertyNSMutableArray(searchNewsList);
     NSString *searchText = self.search.text;
     [SVProgressHUD showCustomWithStatus:nil];
     HitoWeakSelf;
-    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"NewsQuery"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"255" forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
+    [params setObject:searchText forKey:@"keyword"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
     [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
 //        [WeakSelf.tableView.mj_header endRefreshing];
-//        [WeakSelf.tableView.mj_footer endRefreshing];
+        [WeakSelf.tableView.mj_footer endRefreshing];
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
         [SVProgressHUD dismiss];
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
-        WeakSelf.searchNewsList = [[NSMutableArray alloc] initWithArray:array];
+        if (WeakSelf.nextCursor == 1) {
+            WeakSelf.searchNewsList = [[NSMutableArray alloc] init];
+        }
+        [WeakSelf.searchNewsList addObjectsFromArray:array];
         
-//        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
-//            [WeakSelf.tableView.mj_footer setHidden:YES];
-//        }else{
-//            [WeakSelf.tableView.mj_footer setHidden:NO];
-//            WeakSelf.nextCursor ++;
-//        }
+        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
+        }else{
+            [WeakSelf.tableView.mj_footer setHidden:NO];
+            WeakSelf.nextCursor ++;
+        }
         
         [WeakSelf.tableView setHidden:NO];
         WeakSelf.collecVC.view.hidden = YES;
         [WeakSelf.tableView reloadData];
         
+        if (WeakSelf.searchNewsList.count == 0) {
+            [WeakSelf showEmptyDataSetView:NO title:@"暂时没有搜索数据~" image:[UIImage imageNamed:@""]];
+        }else{
+            [WeakSelf showEmptyDataSetView:YES title:nil image:nil];
+        }
         
     } failure:^(id responseObject, NSError *error) {
 //        [WeakSelf.tableView.mj_header endRefreshing];
-//        [WeakSelf.tableView.mj_footer endRefreshing];
+        [WeakSelf.tableView.mj_footer endRefreshing];
     }];
     
 }

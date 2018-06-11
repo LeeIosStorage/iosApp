@@ -61,6 +61,8 @@
     _passWordTF.rightViewMode = UITextFieldViewModeAlways;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [rightView addGestureRecognizer:tap];
+    
+    _phoneTF.text = [LELoginUserManager mobile];
 
 }
 
@@ -83,7 +85,7 @@
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
-            [SVProgressHUD showCustomErrorWithStatus:HitoLoginFaiTitle];
+            [SVProgressHUD showCustomErrorWithStatus:message];
             return ;
         }
         if ([dataObject isKindOfClass:[NSDictionary class]]) {

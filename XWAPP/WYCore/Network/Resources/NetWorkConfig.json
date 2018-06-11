@@ -17,6 +17,12 @@
         "control" : "news",
         "action"  : "GetDetail"
     },
+    "NewsQuery": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "Query"
+    },
     "GetComment": {
         "protocol": "http",
         "module" : "api",
@@ -46,6 +52,12 @@
         "module" : "api",
         "control" : "user",
         "action"  : "Register"
+    },
+    "ChangePwd": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "ChangePwd"
     },
     "GetUserDetail": {
         "protocol": "http",

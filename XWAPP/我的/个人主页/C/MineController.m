@@ -281,7 +281,7 @@ UIScrollViewDelegate
     } else if (indexPath.section == 1) {
         return 44;
     } else if (indexPath.section == 2) {
-        return 59;
+        return HitoActureHeight(61);
     } else {
         return 44;
     }

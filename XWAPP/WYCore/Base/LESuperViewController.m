@@ -20,6 +20,10 @@ UIGestureRecognizerDelegate
 @property (strong, nonatomic) UIView *customTitleView;
 @property (strong, nonatomic) UILabel *customTitleLabel;
 
+@property (strong, nonatomic) UIView *emptyDataSetView;
+@property (strong, nonatomic) UILabel *emptyTipLabel;
+@property (strong, nonatomic) UIImageView *emptyTipImageView;
+
 @end
 
 @implementation LESuperViewController
@@ -101,6 +105,37 @@ UIGestureRecognizerDelegate
     
 }
 
+- (void)showEmptyDataSetView:(BOOL)hidden title:(NSString *)title image:(UIImage *)image{
+    UIView *view = self.view;
+    for (UIView *subView in view.subviews) {
+        if ([subView isKindOfClass:[UIScrollView class]]) {
+            view = subView;
+            break;
+        }
+    }
+    
+    if (!hidden) {
+        if (!self.emptyDataSetView.superview) {
+            [view addSubview:self.emptyDataSetView];
+            [self.emptyDataSetView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(view);
+                make.width.mas_equalTo(HitoScreenW-12*2);
+                make.top.equalTo(view).offset(100);
+            }];
+        }
+        self.emptyTipLabel.text = title;
+        self.emptyTipImageView.image = image;
+        CGSize size = image.size;
+        [self.emptyTipImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(size);
+        }];
+        
+    }else{
+        
+    }
+    self.emptyDataSetView.hidden = hidden;
+}
+
 #pragma mark -
 #pragma mark - Private
 - (void)viewTapped
@@ -132,6 +167,34 @@ UIGestureRecognizerDelegate
         
     }
     return _customTitleView;
+}
+
+- (UIView *)emptyDataSetView{
+    if (!_emptyDataSetView) {
+        _emptyDataSetView = [[UIView alloc] init];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        _emptyTipImageView = imageView;
+        [_emptyDataSetView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.centerX.equalTo(self->_emptyDataSetView);
+            make.size.mas_equalTo(CGSizeMake(0, 0));
+        }];
+        
+        UILabel *label = [[UILabel alloc] init];
+        label.textColor = [UIColor colorWithHexString:@"666666"];
+//        label.backgroundColor = kAppThemeColor;
+        label.font = HitoPFSCRegularOfSize(15);
+        label.textAlignment = NSTextAlignmentCenter;
+        label.numberOfLines = 0;
+        _emptyTipLabel = label;
+        [_emptyDataSetView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.equalTo(self->_emptyDataSetView);
+            make.top.equalTo(imageView.mas_bottom).offset(15);
+        }];
+    }
+    return _emptyDataSetView;
 }
 
 @end

@@ -40,4 +40,7 @@
  */
 - (WYNetWorkManager *)networkManager;
 
+//空白页面提示语
+- (void)showEmptyDataSetView:(BOOL)hidden title:(NSString *)title image:(UIImage *)image;
+
 @end
