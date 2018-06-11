@@ -19,7 +19,7 @@
     [super awakeFromNib];
     self.backgroundColor = [UIColor whiteColor];
     [self setupSelfNameXibOnSelf];
-    [self changeLB];
+//    [self changeLB];
 }
 
 #endif
@@ -32,7 +32,7 @@
         //加载同名xib并添加到self
 
         [self setupSelfNameXibOnSelf];
-        [self changeLB];
+//        [self changeLB];
     }
     return self;
 }

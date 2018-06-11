@@ -9,8 +9,16 @@
 #import "HoitPointController.h"
 #import "HotCell.h"
 #import "HotHeader.h"
+#import "LERefreshHeader.h"
+#import "LEHotNewsModel.h"
+#import "WYNetWorkManager.h"
+#import "DetailController.h"
 
 @interface HoitPointController ()
+{
+    BOOL _viewDidAppear;
+}
+@property (strong, nonatomic) NSMutableArray *hotNewsList;
 
 @end
 
@@ -25,51 +33,109 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    //    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (!_viewDidAppear) {
+        [self.tableView.mj_header beginRefreshing];
+    }
+    _viewDidAppear = YES;
 }
 
 - (void)setTB {
+    
     [self setTitle:@"实时热点"];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.hotNewsList = [[NSMutableArray alloc] init];
+    
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
     self.tableView.tableFooterView = [UIView new];
 
 }
 
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+#pragma mark - Request
+- (void)getNewsRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"1" forKey:@"cid"];
+    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf.tableView.mj_header endRefreshing];
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LEHotNewsModel class] json:[dataObject objectForKey:@"data"]];
+        
+        WeakSelf.hotNewsList = [[NSMutableArray alloc] init];
+        
+        
+        for (int i = 0; i < 2; i ++) {
+            NSMutableDictionary *mutDic = [NSMutableDictionary dictionary];
+            if (i == 0) {
+                [mutDic setObject:@"今天" forKey:@"title"];
+            }else{
+                [mutDic setObject:@"昨天" forKey:@"title"];
+            }
+            [mutDic setObject:array forKey:@"data"];
+            
+            [WeakSelf.hotNewsList addObject:mutDic];
+        }
+        
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        [WeakSelf.tableView.mj_header endRefreshing];
+    }];
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return self.hotNewsList.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    NSDictionary *dic = [self.hotNewsList objectAtIndex:section];
+    NSArray *array = dic[@"data"];
+    return array.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     HotCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HotCell" forIndexPath:indexPath];
-//    if (indexPath.row == 2) {
-//        cell.lineView.hidden = YES;
-//    }
+    
+    NSDictionary *dic = [self.hotNewsList objectAtIndex:indexPath.section];
+    NSArray *array = dic[@"data"];
+    LEHotNewsModel *model = array[indexPath.row];
+    [cell updateCellWithData:model];
     return cell;
 }
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    NSDictionary *dic = [self.hotNewsList objectAtIndex:section];
+    
     HotHeader *header = [[[NSBundle mainBundle] loadNibNamed:@"HotHeader" owner:self options:nil] firstObject];
     header.frame = CGRectMake(0, 0, HitoScreenW, 36);
-    header.titleLB.text = @"昨天";
+    header.titleLB.text = dic[@"title"];
     return header;
 }
 
@@ -81,33 +147,31 @@
     return 0.01;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+//    NSIndexPath* selIndexPath = [tableView indexPathForSelectedRow];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSDictionary *dic = [self.hotNewsList objectAtIndex:indexPath.section];
+    NSArray *array = dic[@"data"];
+    LEHotNewsModel *model = array[indexPath.row];
+    DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+    detail.newsId = model.newsId;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
 #pragma mark - mj
 - (void)addMJ {
     //下拉刷新
+    HitoWeakSelf;
+    self.tableView.mj_header = [LERefreshHeader headerWithRefreshingBlock:^{
+        [WeakSelf getNewsRequest];
+    }];
     
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            [self.tableView.mj_header endRefreshing];
-
-            
-            
-        });
-        
-        dispatch_time_t delayTime1 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime1, dispatch_get_main_queue(), ^{
-            
-            self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
-            
-            
-        });
-        
-    }];
-    //上啦加载
-    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
-        //
-    }];
+//    //上啦加载
+//    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
+//        //
+//    }];
 }
 
 @end

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HotCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UIView *lineView;
+
+- (void)updateCellWithData:(id)data;
 
 @end

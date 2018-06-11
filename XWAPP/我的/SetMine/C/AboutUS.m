@@ -7,8 +7,12 @@
 //
 
 #import "AboutUS.h"
+#import "WeiboSDK.h"
 
 @interface AboutUS ()
+
+@property (strong, nonatomic) IBOutlet UILabel *aboutVersionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *aboutLabel;
 
 @end
 
@@ -18,13 +22,17 @@
     [super viewDidLoad];
     [self setVC];
     [self setNaStyle];
-
-    
 }
 
 - (void)setVC {
     [self setNaStyle];
     [self setTitle:@"关于我们"];
+    
+    NSString *localVserion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    self.aboutVersionLabel.text = [NSString stringWithFormat:@"%@ %@",appName,localVserion];
+    
+    self.aboutLabel.text = @"Copyright © 2018\n杭州哈妞科技有限公司";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,14 +40,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark -
+#pragma mark - IBActions
+- (IBAction)gotoWeibo:(id)sender{
+     [WeiboSDK linkToUser:@"5701065233"];
 }
-*/
+
+- (IBAction)onlineServiceAction:(id)sender{
+    
+}
+
+- (IBAction)businessAction:(id)sender{
+    
+}
 
 @end

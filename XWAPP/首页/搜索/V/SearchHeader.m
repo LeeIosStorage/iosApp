@@ -22,4 +22,5 @@
 - (void)clickBtn:(Click)click {
     _click = click;
 }
+
 @end

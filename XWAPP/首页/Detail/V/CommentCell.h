@@ -10,4 +10,6 @@
 
 @interface CommentCell : UITableViewCell
 
+- (void)updateHeaderData:(id)data;
+
 @end

@@ -14,10 +14,6 @@
     if (sender.selected) {
         return;
     }
-    _rightBtn.selected = NO;
-    _rightView.hidden = !_rightBtn.selected;
-    sender.selected = !sender.selected;
-    _leftView.hidden = NO;
     _leftBlock();
 }
 
@@ -25,12 +21,6 @@
     if (sender.selected) {
         return;
     }
-    
-    _leftBtn.selected = NO;
-    _leftView.hidden = !_leftBtn.selected;
-    
-    sender.selected = !sender.selected;
-    _rightView.hidden = NO;
     _rightBlock();
 }
 
@@ -40,6 +30,21 @@
 
 - (void)rightBlockAction:(RightBtnAction)rightBlock {
     _rightBlock = rightBlock;
+}
+
+- (void)refreshUIWithIndex:(NSInteger)index{
+    
+    _leftView.hidden = YES;
+    _rightView.hidden = YES;
+    if (index == 1) {
+        _rightView.hidden = NO;
+        _rightBtn.selected = YES;
+        _leftBtn.selected = NO;
+    }else{
+        _leftView.hidden = NO;
+        _rightBtn.selected = NO;
+        _leftBtn.selected = YES;
+    }
 }
 
 @end

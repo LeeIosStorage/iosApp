@@ -21,14 +21,21 @@
 }
 
 - (void)setView {
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     _bottomView.layer.shadowColor = [UIColor blackColor].CGColor;
-    
     _bottomView.layer.shadowOpacity = 0.8f;
-    
     _bottomView.layer.shadowRadius = 4.0f;
-    
     _bottomView.layer.shadowOffset = CGSizeMake(4,4);
     self.title = @"我要提现";
+    
+    [self.bottomView removeFromSuperview];
+    [self.view addSubview:self.bottomView];
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(56);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

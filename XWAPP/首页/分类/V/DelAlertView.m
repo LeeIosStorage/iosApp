@@ -8,12 +8,20 @@
 
 #import "DelAlertView.h"
 
+@interface DelAlertView ()
 
+@property (weak, nonatomic) IBOutlet UIButton *leftButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightButton;
+
+@end
 
 @implementation DelAlertView
 
 
-
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    _titleLB.text = [NSString stringWithFormat:@"选择理由，精准屏蔽"];
+}
 
 
 - (IBAction)rightBtnAction:(UIButton *)sender {
@@ -34,6 +42,16 @@
 }
 
 - (IBAction)bottomBtnAction:(UIButton *)sender {
+    if (self.delAlertViewShieldClickBlock) {
+        NSMutableArray *reasons = [NSMutableArray arrayWithCapacity:0];
+        if (self.leftButton.selected) {
+            [reasons addObject:@"1"];
+        }
+        if (self.rightButton.selected) {
+            [reasons addObject:@"2"];
+        }
+        self.delAlertViewShieldClickBlock(reasons);
+    }
 }
 
 - (IBAction)leftBtnAction:(UIButton *)sender {

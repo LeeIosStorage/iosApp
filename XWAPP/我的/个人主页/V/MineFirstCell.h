@@ -10,4 +10,6 @@
 
 @interface MineFirstCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIButton *rightButton;
+
 @end

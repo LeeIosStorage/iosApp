@@ -9,7 +9,10 @@
 #ifndef RequestURL_h
 #define RequestURL_h
 
-
+//隐私协议
+#define kAppPrivacyProtocolURL   @"http://www.huiyishe.cn/"
+//邀请活动
+#define kAppInviteActivityWebURL @"http://www.baidu.com"
 
 
 

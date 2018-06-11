@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_nav_redian_nor" translatesAutoresizingMaskIntoConstraints="NO" id="oRx-jw-kPi">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="home_nav_redian_nor" translatesAutoresizingMaskIntoConstraints="NO" id="oRx-jw-kPi">
                     <rect key="frame" x="13" y="13" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="oRx-jw-kPi" secondAttribute="height" id="FTz-gQ-qtd"/>
@@ -84,13 +83,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="oRx-jw-kPi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="13" id="1wX-rb-L9F"/>
+                <constraint firstItem="oRx-jw-kPi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="1wX-rb-L9F"/>
                 <constraint firstItem="q9x-xj-a98" firstAttribute="bottom" secondItem="oRx-jw-kPi" secondAttribute="bottom" constant="-5" id="6Ix-em-svM"/>
                 <constraint firstItem="G3b-ET-VwY" firstAttribute="top" secondItem="oRx-jw-kPi" secondAttribute="top" constant="5" id="7Zn-s1-fRZ"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="FIq-q6-HdK" secondAttribute="trailing" constant="13" id="9c7-dz-IFq"/>
+                <constraint firstAttribute="trailing" secondItem="FIq-q6-HdK" secondAttribute="trailing" constant="13" id="9c7-dz-IFq"/>
                 <constraint firstItem="JyX-62-WHC" firstAttribute="centerY" secondItem="FIq-q6-HdK" secondAttribute="centerY" id="GTm-GI-06U"/>
                 <constraint firstItem="FIq-q6-HdK" firstAttribute="centerY" secondItem="oRx-jw-kPi" secondAttribute="centerY" id="LNd-Mx-t5M"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Oyd-DS-cEi" secondAttribute="trailing" constant="19" id="M4V-Bi-y5G"/>
+                <constraint firstAttribute="trailing" secondItem="Oyd-DS-cEi" secondAttribute="trailing" constant="19" id="M4V-Bi-y5G"/>
                 <constraint firstItem="G3b-ET-VwY" firstAttribute="leading" secondItem="oRx-jw-kPi" secondAttribute="trailing" constant="14" id="PX6-NG-Hbe"/>
                 <constraint firstItem="ihT-Tl-Yb9" firstAttribute="leading" secondItem="Oyd-DS-cEi" secondAttribute="leading" id="Wrq-Rk-had"/>
                 <constraint firstItem="ihT-Tl-Yb9" firstAttribute="top" secondItem="Oyd-DS-cEi" secondAttribute="bottom" constant="13" id="XaR-Wl-62j"/>
@@ -98,13 +97,12 @@
                 <constraint firstItem="FIq-q6-HdK" firstAttribute="leading" secondItem="JyX-62-WHC" secondAttribute="trailing" constant="14" id="cCa-sf-tiW"/>
                 <constraint firstItem="q9x-xj-a98" firstAttribute="leading" secondItem="G3b-ET-VwY" secondAttribute="leading" id="gaj-MU-PoP"/>
                 <constraint firstItem="Oyd-DS-cEi" firstAttribute="top" secondItem="oRx-jw-kPi" secondAttribute="bottom" constant="13" id="p77-98-0wH"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ihT-Tl-Yb9" secondAttribute="bottom" id="rRE-Gu-JTm"/>
+                <constraint firstAttribute="bottom" secondItem="ihT-Tl-Yb9" secondAttribute="bottom" id="rRE-Gu-JTm"/>
                 <constraint firstItem="2oz-V2-6v6" firstAttribute="centerY" secondItem="q9x-xj-a98" secondAttribute="centerY" id="s9f-gx-uM1"/>
-                <constraint firstItem="oRx-jw-kPi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="13" id="xF6-x2-Tly"/>
+                <constraint firstItem="oRx-jw-kPi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="xF6-x2-Tly"/>
                 <constraint firstItem="Oyd-DS-cEi" firstAttribute="leading" secondItem="q9x-xj-a98" secondAttribute="leading" id="z5i-jg-8Ry"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="contentLB" destination="Oyd-DS-cEi" id="9Ym-k4-cvM"/>
             </connections>

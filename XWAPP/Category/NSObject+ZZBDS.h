@@ -15,6 +15,7 @@
 
 - (BOOL)checkoutPhoneNum:(NSString *)phoneNum;
 
+- (NSString *)numberSuitScanf:(NSString*)number;
 
 - (void)addAlertWithVC:(UIViewController *)alertVC title:(NSString *)title message:(NSString *)message;
 @end

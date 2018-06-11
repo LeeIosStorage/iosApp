@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ChannelSelectBlock)(NSInteger index);
+
 @interface XLChannelView : UIView
 
 @property (nonatomic, strong) NSMutableArray *inUseTitles;
 
-@property (nonatomic,strong) NSMutableArray *unUseTitles;
+@property (nonatomic, strong) NSMutableArray *unUseTitles;
+
+@property (nonatomic, copy) ChannelSelectBlock channelSelectBlock;
 
 -(void)reloadData;
 

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface SetCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *leftLB;
+
+@property (weak, nonatomic) IBOutlet UILabel *rightLB;
 
 @end

@@ -6,11 +6,12 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
+#import "LESearchBar.h"
 
-@interface SearchController : UIViewController
+@interface SearchController : LESuperViewController
 
-@property (nonatomic, strong) UISearchBar *search;
+@property (nonatomic, strong) LESearchBar *search;
 
 
 @end

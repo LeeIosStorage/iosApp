@@ -8,6 +8,10 @@
 
 #import "RootTabBar.h"
 #import "PhoneLogin.h"
+#import "LELoginManager.h"
+#import "SYBaseController.h"
+#import "TaskCenterController.h"
+#import "MineController.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -27,34 +31,41 @@
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    if ([item.title isEqualToString:@"我的"]) {
-        UIViewController *vv = self.viewControllers.lastObject;
-        PhoneLogin *phone = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PhoneLogin"];
-        [vv presentViewController:phone animated:YES completion:^{
-            //
-        }];
+    if ([item.title isEqualToString:@"我的"] || [item.title isEqualToString:@"任务中心"]) {
+        
+        UIViewController *vc = self.viewControllers.lastObject;
+        [[LELoginManager sharedInstance] needUserLogin:vc];
     }
 
 }
 
 #pragma mark 判断是否登录若没登录跳转到登录页面
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{//每次点击都会执行的方法
-    //点击购物车tabbarItem时进行一次判断
-//    NSUserDefaults *userdefault =NSUserDefault;
-//    NSString* str = [userdefaultvalueForKey:@"LoginStatu"];
-    if([viewController.tabBarItem.title isEqualToString:@"我的"]){//判断点击的tabBarItem的title是不是购物车，如果是继续执行
-
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    
+    if([viewController.tabBarItem.title isEqualToString:@"我的"] || [viewController.tabBarItem.title isEqualToString:@"任务中心"]){
+        if (![LELoginUserManager hasAccoutLoggedin]) {
+            return NO;
+        }
         return YES;
     }
     return YES;
 }
 
-
-
-
-
-
-
-
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)viewController;
+        UIViewController *currentVc = [nav.viewControllers lastObject];
+        if ([currentVc isKindOfClass:[SYBaseController class]]) {
+            SYBaseController *vc = (SYBaseController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }else if ([currentVc isKindOfClass:[TaskCenterController class]]){
+            TaskCenterController *vc = (TaskCenterController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }else if ([currentVc isKindOfClass:[MineController class]]){
+            MineController *vc = (MineController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }
+    }
+}
 
 @end

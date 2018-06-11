@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -45,7 +44,7 @@
                     <constraints>
                         <constraint firstAttribute="width" secondItem="2Zr-Th-ndo" secondAttribute="height" multiplier="1:1" id="qLO-6u-mSy"/>
                     </constraints>
-                    <state key="normal" image="logo_wexin "/>
+                    <state key="normal" image="logo_wexin"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dff-CX-e1l">
                     <rect key="frame" x="475" y="45" width="100" height="100"/>
@@ -103,7 +102,7 @@
             <constraints>
                 <constraint firstItem="huN-pF-I7e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="2tC-z0-cKp"/>
                 <constraint firstItem="oup-Dt-Pb5" firstAttribute="height" secondItem="HkM-cc-t41" secondAttribute="height" id="4em-cr-Y2R"/>
-                <constraint firstItem="huN-pF-I7e" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="17" id="6m6-V9-Okh"/>
+                <constraint firstItem="huN-pF-I7e" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="17" id="6m6-V9-Okh"/>
                 <constraint firstItem="Bib-JA-jHg" firstAttribute="centerX" secondItem="2Zr-Th-ndo" secondAttribute="centerX" id="7Ev-1e-dy3"/>
                 <constraint firstItem="kvr-RW-eja" firstAttribute="top" secondItem="Bib-JA-jHg" secondAttribute="bottom" constant="12" id="92j-Sy-spq"/>
                 <constraint firstItem="Bib-JA-jHg" firstAttribute="width" secondItem="2Zr-Th-ndo" secondAttribute="width" id="9UN-oJ-be6"/>
@@ -120,12 +119,12 @@
                 <constraint firstItem="hfM-eV-jsF" firstAttribute="top" secondItem="mNE-sW-tfi" secondAttribute="bottom" constant="8" id="Vhz-Kx-hOY"/>
                 <constraint firstItem="hfM-eV-jsF" firstAttribute="width" secondItem="mNE-sW-tfi" secondAttribute="width" id="Vjg-YL-63d"/>
                 <constraint firstItem="Bib-JA-jHg" firstAttribute="height" secondItem="hfM-eV-jsF" secondAttribute="height" id="WwH-V6-1L3"/>
-                <constraint firstItem="kvr-RW-eja" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bUs-Ag-VdU"/>
-                <constraint firstItem="huN-pF-I7e" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="cSV-bJ-fYj"/>
+                <constraint firstItem="kvr-RW-eja" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bUs-Ag-VdU"/>
+                <constraint firstItem="huN-pF-I7e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cSV-bJ-fYj"/>
                 <constraint firstItem="mNE-sW-tfi" firstAttribute="top" secondItem="huN-pF-I7e" secondAttribute="bottom" constant="15" id="eL0-aF-eub"/>
                 <constraint firstItem="HkM-cc-t41" firstAttribute="top" secondItem="VfY-p5-oug" secondAttribute="bottom" constant="8" id="fHo-mt-M54"/>
                 <constraint firstItem="HkM-cc-t41" firstAttribute="centerX" secondItem="VfY-p5-oug" secondAttribute="centerX" id="kfG-Vy-LZ6"/>
-                <constraint firstItem="xN4-bl-o8o" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="kzE-4g-YdY"/>
+                <constraint firstItem="xN4-bl-o8o" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="kzE-4g-YdY"/>
                 <constraint firstItem="xN4-bl-o8o" firstAttribute="top" secondItem="kvr-RW-eja" secondAttribute="bottom" constant="16" id="nWe-JD-wAn"/>
                 <constraint firstItem="hfM-eV-jsF" firstAttribute="centerX" secondItem="mNE-sW-tfi" secondAttribute="centerX" id="nx5-BV-ZE4"/>
                 <constraint firstItem="Dff-CX-e1l" firstAttribute="leading" secondItem="VfY-p5-oug" secondAttribute="trailing" constant="50" id="oEZ-ZM-SjM"/>
@@ -133,12 +132,11 @@
                 <constraint firstItem="VfY-p5-oug" firstAttribute="centerY" secondItem="2Zr-Th-ndo" secondAttribute="centerY" id="pZU-UE-BOP"/>
                 <constraint firstItem="2Zr-Th-ndo" firstAttribute="centerY" secondItem="mNE-sW-tfi" secondAttribute="centerY" id="pgA-LI-5dn"/>
                 <constraint firstItem="Dff-CX-e1l" firstAttribute="centerY" secondItem="VfY-p5-oug" secondAttribute="centerY" id="qBq-No-oUj"/>
-                <constraint firstItem="mNE-sW-tfi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="rkR-aF-XRz"/>
+                <constraint firstItem="mNE-sW-tfi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="rkR-aF-XRz"/>
                 <constraint firstItem="oup-Dt-Pb5" firstAttribute="width" secondItem="Dff-CX-e1l" secondAttribute="width" id="vDk-Rm-Xhi"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Dff-CX-e1l" secondAttribute="trailing" constant="25" id="vp4-DV-2aA"/>
+                <constraint firstAttribute="trailing" secondItem="Dff-CX-e1l" secondAttribute="trailing" constant="25" id="vp4-DV-2aA"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="279" y="6"/>
         </view>
     </objects>
@@ -146,6 +144,6 @@
         <image name="logo_QQ" width="44" height="44"/>
         <image name="logo_pengyouquan" width="44" height="44"/>
         <image name="logo_weibo" width="44" height="44"/>
-        <image name="logo_wexin " width="44" height="44"/>
+        <image name="logo_wexin" width="44" height="44"/>
     </resources>
 </document>

@@ -8,8 +8,9 @@
 
 #import "WMPageController.h"
 
-
-
 @interface SYBaseController : WMPageController
+
+/** 点击tabBar主动刷新页面 */
+- (void)tabBarSelectRefreshData;
 
 @end

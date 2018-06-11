@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^ChannelBlock)(NSArray *inUseTitles,NSArray *unUseTitles);
+typedef void(^ChannelBlock)(NSArray *inUseTitles,NSArray *unUseTitles,NSInteger currentIndex,BOOL needRefresh);
 
 @interface XLChannelControl : NSObject
 

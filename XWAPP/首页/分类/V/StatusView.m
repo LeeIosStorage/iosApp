@@ -9,6 +9,11 @@
 #import "StatusView.h"
 #import "UIView+Xib.h"
 
+@interface StatusView ()
+
+
+@end
+
 @implementation StatusView
 
 #if 1
@@ -17,6 +22,13 @@
     [super awakeFromNib];
     self.backgroundColor = [UIColor whiteColor];
     [self setupSelfNameXibOnSelf];
+    
+    [self.sourceLabel removeFromSuperview];
+    [self addSubview:self.sourceLabel];
+    [self.sourceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.tagLabel.mas_right).offset(15);
+        make.centerY.equalTo(self.tagLabel.mas_centerY);
+    }];
 }
 
 #endif
@@ -34,7 +46,9 @@
 #endif
 
 - (IBAction)deleAction:(UIButton *)sender {
-    _deleeBlock();
+    if (_deleeBlock) {
+        _deleeBlock();
+    }
 }
 
 - (void)deleblockAction:(DeleBlock)deleblock {
@@ -42,6 +56,21 @@
 }
 
 - (IBAction)cancelAction:(UIButton *)sender {
+    if (_deleeBlock) {
+        _deleeBlock();
+    }
+}
+
+- (void)updateSourceConstraints:(NSInteger)type{
+    if (type == 0) {
+        [self.sourceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.tagLabel.mas_right).offset(15);
+        }];
+    }else{
+        [self.sourceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.tagLabel.mas_left);
+        }];
+    }
 }
 
 @end

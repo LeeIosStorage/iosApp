@@ -10,6 +10,26 @@
 #define SysMarco_h
 
 
+#define QQ_ID                       @"1104513102"
+#define QQ_Key                      @"L3PVlr3bpXd9I63d"
+#define WX_ID                       @"wx5313693d6d2d863e"
+#define WX_Secret                   @"6d250dc360fac1acfed6bba0c62939f4"
+#define SINA_ID                     @"3734649134"
+#define SINA_Secret                 @"57bba34da9bae335b351f2057283bbf1"
+#define Sina_RedirectURL            @"http://www.wangyuhudong.com"
+#define UMS_APPKEY                  @"5b0fe262f43e481d740001f5"
+
+
+#define MAX_WX_IMAGE_SIZE 32*1024
+#define WY_IMAGE_COMPRESSION_QUALITY 0.4
+
+// 每页加载数
+#define DATA_LOAD_PAGESIZE_COUNT 20
+//评论最大数
+#define COMMENT_MAX_COUNT 255
+
+#define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
+
 /***************************系统版本*****************************/
 
 //获取手机系统的版本
@@ -64,11 +84,11 @@
 
 #ifdef DEBUG
 
-# define NSLog(FORMAT, ...) printf("[%s<%p>行号:%d]:\n%s\n",__FUNCTION__,self,__LINE__,[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
+# define LELog(FORMAT, ...) printf("[%s<%p>行号:%d]:\n%s\n",__FUNCTION__,self,__LINE__,[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
 
 #else
 
-# define NSLog(FORMAT, ...)
+# define LELog(FORMAT, ...)
 
 #endif
 
@@ -186,6 +206,18 @@
 
 #define HitoRedColor [UIColor redColor]
 
+//主题颜色
+#define kAppThemeColor [UIColor colorWithHexString:@"ff4b41"]
+//主背景颜色
+#define kAppBackgroundColor [UIColor colorWithHexString:@"f1f1f1"]
+//主标题颜色
+#define kAppTitleColor [UIColor blackColor]
+//主标题颜色
+#define kAppSubTitleColor [UIColor colorWithHexString:@"999999"]
+
+//蒙层黑色
+#define kAppMaskOpaqueBlackColor HitoRGBA(0,0,0,0.4)
+
 ///颜色 a代表透明度,1为不透明,0为透明
 
 #define HitoRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
@@ -196,7 +228,7 @@
 
 //分割线颜色
 
-#define LineColor [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:0.2]
+#define LineColor [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:0.7]
 
 //加粗
 
@@ -206,12 +238,13 @@
 
 #define HitoSystemFontOfSize(FONTSIZE) [UIFont systemFontOfSize:FONTSIZE]
 
+#define HitoPFSCRegularOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Regular"size:FONTSIZE]
+
 #define HitoPFSCMediumOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Medium"size:FONTSIZE]
 
 #define HitoPFSCLightOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Light"size:FONTSIZE]
 
 #define HitoPFSCThinOfSize(FONTSIZE) [UIFont fontWithName:@"PingFangSC-Thin"size:FONTSIZE]
-
 
 
 /***************************通知和本地存储*****************************/
@@ -250,7 +283,7 @@
 
 #define HitoDISPATCH_ONCE_BLOCK(onceBlock) static dispatch_once_t onceToken; dispatch_once(&onceToken, onceBlock);
 
-//强引用
+//弱引用
 
 #define HitoWeakSelf __weak typeof(self)WeakSelf = self;
 
@@ -264,14 +297,16 @@
 
 //登录状态标识
 
-#define HitoSucTitle @"登录成功"
+#define HitoLoginSucTitle @"登录成功"
 
-#define HitoFaiTitle @"登录失败"
+#define HitoLoginFaiTitle @"登录失败"
 
 //网络状态标识
 
+#define HitoFaiRequest @"请求失败"
 #define HitoFaiNetwork @"网络错误"
 
+#define HitoDataFileCatalog @"LEData"
 
 
 #endif /* SysMarco_h */

@@ -6,8 +6,8 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
 
-@interface YQMController : UIViewController
+@interface YQMController : LESuperViewController
 
 @end

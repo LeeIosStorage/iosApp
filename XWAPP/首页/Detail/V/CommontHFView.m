@@ -8,14 +8,31 @@
 
 #import "CommontHFView.h"
 
+@interface CommontHFView ()
+<
+UITextFieldDelegate
+>
+
+@end
+
 @implementation CommontHFView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]) {
+        
+    }
+    return self;
 }
-*/
+
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    self.hufuTF.delegate = self;
+}
+
+- (IBAction)sendAction:(id)sender{
+    if (self.commontViewWithSendBlcok) {
+        self.commontViewWithSendBlcok(self.hufuTF.text);
+    }
+}
 
 @end

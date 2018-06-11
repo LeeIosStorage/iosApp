@@ -10,4 +10,6 @@
 
 @interface WalletCell : UITableViewCell
 
+- (void)updateWalletCellWithData:(id)data;
+
 @end

@@ -1,0 +1,122 @@
+{
+    "GetAllChannel": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetAllChannel"
+    },
+    "GetNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetNews"
+    },
+    "GetDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetDetail"
+    },
+    "NewsQuery": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "Query"
+    },
+    "GetComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "GetComment"
+    },
+    "commentSave": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "Save"
+    },
+    "DoLikeOrUnLike": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "DoLikeOrUnLike"
+    },
+    "Login": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Login"
+    },
+    "Register": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Register"
+    },
+    "ChangePwd": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "ChangePwd"
+    },
+    "GetUserDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserDetail"
+    },
+    "SmsSend": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "sms",
+        "action"  : "Send"
+    },
+    "GetFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetFavoriteNews"
+    },
+    "SaveFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveFavoriteNews"
+    },
+    "DeleteFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteFavoriteNews"
+    },
+    "GetUserComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetComment"
+    },
+    "DeleteAllComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteAllComment"
+    },
+    "DeleteComment": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "DeleteComment"
+    },
+    "SaveUserDetail": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveUserDetail"
+    },
+    "UploadUserHeadImg": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "UploadUserHeadImg"
+    },
+}

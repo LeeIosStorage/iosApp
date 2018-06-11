@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MineSecondCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *leftLB;
+@property (weak, nonatomic) IBOutlet UILabel *rightLabel;
 
 @end

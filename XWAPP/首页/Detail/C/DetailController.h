@@ -6,11 +6,31 @@
 //  Copyright © 2018年 HuiYiShe. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LESuperViewController.h"
+#import "LENewsDetailModel.h"
 
-@interface DetailController : UIViewController
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITextField *commentTF;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
+typedef void(^handleSuccessBlock)(NSMutableAttributedString *attributedString);
+
+@interface DetailController : LESuperViewController
+
+@property (strong, nonatomic) NSString *newsId;
+
+@property (strong, nonatomic) LENewsDetailModel *newsDetailModel;
+
+@property (strong, nonatomic) NSString        *beforeContent;
+///大图数组
+@property (strong, nonatomic) NSMutableArray  *imageItemsArray;
+
+- (instancetype)initWithNewsId:(NSString *)newsId;
+
+- (void)showImageDetailWithImageView:(YYAnimatedImageView *)imageView;
+
+@end
+
+@interface DetailController (ContentControl)
+
+- (void)parserContentWithHtmlString:(NSString *)htmlString handleSuccessBlcok:(handleSuccessBlock)successBlock;
+
+- (CGFloat)getAttributedStringHeightWithString:(NSMutableAttributedString *)attributedString;
 
 @end

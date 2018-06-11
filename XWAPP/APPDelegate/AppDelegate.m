@@ -7,6 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "WXApi.h"
+#import "WeiboSDK.h"
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WYShareManager.h"
+#import "UMSocialWechatHandler.h"
 
 @interface AppDelegate ()
 
@@ -28,20 +33,24 @@
     // UMConfigure 通用设置，请参考SDKs集成做统一初始化。
     // 以下仅列出U-Share初始化部分
     
+    [SVProgressHUD setCurrentDefaultStyle];
+    
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
+    
     // U-Share 平台设置
     [self configUSharePlatforms];
     [self confitUShareSettings];
     
     // Custom code
     
-    //    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-        [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
-        [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"btn_back_nor"]];
-        [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
-        [UINavigationBar appearance].topItem.title = @"";
     
-        [UINavigationBar appearance].barTintColor = [UIColor whiteColor];
-        [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
+    [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"btn_back_nor"]];
+    [UINavigationBar appearance].tintColor = HitoRGBA(102, 102, 102, 1);
+    [UINavigationBar appearance].barTintColor = [UIColor whiteColor];
+    
+    [UINavigationBar appearance].topItem.title = @"";
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:HitoPFSCRegularOfSize(17)}];
     
     return YES;
 }
@@ -67,52 +76,43 @@
 
 - (void)configUSharePlatforms
 {
-    /* 设置微信的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wxdc1e388c3822c80b" appSecret:@"3baf1193c85774b3fd9d18447d76cab0" redirectURL:@"http://mobile.umeng.com/social"];
-    /*
-     * 移除相应平台的分享，如微信收藏
-     */
-    //[[UMSocialManager defaultManager] removePlatformProviderWithPlatformTypes:@[@(UMSocialPlatformType_WechatFavorite)]];
+    [[UMSocialManager defaultManager] setUmSocialAppkey:UMS_APPKEY];
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WX_ID appSecret:WX_Secret redirectURL:nil];
     
-    /* 设置分享到QQ互联的appID
-     * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
-     */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1105821097"/*设置QQ平台的appID*/  appSecret:nil redirectURL:@"http://mobile.umeng.com/social"];
+}
+
+- (BOOL)handleOpenURL:(NSURL *)url {
+    LELog(@"query=%@,scheme=%@,host=%@", url.query, url.scheme, url.host);
+    NSString *scheme = [url scheme];
     
-    /* 设置新浪的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3921700954"  appSecret:@"04b48b094faeb16683c32669824ebdad" redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
+    //三方登录
+    BOOL isUMSocial = ([[url absoluteString] hasPrefix:[NSString stringWithFormat:@"tencent%@://qzapp",QQ_ID]] || [[url absoluteString] hasPrefix:[NSString stringWithFormat:@"%@://oauth",WX_ID]]);
+    if (isUMSocial) {
+//        _isUMSocialLogin = NO;
+        return [[UMSocialManager defaultManager] handleOpenURL:url];
+    }
     
-    /* 钉钉的appKey */
-    [[UMSocialManager defaultManager] setPlaform: UMSocialPlatformType_DingDing appKey:@"dingoalmlnohc0wggfedpk" appSecret:nil redirectURL:nil];
-    
-    /* 支付宝的appKey */
-    [[UMSocialManager defaultManager] setPlaform: UMSocialPlatformType_AlipaySession appKey:@"2015111700822536" appSecret:nil redirectURL:@"http://mobile.umeng.com/social"];
-    
-    
-    /* 设置易信的appKey */
-    [[UMSocialManager defaultManager] setPlaform: UMSocialPlatformType_YixinSession appKey:@"yx35664bdff4db42c2b7be1e29390c1a06" appSecret:nil redirectURL:@"http://mobile.umeng.com/social"];
-    
-    /* 设置点点虫（原来往）的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform: UMSocialPlatformType_LaiWangSession appKey:@"8112117817424282305" appSecret:@"9996ed5039e641658de7b83345fee6c9" redirectURL:@"http://mobile.umeng.com/social"];
-    
-    /* 设置领英的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Linkedin appKey:@"81t5eiem37d2sc"  appSecret:@"7dgUXPLH8kA8WHMV" redirectURL:@"https://api.linkedin.com/v1/people"];
-    
-    /* 设置Twitter的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Twitter appKey:@"fB5tvRpna1CKK97xZUslbxiet"  appSecret:@"YcbSvseLIwZ4hZg9YmgJPP5uWzd4zr6BpBKGZhf07zzh3oj62K" redirectURL:nil];
-    
-    /* 设置Facebook的appKey和UrlString */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Facebook appKey:@"506027402887373"  appSecret:nil redirectURL:@"http://www.umeng.com/social"];
-    
-    /* 设置Pinterest的appKey */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Pinterest appKey:@"4864546872699668063"  appSecret:nil redirectURL:nil];
-    
-    /* dropbox的appKey */
-    [[UMSocialManager defaultManager] setPlaform: UMSocialPlatformType_DropBox appKey:@"k4pn9gdwygpy4av" appSecret:@"td28zkbyb9p49xu" redirectURL:@"https://mobile.umeng.com/social"];
-    
-    /* vk的appkey */
-    [[UMSocialManager defaultManager]  setPlaform:UMSocialPlatformType_VKontakte appKey:@"5786123" appSecret:nil redirectURL:nil];
-    
+    if ([scheme hasPrefix:@"wx"]) {
+        return [WXApi handleOpenURL:url delegate:[WYShareManager shareInstance]];
+    }
+    if ([scheme hasPrefix:@"wb"]) {
+        return [WeiboSDK handleOpenURL:url delegate:[WYShareManager shareInstance]];
+    }
+    if ([scheme hasPrefix:@"tencent"]) {
+        return [QQApiInterface handleOpenURL:url delegate:[WYShareManager shareInstance]];
+    }
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [self handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    LELog(@"openURL url=%@, sourceApplication=%@, annotation=%@", url, sourceApplication, annotation);
+    return [self handleOpenURL:url];
 }
 
 

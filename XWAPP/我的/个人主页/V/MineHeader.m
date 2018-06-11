@@ -10,12 +10,16 @@
 
 @implementation MineHeader
 
-
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    
+    self.avatarImageView.layer.cornerRadius = HitoActureHeight(70)/2;
+    self.avatarImageView.layer.masksToBounds = YES;
+}
 
 - (void)updateConstraints {
     [super updateConstraints];
     [self changeLB];
-    
 }
 
 
@@ -29,10 +33,14 @@
 
 
 - (IBAction)leftTapAction:(UITapGestureRecognizer *)sender {
-    _leftClick();
+    if (_leftClick) {
+        _leftClick();
+    }
 }
 - (IBAction)centerTapAction:(UITapGestureRecognizer *)sender {
-    _centerClick();
+    if (_centerClick) {
+        _centerClick();
+    }
 }
 
 - (void)leftClickAction:(LeftClick)leftClick {

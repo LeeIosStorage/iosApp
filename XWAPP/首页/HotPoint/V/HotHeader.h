@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface HotHeader : UIView
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLB;
 
 @end

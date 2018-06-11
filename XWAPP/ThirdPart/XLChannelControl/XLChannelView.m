@@ -9,6 +9,7 @@
 #import "XLChannelView.h"
 #import "XLChannelItem.h"
 #import "XLChannelHeader.h"
+#import "LEChannelModel.h"
 
 //菜单列数
 static NSInteger ColumnNumber = 3;
@@ -210,45 +211,64 @@ static CGFloat CellMarginY = 16.0f;
 {
     static NSString* cellId = @"XLChannelItem";
     XLChannelItem* item = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
-    item.title = indexPath.section == 0 ? _inUseTitles[indexPath.row] : _unUseTitles[indexPath.row];
+    
+    LEChannelModel *channelModel = indexPath.section == 0 ? _inUseTitles[indexPath.row] : _unUseTitles[indexPath.row];
+    
+    item.title = channelModel.name;
     item.isFixed = indexPath.section == 0 && indexPath.row == 0;
     if (indexPath.section == 0) {
-        [item.rightTopBtn setImage:HitoImage(@"home_pinglun_nor") forState:UIControlStateNormal];
-            item.rightTopBtn.hidden = !hiddenBtn;
+        [item.rightTopBtn setImage:HitoImage(@"home_pindao_remove") forState:UIControlStateNormal];
+        item.rightTopBtn.hidden = !hiddenBtn;
+        if (item.isFixed) {
+            item.rightTopBtn.hidden = YES;
+        }
 
     } else {
         item.rightTopBtn.hidden = NO;
-        [item.rightTopBtn setImage:HitoImage(@"home_delete_nor") forState:UIControlStateNormal];
+        [item.rightTopBtn setImage:HitoImage(@"home_pindao_add") forState:UIControlStateNormal];
     }
-    [item rightTopBlockAction:^{
-
-    }];
+    
+    __weak typeof(item) weakItem = item;
+    item.rightTopAction = ^{
+        NSIndexPath *indexPath = [collectionView indexPathForCell:weakItem];
+        [self afreshSortItemWithIndexPath:indexPath];
+    };
     return  item;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self afreshSortItemWithIndexPath:indexPath];
+}
+
+- (void)afreshSortItemWithIndexPath:(NSIndexPath *)indexPath{
+    
     if (indexPath.section == 0) {
         //只剩一个的时候不可删除
-        if ([_collectionView numberOfItemsInSection:0] == 1) {return;}
+//        if ([_collectionView numberOfItemsInSection:0] == 1) {return;}
         //第一个不可删除
-        if (indexPath.row  == 0) {return;}
+        
         if (!hiddenBtn) {
+            if (self.channelSelectBlock) {
+                self.channelSelectBlock(indexPath.row);
+            }
             return;
         }
+        if (indexPath.row  == 0) {return;}
+        
         id obj = [_inUseTitles objectAtIndex:indexPath.row];
         [_inUseTitles removeObject:obj];
         [_unUseTitles insertObject:obj atIndex:0];
         [_collectionView moveItemAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
         
         [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]]];
-
+        
     }else{
         id obj = [_unUseTitles objectAtIndex:indexPath.row];
         [_unUseTitles removeObject:obj];
         [_inUseTitles addObject:obj];
         [_collectionView moveItemAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:_inUseTitles.count - 1 inSection:0]];
-
+        
         [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_inUseTitles.count - 1 inSection:0]]];
     }
 }
