@@ -35,7 +35,7 @@
     
     [SVProgressHUD setCurrentDefaultStyle];
     
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
     
     // U-Share 平台设置
     [self configUSharePlatforms];

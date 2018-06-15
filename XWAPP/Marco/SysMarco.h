@@ -10,13 +10,13 @@
 #define SysMarco_h
 
 
-#define QQ_ID                       @"1104513102"
-#define QQ_Key                      @"L3PVlr3bpXd9I63d"
+#define QQ_ID                       @"1106905716"
+#define QQ_Key                      @"oRHhd5NAPbKZeX9o"
 #define WX_ID                       @"wx5313693d6d2d863e"
 #define WX_Secret                   @"6d250dc360fac1acfed6bba0c62939f4"
-#define SINA_ID                     @"3734649134"
-#define SINA_Secret                 @"57bba34da9bae335b351f2057283bbf1"
-#define Sina_RedirectURL            @"http://www.wangyuhudong.com"
+#define SINA_ID                     @"2752056969"
+#define SINA_Secret                 @"3a1c7b67d5bd8265605a0e773358afa7"
+#define Sina_RedirectURL            @"https://api.weibo.com/oauth2/default.html"
 #define UMS_APPKEY                  @"5b0fe262f43e481d740001f5"
 
 
@@ -304,7 +304,7 @@
 //网络状态标识
 
 #define HitoFaiRequest @"请求失败"
-#define HitoFaiNetwork @"网络错误"
+#define HitoFaiNetwork @"网络不给力"
 
 #define HitoDataFileCatalog @"LEData"
 

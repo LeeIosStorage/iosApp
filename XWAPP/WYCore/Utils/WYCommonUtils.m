@@ -183,6 +183,39 @@ static bool dateFormatterOFUSInvalid;
     
 }
 
++ (NSString*)dateDayToDayDiscriptionFromDate:(NSDate*)date{
+    
+    NSString *timestamp = nil;
+    NSDate *nowDate = [NSDate date];
+    if (date == nil) {
+        return @"";
+    }
+    int distance = [nowDate timeIntervalSinceDate:date];
+    if (distance < 0) {
+        distance = 0;
+    }
+    NSCalendar *calender = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute |NSCalendarUnitSecond | NSCalendarUnitWeekday;
+    NSDateComponents *comps = [calender components:unitFlags fromDate:date];
+    NSDateComponents *compsNow = [calender components:unitFlags fromDate:nowDate];
+    
+    if (distance > 0) {
+        if (distance < DAY_SECOND) {
+            if (comps.day == compsNow.day){
+                timestamp = @"今天";
+            }else timestamp = @"昨天";
+            
+        }else{
+            timestamp = [NSString stringWithFormat:@"%d月%d日", (int)comps.month, (int)comps.day];
+        }
+    }else{
+        timestamp = [NSString stringWithFormat:@"%d月%d日", (int)comps.month, (int)comps.day];
+    }
+    
+    return timestamp;
+}
+
 + (int)getAgeWithBirthdayDate:(NSDate *)date{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
@@ -214,6 +247,14 @@ static bool dateFormatterOFUSInvalid;
     
     NSString *ts = [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute,second];
     return ts;
+}
+
++(long long)getDateTimeTOMilliSeconds:(NSDate *)datetime{
+    
+    NSTimeInterval interval = [datetime timeIntervalSince1970];
+    long long totalMilliseconds = interval*1000;
+    return totalMilliseconds;
+    
 }
 
 #pragma mark -

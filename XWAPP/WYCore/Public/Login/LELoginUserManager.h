@@ -46,6 +46,24 @@ typedef void(^LELoginUserInfoBlock)(BOOL isSuccess, NSString *message);
 + (NSString *)education;
 + (void)setEducation:(NSString *)education;
 
++ (NSString *)invitationCode;
++ (void)setInvitationCode:(NSString *)invitationCode;
+
++ (double)readDuration;
++ (void)setReadDuration:(double)readDuration;
+
++ (double)balance;
++ (void)setBalance:(double)balance;
+
++ (double)income;
++ (void)setIncome:(double)income;
+
++ (NSInteger)todayGolds;
++ (void)setTodayGolds:(NSInteger)todayGolds;
+
++ (NSInteger)totalGolds;
++ (void)setTotalGolds:(NSInteger)totalGolds;
+
 /**
  *  用户登录后授权令牌
  *

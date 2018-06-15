@@ -88,7 +88,7 @@
     if (![LELoginUserManager hasAccoutLoggedin]) {
         __weak UIViewController *currentVC = fromViewController;
         [self showLoginViewControllerFromPresentViewController:fromViewController showCancelButton:YES success:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
             if ([currentVC isKindOfClass:[LESuperViewController class]]) {
                 LESuperViewController *superVc = (LESuperViewController *)currentVC;
                 [superVc refreshViewWithObject:nil];

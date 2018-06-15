@@ -23,6 +23,12 @@
         "control" : "news",
         "action"  : "Query"
     },
+    "GetHotNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetHotNews"
+    },
     "GetComment": {
         "protocol": "http",
         "module" : "api",
@@ -83,6 +89,12 @@
         "control" : "user",
         "action"  : "SaveFavoriteNews"
     },
+    "CheckFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckFavoriteNews"
+    },
     "DeleteFavoriteNews": {
         "protocol": "http",
         "module" : "api",
@@ -118,5 +130,53 @@
         "module" : "api",
         "control" : "file",
         "action"  : "UploadUserHeadImg"
+    },
+    "GetUserTask": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserTask"
+    },
+    "UpdateUserTaskState": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UpdateUserTaskState"
+    },
+    "CheckContinuousSign": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckContinuousSign"
+    },
+    "AddUserSign": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "AddUserSign"
+    },
+    "GetSignConfig": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetSignConfig"
+    },
+    "GetUserGoldsChangeLogs": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserGoldsChangeLogs"
+    },
+    "CheckCoinBox": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckCoinBox"
+    },
+    "OpenCoinBox": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "OpenCoinBox"
     },
 }

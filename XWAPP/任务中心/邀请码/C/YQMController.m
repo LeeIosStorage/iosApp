@@ -7,6 +7,7 @@
 //
 
 #import "YQMController.h"
+#import "LELoginAuthManager.h"
 
 @interface YQMController ()
 <
@@ -45,6 +46,15 @@ UIScrollViewDelegate
 #pragma mark -
 #pragma mark - Request
 - (void)affirmRequest{
+    
+    LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeInvitationCode];
+    NSString *taskId = taskModel.taskId;
+    
+    [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskId success:^(BOOL success) {
+        if (success) {
+            
+        }
+    }];
     
 //    self.affirmButton.enabled = NO;
 //    [SVProgressHUD showCustomWithStatus:nil];

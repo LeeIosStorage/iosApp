@@ -19,12 +19,10 @@
             return YES;
             break;
             case WYRequestTypeUnauthorized:
-            [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
             break;
             case WYRequestTypeNotLogin:
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
-
             break;
         default:
             
@@ -38,12 +36,13 @@
     BOOL isNeedGotoLogin = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/msg/typeCount"] || [urlPath isEqualToString:@"/my/statistics"] || [urlPath isEqualToString:@"/statistics/userCoin"] ||[urlPath isEqualToString:@"/statistics/todayIncome"]) {
+    if ([urlPath isEqualToString:@"/api/user/CheckFavoriteNews"] || [urlPath isEqualToString:@"/my/statistics"] || [urlPath isEqualToString:@"/statistics/userCoin"] ||[urlPath isEqualToString:@"/statistics/todayIncome"]) {
         isNeedGotoLogin = NO;
     }
     
     if (isNeedGotoLogin) {
         if (type == WYRequestTypeUnauthorized) {
+            [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling delayLogin];
         }else if (type == WYRequestTypeNotLogin){
             //未登录,需要登录
@@ -64,7 +63,7 @@
     
     __weak UIViewController *currentVC = [WYNetWorkExceptionHandling getCurrentVC];
     [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:currentVC showCancelButton:YES success:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
         if ([currentVC isKindOfClass:[LESuperViewController class]]) {
             LESuperViewController *superVc = (LESuperViewController *)currentVC;
             [superVc refreshViewWithObject:nil];

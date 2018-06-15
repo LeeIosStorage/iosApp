@@ -59,21 +59,20 @@
 #pragma mark - Public
 - (void)updateHeaderViewData:(id)data{
     
-    NSString *balanceString = @"¥ 1.61";
+    NSString *balanceString = [NSString stringWithFormat:@"¥ %.2f",[LELoginUserManager balance]];
     NSRange range = [balanceString rangeOfString:@"."];
     NSAttributedString *balanceAttStr = [WYCommonUtils stringToColorAndFontAttributeString:balanceString range:NSMakeRange(1, range.location-1) font:HitoBoldSystemFontOfSize(40) color:[UIColor whiteColor]];
     _balanceLabel.attributedText = balanceAttStr;
     
-    NSString *grossEarningsString = @"¥ 1.61";
+    NSString *grossEarningsString = [NSString stringWithFormat:@"¥ %.2f",[LELoginUserManager income]];
     NSAttributedString *grossEarningsAttStr = [WYCommonUtils stringToColorAndFontAttributeString:grossEarningsString range:NSMakeRange(0, 1) font:HitoPFSCMediumOfSize(15) color:[UIColor whiteColor]];
     _grossEarningsLabel.attributedText = grossEarningsAttStr;
     
-    _dayGoldLabel.text = @"10";
+    _dayGoldLabel.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
     _rateLabel.text = @"100金币 =0.1元";
     _goldTipLabel.text = @"当天赚取的金币按照规则自动转换为零钱";
 
     
-    self.chartView.backgroundColor = [UIColor colorWithHexString:@"d5d5d5"];
     self.chartView.layer.cornerRadius = 13;
     self.chartView.layer.masksToBounds = YES;
     [self.chartView setXLabels:@[@"",@"",@"",@"",@"",@"",@""]];
@@ -297,7 +296,7 @@
 - (PNLineChart *)chartView{
     if (!_chartView) {
         _chartView = [[PNLineChart alloc] initWithFrame:CGRectMake(12, 265, SCREEN_WIDTH-24, 122.0)];
-        _chartView.backgroundColor = [UIColor darkGrayColor];
+        _chartView.backgroundColor = kAppBackgroundColor;
     }
     return _chartView;
 }

@@ -49,10 +49,14 @@
 + (NSString*)dateYearToSecondDiscriptionFromDate:(NSDate*)date;
 //显示时间格式:HH:mm
 + (NSString*)dateHourToMinuteDiscriptionFromDate:(NSDate*)date;
+//显示格式:今天,昨天
++ (NSString*)dateDayToDayDiscriptionFromDate:(NSDate*)date;
 //年龄
 + (int)getAgeWithBirthdayDate:(NSDate *)date;
 //倒计时 dateStr:秒数
 + (NSString *)secondChangToDateString:(NSString *)dateStr;
+//date转时间戳
++(long long)getDateTimeTOMilliSeconds:(NSDate *)datetime;
 
 #pragma mark -
 #pragma mark - Other

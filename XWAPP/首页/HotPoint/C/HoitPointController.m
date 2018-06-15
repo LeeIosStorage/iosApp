@@ -20,6 +20,8 @@
 }
 @property (strong, nonatomic) NSMutableArray *hotNewsList;
 
+@property (assign, nonatomic) int nextCursor;
+
 @end
 
 @implementation HoitPointController
@@ -47,6 +49,7 @@
     
     [self setTitle:@"实时热点"];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     
     self.hotNewsList = [[NSMutableArray alloc] init];
     
@@ -66,10 +69,10 @@
 - (void)getNewsRequest{
     
     HitoWeakSelf;
-    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetHotNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"1" forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
+//    [params setObject:@"1" forKey:@"cid"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
     [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
@@ -81,19 +84,53 @@
         }
         NSArray *array = [NSArray modelArrayWithClass:[LEHotNewsModel class] json:[dataObject objectForKey:@"data"]];
         
-        WeakSelf.hotNewsList = [[NSMutableArray alloc] init];
-        
-        
-        for (int i = 0; i < 2; i ++) {
-            NSMutableDictionary *mutDic = [NSMutableDictionary dictionary];
-            if (i == 0) {
-                [mutDic setObject:@"今天" forKey:@"title"];
-            }else{
-                [mutDic setObject:@"昨天" forKey:@"title"];
+        NSMutableArray *todayArray = [NSMutableArray array];
+        NSMutableArray *yesterdayArray = [NSMutableArray array];
+        for (LEHotNewsModel *model in array) {
+            NSString *daystr = [WYCommonUtils dateDayToDayDiscriptionFromDate:[WYCommonUtils dateFromUSDateString:model.public_time]];
+            if ([daystr isEqualToString:@"今天"]) {
+                [todayArray addObject:model];
+            }else if ([daystr isEqualToString:@"昨天"]){
+                [yesterdayArray addObject:model];
             }
-            [mutDic setObject:array forKey:@"data"];
-            
-            [WeakSelf.hotNewsList addObject:mutDic];
+        }
+        
+        if (WeakSelf.nextCursor == 1) {
+            WeakSelf.hotNewsList = [[NSMutableArray alloc] init];
+            if (todayArray.count > 0) {
+                NSMutableDictionary *mutDic = [NSMutableDictionary dictionary];
+                [mutDic setObject:@"今天" forKey:@"title"];
+                [mutDic setObject:[NSMutableArray array] forKey:@"data"];
+                [WeakSelf.hotNewsList addObject:mutDic];
+            }
+        }
+        if (yesterdayArray.count > 0) {
+            if (WeakSelf.hotNewsList.count < 2) {
+                NSMutableDictionary *mutDic = [NSMutableDictionary dictionary];
+                [mutDic setObject:@"昨天" forKey:@"title"];
+                [mutDic setObject:[NSMutableArray array] forKey:@"data"];
+                [WeakSelf.hotNewsList addObject:mutDic];
+            }
+        }
+        
+        for (NSMutableDictionary *mutDic in WeakSelf.hotNewsList) {
+            NSString *title = [mutDic objectForKey:@"title"];
+            NSMutableArray *mutArray = [mutDic objectForKey:@"data"];
+            if ([title isEqualToString:@"今天"]) {
+                [mutArray addObjectsFromArray:todayArray];
+            }else if ([title isEqualToString:@"昨天"]){
+                [mutArray addObjectsFromArray:yesterdayArray];
+            }
+        }
+        
+        if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
+        }else{
+            [WeakSelf.tableView.mj_footer setHidden:NO];
+            WeakSelf.nextCursor ++;
+        }
+        if (WeakSelf.hotNewsList.count == 0) {
+            [WeakSelf.tableView.mj_footer setHidden:YES];
         }
         
         [WeakSelf.tableView reloadData];
@@ -165,13 +202,16 @@
     //下拉刷新
     HitoWeakSelf;
     self.tableView.mj_header = [LERefreshHeader headerWithRefreshingBlock:^{
+        WeakSelf.nextCursor = 1;
         [WeakSelf getNewsRequest];
     }];
     
-//    //上啦加载
-//    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
-//        //
-//    }];
+    //上啦加载
+    self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
+        [WeakSelf getNewsRequest];
+    }];
+    self.tableView.mj_footer.hidden = YES;
+    
 }
 
 @end

@@ -24,10 +24,11 @@
 - (void)updateCellData:(LETaskListModel *)taskModel{
     
     self.leftLB.text = taskModel.taskTitle;
-    self.rightLB.text = taskModel.coin;
+    self.rightLB.text = [NSString stringWithFormat:@"+%@",taskModel.coin];
     self.rightIM.image = HitoImage(@"task_jinbi");
-    if (taskModel.coinType == 1) {
+    if (taskModel.coinType == 2) {
         self.rightIM.image = HitoImage(@"task_hongbao");
+        self.rightLB.text = [NSString stringWithFormat:@"+%@元",taskModel.coin];
     }
 }
 

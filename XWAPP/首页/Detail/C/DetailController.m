@@ -40,6 +40,8 @@ LEShareSheetViewDelegate
     LENewsCommentModel *_currentCommentModel;
     
     LEShareSheetView *_shareSheetView;
+    
+    BOOL _isCollect;
 }
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
@@ -85,13 +87,17 @@ LEShareSheetViewDelegate
     [self setupSubViews];
     
     [self getNewsDetailRequest];
-    
+    [self checkFavoriteNewsRequest];
     [self getNewsCommentsRequest];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)refreshViewWithObject:(id)object{
+    [self checkFavoriteNewsRequest];
 }
 
 #pragma mark -
@@ -257,6 +263,33 @@ LEShareSheetViewDelegate
     }
 }
 
+- (NSMutableArray *)outputRecursion:(NSArray *)comments result:(NSMutableArray *)result{
+    
+    [comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+            LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+            [result addObject:replyModel];
+            if (replyModel.children.count > 0) {
+                [self outputRecursion:replyModel.children result:result withReplyModel:replyModel];
+            }
+        }
+    }];
+    return result;
+}
+
+- (void)outputRecursion:(NSArray *)comments result:(NSMutableArray *)result withReplyModel:(LEReplyCommentModel *)replyModel{
+    
+    for (LEReplyCommentModel *childrenModel in comments) {
+        childrenModel.replyuId = replyModel.userId;
+        childrenModel.replyUserName = replyModel.userName;
+        [result addObject:childrenModel];
+        if (childrenModel.children.count > 0) {
+            [self outputRecursion:childrenModel.children result:result withReplyModel:childrenModel];
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsDetailRequest{
@@ -277,6 +310,27 @@ LEShareSheetViewDelegate
             WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
         }
         [WeakSelf setData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
+- (void)checkFavoriteNewsRequest{
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"CheckFavoriteNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        self->_isCollect = [dataObject boolValue];
+        WeakSelf.collectButton.selected = self->_isCollect;
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -310,25 +364,31 @@ LEShareSheetViewDelegate
         NSMutableArray *comments = [NSMutableArray array];
         [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            NSMutableArray *children = [NSMutableArray array];
+//            NSMutableArray *children = [NSMutableArray array];
             if ([obj isKindOfClass:[LENewsCommentModel class]]) {
                 LENewsCommentModel *commentModel = (LENewsCommentModel *)obj;
-                [commentModel.comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
-                        LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
-                        [children addObject:replyModel];
-                        
-                        for (LEReplyCommentModel *childrenModel in replyModel.children) {
-                            childrenModel.replyuId = replyModel.userId;
-                            childrenModel.replyUserName = replyModel.userName;
-                            [children addObject:childrenModel];
-                        }
-                    }
-                    if ([commentModel.comments lastObject] == obj) {
-                        commentModel.comments = children;
-                        *stop = YES;
-                    }
-                }];
+                
+                NSMutableArray *childrenResult = [NSMutableArray array];
+                [WeakSelf outputRecursion:commentModel.comments result:childrenResult];
+                commentModel.comments = childrenResult;
+                
+//                [commentModel.comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                    if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+//                        LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+//                        [children addObject:replyModel];
+//
+//                        for (LEReplyCommentModel *childrenModel in replyModel.children) {
+//                            childrenModel.replyuId = replyModel.userId;
+//                            childrenModel.replyUserName = replyModel.userName;
+//                            [children addObject:childrenModel];
+//                        }
+//                    }
+//                    if ([commentModel.comments lastObject] == obj) {
+//                        commentModel.comments = children;
+//                        *stop = YES;
+//                    }
+//                }];
+                
                 [comments addObject:commentModel];
             }
         }];

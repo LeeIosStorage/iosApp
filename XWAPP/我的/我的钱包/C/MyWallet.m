@@ -30,6 +30,7 @@ LEShareSheetViewDelegate
 @property (strong, nonatomic) NSMutableArray *goldRecordList;
 @property (strong, nonatomic) NSMutableArray *moneyRecordList;
 @property (assign, nonatomic) NSInteger currentIndex;
+@property (strong, nonatomic) NSMutableDictionary *nextCursorDic;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -52,7 +53,8 @@ LEShareSheetViewDelegate
     [super viewDidLoad];
     
     [self setView];
-    [self refreshDataRequest];
+    [self refreshDataRequest:0];
+    [self refreshDataRequest:1];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,6 +71,11 @@ LEShareSheetViewDelegate
     self.title = @"我的钱包";
     
     self.currentIndex = 0;
+    self.nextCursorDic = [NSMutableDictionary dictionary];
+    [self.nextCursorDic setObject:[NSNumber numberWithInt:1] forKey:[NSString stringWithFormat:@"%ld",self.currentIndex]];
+    [self.nextCursorDic setObject:[NSNumber numberWithInt:1] forKey:[NSString stringWithFormat:@"%ld",self.currentIndex+1]];
+    self.goldRecordList = [[NSMutableArray alloc] init];
+    self.moneyRecordList = [[NSMutableArray alloc] init];
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -85,49 +92,63 @@ LEShareSheetViewDelegate
     self.walletHeaderView.height = 430;
     self.tableView.tableHeaderView = self.walletHeaderView;
     [self.tableView reloadData];
-}
-
-- (void)addBottonView {
     
-    
+    [self setData];
 }
 
 - (void)setData{
     
     [self.walletHeaderView updateHeaderViewData:nil];
+}
+
+- (void)refreshDataWithIndex:(NSInteger)currentIndex{
     
+    if (currentIndex == 0) {
+        
+    }else if (currentIndex == 1){
+        
+    }
+    [self.tableView reloadData];
 }
 
 #pragma mark -
 #pragma mark - Request
-- (void)refreshDataRequest{
+- (void)refreshDataRequest:(NSInteger)currentIndex{
     
-    self.goldRecordList = [[NSMutableArray alloc] init];
-    self.moneyRecordList = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < 5; i ++ ) {
-        LEGoldRecordModel *goldRecordModel = [[LEGoldRecordModel alloc] init];
-        goldRecordModel.rId = @"1";
-        goldRecordModel.title = @"分享朋友圈";
-        goldRecordModel.gold = @"+60";
-        goldRecordModel.date = @"2018-06-04 17:56:11";
-        goldRecordModel.recordType = 0;
-        [self.goldRecordList addObject:goldRecordModel];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserGoldsChangeLogs"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    if (currentIndex == 0) {
+        [params setObject:@"1" forKey:@"data_type"];
+    }else if (currentIndex == 1){
+        [params setObject:@"2" forKey:@"data_type"];
     }
+    [params setObject:[self.nextCursorDic objectForKey:[NSString stringWithFormat:@"%ld",currentIndex]] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
-    for (int i = 0; i < 3; i ++ ) {
-        LEGoldRecordModel *goldRecordModel = [[LEGoldRecordModel alloc] init];
-        goldRecordModel.rId = @"1";
-        goldRecordModel.title = @"金币兑换余额";
-        goldRecordModel.gold = @"+0.07";
-        goldRecordModel.date = @"2018-06-04 17:56:11";
-        goldRecordModel.recordType = 1;
-        [self.moneyRecordList addObject:goldRecordModel];
-    }
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
+        }
+        
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LEGoldRecordModel class] json:[dataObject objectForKey:@"data"]];
+        if (currentIndex == 0) {
+            [WeakSelf.goldRecordList addObjectsFromArray:array];
+            
+        }else if (currentIndex == 1){
+            [WeakSelf.moneyRecordList addObjectsFromArray:array];
+        }
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
     
-    [self.tableView reloadData];
-    
-    [self setData];
 }
 
 #pragma mark -
@@ -263,12 +284,12 @@ LEShareSheetViewDelegate
     HitoWeakSelf;
     [header leftBlockAction:^{
         WeakSelf.currentIndex = 0;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshDataWithIndex:WeakSelf.currentIndex];
     }];
     
     [header rightBlockAction:^{
         WeakSelf.currentIndex = 1;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshDataWithIndex:WeakSelf.currentIndex];
     }];
     
     return header;

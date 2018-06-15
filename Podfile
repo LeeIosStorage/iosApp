@@ -41,9 +41,14 @@ pod 'YYKit', '~> 1.0.6'
 #pod 'UMCShare/Social/ReducedQQ'
 #pod 'UMCShare/Social/ReducedSina'
 
+pod 'MBProgressHUD'
+
 pod 'UMengUShare/Social/WeChat'
 pod 'UMengUShare/Social/QQ'
 pod 'UMengUShare/Social/Sina'
 
+pod 'JPush'
+#友盟统计
+pod 'UMengAnalytics-NO-IDFA'
 
 end

@@ -39,10 +39,6 @@
     [elements enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[TFHppleElement class]]) {
             
-            LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
-            //先预留设置信息
-            LEElementStyleBox *box = [LEElementStyleBox createBox];
-            
             TFHppleElement *element = (TFHppleElement *)obj;
             NSArray *childrenArray = element.children;
 //            TFHppleElement *firstChildren = element.firstChild;
@@ -77,6 +73,9 @@
 //                    testImageCount ++;
 //                    NSString *altString = [childrenElement objectForKey:Alt_key];
 //                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
+                    
+                    LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
+                    LEElementStyleBox *box = [LEElementStyleBox createBox];
                     NSString *dataImgUrl = [childrenElement objectForKey:DataImageUrl_key];
                     if (dataImgUrl.length == 0) {
                         dataImgUrl = [childrenElement objectForKey:DataImageUrl2_key];
@@ -116,7 +115,7 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] init];
     NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:content];
     contentAttributedString.color = kAppTitleColor;
-    contentAttributedString.font = [UIFont systemFontOfSize:16.0f];
+    contentAttributedString.font = [UIFont systemFontOfSize:18.0f];
     contentAttributedString.alignment = NSTextAlignmentLeft;
     
     [attributedText appendAttributedString:contentAttributedString];

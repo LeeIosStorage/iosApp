@@ -13,9 +13,9 @@
 
 @interface MineController : LESuperViewController
 
-HitoPropertyNSArray(secondArr);
-HitoPropertyNSArray(fourArr);
-HitoPropertyNSArray(imageArr);
+HitoPropertyNSMutableArray(secondArr);
+HitoPropertyNSMutableArray(fourArr);
+HitoPropertyNSMutableArray(imageArr);
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet MineNaView *naView;
