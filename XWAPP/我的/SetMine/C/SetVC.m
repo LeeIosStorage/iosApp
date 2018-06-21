@@ -193,7 +193,7 @@ HitoPropertyNSArray(dataSource);
         [self.navigationController pushViewController:complete animated:YES];
         
     }else if ([title isEqualToString:@"给乐头条评分"]){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//https://itunes.apple.com/cn/app/id1396367553?mt=8
     }
     
 }

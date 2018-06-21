@@ -21,6 +21,8 @@ typedef void(^handleSuccessBlock)(NSMutableAttributedString *attributedString);
 ///大图数组
 @property (strong, nonatomic) NSMutableArray  *imageItemsArray;
 
+@property (assign, nonatomic) BOOL isFromPush;
+
 - (instancetype)initWithNewsId:(NSString *)newsId;
 
 - (void)showImageDetailWithImageView:(YYAnimatedImageView *)imageView;

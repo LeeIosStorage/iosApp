@@ -49,6 +49,9 @@ pod 'UMengUShare/Social/Sina'
 
 pod 'JPush'
 #友盟统计
-pod 'UMengAnalytics-NO-IDFA'
+pod 'UMCCommon'
+pod 'UMCCommonLog'
+pod 'UMCSecurityPlugins'
+pod 'UMCAnalytics' , '~> 5.5.0'
 
 end

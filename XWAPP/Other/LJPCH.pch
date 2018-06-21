@@ -31,6 +31,7 @@
 #import "SVProgressHUD+LETools.h"
 #import "LELoginUserManager.h"
 #import "MBProgressHUD+LETools.h"
+#import <UMAnalytics/MobClick.h>
 
 
 #endif /* LJPCH_pch */

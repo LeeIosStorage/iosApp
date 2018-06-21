@@ -62,6 +62,8 @@
 #pragma mark - Other
 //加载图片 默认背景颜色
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage;
+//url的Param
++(NSDictionary *)getParamDictFromUrl:(NSURL *)url;
 
 #pragma mark -
 #pragma mark - 动画
@@ -72,5 +74,11 @@
 
 #pragma mark - string 比较
 + (BOOL)isEqualWithUserId:(NSString *)uid;
+
+#pragma mark - 设备标识
++ (NSString *)UUIDString;
+
+#pragma mark - common
++ (UIViewController *)getCurrentVC;
 
 @end

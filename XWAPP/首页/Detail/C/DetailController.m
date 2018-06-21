@@ -23,6 +23,7 @@
 #import "LEShareWindow.h"
 #import "LECommentDetailViewController.h"
 #import "LELoginManager.h"
+#import "LELoginAuthManager.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -310,6 +311,8 @@ LEShareSheetViewDelegate
             WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
         }
         [WeakSelf setData];
+        //
+        [WeakSelf finishTaskRequest];
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -540,6 +543,16 @@ LEShareSheetViewDelegate
     } failure:^(id responseObject, NSError *error) {
         
     }];
+}
+
+- (void)finishTaskRequest{
+    
+    if (_isFromPush) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeReadPushInformation];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            [MBProgressHUD showCustomGoldTipWithTask:@"阅读推送" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+        }];
+    }
 }
 
 #pragma mark -

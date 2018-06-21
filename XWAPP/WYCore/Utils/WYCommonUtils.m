@@ -9,6 +9,7 @@
 #import "WYCommonUtils.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+LEAdd.h"
+#import <AdSupport/AdSupport.h>
 
 #define DAY_SECOND 60*60*24
 
@@ -305,6 +306,22 @@ static bool dateFormatterOFUSInvalid;
     }
 }
 
++(NSDictionary *)getParamDictFromUrl:(NSURL *)url{
+    
+    NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    
+    NSMutableDictionary<NSString *, NSString *>* queryParams = [NSMutableDictionary<NSString *, NSString *> new];
+    for (NSURLQueryItem* queryItem in [urlComponents queryItems])
+    {
+        if (queryItem.value == nil)
+        {
+            continue;
+        }
+        [queryParams setObject:queryItem.value forKey:queryItem.name];
+    }
+    return queryParams;
+}
+
 #pragma mark -
 #pragma mark - 动画
 //👍
@@ -343,6 +360,47 @@ static bool dateFormatterOFUSInvalid;
         return YES;
     }
     return NO;
+}
+
+#pragma mark - 设备标识
++ (NSString *)UUIDString{
+    
+//    if (![[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
+//        return nil;
+//    }
+    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    return advertisingId;
+}
+
+#pragma mark - common
++ (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    if ([nextResponder isKindOfClass:[UITabBarController class]]) {
+        NSInteger index = ((UITabBarController *)nextResponder).selectedIndex;
+        UINavigationController *nav = [(UITabBarController *)nextResponder viewControllers][index];
+        nextResponder = [nav.viewControllers lastObject];
+    }
+    result = nextResponder;
+    
+    return result;
 }
 
 @end

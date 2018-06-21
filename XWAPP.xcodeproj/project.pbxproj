@@ -48,6 +48,7 @@
 		4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863720AACBDB000D647F /* LESuperViewController.m */; };
 		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
+		4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */; };
 		4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
@@ -291,6 +292,9 @@
 		4C61863A20AB10DB000D647F /* WYCommonUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCommonUtils.m; sourceTree = "<group>"; };
 		4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEAdd.h"; sourceTree = "<group>"; };
 		4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEAdd.m"; sourceTree = "<group>"; };
+		4C65760820D9FAA30059FCE4 /* XWAPP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XWAPP.entitlements; sourceTree = "<group>"; };
+		4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELinkerHandler.h; sourceTree = "<group>"; };
+		4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELinkerHandler.m; sourceTree = "<group>"; };
 		4C971A8E20D3A10A008DE244 /* MBProgressHUD+LETools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LETools.h"; sourceTree = "<group>"; };
 		4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LETools.m"; sourceTree = "<group>"; };
 		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
@@ -695,6 +699,8 @@
 				4CAA26DA20B595E100B7CF31 /* WYShareManager.m */,
 				4CB76B7B20C011720092503E /* LELoginAuthManager.h */,
 				4CB76B7C20C011720092503E /* LELoginAuthManager.m */,
+				4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */,
+				4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1337,6 +1343,7 @@
 		EC72BBA8208D6EA400FADE74 /* XWAPP */ = {
 			isa = PBXGroup;
 			children = (
+				4C65760820D9FAA30059FCE4 /* XWAPP.entitlements */,
 				EC72BBDC208D747D00FADE74 /* APPDelegate */,
 				4C61862220AAB7A5000D647F /* WYCore */,
 				4CF22CA520A29A91000904F4 /* HTML */,
@@ -1678,6 +1685,14 @@
 				TargetAttributes = {
 					EC72BBA5208D6EA400FADE74 = {
 						CreatedOnToolsVersion = 9.3;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					EC72BBBD208D6EAD00FADE74 = {
 						CreatedOnToolsVersion = 9.3;
@@ -1779,6 +1794,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-XWAPP/Pods-XWAPP-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/QQ/QQSDK/TencentOpenApi_IOS_Bundle.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
@@ -1787,6 +1803,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKPromptResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TencentOpenApi_IOS_Bundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
@@ -1915,6 +1932,7 @@
 				EC4186A62099733500E57C17 /* CompleteController.m in Sources */,
 				4C20CBA020B27014003EC050 /* LELoginUserManager.m in Sources */,
 				4CF22CBB20A2C6B8000904F4 /* WithdrawController.m in Sources */,
+				4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */,
 				4C20CB9D20B26F9B003EC050 /* LELoginModel.m in Sources */,
 				EC72BC6320916EDC00FADE74 /* SearchNoData.m in Sources */,
 				4CF22CB420A2AE21000904F4 /* WalletBottomView.m in Sources */,
@@ -2170,6 +2188,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2226,6 +2245,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				FRAMEWORK_SEARCH_PATHS = (

@@ -55,15 +55,15 @@
     
     NSMutableString *statusString = [NSMutableString string];
     if (newsModel.souce.length > 0) {
-        [statusString appendFormat:@"%@",newsModel.souce];
+        [statusString appendFormat:@"%@    ",newsModel.souce];
     }
     int commentCount = newsModel.commentCount;
     if (commentCount > 0) {
-        [statusString appendFormat:@"    %d评",commentCount];
+        [statusString appendFormat:@"%d评    ",commentCount];
     }
     NSString *dateString = [WYCommonUtils dateDiscriptionFromNowBk:[WYCommonUtils dateFromUSDateString:newsModel.public_time]];
     if (dateString.length > 0) {
-        [statusString appendFormat:@"    %@",dateString];
+        [statusString appendFormat:@"%@",dateString];
     }
     self.statusView.sourceLabel.text = statusString;
     

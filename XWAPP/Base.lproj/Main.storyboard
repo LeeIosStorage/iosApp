@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -82,7 +83,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXS-Br-fXG">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -90,9 +91,9 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="qOe-FF-aeF" firstAttribute="top" secondItem="irl-eV-bz8" secondAttribute="top" constant="6" id="O9w-eP-8kr"/>
+                                                <constraint firstItem="qOe-FF-aeF" firstAttribute="bottom" secondItem="irl-eV-bz8" secondAttribute="centerY" id="O9w-eP-8kr"/>
                                                 <constraint firstItem="qOe-FF-aeF" firstAttribute="centerX" secondItem="irl-eV-bz8" secondAttribute="centerX" id="S3I-lj-9aq"/>
-                                                <constraint firstAttribute="bottom" secondItem="tXS-Br-fXG" secondAttribute="bottom" constant="5" id="YmW-hq-j4u"/>
+                                                <constraint firstItem="tXS-Br-fXG" firstAttribute="top" secondItem="irl-eV-bz8" secondAttribute="centerY" constant="-2" id="YmW-hq-j4u"/>
                                                 <constraint firstItem="qOe-FF-aeF" firstAttribute="width" secondItem="irl-eV-bz8" secondAttribute="width" id="ZwQ-k3-eek"/>
                                                 <constraint firstItem="tXS-Br-fXG" firstAttribute="centerX" secondItem="irl-eV-bz8" secondAttribute="centerX" id="hbr-OV-UWe"/>
                                                 <constraint firstItem="tXS-Br-fXG" firstAttribute="width" secondItem="irl-eV-bz8" secondAttribute="width" id="xx9-Vp-Hbf"/>
@@ -114,7 +115,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vig-pT-WTo">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -122,9 +123,9 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="GTW-VY-0Je" firstAttribute="top" secondItem="cDQ-ej-IJP" secondAttribute="top" constant="6" id="6US-Xh-RqI"/>
+                                                <constraint firstItem="GTW-VY-0Je" firstAttribute="bottom" secondItem="cDQ-ej-IJP" secondAttribute="centerY" id="6US-Xh-RqI"/>
                                                 <constraint firstItem="GTW-VY-0Je" firstAttribute="centerX" secondItem="cDQ-ej-IJP" secondAttribute="centerX" id="BSV-rA-MTm"/>
-                                                <constraint firstAttribute="bottom" secondItem="Vig-pT-WTo" secondAttribute="bottom" constant="5" id="DcA-b6-yPd"/>
+                                                <constraint firstItem="Vig-pT-WTo" firstAttribute="top" secondItem="cDQ-ej-IJP" secondAttribute="centerY" constant="-2" id="DcA-b6-yPd"/>
                                                 <constraint firstItem="Vig-pT-WTo" firstAttribute="centerX" secondItem="cDQ-ej-IJP" secondAttribute="centerX" id="aCM-g8-YK3"/>
                                                 <constraint firstItem="GTW-VY-0Je" firstAttribute="width" secondItem="cDQ-ej-IJP" secondAttribute="width" id="elQ-fx-Pbu"/>
                                                 <constraint firstItem="Vig-pT-WTo" firstAttribute="width" secondItem="cDQ-ej-IJP" secondAttribute="width" id="y8b-hX-aNE"/>
@@ -146,7 +147,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kxR-zx-b8h">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -156,10 +157,10 @@
                                             <constraints>
                                                 <constraint firstItem="kxR-zx-b8h" firstAttribute="width" secondItem="j22-jx-itJ" secondAttribute="width" id="2F7-D9-GQk"/>
                                                 <constraint firstItem="kxR-zx-b8h" firstAttribute="centerX" secondItem="j22-jx-itJ" secondAttribute="centerX" id="FQP-pA-4Oj"/>
-                                                <constraint firstItem="oKu-Gv-uVR" firstAttribute="top" secondItem="j22-jx-itJ" secondAttribute="top" constant="6" id="anf-QI-FVX"/>
+                                                <constraint firstItem="oKu-Gv-uVR" firstAttribute="bottom" secondItem="j22-jx-itJ" secondAttribute="centerY" id="anf-QI-FVX"/>
                                                 <constraint firstItem="oKu-Gv-uVR" firstAttribute="width" secondItem="j22-jx-itJ" secondAttribute="width" id="cU7-Pm-f6Q"/>
                                                 <constraint firstItem="oKu-Gv-uVR" firstAttribute="centerX" secondItem="j22-jx-itJ" secondAttribute="centerX" id="gNa-xb-Xmv"/>
-                                                <constraint firstAttribute="bottom" secondItem="kxR-zx-b8h" secondAttribute="bottom" constant="5" id="se7-wF-Rft"/>
+                                                <constraint firstAttribute="centerY" secondItem="kxR-zx-b8h" secondAttribute="top" constant="2" id="se7-wF-Rft"/>
                                             </constraints>
                                         </view>
                                         <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="task_qiandao_nor" highlightedImage="task_qiandao_sel" translatesAutoresizingMaskIntoConstraints="NO" id="zfF-sY-Unj">
@@ -178,7 +179,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YU0-WG-dDw">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -188,9 +189,9 @@
                                             <constraints>
                                                 <constraint firstItem="YU0-WG-dDw" firstAttribute="width" secondItem="vzo-X6-STk" secondAttribute="width" id="dRR-U8-UMc"/>
                                                 <constraint firstItem="Diu-iF-IxT" firstAttribute="width" secondItem="vzo-X6-STk" secondAttribute="width" id="dT2-En-bUg"/>
-                                                <constraint firstAttribute="bottom" secondItem="YU0-WG-dDw" secondAttribute="bottom" constant="5" id="g0T-qn-UaU"/>
+                                                <constraint firstAttribute="centerY" secondItem="YU0-WG-dDw" secondAttribute="top" constant="2" id="g0T-qn-UaU"/>
                                                 <constraint firstItem="Diu-iF-IxT" firstAttribute="centerX" secondItem="vzo-X6-STk" secondAttribute="centerX" id="vJr-z0-O4J"/>
-                                                <constraint firstItem="Diu-iF-IxT" firstAttribute="top" secondItem="vzo-X6-STk" secondAttribute="top" constant="6" id="vcS-Mn-LtS"/>
+                                                <constraint firstItem="Diu-iF-IxT" firstAttribute="bottom" secondItem="vzo-X6-STk" secondAttribute="centerY" id="vcS-Mn-LtS"/>
                                                 <constraint firstItem="YU0-WG-dDw" firstAttribute="centerX" secondItem="vzo-X6-STk" secondAttribute="centerX" id="zEH-r3-iHJ"/>
                                             </constraints>
                                         </view>
@@ -204,13 +205,13 @@
                                             <rect key="frame" x="224.5" y="29" width="33.5" height="34.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="200" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oqg-S8-ZNv">
-                                                    <rect key="frame" x="0.0" y="6" width="33.5" height="11"/>
+                                                    <rect key="frame" x="0.0" y="6.5" width="33.5" height="11"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="63b-BX-CNP">
-                                                    <rect key="frame" x="0.0" y="16.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -219,9 +220,9 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Oqg-S8-ZNv" firstAttribute="width" secondItem="Hak-v5-2Mk" secondAttribute="width" id="2T5-Ud-2Oz"/>
-                                                <constraint firstItem="Oqg-S8-ZNv" firstAttribute="top" secondItem="Hak-v5-2Mk" secondAttribute="top" constant="6" id="PcQ-SZ-HzM"/>
+                                                <constraint firstItem="Oqg-S8-ZNv" firstAttribute="bottom" secondItem="Hak-v5-2Mk" secondAttribute="centerY" id="PcQ-SZ-HzM"/>
                                                 <constraint firstItem="63b-BX-CNP" firstAttribute="centerX" secondItem="Hak-v5-2Mk" secondAttribute="centerX" id="SRl-sc-Ax8"/>
-                                                <constraint firstAttribute="bottom" secondItem="63b-BX-CNP" secondAttribute="bottom" constant="5" id="gkD-RW-ebe"/>
+                                                <constraint firstAttribute="centerY" secondItem="63b-BX-CNP" secondAttribute="top" constant="2" id="gkD-RW-ebe"/>
                                                 <constraint firstItem="63b-BX-CNP" firstAttribute="width" secondItem="Hak-v5-2Mk" secondAttribute="width" id="m1A-Xg-mmX"/>
                                                 <constraint firstItem="Oqg-S8-ZNv" firstAttribute="centerX" secondItem="Hak-v5-2Mk" secondAttribute="centerX" id="vuO-yK-ppK"/>
                                             </constraints>
@@ -242,7 +243,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZ6-fg-8Bv">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -250,8 +251,8 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="2a5-lb-3zg" firstAttribute="top" secondItem="LXm-LX-O3m" secondAttribute="top" constant="6" id="01N-jP-FTI"/>
-                                                <constraint firstAttribute="bottom" secondItem="FZ6-fg-8Bv" secondAttribute="bottom" constant="5" id="7j6-UQ-xSQ"/>
+                                                <constraint firstItem="2a5-lb-3zg" firstAttribute="bottom" secondItem="LXm-LX-O3m" secondAttribute="centerY" id="01N-jP-FTI"/>
+                                                <constraint firstAttribute="centerY" secondItem="FZ6-fg-8Bv" secondAttribute="top" constant="2" id="7j6-UQ-xSQ"/>
                                                 <constraint firstItem="2a5-lb-3zg" firstAttribute="width" secondItem="LXm-LX-O3m" secondAttribute="width" id="8aB-PD-9io"/>
                                                 <constraint firstItem="FZ6-fg-8Bv" firstAttribute="centerX" secondItem="LXm-LX-O3m" secondAttribute="centerX" id="AUf-dg-T0P"/>
                                                 <constraint firstItem="FZ6-fg-8Bv" firstAttribute="width" secondItem="LXm-LX-O3m" secondAttribute="width" id="TCQ-Mc-PkH"/>
@@ -274,7 +275,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="210" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qvc-F4-gzX">
-                                                    <rect key="frame" x="0.0" y="15.5" width="33.5" height="13"/>
+                                                    <rect key="frame" x="0.0" y="15" width="33.5" height="13"/>
                                                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="9"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -282,12 +283,12 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="qvc-F4-gzX" secondAttribute="bottom" constant="5" id="6XM-kh-0Oa"/>
+                                                <constraint firstAttribute="centerY" secondItem="qvc-F4-gzX" secondAttribute="top" constant="2" id="6XM-kh-0Oa"/>
                                                 <constraint firstItem="x7q-9f-cXG" firstAttribute="width" secondItem="FPS-s1-EqR" secondAttribute="width" id="Nby-5r-yUG"/>
                                                 <constraint firstItem="x7q-9f-cXG" firstAttribute="centerX" secondItem="FPS-s1-EqR" secondAttribute="centerX" id="Oww-Zd-jZe"/>
                                                 <constraint firstItem="qvc-F4-gzX" firstAttribute="centerX" secondItem="FPS-s1-EqR" secondAttribute="centerX" id="bps-bE-2w9"/>
                                                 <constraint firstItem="qvc-F4-gzX" firstAttribute="width" secondItem="FPS-s1-EqR" secondAttribute="width" id="oO6-xp-Ve0"/>
-                                                <constraint firstItem="x7q-9f-cXG" firstAttribute="top" secondItem="FPS-s1-EqR" secondAttribute="top" constant="6" id="sLx-QK-yZn"/>
+                                                <constraint firstItem="x7q-9f-cXG" firstAttribute="bottom" secondItem="FPS-s1-EqR" secondAttribute="centerY" id="sLx-QK-yZn"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1天" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOq-dG-Da6">
@@ -1337,7 +1338,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="8NY-Eh-P3k">
+                        <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="8NY-Eh-P3k">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="406"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -1352,7 +1353,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GBO-I1-Yau" customClass="PNLineChart">
-                                    <rect key="frame" x="14" y="262" width="347" height="121.5"/>
+                                    <rect key="frame" x="14" y="262" width="347" height="122"/>
                                     <color key="backgroundColor" red="0.73725490199999999" green="0.73725490199999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="GBO-I1-Yau" secondAttribute="height" multiplier="117:41" id="0wK-ht-pxo"/>
@@ -1452,7 +1453,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qsT-wP-PX8">
-                                    <rect key="frame" x="104.5" y="240.5" width="40" height="1"/>
+                                    <rect key="frame" x="104.5" y="241" width="40" height="1"/>
                                     <color key="backgroundColor" red="0.83529411764705885" green="0.83529411764705885" blue="0.83529411764705885" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="66Q-y4-QxJ"/>
@@ -1460,7 +1461,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fjE-1g-13D">
-                                    <rect key="frame" x="230.5" y="239.5" width="40" height="1"/>
+                                    <rect key="frame" x="230.5" y="240" width="40" height="1"/>
                                     <color key="backgroundColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="AgI-mC-ml1"/>

@@ -105,8 +105,6 @@ UITabBarControllerDelegate
 #pragma mark - Private
 - (void)refreshUI{
     [self refreshDayViewStatus];
-    
-    
 }
 
 - (void)refreshSignInButtonStatus:(BOOL)enabled
@@ -154,6 +152,7 @@ UITabBarControllerDelegate
             int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+1]] intValue];
             BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",i+2]] boolValue];
             if (!isSigned) {
+                LELog(@"%@",[NSString stringWithFormat:@"day%d_is_signed",i+2]);
                 return golds;
             }
         }else{
@@ -250,6 +249,7 @@ UITabBarControllerDelegate
 
 -(void)sendAuthRequest
 {
+    [MobClick event:kTaskCenterBingWXClick];
     HitoWeakSelf;
     [SVProgressHUD showCustomWithStatus:nil];
     [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
@@ -306,7 +306,7 @@ UITabBarControllerDelegate
         if (requestType != WYRequestTypeSuccess) {
             return;
         }
-        [WeakSelf refreshSignInButtonStatus:YES];
+        
         [WeakSelf setTaskListData:dataObject];
         
     } failure:^(id responseObject, NSError *error) {
@@ -354,6 +354,11 @@ UITabBarControllerDelegate
         }
         WeakSelf.signInConfig = [NSDictionary dictionaryWithDictionary:dataObject];
         [WeakSelf refreshUI];
+        
+        BOOL isSignIn = NO;
+        NSString *goldString = [NSString stringWithFormat:@"明日签到可领%d金币",[WeakSelf todaySignInGold]];
+        [WeakSelf.qiandaoBtn setTitle:goldString forState:UIControlStateDisabled];
+        [WeakSelf refreshSignInButtonStatus:!isSignIn];
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -511,6 +516,7 @@ UITabBarControllerDelegate
             break;
         case LETaskCenterTypeInvitationRecruit:
         {
+            [MobClick event:kTaskCenterInvitationRecruitClick];
             [self pushWebViewController:kAppInviteActivityWebURL];
         }
             break;
@@ -558,10 +564,12 @@ UITabBarControllerDelegate
 #pragma mark -SBAction
 
 - (IBAction)qiandaoAction:(UIButton *)sender {
+    [MobClick event:kTaskCenterSignInClick];
     [self signInRequest];
 }
 
 - (IBAction)openBoxAction:(UITapGestureRecognizer *)sender {
+    [MobClick event:kTaskCenterOpenBoxClick];
     if (self.secondsCountDown <= 0 && _isGetLastOperateTime) {
         [self openBoxRequest];
     }

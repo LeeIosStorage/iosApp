@@ -17,7 +17,16 @@
 #define SINA_ID                     @"2752056969"
 #define SINA_Secret                 @"3a1c7b67d5bd8265605a0e773358afa7"
 #define Sina_RedirectURL            @"https://api.weibo.com/oauth2/default.html"
+
 #define UMS_APPKEY                  @"5b0fe262f43e481d740001f5"
+
+#define JPUSH_APPKEY                @"4cf4260806b72b07ac84edbf"
+#define JPUSH_CHANNLE               @"Apple Store"
+#ifdef  DEBUG
+#define APS_FOR_PRODUCTION 0
+#else
+#define APS_FOR_PRODUCTION 1
+#endif
 
 
 #define MAX_WX_IMAGE_SIZE 32*1024
@@ -30,6 +39,22 @@
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 
+#pragma mark -
+#pragma mark - UM事件统计
+#define kNewsRealHotClick                        @"NewsRealHotClick"
+#define kHomeSearchBarClick                      @"HomeSearchBarClick"
+#define kHomeNewsChannelClick                    @"HomeNewsChannelClick"
+#define kTaskCenterSignInClick                   @"TaskCenterSignInClick"
+#define kTaskCenterOpenBoxClick                  @"TaskCenterOpenBoxClick"
+#define kTaskCenterBingWXClick                   @"TaskCenterBingWXClick"
+#define kTaskCenterInvitationRecruitClick        @"TaskCenterInvitationRecruitClick"
+#define kMessageCenterClick                      @"MessageCenterClick"
+#define kMineGoldClick                           @"MineGoldClick"
+#define kMineBalanceClick                        @"MineBalanceClick"
+#define kMineEarningRankClick                    @"MineEarningRankClick"
+
+#pragma mark -
+#pragma mark - Other
 /***************************系统版本*****************************/
 
 //获取手机系统的版本

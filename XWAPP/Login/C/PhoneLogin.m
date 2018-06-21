@@ -238,6 +238,9 @@
         }
         if ([dataObject isKindOfClass:[NSDictionary class]]) {
             [LELoginUserManager setUserID:dataObject[@"uid"]];
+            
+            [MobClick event:@"__register" attributes:@{@"userid":dataObject[@"uid"]}];
+                                                       
             id token = dataObject[@"token"];
             if ([token isKindOfClass:[NSString class]]) {
                 NSData *data = [token dataUsingEncoding:NSUTF8StringEncoding];

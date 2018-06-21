@@ -154,6 +154,7 @@ LEShareSheetViewDelegate
 #pragma mark -
 #pragma mark - IBActions
 - (void)btnAction:(UIButton *)sender {
+    [MobClick event:kMineEarningRankClick];
     LEEarningRankViewController *rankVc = [[LEEarningRankViewController alloc] init];
     [self.navigationController pushViewController:rankVc animated:YES];
 }

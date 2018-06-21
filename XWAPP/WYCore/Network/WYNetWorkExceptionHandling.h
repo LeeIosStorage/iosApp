@@ -13,4 +13,6 @@
 
 + (BOOL)judgeReuqestStatus:(WYRequestType)type URLString:(NSString *)URLString;
 
++ (void)showProgressHUDWith:(NSString *)message URLString:(NSString *)URLString;
+
 @end

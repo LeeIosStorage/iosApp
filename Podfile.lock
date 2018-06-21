@@ -33,7 +33,11 @@ PODS:
   - SDWebImage/Core (4.3.3)
   - SVProgressHUD (2.2.5)
   - UICountingLabel (1.2.0)
-  - UMengAnalytics-NO-IDFA (4.2.5)
+  - UMCAnalytics (5.5.0):
+    - UMCCommon
+  - UMCCommon (1.5.1)
+  - UMCCommonLog (1.0.0)
+  - UMCSecurityPlugins (1.0.6)
   - UMengUShare/Core (6.4.8.2):
     - UMengUShare/Network
   - UMengUShare/Network (6.4.8.2)
@@ -71,7 +75,10 @@ DEPENDENCIES:
   - SDCycleScrollView (~> 1.75)
   - SDWebImage (~> 4.3.3)
   - SVProgressHUD (~> 2.2.5)
-  - UMengAnalytics-NO-IDFA
+  - UMCAnalytics (~> 5.5.0)
+  - UMCCommon
+  - UMCCommonLog
+  - UMCSecurityPlugins
   - UMengUShare/Social/QQ
   - UMengUShare/Social/Sina
   - UMengUShare/Social/WeChat
@@ -95,7 +102,10 @@ SPEC REPOS:
     - SDWebImage
     - SVProgressHUD
     - UICountingLabel
-    - UMengAnalytics-NO-IDFA
+    - UMCAnalytics
+    - UMCCommon
+    - UMCCommonLog
+    - UMCSecurityPlugins
     - UMengUShare
     - WMPageController
     - YYKit
@@ -116,11 +126,14 @@ SPEC CHECKSUMS:
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
-  UMengAnalytics-NO-IDFA: 16666e32edce5be44ae5b14aaaa7f3582e09d6ab
+  UMCAnalytics: 4667788559a72f2fa5077117d1b8802a3b6eb6bb
+  UMCCommon: 16b674e9de0616d3a6128c551348a686d869c3c7
+  UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMengUShare: 370d180101e13ee0227ae657ab119ba97243d2b3
   WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: fa58746df2952a124f889659b8efe106ac36afaa
+PODFILE CHECKSUM: 16701d6393d558d41cd4bff6db6046dfdc1e748f
 
 COCOAPODS: 1.5.0

@@ -17,7 +17,7 @@
     
     //自定义view
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    hud.userInteractionEnabled = YES;
+    hud.userInteractionEnabled = NO;
     hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
     hud.bezelView.color = HitoRGBA(0,0,0,0.7);;
     hud.animationType = MBProgressHUDAnimationZoomOut;

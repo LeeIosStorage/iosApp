@@ -142,12 +142,14 @@ UIScrollViewDelegate
         
         HitoWeakSelf;
         [_header leftClickAction:^{
+            [MobClick event:kMineGoldClick];
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
         
         [_header centerClickAction:^{
+            [MobClick event:kMineBalanceClick];
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
@@ -245,6 +247,7 @@ UIScrollViewDelegate
 }
 
 - (IBAction)leftBarButton:(UIBarButtonItem *)sender {
+    [MobClick event:kMessageCenterClick];
     LEMessageViewController *messageVc = [[LEMessageViewController alloc] init];
     messageVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:messageVc animated:YES];

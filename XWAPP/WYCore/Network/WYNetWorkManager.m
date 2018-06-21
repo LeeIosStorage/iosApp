@@ -253,7 +253,7 @@
             if (!message && status != WYRequestTypeSuccess) {
                 message = responseObject[kResponseObjectKeyObject];
                 if (message.length > 0) {
-                   [SVProgressHUD showCustomInfoWithStatus:message];
+                    [WYNetWorkExceptionHandling showProgressHUDWith:message URLString:URLString];
                 }
             }
             responseDataObject = responseObject[kResponseObjectKeyObject];

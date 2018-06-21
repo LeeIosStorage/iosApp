@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [MobClick event:kNewsRealHotClick];
     [self setTB];
     [self addMJ];
 
@@ -35,6 +36,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [MobClick beginLogPageView:[NSString stringWithFormat:@"%@",NSStringFromClass([self class])]];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -43,6 +45,11 @@
         [self.tableView.mj_header beginRefreshing];
     }
     _viewDidAppear = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:[NSString stringWithFormat:@"%@",NSStringFromClass([self class])]];
 }
 
 - (void)setTB {
