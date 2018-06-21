@@ -229,23 +229,6 @@
                 
             }
             
-//            if (array.count < 10 && self->_startUpdatedTime) {
-//                needRefresh = YES;
-//            }else{
-//
-//            }
-//
-//            if (needCache) {
-//                [WeakSelf endRereshShowTipView:(int)array.count];
-//                if (!needRefresh) {
-//                    WeakSelf.newsList = [[NSMutableArray alloc] init];
-//                }
-//            }else{
-//                if (WeakSelf.nextCursor == 1 && type == 1) {
-//                    WeakSelf.newsList = [[NSMutableArray alloc] init];
-//                }
-//            }
-            
             BOOL resetFooterAdd = NO;
             if (self->_startUpdatedTime && self->_newestDatapages == WeakSelf.nextCursor) {
                 self->_endUpdatedTime = self->_startUpdatedTime;
@@ -480,11 +463,6 @@
         if (self->_startUpdatedTime == nil) {
             self->_startUpdatedTime = [NSDate dateWithTimeInterval:-1*60*60 sinceDate:[NSDate date]];
         }
-//        NSTimeInterval timeInterval = [self->_endUpdatedTime timeIntervalSinceDate:self->_startUpdatedTime];
-//        if (timeInterval < 1*60) {
-//            self->_startUpdatedTime = [NSDate dateWithTimeInterval:-1*60 sinceDate:[NSDate date]];
-//        }
-        
         
         self->_newestDatapages = 1;
         weakSelf.nextCursor = 1;

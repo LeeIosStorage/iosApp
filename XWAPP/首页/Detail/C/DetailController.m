@@ -349,6 +349,7 @@ LEShareSheetViewDelegate
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    [params setObject:[LELoginUserManager userID]?[LELoginUserManager userID]:@"" forKey:@"userId"];
 
     NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
     BOOL needCache = NO;
@@ -489,8 +490,10 @@ LEShareSheetViewDelegate
 //    HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"DoLikeOrUnLike"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     [params setObject:commentModel.commentId forKey:@"commentId"];
     [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
+    [params setObject:[NSNumber numberWithInt:0] forKey:@"isCancel"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         

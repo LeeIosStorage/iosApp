@@ -41,6 +41,7 @@
              @"newsId"  : @"news_id",
              @"newsUrl"  : @"news_img",
              @"newsTitle"  : @"news_title",
+             @"favour" : @"islike",
              };
 }
 
