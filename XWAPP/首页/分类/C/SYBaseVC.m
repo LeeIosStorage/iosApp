@@ -17,14 +17,16 @@
 #import "SYDetailController.h"
 #import "LENewsListModel.h"
 
+#define refresh_timeInterval  5*60
+
 @interface SYBaseVC ()
 {
     UIView *_cellMaskView;
     BOOL _shieldingCellMaskView;
     
+    BOOL _afreshLatestData;
     int _newestDatapages;
-    NSDate *_startUpdatedTime;
-    NSDate *_endUpdatedTime;
+    int _upNewestDatapages;
 }
 
 @property (strong, nonatomic) NSMutableArray *newsList;
@@ -32,7 +34,13 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (assign, nonatomic) int nextCursor;
+@property (assign, nonatomic) int downNextCursor;
+@property (strong, nonatomic) NSDate *downStartUpdatedTime;//下拉刷新
+@property (strong, nonatomic) NSDate *downEndUpdatedTime;
+
+@property (assign, nonatomic) int upNextCursor;
+@property (strong, nonatomic) NSDate *upStartUpdatedTime;//上拉加载
+@property (strong, nonatomic) NSDate *upEndUpdatedTime;
 
 @end
 
@@ -84,8 +92,12 @@
 #pragma mark - Private
 - (void)setupSubviews{
     
+    _afreshLatestData = NO;
     _newestDatapages = 1;
-    _startUpdatedTime = [NSDate date];
+    _upNewestDatapages = 1;
+    self.downNextCursor = 1;
+    self.upNextCursor = 1;
+    self.downStartUpdatedTime = [NSDate date];
     self.newsList = [[NSMutableArray alloc] init];
     self.updateNewsList = [[NSMutableArray alloc] init];
     
@@ -156,6 +168,26 @@
     }
 }
 
+- (void)sortNewsListArray{
+    //置顶操作
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
+    for (LENewsListModel *model in self.newsList) {
+        if (![categoryArray containsObject:model]) {
+            [categoryArray addObject:model];
+        }
+        if (model.is_top) {
+            if (![tmpArray containsObject:model]) {
+                [tmpArray addObject:model];
+            }
+        }
+    }
+    [categoryArray removeObjectsInArray:tmpArray];
+    [self.newsList removeAllObjects];
+    [self.newsList addObjectsFromArray:categoryArray];
+    [self.newsList insertObjects:tmpArray atIndex:0];
+}
+
 #pragma mark -
 #pragma mark - Request
 //默认type=0  =1时新数据小于10条再去加载老数据
@@ -165,26 +197,23 @@
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:self.channelId forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     
-    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:_startUpdatedTime]] forKey:@"start"];
-    if (!_endUpdatedTime) [NSDate date];
-    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:_endUpdatedTime]] forKey:@"end"];
+    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downStartUpdatedTime]] forKey:@"start"];
+    if (!self.downEndUpdatedTime) [NSDate date];
+    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downEndUpdatedTime]] forKey:@"end"];
     
-    LELog(@"GetNews params = %@",params);
+    LELog(@"下拉刷新 GetNews params = %@ \n time:{%@,%@}",params,self.downEndUpdatedTime,self.downStartUpdatedTime);
     
     NSString *caCheKey = [NSString stringWithFormat:@"GetNews%@",self.channelId];
     BOOL needCache = NO;
-    if (self.nextCursor == 1 && _startUpdatedTime) needCache = YES;
+    if (self.downNextCursor == 1 && self.downStartUpdatedTime) needCache = YES;
     
     [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         [WeakSelf removeCellMaskView];
         
-        if (!isCache) {
-            [WeakSelf.tableView.mj_footer endRefreshing];
-        }
         if (requestType != WYRequestTypeSuccess) {
             if (!isCache) {
                 [WeakSelf.tableView.mj_header endRefreshing];
@@ -201,70 +230,100 @@
             
         }else{
             
-            if (self->_startUpdatedTime) {
-                if (self.nextCursor == 1) {
-                    WeakSelf.updateNewsList = [[NSMutableArray alloc] init];
-                    [WeakSelf endRereshShowTipView:(int)array.count];
-                    if (self->_newestDatapages > 1) {
-                        WeakSelf.newsList = [[NSMutableArray alloc] init];
-                    }
-                }
-                NSUInteger index = WeakSelf.updateNewsList.count;
-                if (index > WeakSelf.newsList.count) {
-                    index = WeakSelf.newsList.count;
-                }
-                [WeakSelf.newsList insertObjects:array atIndex:index];
-                [WeakSelf.updateNewsList addObjectsFromArray:array];
-                
-                if (WeakSelf.newsList.count <= 0) {
-                    needRefresh = YES;
-                }else{
+            [WeakSelf endRereshShowTipView:(int)array.count];
+
+            [WeakSelf.newsList insertObjects:array atIndex:0];
+            if (WeakSelf.newsList.count <= 0) {
+                needRefresh = YES;
+                if (type == 1) {
+                    //防止无限循环
                     [WeakSelf.tableView.mj_header endRefreshing];
+                    LELog(@"出现了无限循环情况!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    return;
                 }
-                
             }else{
-                
                 [WeakSelf.tableView.mj_header endRefreshing];
-                [WeakSelf.newsList addObjectsFromArray:array];
-                
             }
             
-            BOOL resetFooterAdd = NO;
-            if (self->_startUpdatedTime && self->_newestDatapages == WeakSelf.nextCursor) {
-                self->_endUpdatedTime = self->_startUpdatedTime;
-                self->_startUpdatedTime = nil;
-                WeakSelf.nextCursor = 1;
-                resetFooterAdd = YES;
-            }
             if (needRefresh) {
+                WeakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:[NSDate date]];
                 [WeakSelf getNewsRequest:1];
             }
             
-            if (resetFooterAdd) {
-                [WeakSelf.tableView.mj_footer setHidden:NO];
-                [WeakSelf.tableView.mj_footer resetNoMoreData];
+            if (self->_newestDatapages == WeakSelf.downNextCursor) {
+                WeakSelf.downNextCursor = 1;
+                self->_newestDatapages = 1;
+                self->_afreshLatestData = YES;
             }else{
-                if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
-                    [WeakSelf.tableView.mj_footer setHidden:NO];
-                    [WeakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
-                }else{
-                    [WeakSelf.tableView.mj_footer setHidden:NO];
-                    WeakSelf.nextCursor ++;
-                    [WeakSelf.tableView.mj_footer resetNoMoreData];
-                }
+                WeakSelf.downNextCursor ++;
+            }
+            
+            [WeakSelf.tableView.mj_footer setHidden:NO];
+            [WeakSelf.tableView.mj_footer resetNoMoreData];
+            
+            if (WeakSelf.newsList.count <= 0) {
+                [WeakSelf.tableView.mj_footer setHidden:YES];
+                [WeakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
         
-        if (WeakSelf.newsList.count == 0) {
-            [WeakSelf.tableView.mj_footer setHidden:YES];
-            [WeakSelf.tableView.mj_footer resetNoMoreData];
-        }
+        [WeakSelf sortNewsListArray];
         
         [WeakSelf.tableView reloadData];
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf removeCellMaskView];
         [WeakSelf.tableView.mj_header endRefreshing];
+    }];
+    
+}
+
+- (void)loadMoreNewsRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:self.channelId forKey:@"cid"];
+    [params setObject:[NSNumber numberWithInteger:self.upNextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    
+    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upStartUpdatedTime]] forKey:@"start"];
+    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upEndUpdatedTime]] forKey:@"end"];
+    
+    LELog(@"上拉加载 GetNews params = %@ \n time:{%@,%@}",params,self.upEndUpdatedTime,self.upStartUpdatedTime);
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf removeCellMaskView];
+        [WeakSelf.tableView.mj_footer endRefreshing];
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
+        
+        [WeakSelf.newsList addObjectsFromArray:array];
+        
+        if (self->_upNewestDatapages == WeakSelf.upNextCursor) {
+            WeakSelf.upNextCursor = 1;
+            self->_upNewestDatapages = 1;
+            WeakSelf.upEndUpdatedTime = WeakSelf.upStartUpdatedTime;
+            WeakSelf.upStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:WeakSelf.upEndUpdatedTime];
+        }else{
+            WeakSelf.upNextCursor ++;
+        }
+        
+        [WeakSelf.tableView.mj_footer setHidden:NO];
+        [WeakSelf.tableView.mj_footer resetNoMoreData];
+        
+        [WeakSelf sortNewsListArray];
+        
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        [WeakSelf removeCellMaskView];
         [WeakSelf.tableView.mj_footer endRefreshing];
     }];
     
@@ -277,28 +336,30 @@
     if (_indexPath.row >= 0 && _indexPath.row < [self.updateNewsList count]) {
         updateNewsModel = self.updateNewsList[_indexPath.row];
     }
-//    HitoWeakSelf;
-//    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@""];
-//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    [params setObject:newsModel.newsId forKey:@"newsId"];
-//    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
-//
-//        if (requestType != WYRequestTypeSuccess) {
-//            return ;
-//        }
-//
-//        [SVProgressHUD showCustomSuccessWithStatus:@"已减少此内容推荐"];
-//
-//    } failure:^(id responseObject, NSError *error) {
-//
-//    }];
+    
+    HitoWeakSelf;
+    if ([LELoginUserManager userID]) {
+        NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"SaveUninterestedNews"];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:newsModel.newsId forKey:@"newsId"];
+        [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+        [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+            
+            if (requestType != WYRequestTypeSuccess) {
+                return ;
+            }
+            
+        } failure:^(id responseObject, NSError *error) {
+            
+        }];
+    }
+    
     
 //    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
     [_cellMaskView removeFromSuperview];
     [self.tableView reloadData];
     _shieldingCellMaskView = YES;
     
-    HitoWeakSelf;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [WeakSelf.newsList removeObject:newsModel];
         [WeakSelf.updateNewsList removeObject:updateNewsModel];
@@ -458,27 +519,49 @@
         if (![weakSelf.tableView.mj_header isRefreshing]) {
             return;
         }
-        self->_endUpdatedTime = [NSDate date];
-        self->_startUpdatedTime = weakSelf.tableView.mj_header.lastUpdatedTime;
-        if (self->_startUpdatedTime == nil) {
-            self->_startUpdatedTime = [NSDate dateWithTimeInterval:-1*60*60 sinceDate:[NSDate date]];
+        
+        if (self->_afreshLatestData) {
+            weakSelf.downEndUpdatedTime = [NSDate date];
+            weakSelf.downStartUpdatedTime = weakSelf.tableView.mj_header.lastUpdatedTime;
+        }
+        NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:weakSelf.downStartUpdatedTime];
+        if (timeInterval > refresh_timeInterval) {
+            weakSelf.downEndUpdatedTime = [NSDate date];
+            weakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:weakSelf.downEndUpdatedTime];
+            weakSelf.downNextCursor = 1;
         }
         
-        self->_newestDatapages = 1;
-        weakSelf.nextCursor = 1;
         [weakSelf getNewsRequest:0];
     }];
     self.tableView.mj_header.lastUpdatedTimeKey = [NSString stringWithFormat:@"MJRefreshHeaderLastUpdatedTimeKey_%@",self.channelId];
+    self.downEndUpdatedTime = [NSDate date];
+    self.downStartUpdatedTime = self.tableView.mj_header.lastUpdatedTime;
+    if (self.downStartUpdatedTime == nil) {
+        self.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:[NSDate date]];
+    }
+    //间隔时间超过5分钟 设置5分钟
+    NSTimeInterval timeInterval = [self.downEndUpdatedTime timeIntervalSinceDate:self.downStartUpdatedTime];
+    if (timeInterval > refresh_timeInterval) {
+        self.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:self.downEndUpdatedTime];
+    }
+    weakSelf.downNextCursor = 1;
     [self.tableView.mj_header beginRefreshing];
     
+    
+    
     //上拉加载
+    self.upEndUpdatedTime = weakSelf.downStartUpdatedTime;
+    self.upStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:self.upEndUpdatedTime];
+    
     self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
         if ([weakSelf.tableView.mj_header isRefreshing]) {
             return;
         }
-        [weakSelf getNewsRequest:0];
+        [weakSelf loadMoreNewsRequest];
     }];
     [self.tableView.mj_footer setHidden:YES];
+    
+    
 }
 
 #pragma mark -
