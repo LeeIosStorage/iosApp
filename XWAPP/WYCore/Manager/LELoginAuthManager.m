@@ -33,11 +33,13 @@ static LELoginAuthManager *_instance = nil;
     self = [super init];
     if (self) {
         self.taskList = [[NSMutableArray alloc] init];
+        self.globalTaskConfig = [[NSDictionary alloc] init];
     }
     return self;
 }
 
-
+#pragma mark -
+#pragma mark - 三方授权
 - (void)socialAuthBinding:(UMSocialPlatformType)loginType presentingController:(UIViewController *)presentingController success:(LoginAuthBindingSuccessBlock)success{
     
     if (![WXApi isWXAppInstalled]) {
@@ -87,6 +89,9 @@ static LELoginAuthManager *_instance = nil;
     }];
 }
 
+#pragma mark -
+#pragma mark - Request
+
 - (void)saveUserInfoRequestWithWxNickname:(NSString *)wxNickname success:(LoginAuthBindingSuccessBlock)success{
     
     HitoWeakSelf;
@@ -121,8 +126,32 @@ static LELoginAuthManager *_instance = nil;
     }];
 }
 
+- (void)getGlobalTaskConfigRequestSuccess:(LoginAuthBindingSuccessBlock)success{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetGlobalTaskConfig"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    [self.netWorkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        if ([dataObject isKindOfClass:[NSDictionary class]]) {
+            WeakSelf.globalTaskConfig = dataObject;
+        }
+        if (success) {
+            success(YES);
+        }
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
 - (void)updateUserTaskStateRequestWith:(NSString *)taskId success:(LoginAuthBindingSuccessBlock)success{
     
+    HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"UpdateUserTaskState"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
@@ -139,7 +168,7 @@ static LELoginAuthManager *_instance = nil;
             success(YES);
         }
         
-        [self refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        [WeakSelf refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
             
         } failure:^(id responseObject, NSError *error) {
             
@@ -176,6 +205,8 @@ static LELoginAuthManager *_instance = nil;
     
 }
 
+#pragma mark -
+#pragma mark - Public
 - (BOOL)taskCompletedWithTaskType:(LETaskCenterType)taskType{
     __block BOOL isCompleted = NO;
     [self.taskList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

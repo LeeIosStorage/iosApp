@@ -49,6 +49,7 @@
 		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
 		4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */; };
+		4C65760D20DD0D6F0059FCE4 /* StatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C65760C20DD0D6E0059FCE4 /* StatusView.xib */; };
 		4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
@@ -173,7 +174,6 @@
 		EC72BC2A208EDD1F00FADE74 /* BaseTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC28208EDD1F00FADE74 /* BaseTwoCell.m */; };
 		EC72BC2B208EDD1F00FADE74 /* BaseTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC29208EDD1F00FADE74 /* BaseTwoCell.xib */; };
 		EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC2D208EDFB200FADE74 /* StatusView.m */; };
-		EC72BC30208EDFB800FADE74 /* StatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC2F208EDFB800FADE74 /* StatusView.xib */; };
 		EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC32208F0ACB00FADE74 /* UIView+Xib.m */; };
 		EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC35208F1D2300FADE74 /* RefrestInfoView.m */; };
 		EC72BC38208F1D2A00FADE74 /* RefrestInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC37208F1D2A00FADE74 /* RefrestInfoView.xib */; };
@@ -295,6 +295,7 @@
 		4C65760820D9FAA30059FCE4 /* XWAPP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XWAPP.entitlements; sourceTree = "<group>"; };
 		4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELinkerHandler.h; sourceTree = "<group>"; };
 		4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELinkerHandler.m; sourceTree = "<group>"; };
+		4C65760C20DD0D6E0059FCE4 /* StatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusView.xib; sourceTree = "<group>"; };
 		4C971A8E20D3A10A008DE244 /* MBProgressHUD+LETools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LETools.h"; sourceTree = "<group>"; };
 		4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LETools.m"; sourceTree = "<group>"; };
 		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
@@ -522,7 +523,6 @@
 		EC72BC29208EDD1F00FADE74 /* BaseTwoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTwoCell.xib; sourceTree = "<group>"; };
 		EC72BC2C208EDFB200FADE74 /* StatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusView.h; sourceTree = "<group>"; };
 		EC72BC2D208EDFB200FADE74 /* StatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusView.m; sourceTree = "<group>"; };
-		EC72BC2F208EDFB800FADE74 /* StatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusView.xib; sourceTree = "<group>"; };
 		EC72BC31208F0ACA00FADE74 /* UIView+Xib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Xib.h"; sourceTree = "<group>"; };
 		EC72BC32208F0ACB00FADE74 /* UIView+Xib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Xib.m"; sourceTree = "<group>"; };
 		EC72BC34208F1D2300FADE74 /* RefrestInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RefrestInfoView.h; sourceTree = "<group>"; };
@@ -1474,7 +1474,7 @@
 				EC72BC24208EDCE300FADE74 /* BaseThirdCell.xib */,
 				EC72BC2C208EDFB200FADE74 /* StatusView.h */,
 				EC72BC2D208EDFB200FADE74 /* StatusView.m */,
-				EC72BC2F208EDFB800FADE74 /* StatusView.xib */,
+				4C65760C20DD0D6E0059FCE4 /* StatusView.xib */,
 				EC72BC34208F1D2300FADE74 /* RefrestInfoView.h */,
 				EC72BC35208F1D2300FADE74 /* RefrestInfoView.m */,
 				EC72BC37208F1D2A00FADE74 /* RefrestInfoView.xib */,
@@ -1757,9 +1757,9 @@
 				EC72BC6520916EE600FADE74 /* SearchNoData.xib in Resources */,
 				4CF22CB620A2AE25000904F4 /* WalletBottomView.xib in Resources */,
 				EC72BC602090845900FADE74 /* SearchHeader.xib in Resources */,
-				EC72BC30208EDFB800FADE74 /* StatusView.xib in Resources */,
 				EC0DD9F52092B468006C7522 /* MineBottom.xib in Resources */,
 				EC418687209949DB00E57C17 /* SetKeyBoard.xib in Resources */,
+				4C65760D20DD0D6F0059FCE4 /* StatusView.xib in Resources */,
 				4CDE8ABF20A431AD00679959 /* CommontView.xib in Resources */,
 				EC4186D4209AB48F00E57C17 /* SheetShare.xib in Resources */,
 				EC72BBB1208D6EA400FADE74 /* Main.storyboard in Resources */,
