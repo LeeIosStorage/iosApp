@@ -18,6 +18,7 @@
 #import "LELinkerHandler.h"
 #import "DetailController.h"
 #import <UserNotifications/UserNotifications.h>
+#import "LELoginAuthManager.h"
 
 @interface AppDelegate ()
 <
@@ -32,6 +33,10 @@ JPUSHRegisterDelegate
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+        
+    }];
     
     [SVProgressHUD setCurrentDefaultStyle];
     [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest

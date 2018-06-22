@@ -33,7 +33,6 @@ UITabBarControllerDelegate
 @property (strong, nonatomic) NSTimer *countDownTimer;
 
 @property (strong, nonatomic) NSDictionary *signInConfig;
-@property (assign, nonatomic) int signInDay;
 
 @property (strong, nonatomic) NSDate *lastOperateTime;
 @property (assign, nonatomic) int secondsCountDown;
@@ -76,7 +75,6 @@ UITabBarControllerDelegate
     self.title = @"任务中心";
     self.daySuper.backgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
     
-    self.signInDay = 0;
     [self refreshDayViewStatus];
     
     _isGetLastOperateTime = NO;
@@ -355,7 +353,7 @@ UITabBarControllerDelegate
         WeakSelf.signInConfig = [NSDictionary dictionaryWithDictionary:dataObject];
         [WeakSelf refreshUI];
         
-        BOOL isSignIn = NO;
+        BOOL isSignIn = [[WeakSelf.signInConfig objectForKey:@"today_is_signed"] boolValue];
         NSString *goldString = [NSString stringWithFormat:@"明日签到可领%d金币",[WeakSelf todaySignInGold]];
         [WeakSelf.qiandaoBtn setTitle:goldString forState:UIControlStateDisabled];
         [WeakSelf refreshSignInButtonStatus:!isSignIn];

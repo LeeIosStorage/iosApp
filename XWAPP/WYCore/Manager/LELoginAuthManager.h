@@ -16,11 +16,15 @@ typedef void(^LoginAuthBindingSuccessBlock)(BOOL success);
 @interface LELoginAuthManager : NSObject
 
 @property (strong, nonatomic) NSMutableArray *taskList;
+@property (strong, nonatomic) NSDictionary *globalTaskConfig;
 
 + (LELoginAuthManager *)sharedInstance;
 
 //微信授权绑定
 - (void)socialAuthBinding:(UMSocialPlatformType)loginType presentingController:(UIViewController *)presentingController success:(LoginAuthBindingSuccessBlock)success;
+
+//任务配置信息
+- (void)getGlobalTaskConfigRequestSuccess:(LoginAuthBindingSuccessBlock)success;
 
 //完成某个任务
 - (void)updateUserTaskStateRequestWith:(NSString *)taskId success:(LoginAuthBindingSuccessBlock)success;

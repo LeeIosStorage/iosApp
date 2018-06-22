@@ -8,6 +8,7 @@
 
 #import "YQMController.h"
 #import "LELoginAuthManager.h"
+#import "LELoginManager.h"
 
 @interface YQMController ()
 <
@@ -47,32 +48,40 @@ UIScrollViewDelegate
 #pragma mark - Request
 - (void)affirmRequest{
     
-    LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeInvitationCode];
-    NSString *taskId = taskModel.taskId;
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
     
-    [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskId success:^(BOOL success) {
-        if (success) {
-            
+    self.affirmButton.enabled = NO;
+    [SVProgressHUD showCustomWithStatus:nil];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"BindInvitationCode"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:self.codeTextField.text forKey:@"code"];
+    [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        self.affirmButton.enabled = YES;
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
         }
+        [SVProgressHUD showCustomSuccessWithStatus:@"绑定邀请码成功"];
+        
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeInvitationCode];
+        NSString *taskId = taskModel.taskId;
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskId success:^(BOOL success) {
+            if (success) {
+                
+            }
+        }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [WeakSelf.navigationController popViewControllerAnimated:YES];
+        });
+        
+    } failure:^(id responseObject, NSError *error) {
+        self.affirmButton.enabled = YES;
     }];
-    
-//    self.affirmButton.enabled = NO;
-//    [SVProgressHUD showCustomWithStatus:nil];
-//    HitoWeakSelf;
-//    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@""];
-//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    [params setObject:self.codeTextField.text forKey:@"code"];
-//    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
-//        
-//        self.affirmButton.enabled = YES;
-//        if (requestType != WYRequestTypeSuccess) {
-//            return ;
-//        }
-//        [SVProgressHUD showCustomSuccessWithStatus:@"请求成功"];
-//        
-//    } failure:^(id responseObject, NSError *error) {
-//        self.affirmButton.enabled = YES;
-//    }];
     
 }
 

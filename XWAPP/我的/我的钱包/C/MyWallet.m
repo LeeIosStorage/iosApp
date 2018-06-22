@@ -89,7 +89,7 @@ LEShareSheetViewDelegate
     }];
     
     self.walletHeaderView.width = HitoScreenW;
-    self.walletHeaderView.height = 430;
+    self.walletHeaderView.height = 245;//265  430
     self.tableView.tableHeaderView = self.walletHeaderView;
     [self.tableView reloadData];
     

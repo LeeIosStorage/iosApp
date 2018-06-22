@@ -8,6 +8,8 @@
 
 #import "LEWalletHeaderView.h"
 #import "PNChart.h"
+#import "LELoginAuthManager.h"
+
 @interface LEWalletHeaderView ()
 
 @property (strong, nonatomic) UIView *topContainerView;
@@ -46,12 +48,12 @@
         make.right.equalTo(self).offset(-13);
     }];
     
-    [self addSubview:self.lineView];
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.top.equalTo(self.topContainerView.mas_bottom).offset(6);
-        make.height.mas_equalTo(30);
-    }];
+//    [self addSubview:self.lineView];
+//    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self);
+//        make.top.equalTo(self.topContainerView.mas_bottom).offset(6);
+//        make.height.mas_equalTo(30);
+//    }];
     
 }
 
@@ -69,10 +71,12 @@
     _grossEarningsLabel.attributedText = grossEarningsAttStr;
     
     _dayGoldLabel.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
-    _rateLabel.text = @"100金币 =0.1元";
+    double coin_rate = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"coin_rate"] doubleValue];
+    int master_coin = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"master_coin"] intValue];
+    _rateLabel.text = [NSString stringWithFormat:@"%d金币 =%.2f元",master_coin,coin_rate];
     _goldTipLabel.text = @"当天赚取的金币按照规则自动转换为零钱";
 
-    
+    /****
     self.chartView.layer.cornerRadius = 13;
     self.chartView.layer.masksToBounds = YES;
     [self.chartView setXLabels:@[@"",@"",@"",@"",@"",@"",@""]];
@@ -114,7 +118,7 @@
     [self.chartView strokeChart];
     
     [self addSubview:self.chartView];
-    
+    ******/
 }
 
 #pragma mark -
