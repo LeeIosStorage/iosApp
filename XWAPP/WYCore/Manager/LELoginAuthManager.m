@@ -132,7 +132,7 @@ static LELoginAuthManager *_instance = nil;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetGlobalTaskConfig"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
-    [self.netWorkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.netWorkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;

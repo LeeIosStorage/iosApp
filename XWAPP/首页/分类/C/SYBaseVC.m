@@ -176,7 +176,7 @@
         if (![categoryArray containsObject:model]) {
             [categoryArray addObject:model];
         }
-        if (model.is_top) {
+        if (model.is_top && !model.is_hot) {
             if (![tmpArray containsObject:model]) {
                 [tmpArray addObject:model];
             }
@@ -391,8 +391,9 @@
         newsModel = [self.newsList objectAtIndex:indexPath.row];
     }
     NSUInteger count = newsModel.cover.count;
+    NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1) {
+    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseOneCell"];
         
         [cell.statusView deleblockAction:^{

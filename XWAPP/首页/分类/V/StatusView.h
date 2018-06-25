@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LENewsListModel.h"
 
 typedef void(^DeleBlock)(void);
 
@@ -25,5 +26,7 @@ typedef void(^DeleBlock)(void);
 - (void)deleblockAction:(DeleBlock)deleblock;
 
 - (void)updateSourceConstraints:(NSInteger)type;
+
+- (void)updateCellWithData:(LENewsListModel *)newsModel;
 
 @end

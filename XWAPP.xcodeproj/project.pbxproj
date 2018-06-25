@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C037EC120E0947F00A0F853 /* LEFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */; };
+		4C037EC220E0947F00A0F853 /* LEFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */; };
+		4C037EC720E0C97800A0F853 /* LEWithdrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */; };
+		4C037ECA20E0CAA600A0F853 /* LEWithdrawItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */; };
 		4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */; };
 		4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */; };
 		4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CB9920B26F14003EC050 /* LEBaseModel.m */; };
@@ -214,6 +218,13 @@
 		0A7E330BE5975AA1B157951C /* Pods-XWAPPUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XWAPPUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-XWAPPUITests/Pods-XWAPPUITests.release.xcconfig"; sourceTree = "<group>"; };
 		151DDC3AFFB8B408CE27F06A /* Pods-XWAPPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XWAPPTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XWAPPTests/Pods-XWAPPTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3281F87DD4499B479FB1DE93 /* libPods-XWAPPTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-XWAPPTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C037EBE20E0947F00A0F853 /* LEFeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEFeedbackViewController.h; sourceTree = "<group>"; };
+		4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEFeedbackViewController.m; sourceTree = "<group>"; };
+		4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LEFeedbackViewController.xib; sourceTree = "<group>"; };
+		4C037EC520E0C97800A0F853 /* LEWithdrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWithdrawModel.h; sourceTree = "<group>"; };
+		4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWithdrawModel.m; sourceTree = "<group>"; };
+		4C037EC820E0CAA600A0F853 /* LEWithdrawItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWithdrawItemView.h; sourceTree = "<group>"; };
+		4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWithdrawItemView.m; sourceTree = "<group>"; };
 		4C0E5DB220A52FDC009DE9B6 /* CommontHFView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommontHFView.h; sourceTree = "<group>"; };
 		4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommontHFView.m; sourceTree = "<group>"; };
 		4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommontHFView.xib; sourceTree = "<group>"; };
@@ -596,6 +607,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4C037EC320E0C92000A0F853 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4C037EC820E0CAA600A0F853 /* LEWithdrawItemView.h */,
+				4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4C037EC420E0C93900A0F853 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4C037EC520E0C97800A0F853 /* LEWithdrawModel.h */,
+				4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4C20CB9320B26E7B003EC050 /* Public */ = {
 			isa = PBXGroup;
 			children = (
@@ -924,6 +953,8 @@
 			isa = PBXGroup;
 			children = (
 				4CF22CB820A2C6A3000904F4 /* C */,
+				4C037EC320E0C92000A0F853 /* View */,
+				4C037EC420E0C93900A0F853 /* Model */,
 			);
 			path = "我要提现";
 			sourceTree = "<group>";
@@ -1178,6 +1209,9 @@
 				4CB76B4A20BD281E0092503E /* LEChangePasswordViewController.h */,
 				4CB76B4B20BD281F0092503E /* LEChangePasswordViewController.m */,
 				4CB76B4C20BD281F0092503E /* LEChangePasswordViewController.xib */,
+				4C037EBE20E0947F00A0F853 /* LEFeedbackViewController.h */,
+				4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */,
+				4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1748,6 +1782,7 @@
 				4CF22CC720A2E38D000904F4 /* MineNaView.xib in Resources */,
 				4CB76B7020BD77320092503E /* City.plist in Resources */,
 				4CE90D0A20C792C000337617 /* LENoticeViewCell.xib in Resources */,
+				4C037EC220E0947F00A0F853 /* LEFeedbackViewController.xib in Resources */,
 				4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */,
 				4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */,
 				EC72BC26208EDCE300FADE74 /* BaseThirdCell.xib in Resources */,
@@ -1882,6 +1917,7 @@
 				EC4186D2209AB48800E57C17 /* SheetShare.m in Sources */,
 				4C3F3C1920AED31B00B754AF /* LEDataStoreManager.m in Sources */,
 				4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */,
+				4C037EC720E0C97800A0F853 /* LEWithdrawModel.m in Sources */,
 				EC0DD9D82091C970006C7522 /* AFNRequest.m in Sources */,
 				4CF3162620A1474B00E81E56 /* TaskCell.m in Sources */,
 				EC72BC18208EC01B00FADE74 /* XLChannelItem.m in Sources */,
@@ -1920,6 +1956,7 @@
 				EC41869120994F6900E57C17 /* SetCell.m in Sources */,
 				4CE90CFF20C6B29100337617 /* LEEarningRankViewController.m in Sources */,
 				4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */,
+				4C037ECA20E0CAA600A0F853 /* LEWithdrawItemView.m in Sources */,
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
 				ECFC6A582092BE36003CE85D /* MineController.m in Sources */,
@@ -1992,6 +2029,7 @@
 				EC72BBB9208D6EAD00FADE74 /* main.m in Sources */,
 				4C20CBA420B2BD45003EC050 /* SVProgressHUD+LETools.m in Sources */,
 				4C3F3BF620AD740A00B754AF /* LENewsContentModel.m in Sources */,
+				4C037EC120E0947F00A0F853 /* LEFeedbackViewController.m in Sources */,
 				4C61863320AAB7A5000D647F /* WYAPIGenerate.m in Sources */,
 				4CDE8AC220A4540A00679959 /* CommentCell.m in Sources */,
 				4C3F3C1F20AFC79600B754AF /* LENewsCommentHeadView.m in Sources */,

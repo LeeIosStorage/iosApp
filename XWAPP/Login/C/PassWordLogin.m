@@ -143,7 +143,7 @@
 
 - (IBAction)xieyi:(UIButton *)sender {
     [self resign];
-    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:[NSString stringWithFormat:@"%@/%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppPrivacyProtocolURLPath]];
     [self.navigationController pushViewController:webVc animated:YES];
 }
 

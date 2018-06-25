@@ -14,6 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "LEChangePasswordViewController.h"
 #import "UIImage+LEAdd.h"
+#import "LEFeedbackViewController.h"
 
 @interface SetVC ()
 
@@ -90,7 +91,7 @@ HitoPropertyNSArray(dataSource);
 
 - (NSArray *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐头条评分", @"隐私协议"], @[@"关于我们"]];
+        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐头条评分", @"隐私协议"], @[@"关于我们",@"意见反馈"]];
     }
     return _dataSource;
 }
@@ -176,7 +177,7 @@ HitoPropertyNSArray(dataSource);
         
     }else if ([title isEqualToString:@"隐私协议"]){
         
-        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:[NSString stringWithFormat:@"%@/%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppPrivacyProtocolURLPath]];
         [self.navigationController pushViewController:webVc animated:YES];
         
     }else if ([title isEqualToString:@"清除缓存"]){
@@ -194,6 +195,9 @@ HitoPropertyNSArray(dataSource);
         
     }else if ([title isEqualToString:@"给乐头条评分"]){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//https://itunes.apple.com/cn/app/id1396367553?mt=8
+    }else if ([title isEqualToString:@"意见反馈"]){
+        LEFeedbackViewController *feedbackVc = [[LEFeedbackViewController alloc] init];
+        [self.navigationController pushViewController:feedbackVc animated:YES];
     }
     
 }

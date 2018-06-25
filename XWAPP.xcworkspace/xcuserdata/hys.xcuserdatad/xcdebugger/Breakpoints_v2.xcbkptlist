@@ -41,22 +41,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/APPDelegate/AppDelegate.m"
-            timestampString = "551363820.962983"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "AppDelegate"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
             timestampString = "551331075.397436"
             startingColumnNumber = "9223372036854775807"
@@ -73,13 +57,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/&#x5206;&#x7c7b;/V/StatusView.m"
-            timestampString = "551363820.963147"
+            filePath = "XWAPP/&#x9996;&#x9875;/&#x5206;&#x7c7b;/C/SYBaseVC.m"
+            timestampString = "551621738.813359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "-updateSourceConstraints:"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-sortNewsListArray"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,30 +73,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/WYCore/Network/WYNetWorkExceptionHandling.m"
-            timestampString = "551359175.2127399"
+            filePath = "XWAPP/APPDelegate/AppDelegate.m"
+            timestampString = "551621738.813427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "+resetLogin"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/&#x5206;&#x7c7b;/C/SYBaseVC.m"
-            timestampString = "551363820.96331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "-sortNewsListArray"
-            landmarkType = "7">
+            startingLineNumber = "290"
+            endingLineNumber = "290"
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

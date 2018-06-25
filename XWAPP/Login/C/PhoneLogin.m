@@ -110,7 +110,7 @@
 
 - (IBAction)uerProtocol:(UIButton *)sender {
     [self resigBoard];
-    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:[NSString stringWithFormat:@"%@/%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppPrivacyProtocolURLPath]];
     [self.navigationController pushViewController:webVc animated:YES];
 }
 - (IBAction)login:(UIButton *)sender {

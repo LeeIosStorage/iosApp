@@ -10,4 +10,6 @@
 
 @interface MyWallet : LESuperViewController
 
+@property (assign, nonatomic) BOOL needShare;
+
 @end

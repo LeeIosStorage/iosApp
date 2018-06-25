@@ -267,6 +267,14 @@ UITabBarControllerDelegate
 
 - (void)shareImageToWXTimeline{
     
+    
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+    NSString *shareTitle = @"在这里看了几天新闻,还能赚钱,一开始不信,现在我已经爱上这了!";
+    NSString *shareDescription = @"";
+    [[WYShareManager shareInstance] shareToWXWithScene:WXSceneTimeline title:shareTitle description:shareDescription webpageUrl:webUrl image:nil isVideo:NO];
+    
+    
+    return;
 //    UIImage *shareImage = nil;
     [SVProgressHUD showCustomWithStatus:nil];
     [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527856210447&di=82ac636ef350de01ef175ad25a6fd144&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F58%2Fd%2F2.jpg"] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
@@ -487,7 +495,9 @@ UITabBarControllerDelegate
     switch (taskModel.taskType) {
         case LETaskCenterTypeGreenHandRead:
         {
-            [self.tabBarController setSelectedIndex:0];
+//            [self.tabBarController setSelectedIndex:0];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppReadingRewardWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeReadInformation:
@@ -515,19 +525,22 @@ UITabBarControllerDelegate
         case LETaskCenterTypeInvitationRecruit:
         {
             [MobClick event:kTaskCenterInvitationRecruitClick];
-            [self pushWebViewController:kAppInviteActivityWebURL];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeShowIncome:
         {
             MyWallet *wallet = [[MyWallet alloc] init];
+            wallet.needShare = YES;
             wallet.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:wallet animated:YES];
         }
             break;
         case LETaskCenterTypeWakeApprentice:
         {
-            [self pushWebViewController:kAppInviteActivityWebURL];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeShareTimeline:
@@ -542,7 +555,7 @@ UITabBarControllerDelegate
             break;
         case LETaskCenterTypeQuestionnaire:
         {
-            [self pushWebViewController:kAppInviteActivityWebURL];
+//            [self pushWebViewController:@""];
         }
             break;
             

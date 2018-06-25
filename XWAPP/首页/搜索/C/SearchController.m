@@ -264,8 +264,9 @@ HitoPropertyNSMutableArray(searchNewsList);
         newsModel = [self.searchNewsList objectAtIndex:indexPath.row];
     }
     NSUInteger count = newsModel.cover.count;
+    NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1) {
+    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
         static NSString *cellIdentifier = @"BaseOneCell";
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {

@@ -363,7 +363,8 @@ UIScrollViewDelegate
         
         if (cellType == LEMineCellTypeRecruit) {
             //邀请活动
-            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppInviteActivityWebURL];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
             webVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:webVc animated:YES];
         }else if (cellType == LEMineCellTypeGreenHand){
@@ -433,7 +434,8 @@ UIScrollViewDelegate
 #pragma mark - SDCycleScrollViewDelegate  轮播图的点击事件
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     
-    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:@"http://github.com"];
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppShareInformationWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
     webVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webVc animated:YES];
     

@@ -35,7 +35,7 @@
     BOOL isShow = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"]) {
+    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"]) {
         isShow = NO;
     }
     if (isShow) {
@@ -48,7 +48,7 @@
     BOOL isNeedGotoLogin = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/api/user/CheckFavoriteNews"] || [urlPath isEqualToString:@"/api/user/UpdateUserTaskState"]) {
+    if ([urlPath isEqualToString:@"/api/user/CheckFavoriteNews"] || [urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"]) {
         isNeedGotoLogin = NO;
     }
     
@@ -74,7 +74,7 @@
 + (void)resetLogin{
     
     __weak UIViewController *currentVC = [WYCommonUtils getCurrentVC];
-    [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:currentVC showCancelButton:YES success:^{
+    [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:[WYCommonUtils getCurrentVC] showCancelButton:YES success:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
         if ([currentVC isKindOfClass:[LESuperViewController class]]) {
             LESuperViewController *superVc = (LESuperViewController *)currentVC;

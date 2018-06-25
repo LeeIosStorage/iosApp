@@ -45,8 +45,13 @@ LEShareSheetViewDelegate
 
 #pragma mark -
 #pragma mark - Lifecycle
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (_needShare) {
+        [self rightBtnAction:nil];
+        _needShare = NO;
+    }
 }
 
 - (void)viewDidLoad {
@@ -161,10 +166,12 @@ LEShareSheetViewDelegate
 
 - (void)rightBtnAction:(UIButton *)sender {
     
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+    
     LEShareModel *shareModel = [LEShareModel new];
-    shareModel.shareTitle = @"在这里看了几天新闻,赚了1.73元,一开始不信,现在我已经爱上这了!";
+    shareModel.shareTitle = [NSString stringWithFormat:@"在这里看了几天新闻,赚了%.2f元,一开始不信,现在我已经爱上这了!",[LELoginUserManager income]];
     shareModel.shareDescription = @"";
-    shareModel.shareWebpageUrl = kAppPrivacyProtocolURL;
+    shareModel.shareWebpageUrl = webUrl;
     shareModel.shareImage = nil;
     
     _shareSheetView = [[LEShareSheetView alloc] init];
