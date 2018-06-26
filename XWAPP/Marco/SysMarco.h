@@ -38,6 +38,7 @@
 #define COMMENT_MAX_COUNT 255
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
+#define kRefreshUITaskInfoNotificationKey @"kRefreshUITaskInfoNotificationKey"
 
 #pragma mark -
 #pragma mark - UM事件统计

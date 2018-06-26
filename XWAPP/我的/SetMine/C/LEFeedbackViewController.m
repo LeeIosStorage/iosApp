@@ -57,7 +57,7 @@ UITextViewDelegate
     self.publishButton.enabled = NO;
     [SVProgressHUD showCustomWithStatus:nil];
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"BindInvitationCode"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SaveFeedback"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:self.textView.text forKey:@"content"];
     [params setObject:[LELoginUserManager userID] forKey:@"userId"];

@@ -10,4 +10,9 @@
 
 @implementation LEWithdrawModel
 
++ (NSDictionary *)modelCustomPropertyMapper {
+    return @{@"wId"  : @"id",
+             };
+}
+
 @end

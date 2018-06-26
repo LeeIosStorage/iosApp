@@ -71,7 +71,7 @@ UIScrollViewDelegate
         NSString *taskId = taskModel.taskId;
         [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskId success:^(BOOL success) {
             if (success) {
-                
+                [MBProgressHUD showCustomGoldTipWithTask:@"绑定邀请码" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
             }
         }];
         

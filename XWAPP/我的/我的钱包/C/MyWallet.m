@@ -16,12 +16,16 @@
 #import "WithdrawController.h"
 #import "LEShareSheetView.h"
 #import "LEEarningRankViewController.h"
+#import "WYShareManager.h"
+#import "LELoginAuthManager.h"
+#import "LETaskListModel.h"
 
 @interface MyWallet ()
 <
 UITableViewDelegate,
 UITableViewDataSource,
-LEShareSheetViewDelegate
+LEShareSheetViewDelegate,
+WXShaerStateDelegate
 >
 {
     LEShareSheetView *_shareSheetView;
@@ -45,6 +49,9 @@ LEShareSheetViewDelegate
 
 #pragma mark -
 #pragma mark - Lifecycle
+- (void)dealloc{
+    [WYShareManager shareInstance].delegate = nil;
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -178,6 +185,8 @@ LEShareSheetViewDelegate
     _shareSheetView.owner = self;
     _shareSheetView.shareModel = shareModel;
     [_shareSheetView showShareAction];
+    
+    [WYShareManager shareInstance].delegate = self;
 }
 
 #pragma mark -
@@ -311,6 +320,23 @@ LEShareSheetViewDelegate
 #pragma mark - scrollerDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+}
+
+#pragma mark -
+#pragma mark - WXShaerStateDelegate
+- (void)sendState:(int)state{
+    if (state == 1) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeShowIncome];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            if (success) {
+                [MBProgressHUD showCustomGoldTipWithTask:@"晒收入" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+            }else{
+                [SVProgressHUD showCustomInfoWithStatus:@"分享成功"];
+            }
+        }];
+    }else if (state == 2){
+        [SVProgressHUD showCustomInfoWithStatus:@"分享失败"];
+    }
 }
 
 @end

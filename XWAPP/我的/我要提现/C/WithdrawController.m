@@ -245,17 +245,50 @@
 #pragma mark - Request
 - (void)getMoneyListRequest{
     
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetCashConfig"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+        [WeakSelf.withdrawMoneyArray removeAllObjects];
+        for (int i = 0; i < 5; i ++) {
+            LEWithdrawModel *moneyModel = [[LEWithdrawModel alloc] init];
+            moneyModel.money = [NSString stringWithFormat:@"%d",i+1];
+            moneyModel.wId = [NSString stringWithFormat:@"%d",i+1];
+            [WeakSelf.withdrawMoneyArray addObject:moneyModel];
+        }
+        
+        [WeakSelf reloadData];
+        [WeakSelf refeshUI];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
+- (void)applyCashRequestWay:(NSInteger)way moneyModel:(LEWithdrawModel *)moneyModel{
     
-    [self.withdrawMoneyArray removeAllObjects];
-    for (int i = 0; i < 5; i ++) {
-        LEWithdrawModel *moneyModel = [[LEWithdrawModel alloc] init];
-        moneyModel.money = [NSString stringWithFormat:@"%d",i+1];
-        moneyModel.wId = [NSString stringWithFormat:@"%d",i+1];
-        [self.withdrawMoneyArray addObject:moneyModel];
-    }
-    
-    [self reloadData];
-    [self refeshUI];
+    [SVProgressHUD showCustomWithStatus:nil];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"ApplyCash"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:[NSNumber numberWithInteger:way] forKey:@"cashType"];
+    [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [params setObject:[NSString stringWithFormat:@"%.2f",[moneyModel.money doubleValue]] forKey:@"money"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD showCustomInfoWithStatus:@"提现申请发送成功,请耐心等待."];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 #pragma mark -
@@ -287,7 +320,7 @@
         return;
     }
     
-    
+    [self applyCashRequestWay:way moneyModel:moneyModel];
 }
 
 #pragma mark -

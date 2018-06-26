@@ -72,8 +72,9 @@
     
     _dayGoldLabel.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
     double coin_rate = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"coin_rate"] doubleValue];
-    int master_coin = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"master_coin"] intValue];
-    _rateLabel.text = [NSString stringWithFormat:@"%d金币 =%.2f元",master_coin,coin_rate];
+//    coin_rate = 0.601;
+    double master_coin = (coin_rate*[LELoginUserManager todayGolds])/1000;
+    _rateLabel.text = [NSString stringWithFormat:@"%ld金币 =%.2f元",[LELoginUserManager todayGolds],master_coin];
     _goldTipLabel.text = @"当天赚取的金币按照规则自动转换为零钱";
 
     /****

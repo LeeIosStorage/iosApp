@@ -197,4 +197,22 @@
         "control" : "user",
         "action"  : "GetGlobalTaskConfig"
     },
+    "SaveFeedback": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "feedback",
+        "action"  : "SaveFeedback"
+    },
+    "GetCashConfig": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "cash",
+        "action"  : "GetCashConfig"
+    },
+    "ApplyCash": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "cash",
+        "action"  : "ApplyCash"
+    },
 }

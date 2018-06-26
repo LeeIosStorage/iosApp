@@ -185,6 +185,11 @@
     [categoryArray removeObjectsInArray:tmpArray];
     [self.newsList removeAllObjects];
     [self.newsList addObjectsFromArray:categoryArray];
+    
+    //暂时先这样处理, 需要后台配合
+    if (tmpArray.count > 2) {
+        tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 2)];
+    }
     [self.newsList insertObjects:tmpArray atIndex:0];
 }
 
@@ -303,6 +308,7 @@
         
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
         self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
+        LELog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
         
         [WeakSelf.newsList addObjectsFromArray:array];
         

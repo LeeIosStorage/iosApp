@@ -23,7 +23,8 @@
 
 @interface TaskCenterController ()
 <
-UITabBarControllerDelegate
+UITabBarControllerDelegate,
+WXShaerStateDelegate
 >
 {
     BOOL _isGetLastOperateTime;
@@ -43,12 +44,22 @@ UITabBarControllerDelegate
 
 #pragma mark -
 #pragma mark - Lifecycle
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [WYShareManager shareInstance].delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -75,6 +86,8 @@ UITabBarControllerDelegate
     self.title = @"任务中心";
     self.daySuper.backgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTaskInfoUI:) name:kRefreshUITaskInfoNotificationKey object:nil];
+    
     [self refreshDayViewStatus];
     
     _isGetLastOperateTime = NO;
@@ -97,6 +110,12 @@ UITabBarControllerDelegate
         [weakSelf refreshTaskInfoRequest];
     }];
     [self.tableView.mj_header beginRefreshing];
+}
+
+- (void)refreshTaskInfoUI:(NSNotification *)notif{
+    
+    id dataObject = notif.object;
+    [self setTaskListData:dataObject];
 }
 
 #pragma mark -
@@ -271,6 +290,7 @@ UITabBarControllerDelegate
     NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
     NSString *shareTitle = @"在这里看了几天新闻,还能赚钱,一开始不信,现在我已经爱上这了!";
     NSString *shareDescription = @"";
+    [WYShareManager shareInstance].delegate = self;
     [[WYShareManager shareInstance] shareToWXWithScene:WXSceneTimeline title:shareTitle description:shareDescription webpageUrl:webUrl image:nil isVideo:NO];
     
     
@@ -583,6 +603,23 @@ UITabBarControllerDelegate
     [MobClick event:kTaskCenterOpenBoxClick];
     if (self.secondsCountDown <= 0 && _isGetLastOperateTime) {
         [self openBoxRequest];
+    }
+}
+
+#pragma mark -
+#pragma mark - WXShaerStateDelegate
+- (void)sendState:(int)state{
+    if (state == 1) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeShareTimeline];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            if (success) {
+                [MBProgressHUD showCustomGoldTipWithTask:@"分享朋友圈" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+            }else{
+                [SVProgressHUD showCustomInfoWithStatus:@"分享成功"];
+            }
+        }];
+    }else if (state == 2){
+        [SVProgressHUD showCustomInfoWithStatus:@"分享失败"];
     }
 }
 

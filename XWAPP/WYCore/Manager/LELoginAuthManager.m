@@ -161,6 +161,9 @@ static LELoginAuthManager *_instance = nil;
     [self.netWorkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
+            if (success) {
+                success(NO);
+            }
             return ;
         }
         
@@ -198,6 +201,7 @@ static LELoginAuthManager *_instance = nil;
         if (success){
             success(requestType,message,NO,dataObject);
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUITaskInfoNotificationKey object:dataObject];
         
     } failure:^(id responseObject, NSError *error) {
         failure(nil, error);
