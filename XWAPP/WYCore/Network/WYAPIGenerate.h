@@ -10,11 +10,11 @@
 
 extern NSString* const kNetworkHostCacheKey;
 
-static NSString* defaultNetworkHost =  @"120.78.63.229:5001";//线上
+static NSString* defaultNetworkHost =  @"47.96.123.144:5001";//线上
 static NSString* defaultNetworkPreRelease = @"120.78.63.229:5001";//预发布地址
 static NSString* defaultNetworkHostTest = @"192.168.60.170:5001";//测试地址
 
-static NSString* defaultWebHost = @"120.78.63.229";//线上web
+static NSString* defaultWebHost = @"47.96.123.144";//线上web
 static NSString* defaultWebPreRelease = @"120.78.63.229";//预发布web
 static NSString* defaultWebHostTest = @"192.168.60.170";//测试地址web
 

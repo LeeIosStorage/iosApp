@@ -29,6 +29,11 @@
             }
         }
     }
+    //第二种方式获取宽高
+    if ([[attributes objectForKey:@"img_width"] floatValue] > 0 && [[attributes objectForKey:@"img_height"] floatValue] > 0) {
+        self.width = [[attributes objectForKey:@"img_width"] floatValue];
+        self.height = [[attributes objectForKey:@"img_height"] floatValue];
+    }
     
 }
 

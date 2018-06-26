@@ -204,6 +204,7 @@
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downStartUpdatedTime]] forKey:@"start"];
     if (!self.downEndUpdatedTime) [NSDate date];
@@ -238,7 +239,7 @@
             [WeakSelf endRereshShowTipView:(int)array.count];
 
             [WeakSelf.newsList insertObjects:array atIndex:0];
-            if (WeakSelf.newsList.count <= 0) {
+            if (WeakSelf.newsList.count <= 6) {
                 needRefresh = YES;
                 if (type == 1) {
                     //防止无限循环
@@ -291,6 +292,7 @@
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.upNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upStartUpdatedTime]] forKey:@"start"];
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upEndUpdatedTime]] forKey:@"end"];

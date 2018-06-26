@@ -131,7 +131,7 @@ LEShareSheetViewDelegate
 #pragma mark - Private
 - (void)setupSubViews{
     
-//    self.view.backgroundColor = kAppThemeColor;
+//    self.view.backgroundColor = kAppBackgroundColor;
     
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];

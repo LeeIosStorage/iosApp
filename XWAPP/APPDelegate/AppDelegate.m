@@ -251,8 +251,10 @@ JPUSHRegisterDelegate
 
 - (void)handleReceiveWithApplicationStateActive:(NSDictionary *)userInfo{
     
+    if (![[userInfo objectForKey:@"lecategory"] isEqualToString:@"news"]) {
+        return;
+    }
     NSString *message = [NSString stringWithFormat:@"%@>>>",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"推送要闻" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"忽略" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         

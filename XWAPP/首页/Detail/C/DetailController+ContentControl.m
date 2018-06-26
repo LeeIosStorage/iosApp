@@ -26,12 +26,13 @@
     __block NSMutableAttributedString *contentAttributed = [[NSMutableAttributedString alloc] init];
     
     self.imageItemsArray = [NSMutableArray arrayWithCapacity:0];
+    NSMutableArray *tmpImageArray = [NSMutableArray array];
     
     NSMutableParagraphStyle *paragraphStyle = [self getParagraphStyleByCustom];
     
     NSData *htmlData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    NSArray *elements = [xpathParser searchWithXPathQuery:@"//p"];
+    NSArray *elements = [xpathParser searchWithXPathQuery:@"//p | //img"];
     
     
 //    __block int testImageCount = 0;
@@ -40,8 +41,16 @@
         if ([obj isKindOfClass:[TFHppleElement class]]) {
             
             TFHppleElement *element = (TFHppleElement *)obj;
-            NSArray *childrenArray = element.children;
-//            TFHppleElement *firstChildren = element.firstChild;
+            NSMutableArray *childrenArray = [NSMutableArray arrayWithArray:element.children];
+            
+            //兼容<img />标签  去重
+            NSString *dataImgUrl = [element objectForKey:DataImageUrl_key];
+            if (dataImgUrl.length == 0) {
+                dataImgUrl = [element objectForKey:DataImageUrl2_key];
+            }
+            if (childrenArray.count == 0 && [element.tagName isEqualToString:TagImage_Key] && ![tmpImageArray containsObject:dataImgUrl] && dataImgUrl.length > 0) {
+                [childrenArray addObject:element];
+            }
             
             NSMutableAttributedString *childAttributed = nil;
             for (TFHppleElement *childrenElement in childrenArray) {
@@ -85,6 +94,10 @@
 //                    contentModel.content = altString;
                     contentModel.imageUrl = dataImgUrl;
                     contentModel.styleBox = box;
+                    
+                    if (contentModel.imageUrl.length > 0) {
+                        [tmpImageArray addObject:contentModel.imageUrl];
+                    }
                     
                     childAttributed = [WeakSelf mosaicImageAndVideoWithContentModel:contentModel];
                     

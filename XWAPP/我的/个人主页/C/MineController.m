@@ -58,6 +58,12 @@ UIScrollViewDelegate
 
 @implementation MineController
 
+#pragma mark -
+#pragma mark - Lifecycle
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setBackgroundImage:[HitoImage(@"mine_top_background") stretchableImageWithLeftCapWidth:HitoScreenW/2 topCapHeight:0] forBarMetrics:UIBarMetricsDefault];
@@ -101,6 +107,14 @@ UIScrollViewDelegate
     if (![self.tableView.mj_header isRefreshing] && _viewDidAppear) {
         [self.tableView.mj_header beginRefreshing];
     }
+}
+
+- (void)refreshTaskInfoUI:(NSNotification *)notif{
+    [self refreshSecondArray];
+}
+
+- (void)refreshUserInfoUI:(NSNotification *)notif{
+    [self refreshViewUI];
 }
 
 #pragma mark -
@@ -196,23 +210,13 @@ UIScrollViewDelegate
     self.secondArr = [NSMutableArray array];
     self.fourArr = [NSMutableArray array];
     
-//    [self.secondArr addObject:@{cell_title:@"每收一名徒弟赚3500金币，可立即领取提现",cell_type:@(LEMineCellTypeRecruit)}];
-//    if ([LELoginAuthManager sharedInstance].taskList.count > 0) {
-//        if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask]) {
-//            [self.secondArr addObject:@{cell_title:@"新手任务",cell_type:@(LEMineCellTypeGreenHand)}];
-//        }
-//        if (![[LELoginAuthManager sharedInstance] taskCompletedWithTaskType:LETaskCenterTypeInvitationCode]) {
-//            [self.secondArr addObject:@{cell_title:@"输入邀请码",cell_type:@(LEMineCellTypeInvitationCode)}];
-//        }
-//        if (![[LELoginAuthManager sharedInstance] taskCompletedWithTaskType:LETaskCenterTypeBindingWeixin]) {
-//            [self.secondArr addObject:@{cell_title:@"微信绑定",cell_type:@(LEMineCellTypeBindingWeixin)}];
-//        }
-//    }
-    
     [self.fourArr addObject:@{cell_title:@"我的收藏",cell_type:@(LEMineCellTypeCollect)}];
     [self.fourArr addObject:@{cell_title:@"我的评论",cell_type:@(LEMineCellTypeComment)}];
     
     _imageArr = [NSMutableArray arrayWithArray:@[@"http://pic.qiantucdn.com/58pic/17/39/70/64M58PICnFh_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center", @"http://pic.qiantucdn.com/58pic/17/23/89/08y58PIC4HC_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center"]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTaskInfoUI:) name:kRefreshUITaskInfoNotificationKey object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfoUI:) name:kRefreshUILoginNotificationKey object:nil];
     
 }
 
@@ -313,7 +317,8 @@ UIScrollViewDelegate
 
         SDCycleScrollView *cycle = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, HitoScreenW, cell.frame.size.height) delegate:self placeholderImage:nil];
         cycle.backgroundColor = [UIColor whiteColor];
-        cycle.imageURLStringsGroup = self.imageArr;
+        cycle.localizationImageNamesGroup = [NSArray arrayWithObjects:@"banner_fenxiang",@"banner_fenxiang1",@"banner_fenxiang2", nil];
+//        cycle.imageURLStringsGroup = self.imageArr;
         [cell.centerView addSubview:cycle];
         return cell;
     } else {
@@ -434,7 +439,7 @@ UIScrollViewDelegate
 #pragma mark - SDCycleScrollViewDelegate  轮播图的点击事件
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     
-    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppShareInformationWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
     LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
     webVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webVc animated:YES];
