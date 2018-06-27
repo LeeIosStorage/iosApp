@@ -12,8 +12,8 @@
 
 #define QQ_ID                       @"1106905716"
 #define QQ_Key                      @"oRHhd5NAPbKZeX9o"
-#define WX_ID                       @"wx5313693d6d2d863e"
-#define WX_Secret                   @"6d250dc360fac1acfed6bba0c62939f4"
+#define WX_ID                       @"wx3c8bc97987792355"
+#define WX_Secret                   @"fe74286cd8742a075daf29ca1950ac85"
 #define SINA_ID                     @"2752056969"
 #define SINA_Secret                 @"3a1c7b67d5bd8265605a0e773358afa7"
 #define Sina_RedirectURL            @"https://api.weibo.com/oauth2/default.html"
