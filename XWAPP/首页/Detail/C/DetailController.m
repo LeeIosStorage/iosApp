@@ -43,6 +43,7 @@ LEShareSheetViewDelegate
     LEShareSheetView *_shareSheetView;
     
     BOOL _isCollect;
+    
 }
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
@@ -63,6 +64,9 @@ LEShareSheetViewDelegate
 @property (strong, nonatomic) NSMutableArray *commentLists;
 @property (assign, nonatomic) int nextCursor;
 
+@property (strong, nonatomic) NSTimer *readTimer;
+@property (assign, nonatomic) int readDuration;
+
 @end
 
 @implementation DetailController
@@ -80,6 +84,19 @@ LEShareSheetViewDelegate
         _newsId = newsId;
     }
     return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self startTimer];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self stopTimer];
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self saveReadLogRequest];
 }
 
 - (void)viewDidLoad {
@@ -133,6 +150,7 @@ LEShareSheetViewDelegate
     
 //    self.view.backgroundColor = kAppBackgroundColor;
     
+    self.readDuration = 0;
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
     
@@ -289,6 +307,25 @@ LEShareSheetViewDelegate
             [self outputRecursion:childrenModel.children result:result withReplyModel:childrenModel];
         }
     }
+}
+
+- (void)startTimer{
+    //设置定时器
+    if (_readTimer) {
+        [self stopTimer];
+    }
+    _readTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countReadNewsTime) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:_readTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)stopTimer{
+    [_readTimer invalidate];
+    _readTimer = nil;
+}
+
+- (void)countReadNewsTime{
+    _readDuration ++;
+    LELog(@"read news time:%d秒",_readDuration);
 }
 
 #pragma mark -
@@ -558,6 +595,29 @@ LEShareSheetViewDelegate
             }
         }];
     }
+}
+
+- (void)saveReadLogRequest{
+    
+//    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SaveReadLog"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    if (self.readDuration <= 0) {
+        return;
+    }
+    [params setObject:[NSNumber numberWithInt:self.readDuration] forKey:@"minute"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 #pragma mark -

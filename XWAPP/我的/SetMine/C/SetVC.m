@@ -41,6 +41,11 @@ HitoPropertyNSArray(dataSource);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         unsigned long long size = 0;
         size += [[SDImageCache sharedImageCache] getSize];
+//        NSUInteger memorySize = [YYWebImageManager sharedManager].cache.memoryCache.totalCost;
+//        size += memorySize;
+        NSUInteger diskSize = [YYWebImageManager sharedManager].cache.diskCache.totalCost;
+        size += diskSize;
+        
         HitoWeakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             WeakSelf.cacheSize = size;
@@ -104,6 +109,8 @@ HitoPropertyNSArray(dataSource);
     [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
     [SVProgressHUD showCustomWithStatus:nil];
     
+    [[YYWebImageManager sharedManager].cache.memoryCache removeAllObjects];
+    [[YYWebImageManager sharedManager].cache.diskCache removeAllObjects];
     [[SDImageCache sharedImageCache] clearMemory];
     HitoWeakSelf;
     [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{

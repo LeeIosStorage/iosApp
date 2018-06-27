@@ -197,6 +197,18 @@
         "control" : "user",
         "action"  : "GetGlobalTaskConfig"
     },
+    "SaveReadLog": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveReadLog"
+    },
+    "GetUserMoneyList": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserMoneyList"
+    },
     "SaveFeedback": {
         "protocol": "http",
         "module" : "api",

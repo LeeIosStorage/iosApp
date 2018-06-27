@@ -275,6 +275,7 @@ WXShaerStateDelegate
         }
         [WeakSelf.tableView reloadData];
     }];
+    [SVProgressHUD dismiss];
 }
 
 - (void)pushWebViewController:(NSString *)url{

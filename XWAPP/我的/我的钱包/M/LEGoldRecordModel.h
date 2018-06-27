@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString *rId;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *gold;
+@property (assign, nonatomic) double balance;
 @property (strong, nonatomic) NSString *date;
 @property (assign, nonatomic) int recordType;
 

@@ -78,11 +78,9 @@ JPUSHRegisterDelegate
     [UMConfigure initWithAppkey:UMS_APPKEY channel:@"App Store"];
     [MobClick setScenarioType:E_UM_NORMAL];
     
-    
-    
     [[UMSocialManager defaultManager] setUmSocialAppkey:UMS_APPKEY];
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WX_ID appSecret:WX_Secret redirectURL:nil];
-    
+
     [self registerAPService];
     
 }
@@ -97,6 +95,7 @@ JPUSHRegisterDelegate
 //        _isUMSocialLogin = NO;
         return [[UMSocialManager defaultManager] handleOpenURL:url];
     }
+//    [TencentOAuth CanHandleOpenURL:url]
     
     if ([scheme hasPrefix:@"wx"]) {
         return [WXApi handleOpenURL:url delegate:[WYShareManager shareInstance]];
