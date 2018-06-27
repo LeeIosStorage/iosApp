@@ -90,6 +90,7 @@ UIScrollViewDelegate
     [self navAction];
     
     [self refreshViewUI];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -192,10 +193,11 @@ UIScrollViewDelegate
     [SVProgressHUD showCustomWithStatus:nil];
     [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
         if (success) {
-            [SVProgressHUD dismiss];
+            
         }
         [WeakSelf.tableView reloadData];
     }];
+    [SVProgressHUD dismiss];
 }
 
 #pragma mark - setTB
@@ -213,7 +215,7 @@ UIScrollViewDelegate
     [self.fourArr addObject:@{cell_title:@"我的收藏",cell_type:@(LEMineCellTypeCollect)}];
     [self.fourArr addObject:@{cell_title:@"我的评论",cell_type:@(LEMineCellTypeComment)}];
     
-    _imageArr = [NSMutableArray arrayWithArray:@[@"http://pic.qiantucdn.com/58pic/17/39/70/64M58PICnFh_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center", @"http://pic.qiantucdn.com/58pic/17/23/89/08y58PIC4HC_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center"]];
+    _imageArr = [NSMutableArray arrayWithArray:@[]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTaskInfoUI:) name:kRefreshUITaskInfoNotificationKey object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfoUI:) name:kRefreshUILoginNotificationKey object:nil];

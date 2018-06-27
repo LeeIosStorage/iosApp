@@ -137,7 +137,7 @@ WXShaerStateDelegate
         [params setObject:@"2" forKey:@"data_type"];
     }
     [params setObject:[self.nextCursorDic objectForKey:[NSString stringWithFormat:@"%ld",currentIndex]] forKey:@"page"];
-    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    [params setObject:[NSNumber numberWithInteger:50] forKey:@"limit"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
@@ -156,6 +156,8 @@ WXShaerStateDelegate
         }else if (currentIndex == 1){
             [WeakSelf.moneyRecordList addObjectsFromArray:array];
         }
+        
+        [WeakSelf.tableView reloadData];
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -285,8 +287,10 @@ WXShaerStateDelegate
     LEGoldRecordModel *model = nil;
     if (self.currentIndex == 0) {
         model = self.goldRecordList[indexPath.row];
+        model.recordType = 0;
     }else if (self.currentIndex == 1){
         model = self.moneyRecordList[indexPath.row];
+        model.recordType = 1;
     }
     [cell updateWalletCellWithData:model];
     

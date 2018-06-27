@@ -35,7 +35,7 @@
     BOOL isShow = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"]) {
+    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"] || [urlPath isEqualToString:@"/api/user/SaveReadLog"]) {
         isShow = NO;
     }
     if (isShow) {

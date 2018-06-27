@@ -170,7 +170,10 @@
         imageView.size = CGSizeMake(contentModel.styleBox.width, contentModel.styleBox.height);
         
         imageView.userInteractionEnabled = YES;
-        [WYCommonUtils setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] setImage:imageView setbitmapImage:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]]];
+//        [WYCommonUtils setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] setImage:imageView setbitmapImage:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]]];
+        [imageView setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] placeholder:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]] options:YYWebImageOptionSetImageWithFadeAnimation completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+            
+        }];
         
         HitoWeakSelf;
         [self.imageItemsArray addObject:contentModel];

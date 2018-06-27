@@ -10,4 +10,12 @@
 
 @implementation LEGoldRecordModel
 
++ (NSDictionary *)modelCustomPropertyMapper {
+    return @{@"rId"  : @"id",
+             @"gold" : @"golds",
+             @"date" : @"publish_time",
+             @"title" : @"source_type",
+             };
+}
+
 @end

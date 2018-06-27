@@ -36,7 +36,8 @@ UITableViewDataSource
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setup];
-    [self refreshRankRequest];
+    [self refreshRankRequest:0];
+    [self refreshRankRequest:1];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,19 +81,49 @@ UITableViewDataSource
 
 #pragma mark -
 #pragma mark - Request
-- (void)refreshRankRequest{
+- (void)refreshRankRequest:(NSInteger )type{
     
-    for (int i = 0; i < 100; i ++) {
-        LEEarningRankModel *rankModel = [[LEEarningRankModel alloc] init];
-        rankModel.userId = @"10201";
-        rankModel.apprenticeCount = 200;
-        rankModel.money = @"1024";
-        if (i < 50) {
-            [self.weekRankLists addObject:rankModel];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserMoneyList"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [params setObject:[NSNumber numberWithInteger:type+1] forKey:@"type"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
         }
-        [self.allRankLists addObject:rankModel];
-    }
-    [self.tableView reloadData];
+        
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LEEarningRankModel class] json:dataObject];
+        if (type == 0) {
+            [WeakSelf.weekRankLists addObjectsFromArray:array];
+            
+        }else if (type == 1){
+            [WeakSelf.allRankLists addObjectsFromArray:array];
+        }
+        
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+//    for (int i = 0; i < 100; i ++) {
+//        LEEarningRankModel *rankModel = [[LEEarningRankModel alloc] init];
+//        rankModel.userId = @"10201";
+//        rankModel.apprenticeCount = 200;
+//        rankModel.money = @"1024";
+//        if (i < 50) {
+//            [self.weekRankLists addObject:rankModel];
+//        }
+//        [self.allRankLists addObject:rankModel];
+//    }
+//    [self.tableView reloadData];
     
     [self.earningRankBottomView updateViewWithData:nil];
     

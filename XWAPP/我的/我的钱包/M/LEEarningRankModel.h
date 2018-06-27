@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString *rId;
 @property (strong, nonatomic) NSString *userId;
 @property (assign, nonatomic) int apprenticeCount;
-@property (strong, nonatomic) NSString *money;
+@property (strong, nonatomic) NSNumber *balance;
 
 @end
