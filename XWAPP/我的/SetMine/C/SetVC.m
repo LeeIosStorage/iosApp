@@ -201,7 +201,7 @@ HitoPropertyNSArray(dataSource);
         [self.navigationController pushViewController:complete animated:YES];
         
     }else if ([title isEqualToString:@"给乐头条评分"]){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//https://itunes.apple.com/cn/app/id1396367553?mt=8
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1404835477"]];//https://itunes.apple.com/cn/app/id1404835477?mt=8
     }else if ([title isEqualToString:@"意见反馈"]){
         LEFeedbackViewController *feedbackVc = [[LEFeedbackViewController alloc] init];
         [self.navigationController pushViewController:feedbackVc animated:YES];

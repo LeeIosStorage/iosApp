@@ -119,7 +119,7 @@ HitoPropertyNSMutableArray(keywordArray);
     //要居中view的宽度
     CGFloat width = title_ve.width;
     self.search = [[LESearchBar alloc] init];
-    self.search.autocorrectionType = UITextAutocorrectionTypeNo;
+//    self.search.autocorrectionType = UITextAutocorrectionTypeNo;
     self.search.searchBarStyle = UISearchBarStyleMinimal;
     self.search.userInteractionEnabled = YES;
     self.search.delegate = self;

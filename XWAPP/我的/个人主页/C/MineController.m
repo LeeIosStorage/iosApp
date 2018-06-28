@@ -208,6 +208,10 @@ UIScrollViewDelegate
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.backgroundColor = [UIColor clearColor];
     
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 80)];
+    footerView.backgroundColor = self.view.backgroundColor;
+    self.tableView.tableFooterView = footerView;
+    
     //初始化数据
     self.secondArr = [NSMutableArray array];
     self.fourArr = [NSMutableArray array];
@@ -226,7 +230,7 @@ UIScrollViewDelegate
     
     self.secondArr = [NSMutableArray array];
     [self.secondArr addObject:@{cell_title:@"每收一名徒弟赚3500金币，可立即领取提现",cell_type:@(LEMineCellTypeRecruit)}];
-    if ([LELoginAuthManager sharedInstance].taskList.count > 0) {
+    if ([LELoginAuthManager sharedInstance].taskList.count == 0) {
         if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask]) {
             [self.secondArr addObject:@{cell_title:@"新手任务",cell_type:@(LEMineCellTypeGreenHand)}];
         }
