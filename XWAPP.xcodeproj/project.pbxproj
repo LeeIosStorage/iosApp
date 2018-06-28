@@ -58,6 +58,7 @@
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
 		4CA8158920E39E9B00A42A7D /* LERecommendNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */; };
+		4CA8158C20E4AFC300A42A7D /* LESearchKeywordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */; };
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
@@ -316,6 +317,8 @@
 		4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentDetailViewController.m; sourceTree = "<group>"; };
 		4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERecommendNewsView.h; sourceTree = "<group>"; };
 		4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERecommendNewsView.m; sourceTree = "<group>"; };
+		4CA8158A20E4AFC300A42A7D /* LESearchKeywordView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchKeywordView.h; sourceTree = "<group>"; };
+		4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchKeywordView.m; sourceTree = "<group>"; };
 		4CAA26D420B557AD00B7CF31 /* LEShareSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareSheetView.h; sourceTree = "<group>"; };
 		4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareSheetView.m; sourceTree = "<group>"; };
 		4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareWindow.h; sourceTree = "<group>"; };
@@ -1638,6 +1641,8 @@
 				EC72BC6120916EDC00FADE74 /* SearchNoData.h */,
 				EC72BC6220916EDC00FADE74 /* SearchNoData.m */,
 				EC72BC6420916EE600FADE74 /* SearchNoData.xib */,
+				4CA8158A20E4AFC300A42A7D /* LESearchKeywordView.h */,
+				4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -1935,6 +1940,7 @@
 				EC41869420994FE100E57C17 /* SetVC.m in Sources */,
 				4CB76B7120BD77320092503E /* ZJDatePickerView.m in Sources */,
 				4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */,
+				4CA8158C20E4AFC300A42A7D /* LESearchKeywordView.m in Sources */,
 				4CB76B3620BC079A0092503E /* LESuperTableViewController.m in Sources */,
 				4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */,
 				4C4D704F20C5133C00DD542B /* LEGoldRecordModel.m in Sources */,

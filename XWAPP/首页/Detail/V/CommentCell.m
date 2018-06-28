@@ -40,6 +40,7 @@
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(8, 12, 0, 12));
     }];
+    
 }
 
 - (UIView *)containerView{
@@ -63,6 +64,14 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    HitoWeakSelf;
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
+        if (WeakSelf.delegate && [WeakSelf.delegate respondsToSelector:@selector(CommentCellLongPressActionWithCell:)]) {
+            [WeakSelf.delegate CommentCellLongPressActionWithCell:WeakSelf];
+        }
+    }];
+    [self addGestureRecognizer:longPress];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -33,13 +33,16 @@ UITableViewDelegate,
 UITableViewDataSource,
 CommontViewDelegate,
 CommontHeaderViewDelegate,
-LEShareSheetViewDelegate
+LEShareSheetViewDelegate,
+LECommentCellDelegate
 >
 {
     CGRect _currentRect;
     
     LEReplyCommentModel *_currentReplyModel;
     LENewsCommentModel *_currentCommentModel;
+    
+    LENewsCommentModel *_longPressCommentModel;
     
     LEShareSheetView *_shareSheetView;
     
@@ -383,6 +386,52 @@ LEShareSheetViewDelegate
 - (void)countReadNewsTime{
     _readDuration ++;
     LELog(@"read news time:%d秒",_readDuration);
+}
+
+
+- (void)commontLongPressHandle:(CGRect)rect{
+    
+    [self becomeFirstResponder];
+    UIMenuController *menuCtl = [UIMenuController sharedMenuController];
+    NSArray *popMenuItems = [NSArray arrayWithObjects:[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyReplyTextAction:)],[[UIMenuItem alloc]initWithTitle:@"举报" action:@selector(copyReportTextAction:)], nil];
+    
+    [menuCtl setMenuVisible:NO];
+    [menuCtl setMenuItems:popMenuItems];
+    [menuCtl setArrowDirection:UIMenuControllerArrowDown];
+    [menuCtl setTargetRect:rect inView:self.view];
+    [menuCtl setMenuVisible:YES animated:YES];
+}
+
+-(void)copyReplyTextAction:(id)sender
+{
+    UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+    copyBoard.string = _longPressCommentModel.content;
+    [copyBoard setPersistent:YES];
+    _longPressCommentModel = nil;
+}
+
+-(void)copyReportTextAction:(id)sender
+{
+    NSString *commentId = _longPressCommentModel.commentId;
+    [SVProgressHUD showCustomWithStatus:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+    });
+}
+-(BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+//    UIMenuController * menuCtl = [UIMenuController sharedMenuController];
+//    BOOL bSameMenuInst = menuCtl == sender;
+    
+    if (action == @selector(copyReplyTextAction:) || action == @selector(copyReportTextAction:)) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark -
@@ -841,6 +890,7 @@ static int commentMaxCount = 10;
     LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
     
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
+    cell.delegate = self;
     [cell updateHeaderData:replyModel];
     return cell;
 }
@@ -943,6 +993,32 @@ static int commentMaxCount = 10;
     _currentRect = [self.tableView rectForHeaderInSection:section];
     
     [self prepareCommentHandle];
+}
+
+- (void)commontViewLongPressAction:(NSInteger)section headerView:(CommontHeaderView *)headerView{
+    
+    _longPressCommentModel = self.commentLists[section];
+    CGRect rect = [headerView convertRect:headerView.contentLabel.frame toView:self.view];
+    [self commontLongPressHandle:rect];
+}
+
+#pragma mark -
+#pragma mark - LECommentCellDelegate
+- (void)CommentCellLongPressActionWithCell:(CommentCell *)cell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (indexPath) {
+        LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
+        if (indexPath.row == commentModel.comments.count) {
+            return;
+        }
+        _longPressCommentModel = [[LENewsCommentModel alloc] init];
+        LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
+        _longPressCommentModel.commentId = replyModel.commentId;
+        _longPressCommentModel.content = replyModel.content;
+        
+        CGRect rect = [cell convertRect:cell.contentView.frame toView:self.view];
+        [self commontLongPressHandle:rect];
+    }
 }
 
 #pragma mark - 键盘

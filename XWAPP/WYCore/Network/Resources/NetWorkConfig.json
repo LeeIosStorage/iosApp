@@ -29,6 +29,12 @@
         "control" : "news",
         "action"  : "Query"
     },
+    "GetAutoCompletedTags": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetAutoCompletedTags"
+    },
     "GetHotNews": {
         "protocol": "http",
         "module" : "api",
