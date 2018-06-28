@@ -211,7 +211,7 @@ HitoPropertyNSMutableArray(keywordArray);
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAutoCompletedTags"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:_search.text forKey:@"keyword"];
+    [params setObject:searchText forKey:@"keyword"];
     
     [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
@@ -349,25 +349,25 @@ HitoPropertyNSMutableArray(keywordArray);
     }
 }
 
-//- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-//    
-//    NSMutableString *searchBarText = [NSMutableString stringWithString:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
-//    if (text.length > 0) {
-//        [searchBarText appendString:text];
-//    }else{
-//        [searchBarText deleteCharactersInRange:NSMakeRange(searchBarText.length-1, 1)];
-//    }
-//    
-////    LELog(@"searchText:%@ --- text:%@",searchBarText,text);
-//    if (searchBarText.length == 0) {
-//        [self showViewType:0];
-//    }else{
-//        [self showViewType:1];
-//        [self getAutoCompletedTags:searchBarText];
-//    }
-//    
-//    return YES;
-//}
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    NSMutableString *searchBarText = [NSMutableString stringWithString:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+    if (text.length > 0) {
+        [searchBarText appendString:text];
+    }else{
+        [searchBarText deleteCharactersInRange:NSMakeRange(searchBarText.length-1, 1)];
+    }
+    
+    LELog(@"searchText:%@ --- text:%@",searchBarText,text);
+    if (searchBarText.length == 0) {
+        [self showViewType:0];
+    }else{
+        [self showViewType:1];
+        [self getAutoCompletedTags:searchBarText];
+    }
+    
+    return YES;
+}
 
 #pragma mark - TBDelegate&Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

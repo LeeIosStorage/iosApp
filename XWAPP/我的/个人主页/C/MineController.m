@@ -230,7 +230,7 @@ UIScrollViewDelegate
     
     self.secondArr = [NSMutableArray array];
     [self.secondArr addObject:@{cell_title:@"每收一名徒弟赚3500金币，可立即领取提现",cell_type:@(LEMineCellTypeRecruit)}];
-    if ([LELoginAuthManager sharedInstance].taskList.count == 0) {
+    if ([LELoginAuthManager sharedInstance].taskList.count > 0) {
         if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask]) {
             [self.secondArr addObject:@{cell_title:@"新手任务",cell_type:@(LEMineCellTypeGreenHand)}];
         }
