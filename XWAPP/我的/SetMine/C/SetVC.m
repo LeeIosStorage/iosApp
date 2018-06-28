@@ -14,6 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "LEChangePasswordViewController.h"
 #import "UIImage+LEAdd.h"
+#import "LEFeedbackViewController.h"
 
 @interface SetVC ()
 
@@ -40,6 +41,11 @@ HitoPropertyNSArray(dataSource);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         unsigned long long size = 0;
         size += [[SDImageCache sharedImageCache] getSize];
+//        NSUInteger memorySize = [YYWebImageManager sharedManager].cache.memoryCache.totalCost;
+//        size += memorySize;
+        NSUInteger diskSize = [YYWebImageManager sharedManager].cache.diskCache.totalCost;
+        size += diskSize;
+        
         HitoWeakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             WeakSelf.cacheSize = size;
@@ -90,7 +96,7 @@ HitoPropertyNSArray(dataSource);
 
 - (NSArray *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐头条评分", @"隐私协议"], @[@"关于我们"]];
+        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐头条评分", @"隐私协议"], @[@"关于我们",@"意见反馈"]];
     }
     return _dataSource;
 }
@@ -103,6 +109,8 @@ HitoPropertyNSArray(dataSource);
     [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
     [SVProgressHUD showCustomWithStatus:nil];
     
+    [[YYWebImageManager sharedManager].cache.memoryCache removeAllObjects];
+    [[YYWebImageManager sharedManager].cache.diskCache removeAllObjects];
     [[SDImageCache sharedImageCache] clearMemory];
     HitoWeakSelf;
     [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
@@ -176,7 +184,7 @@ HitoPropertyNSArray(dataSource);
         
     }else if ([title isEqualToString:@"隐私协议"]){
         
-        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:[NSString stringWithFormat:@"%@/%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppPrivacyProtocolURLPath]];
         [self.navigationController pushViewController:webVc animated:YES];
         
     }else if ([title isEqualToString:@"清除缓存"]){
@@ -193,7 +201,10 @@ HitoPropertyNSArray(dataSource);
         [self.navigationController pushViewController:complete animated:YES];
         
     }else if ([title isEqualToString:@"给乐头条评分"]){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1396367553"]];//
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1404835477"]];//https://itunes.apple.com/cn/app/id1404835477?mt=8
+    }else if ([title isEqualToString:@"意见反馈"]){
+        LEFeedbackViewController *feedbackVc = [[LEFeedbackViewController alloc] init];
+        [self.navigationController pushViewController:feedbackVc animated:YES];
     }
     
 }

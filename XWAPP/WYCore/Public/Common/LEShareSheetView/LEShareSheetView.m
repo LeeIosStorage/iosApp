@@ -61,8 +61,9 @@ LEShareWindowDelegate
 - (void)shareContent{
     if (self.newsModel) {
         self.shareTitle = self.newsModel.title;
-        self.shareDescription = self.newsModel.share_url;
-        self.shareWebpageUrl = self.newsModel.share_url;
+        self.shareDescription = @"分享得金币";
+        NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+        self.shareWebpageUrl = webUrl;
         
         NSString *imageUrl = NULL;
         if (self.newsModel.cover.count > 0) {

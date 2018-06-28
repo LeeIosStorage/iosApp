@@ -20,6 +20,8 @@
 
 @property (weak, nonatomic) id <CommontHeaderViewDelegate> delegate;
 
+@property (strong, nonatomic) UILabel *contentLabel;
+
 @property (assign, nonatomic) NSInteger section;
 
 @property (strong, nonatomic) UIImageView *favourImageView;
@@ -34,5 +36,6 @@
 @optional
 - (void)commentHeaderWithFavourClick:(NSInteger)section headerView:(CommontHeaderView *)headerView;
 - (void)commentHeaderWithCommentClick:(NSInteger)section headerView:(CommontHeaderView *)headerView;
+- (void)commontViewLongPressAction:(NSInteger)section headerView:(CommontHeaderView *)headerView;
 
 @end

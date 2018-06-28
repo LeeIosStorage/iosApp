@@ -10,14 +10,23 @@
 #define SysMarco_h
 
 
-#define QQ_ID                       @"1104513102"
-#define QQ_Key                      @"L3PVlr3bpXd9I63d"
-#define WX_ID                       @"wx5313693d6d2d863e"
-#define WX_Secret                   @"6d250dc360fac1acfed6bba0c62939f4"
-#define SINA_ID                     @"3734649134"
-#define SINA_Secret                 @"57bba34da9bae335b351f2057283bbf1"
-#define Sina_RedirectURL            @"http://www.wangyuhudong.com"
+#define QQ_ID                       @"1106905716"
+#define QQ_Key                      @"oRHhd5NAPbKZeX9o"
+#define WX_ID                       @"wx3c8bc97987792355"
+#define WX_Secret                   @"fe74286cd8742a075daf29ca1950ac85"
+#define SINA_ID                     @"2752056969"
+#define SINA_Secret                 @"3a1c7b67d5bd8265605a0e773358afa7"
+#define Sina_RedirectURL            @"https://api.weibo.com/oauth2/default.html"
+
 #define UMS_APPKEY                  @"5b0fe262f43e481d740001f5"
+
+#define JPUSH_APPKEY                @"4cf4260806b72b07ac84edbf"
+#define JPUSH_CHANNLE               @"Apple Store"
+#ifdef  DEBUG
+#define APS_FOR_PRODUCTION 0
+#else
+#define APS_FOR_PRODUCTION 1
+#endif
 
 
 #define MAX_WX_IMAGE_SIZE 32*1024
@@ -29,7 +38,24 @@
 #define COMMENT_MAX_COUNT 255
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
+#define kRefreshUITaskInfoNotificationKey @"kRefreshUITaskInfoNotificationKey"
 
+#pragma mark -
+#pragma mark - UM事件统计
+#define kNewsRealHotClick                        @"NewsRealHotClick"
+#define kHomeSearchBarClick                      @"HomeSearchBarClick"
+#define kHomeNewsChannelClick                    @"HomeNewsChannelClick"
+#define kTaskCenterSignInClick                   @"TaskCenterSignInClick"
+#define kTaskCenterOpenBoxClick                  @"TaskCenterOpenBoxClick"
+#define kTaskCenterBingWXClick                   @"TaskCenterBingWXClick"
+#define kTaskCenterInvitationRecruitClick        @"TaskCenterInvitationRecruitClick"
+#define kMessageCenterClick                      @"MessageCenterClick"
+#define kMineGoldClick                           @"MineGoldClick"
+#define kMineBalanceClick                        @"MineBalanceClick"
+#define kMineEarningRankClick                    @"MineEarningRankClick"
+
+#pragma mark -
+#pragma mark - Other
 /***************************系统版本*****************************/
 
 //获取手机系统的版本
@@ -304,7 +330,7 @@
 //网络状态标识
 
 #define HitoFaiRequest @"请求失败"
-#define HitoFaiNetwork @"网络错误"
+#define HitoFaiNetwork @"网络不给力"
 
 #define HitoDataFileCatalog @"LEData"
 

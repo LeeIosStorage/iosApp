@@ -17,17 +17,25 @@
 #import "MyWallet.h"
 #import "WYShareManager.h"
 #import <SDWebImageManager.h>
+#import "LELoginAuthManager.h"
+
+#define BoxTimeInterval  4*60*60
 
 @interface TaskCenterController ()
 <
-UITabBarControllerDelegate
+UITabBarControllerDelegate,
+WXShaerStateDelegate
 >
+{
+    BOOL _isGetLastOperateTime;
+}
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @property (strong, nonatomic) NSTimer *countDownTimer;
 
-@property (assign, nonatomic) int signInDay;
+@property (strong, nonatomic) NSDictionary *signInConfig;
 
+@property (strong, nonatomic) NSDate *lastOperateTime;
 @property (assign, nonatomic) int secondsCountDown;
 
 @end
@@ -36,12 +44,22 @@ UITabBarControllerDelegate
 
 #pragma mark -
 #pragma mark - Lifecycle
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [WYShareManager shareInstance].delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -68,13 +86,15 @@ UITabBarControllerDelegate
     self.title = @"任务中心";
     self.daySuper.backgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
     
-    self.signInDay = 0;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTaskInfoUI:) name:kRefreshUITaskInfoNotificationKey object:nil];
+    
     [self refreshDayViewStatus];
     
+    _isGetLastOperateTime = NO;
     self.secondsCountDown = 0;
     [self refreshBoxViewStatus];
     
-    [self.qiandaoBtn setTitle:@"明日签到可领15金币" forState:UIControlStateDisabled];
+    [self.qiandaoBtn setTitle:@"明日签到可领金币" forState:UIControlStateDisabled];
     [self refreshSignInButtonStatus:NO];
     
     [self addMJ];
@@ -92,8 +112,18 @@ UITabBarControllerDelegate
     [self.tableView.mj_header beginRefreshing];
 }
 
+- (void)refreshTaskInfoUI:(NSNotification *)notif{
+    
+    id dataObject = notif.object;
+    [self setTaskListData:dataObject];
+}
+
 #pragma mark -
 #pragma mark - Private
+- (void)refreshUI{
+    [self refreshDayViewStatus];
+}
+
 - (void)refreshSignInButtonStatus:(BOOL)enabled
 {
     self.qiandaoBtn.enabled = enabled;
@@ -110,13 +140,43 @@ UITabBarControllerDelegate
         if ([subView isKindOfClass:[UIImageView class]]) {
             UIImageView *imageview = (UIImageView *)subView;
             int tag = (int)imageview.tag;
-            if (tag < self.signInDay) {
+            int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",tag+1]] intValue];
+            BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",tag+1]] boolValue];
+            UIView *itemView = [self.daySuper viewWithTag:tag+10];
+            UILabel *label = [itemView viewWithTag:0];
+            UILabel *hLabel = [itemView viewWithTag:1];
+            label.text = [NSString stringWithFormat:@"%d",golds];
+            hLabel.text = [NSString stringWithFormat:@"+%d",golds];
+            if (isSigned) {
                 imageview.highlighted = YES;
+                label.hidden = YES;
+                hLabel.hidden = NO;
             }else{
                 imageview.highlighted = NO;
+                label.hidden = NO;
+                hLabel.hidden = YES;
             }
         }
     }
+}
+
+- (int)todaySignInGold{
+    int gold = 0;
+    for (int i = 0; i < _signInConfig.count; i ++) {
+        int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+1]] intValue];
+        BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",i+1]] boolValue];
+        if (isSigned) {
+            int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+1]] intValue];
+            BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",i+2]] boolValue];
+            if (!isSigned) {
+                LELog(@"%@",[NSString stringWithFormat:@"day%d_is_signed",i+2]);
+                return golds;
+            }
+        }else{
+            return golds;
+        }
+    }
+    return gold;
 }
 
 - (void)refreshBoxViewStatus{
@@ -138,6 +198,9 @@ UITabBarControllerDelegate
         [_boxView setBackgroundColor:HitoColorFromRGB(0xdadada)];
         
         //设置定时器
+        if (_countDownTimer) {
+            [self stopTimer];
+        }
         _countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
         NSString *format_time = [WYCommonUtils secondChangToDateString:[NSString stringWithFormat:@"%d",self.secondsCountDown]];
@@ -164,83 +227,38 @@ UITabBarControllerDelegate
     _countDownTimer = nil;
 }
 
-- (void)setTaskListData{
+- (void)setTaskListData:(id)dataObject{
 
+    NSArray *array = [NSArray modelArrayWithClass:[LETaskListModel class] json:dataObject];
     [self.taskLists removeAllObjects];
+    
+    NSMutableDictionary *mutDic1 = [NSMutableDictionary dictionary];
+    NSMutableDictionary *mutDic2 = [NSMutableDictionary dictionary];
     NSMutableArray *mutArray1 = [NSMutableArray arrayWithCapacity:3];
     NSMutableArray *mutArray2 = [NSMutableArray arrayWithCapacity:8];
-    for (int i = 0; i < 11; i ++ ) {
-        
-        LETaskListModel *taskModel = [LETaskListModel new];
-        taskModel.taskId = [NSString stringWithFormat:@"%d",i + 1];
-        taskModel.taskType = i+1;
-        taskModel.taskStatus = 0;
-        if (i < 3) {
-            if (i == 0) {
-                taskModel.taskTitle = @"新手阅读奖励";
-                taskModel.taskDescription = @"新手阅读奖励新手阅读奖励新手阅读奖励新手阅读奖励新手阅读奖励";
-                taskModel.coin = @"+100";
-                taskModel.coinType = 0;
-            }else if (i == 1){
-                taskModel.taskTitle = @"绑定微信";
-                taskModel.taskDescription = @"绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信绑定微信";
-                taskModel.coin = @"+8元";
-                taskModel.coinType = 1;
-            }else if (i == 2){
-                taskModel.taskTitle = @"输入邀请码得红包";
-                taskModel.taskDescription = @"新输入邀请码得红包输入邀请码得红包手阅读奖输入邀请码得红包励新手阅读奖励新手阅读输入邀请码得红包奖励新手阅读奖励新手阅读奖励";
-                taskModel.coin = @"+10元";
-                taskModel.coinType = 1;
-            }
+    for (LETaskListModel *taskModel in array) {
+        if (taskModel.taskStatus == 1) {
+            continue;
+        }
+        if (taskModel.type == 1) {
             [mutArray1 addObject:taskModel];
-        }else{
-            if (i == 3) {
-                taskModel.taskTitle = @"邀请收徒";
-                taskModel.taskDescription = @"邀请收徒邀请收徒邀请收徒邀请收徒邀请收徒";
-                taskModel.coin = @"+1000";
-                taskModel.coinType = 0;
-            }else if (i == 4){
-                taskModel.taskTitle = @"晒晒收入";
-                taskModel.taskDescription = @"晒晒收入晒晒收入奖励新手阅读奖励新手阅读奖励新手阅读奖励";
-                taskModel.coin = @"+50";
-                taskModel.coinType = 0;
-            }else if (i == 5){
-                taskModel.taskTitle = @"唤醒徒弟";
-                taskModel.taskDescription = @"唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟唤醒徒弟";
-                taskModel.coin = @"+30";
-                taskModel.coinType = 0;
-            }else if (i == 6){
-                taskModel.taskTitle = @"分享到朋友圈";
-                taskModel.taskDescription = @"分享到朋友圈奖励新手阅分享到朋友圈读奖励分享到朋友圈阅读奖励分享到朋友圈";
-                taskModel.coin = @"+20";
-                taskModel.coinType = 0;
-            }else if (i == 7){
-                taskModel.taskTitle = @"阅读资讯";
-                taskModel.taskDescription = @"新阅读资讯手阅读奖励新阅读资讯奖励";
-                taskModel.coin = @"+10";
-                taskModel.coinType = 0;
-            }else if (i == 8){
-                taskModel.taskTitle = @"优质评论";
-                taskModel.taskDescription = @"优质评论";
-                taskModel.coin = @"+10";
-                taskModel.coinType = 0;
-            }else if (i == 9){
-                taskModel.taskTitle = @"阅读推送咨询";
-                taskModel.taskDescription = @"阅读推送咨询";
-                taskModel.coin = @"+10";
-                taskModel.coinType = 0;
-            }else if (i == 10){
-                taskModel.taskTitle = @"问券调查";
-                taskModel.taskDescription = @"问券调查励问券调查问券调查问券调查问券调查";
-                taskModel.coin = @"+200";
-                taskModel.coinType = 0;
-            }
+        }else if (taskModel.type == 2){
             [mutArray2 addObject:taskModel];
         }
     }
     
-    [self.taskLists addObject:mutArray1];
-    [self.taskLists addObject:mutArray2];
+    if (mutArray1.count > 0) {
+        [mutDic1 setObject:mutArray1 forKey:@"data"];
+        [mutDic1 setObject:@"新手任务" forKey:@"title"];
+        [mutDic1 setObject:@"task_xinshourenwu" forKey:@"image"];
+        [self.taskLists addObject:mutDic1];
+    }
+    if (mutArray2.count > 0) {
+        [mutDic2 setObject:mutArray2 forKey:@"data"];
+        [mutDic2 setObject:@"日常任务" forKey:@"title"];
+        [mutDic2 setObject:@"task_richagnrenwu" forKey:@"image"];
+        [self.taskLists addObject:mutDic2];
+    }
     
     [self.tableView reloadData];
     
@@ -248,6 +266,7 @@ UITabBarControllerDelegate
 
 -(void)sendAuthRequest
 {
+    [MobClick event:kTaskCenterBingWXClick];
     HitoWeakSelf;
     [SVProgressHUD showCustomWithStatus:nil];
     [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
@@ -256,6 +275,7 @@ UITabBarControllerDelegate
         }
         [WeakSelf.tableView reloadData];
     }];
+    [SVProgressHUD dismiss];
 }
 
 - (void)pushWebViewController:(NSString *)url{
@@ -267,6 +287,15 @@ UITabBarControllerDelegate
 
 - (void)shareImageToWXTimeline{
     
+    
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+    NSString *shareTitle = @"在这里看了几天新闻,还能赚钱,一开始不信,现在我已经爱上这了!";
+    NSString *shareDescription = @"";
+    [WYShareManager shareInstance].delegate = self;
+    [[WYShareManager shareInstance] shareToWXWithScene:WXSceneTimeline title:shareTitle description:shareDescription webpageUrl:webUrl image:nil isVideo:NO];
+    
+    
+    return;
 //    UIImage *shareImage = nil;
     [SVProgressHUD showCustomWithStatus:nil];
     [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527856210447&di=82ac636ef350de01ef175ad25a6fd144&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F58%2Fd%2F2.jpg"] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
@@ -295,11 +324,7 @@ UITabBarControllerDelegate
 - (void)refreshTaskInfoRequest{
     
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserDetail"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"uid"];
-    requesUrl = [NSString stringWithFormat:@"%@uid=%@",requesUrl,[LELoginUserManager userID]];
-    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [[LELoginAuthManager sharedInstance] refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [WeakSelf.tableView.mj_header endRefreshing];
@@ -308,24 +333,72 @@ UITabBarControllerDelegate
         if (requestType != WYRequestTypeSuccess) {
             return;
         }
-        [WeakSelf refreshSignInButtonStatus:YES];
-        [WeakSelf setTaskListData];
         
+        [WeakSelf setTaskListData:dataObject];
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf.tableView.mj_header endRefreshing];
     }];
     
+    [self getSignConfig];
+    [self checkCoinBoxRequest];
+    return;
+    
+//
+//    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserTask"];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+////    requesUrl = [NSString stringWithFormat:@"%@uid=%@",requesUrl,[LELoginUserManager userID]];
+//    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+//
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [WeakSelf.tableView.mj_header endRefreshing];
+//        });
+//
+//        if (requestType != WYRequestTypeSuccess) {
+//            return;
+//        }
+//        [WeakSelf refreshSignInButtonStatus:YES];
+//        [WeakSelf setTaskListData:dataObject];
+//
+//
+//    } failure:^(id responseObject, NSError *error) {
+//        [WeakSelf.tableView.mj_header endRefreshing];
+//    }];
+    
+}
+
+- (void)getSignConfig{
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetSignConfig"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
+        }
+        WeakSelf.signInConfig = [NSDictionary dictionaryWithDictionary:dataObject];
+        [WeakSelf refreshUI];
+        
+        BOOL isSignIn = [[WeakSelf.signInConfig objectForKey:@"today_is_signed"] boolValue];
+        NSString *goldString = [NSString stringWithFormat:@"明日签到可领%d金币",[WeakSelf todaySignInGold]];
+        [WeakSelf.qiandaoBtn setTitle:goldString forState:UIControlStateDisabled];
+        [WeakSelf refreshSignInButtonStatus:!isSignIn];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 - (void)signInRequest{
     
     [SVProgressHUD showCustomWithStatus:nil];
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserDetail"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"AddUserSign"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"uid"];
-    requesUrl = [NSString stringWithFormat:@"%@uid=%@",requesUrl,[LELoginUserManager userID]];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
 
 
@@ -333,9 +406,7 @@ UITabBarControllerDelegate
             return;
         }
         [SVProgressHUD showCustomSuccessWithStatus:@"签到成功"];
-        [WeakSelf refreshSignInButtonStatus:NO];
-        WeakSelf.signInDay ++;
-        [WeakSelf refreshDayViewStatus];
+        [WeakSelf getSignConfig];
 
 
     } failure:^(id responseObject, NSError *error) {
@@ -343,14 +414,38 @@ UITabBarControllerDelegate
     }];
 }
 
+- (void)checkCoinBoxRequest{
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"CheckCoinBox"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
+        }
+        WeakSelf.lastOperateTime = [WYCommonUtils dateFromUSDateString:[dataObject objectForKey:@"last_operate_time"]];
+        if ([WeakSelf.lastOperateTime isEqual:[NSNull null]]) {
+            WeakSelf.lastOperateTime = nil;
+        }
+        self->_isGetLastOperateTime = YES;
+        NSTimeInterval spaceTime = BoxTimeInterval;
+        NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:WeakSelf.lastOperateTime];
+        WeakSelf.secondsCountDown = spaceTime-timeInterval;
+        [WeakSelf refreshBoxViewStatus];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
 - (void)openBoxRequest{
     
     [SVProgressHUD showCustomWithStatus:nil];
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserDetail"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"OpenCoinBox"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"uid"];
-    requesUrl = [NSString stringWithFormat:@"%@uid=%@",requesUrl,[LELoginUserManager userID]];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         
@@ -358,12 +453,14 @@ UITabBarControllerDelegate
             return;
         }
         [SVProgressHUD dismiss];
-        WeakSelf.secondsCountDown = 50;
+        int gold = [[dataObject objectForKey:@"data"] intValue];
+        [MBProgressHUD showCustomGoldTipWithTask:@"开启宝箱" gold:[NSString stringWithFormat:@"+%d",gold]];
+        WeakSelf.secondsCountDown = BoxTimeInterval;
         [WeakSelf refreshBoxViewStatus];
+        [WeakSelf checkCoinBoxRequest];
         
     } failure:^(id responseObject, NSError *error) {
-        WeakSelf.secondsCountDown = 20;
-        [WeakSelf refreshBoxViewStatus];
+        
     }];
 }
 
@@ -373,15 +470,17 @@ UITabBarControllerDelegate
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *arr = self.taskLists[section];
-    return arr.count;
+    NSDictionary *dic = self.taskLists[section];
+    NSArray *array = dic[@"data"];
+    return array.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
-    NSArray *sectionArray = [self.taskLists objectAtIndex:indexPath.section];
+    NSDictionary *sectionDic = [self.taskLists objectAtIndex:indexPath.section];
+    NSArray *sectionArray = sectionDic[@"data"];
     LETaskListModel *taskModel = [sectionArray objectAtIndex:indexPath.row];
     [cell updateCellData:taskModel];
     
@@ -402,25 +501,24 @@ UITabBarControllerDelegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     TaskCellHeader *header = [[[NSBundle mainBundle] loadNibNamed:@"TaskCellHeader" owner:self options:nil] firstObject];
 
-    if (section == 0) {
-        header.leftLB.text = @"新手任务";
-        header.leftIM.image = HitoImage(@"task_xinshourenwu");
-    } else {
-        header.leftLB.text = @"日常任务";
-        header.leftIM.image = HitoImage(@"task_richagnrenwu");
-    }
+    NSDictionary *sectionDic = [self.taskLists objectAtIndex:section];
+    header.leftLB.text = sectionDic[@"title"];
+    header.leftIM.image = HitoImage(sectionDic[@"image"]);
     return header;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSArray *sectionArray = [self.taskLists objectAtIndex:indexPath.section];
+    NSDictionary *sectionDic = [self.taskLists objectAtIndex:indexPath.section];
+    NSArray *sectionArray = sectionDic[@"data"];
     LETaskListModel *taskModel = [sectionArray objectAtIndex:indexPath.row];
     
     switch (taskModel.taskType) {
         case LETaskCenterTypeGreenHandRead:
         {
-            [self.tabBarController setSelectedIndex:0];
+//            [self.tabBarController setSelectedIndex:0];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppReadingRewardWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeReadInformation:
@@ -447,19 +545,23 @@ UITabBarControllerDelegate
             break;
         case LETaskCenterTypeInvitationRecruit:
         {
-            [self pushWebViewController:kAppInviteActivityWebURL];
+            [MobClick event:kTaskCenterInvitationRecruitClick];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeShowIncome:
         {
             MyWallet *wallet = [[MyWallet alloc] init];
+            wallet.needShare = YES;
             wallet.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:wallet animated:YES];
         }
             break;
         case LETaskCenterTypeWakeApprentice:
         {
-            [self pushWebViewController:kAppInviteActivityWebURL];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            [self pushWebViewController:webUrl];
         }
             break;
         case LETaskCenterTypeShareTimeline:
@@ -474,7 +576,7 @@ UITabBarControllerDelegate
             break;
         case LETaskCenterTypeQuestionnaire:
         {
-            [self pushWebViewController:kAppInviteActivityWebURL];
+//            [self pushWebViewController:@""];
         }
             break;
             
@@ -494,12 +596,31 @@ UITabBarControllerDelegate
 #pragma mark -SBAction
 
 - (IBAction)qiandaoAction:(UIButton *)sender {
+    [MobClick event:kTaskCenterSignInClick];
     [self signInRequest];
 }
 
 - (IBAction)openBoxAction:(UITapGestureRecognizer *)sender {
-    if (self.secondsCountDown <= 0) {
+    [MobClick event:kTaskCenterOpenBoxClick];
+    if (self.secondsCountDown <= 0 && _isGetLastOperateTime) {
         [self openBoxRequest];
+    }
+}
+
+#pragma mark -
+#pragma mark - WXShaerStateDelegate
+- (void)sendState:(int)state{
+    if (state == 1) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeShareTimeline];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            if (success) {
+                [MBProgressHUD showCustomGoldTipWithTask:@"分享朋友圈" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+            }else{
+                [SVProgressHUD showCustomInfoWithStatus:@"分享成功"];
+            }
+        }];
+    }else if (state == 2){
+        [SVProgressHUD showCustomInfoWithStatus:@"分享失败"];
     }
 }
 

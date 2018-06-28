@@ -10,6 +10,15 @@
 
 @interface WYCommonUtils : NSObject
 
+/*! @brief 单纯获取text的Width (Height固定的)
+ *
+ *  @param  text: 文本
+ *  @param  font: 字体
+ *  @param  lineBreakMode: lineBreakMode 默认为NSLineBreakByWordWrapping = 0
+ *  @return text的Width
+ */
++ (float)widthWithText:(NSString *)text font:(UIFont *)font lineBreakMode:(NSLineBreakMode)lineBreakMode;
+
 /**
  *  根据固定的Width 计算 AttributedString 的Size
  *
@@ -49,15 +58,21 @@
 + (NSString*)dateYearToSecondDiscriptionFromDate:(NSDate*)date;
 //显示时间格式:HH:mm
 + (NSString*)dateHourToMinuteDiscriptionFromDate:(NSDate*)date;
+//显示格式:今天,昨天
++ (NSString*)dateDayToDayDiscriptionFromDate:(NSDate*)date;
 //年龄
 + (int)getAgeWithBirthdayDate:(NSDate *)date;
 //倒计时 dateStr:秒数
 + (NSString *)secondChangToDateString:(NSString *)dateStr;
+//date转时间戳
++(long long)getDateTimeTOMilliSeconds:(NSDate *)datetime;
 
 #pragma mark -
 #pragma mark - Other
 //加载图片 默认背景颜色
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage;
+//url的Param
++(NSDictionary *)getParamDictFromUrl:(NSURL *)url;
 
 #pragma mark -
 #pragma mark - 动画
@@ -68,5 +83,11 @@
 
 #pragma mark - string 比较
 + (BOOL)isEqualWithUserId:(NSString *)uid;
+
+#pragma mark - 设备标识
++ (NSString *)UUIDString;
+
+#pragma mark - common
++ (UIViewController *)getCurrentVC;
 
 @end

@@ -110,7 +110,7 @@
 
 - (IBAction)uerProtocol:(UIButton *)sender {
     [self resigBoard];
-    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppPrivacyProtocolURL];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:[NSString stringWithFormat:@"%@/%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppPrivacyProtocolURLPath]];
     [self.navigationController pushViewController:webVc animated:YES];
 }
 - (IBAction)login:(UIButton *)sender {
@@ -238,6 +238,9 @@
         }
         if ([dataObject isKindOfClass:[NSDictionary class]]) {
             [LELoginUserManager setUserID:dataObject[@"uid"]];
+            
+            [MobClick event:@"__register" attributes:@{@"userid":dataObject[@"uid"]}];
+                                                       
             id token = dataObject[@"token"];
             if ([token isKindOfClass:[NSString class]]) {
                 NSData *data = [token dataUsingEncoding:NSUTF8StringEncoding];

@@ -20,6 +20,12 @@ NSString *const kUserInfoRegTime = @"kUserInfoRegTime";
 NSString *const kUserInfoWxNickname = @"kUserInfoWxNickname";
 NSString *const kUserInfoOccupation = @"kUserInfoOccupation";
 NSString *const kUserInfoEducation = @"kUserInfoEducation";
+NSString *const kUserInfoReadDuration = @"kUserInfoReadDuration";
+NSString *const kUserInfoInvitationCode = @"kUserInfoInvitationCode";
+NSString *const kUserInfoTodayGolds = @"kUserInfoTodayGolds";
+NSString *const kUserInfoTotalGolds = @"kUserInfoTotalGolds";
+NSString *const kUserInfoBalance = @"kUserInfoBalance";
+NSString *const kUserInfoIncome = @"kUserInfoIncome";
 
 NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
 
@@ -101,6 +107,48 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [self saveToUserDefaultsObject:education forKey:kUserInfoEducation];
 }
 
++ (NSString *)invitationCode{
+    return [self objectFromUserDefaultsKey:kUserInfoInvitationCode];
+}
++ (void)setInvitationCode:(NSString *)invitationCode{
+    [self saveToUserDefaultsObject:invitationCode forKey:kUserInfoInvitationCode];
+}
+
++ (double)readDuration{
+    return [[self objectFromUserDefaultsKey:kUserInfoReadDuration] doubleValue];
+}
++ (void)setReadDuration:(double)readDuration{
+    [self saveToUserDefaultsObject:[NSNumber numberWithDouble:readDuration] forKey:kUserInfoReadDuration];
+}
+
++ (double)balance{
+    return [[self objectFromUserDefaultsKey:kUserInfoBalance] doubleValue];
+}
++ (void)setBalance:(double)balance{
+    [self saveToUserDefaultsObject:[NSNumber numberWithDouble:balance] forKey:kUserInfoBalance];
+}
+
++ (double)income{
+    return [[self objectFromUserDefaultsKey:kUserInfoIncome] doubleValue];
+}
++ (void)setIncome:(double)income{
+    [self saveToUserDefaultsObject:[NSNumber numberWithDouble:income] forKey:kUserInfoIncome];
+}
+
++ (NSInteger)todayGolds{
+    return [[self objectFromUserDefaultsKey:kUserInfoTodayGolds] integerValue];
+}
++ (void)setTodayGolds:(NSInteger)todayGolds{
+    [self saveToUserDefaultsObject:[NSNumber numberWithInteger:todayGolds] forKey:kUserInfoTodayGolds];
+}
+
++ (NSInteger)totalGolds{
+    return [[self objectFromUserDefaultsKey:kUserInfoTotalGolds] integerValue];
+}
++ (void)setTotalGolds:(NSInteger)totalGolds{
+    [self saveToUserDefaultsObject:[NSNumber numberWithInteger:totalGolds] forKey:kUserInfoTotalGolds];
+}
+
 + (NSString *)authToken{
     return [self objectFromUserDefaultsKey:kUserInfoAuthToken];
 }
@@ -144,8 +192,8 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
         }
         
         LELoginModel *loginModel = [LELoginModel modelWithJSON:dataObject];
-//        loginModel.headImgUrl = @"http://p1.qzone.la/upload/20150102/a3zs6l69.jpg";
         [WeakSelf updateUserInfoWithLoginModel:loginModel];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
         
         if (success) {
             success(YES,dataObject);
@@ -170,6 +218,12 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setWxNickname:loginModel.wxNickname];
     [LELoginUserManager setOccupation:loginModel.occupation];
     [LELoginUserManager setEducation:loginModel.education];
+    [LELoginUserManager setInvitationCode:loginModel.invitationCode];
+    [LELoginUserManager setReadDuration:loginModel.readDuration];
+    [LELoginUserManager setBalance:loginModel.balance];
+    [LELoginUserManager setIncome:loginModel.income];
+    [LELoginUserManager setTodayGolds:loginModel.todayGolds];
+    [LELoginUserManager setTotalGolds:loginModel.totalGolds];
     
 }
 
@@ -185,6 +239,12 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setWxNickname:nil];
     [LELoginUserManager setOccupation:nil];
     [LELoginUserManager setEducation:nil];
+    [LELoginUserManager setInvitationCode:nil];
+    [LELoginUserManager setReadDuration:0];
+    [LELoginUserManager setBalance:0.0];
+    [LELoginUserManager setIncome:0.0];
+    [LELoginUserManager setTodayGolds:0];
+    [LELoginUserManager setTotalGolds:0];
 }
 
 #pragma mark -

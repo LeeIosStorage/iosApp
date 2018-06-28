@@ -23,6 +23,8 @@
 #import "LEShareWindow.h"
 #import "LECommentDetailViewController.h"
 #import "LELoginManager.h"
+#import "LELoginAuthManager.h"
+#import "LERecommendNewsView.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -31,7 +33,8 @@ UITableViewDelegate,
 UITableViewDataSource,
 CommontViewDelegate,
 CommontHeaderViewDelegate,
-LEShareSheetViewDelegate
+LEShareSheetViewDelegate,
+LECommentCellDelegate
 >
 {
     CGRect _currentRect;
@@ -39,7 +42,12 @@ LEShareSheetViewDelegate
     LEReplyCommentModel *_currentReplyModel;
     LENewsCommentModel *_currentCommentModel;
     
+    LENewsCommentModel *_longPressCommentModel;
+    
     LEShareSheetView *_shareSheetView;
+    
+    BOOL _isCollect;
+    
 }
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
@@ -47,8 +55,10 @@ LEShareSheetViewDelegate
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *commentTF;
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIButton *commentButton;
 @property (weak, nonatomic) IBOutlet UIButton *collectButton;
 
+@property (assign, nonatomic) CGFloat headerHeight;
 @property (strong, nonatomic) LENewsDetailHeaderView *newsDetailHeaderView;
 @property (strong, nonatomic) LENewsDetailContentView *newsDetailContentView;
 @property (strong, nonatomic) LENewsCommentHeadView *newsCommentHeadView;
@@ -59,6 +69,14 @@ LEShareSheetViewDelegate
 
 @property (strong, nonatomic) NSMutableArray *commentLists;
 @property (assign, nonatomic) int nextCursor;
+
+@property (strong, nonatomic) NSTimer *readTimer;
+@property (assign, nonatomic) int readDuration;
+
+@property (strong, nonatomic) LERecommendNewsView *recommendNewsView;
+@property (strong, nonatomic) NSMutableArray *recommendNewsArray;
+
+@property (strong, nonatomic) UILabel *commentCountTipLabel;
 
 @end
 
@@ -79,19 +97,37 @@ LEShareSheetViewDelegate
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self startTimer];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self stopTimer];
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self saveReadLogRequest];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setupSubViews];
     
     [self getNewsDetailRequest];
-    
+    [self getRandomNewsRequest];
+    [self checkFavoriteNewsRequest];
     [self getNewsCommentsRequest];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)refreshViewWithObject:(id)object{
+    [self checkFavoriteNewsRequest];
 }
 
 #pragma mark -
@@ -124,10 +160,12 @@ LEShareSheetViewDelegate
 #pragma mark - Private
 - (void)setupSubViews{
     
-//    self.view.backgroundColor = kAppThemeColor;
+//    self.view.backgroundColor = kAppBackgroundColor;
     
+    self.readDuration = 0;
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
+    self.recommendNewsArray = [[NSMutableArray alloc] init];
     
     UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 8.5, 13, 13)];
     UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(12, 0, 13, 13)];
@@ -143,6 +181,13 @@ LEShareSheetViewDelegate
     _bottomView.layer.shadowOpacity = 0.8f;
     _bottomView.layer.shadowRadius = 4.0f;
     _bottomView.layer.shadowOffset = CGSizeMake(4,4);
+    
+    [self.bottomView addSubview:self.commentCountTipLabel];
+    [self.commentCountTipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.commentButton.mas_right);
+        make.centerY.equalTo(self.commentButton.mas_top);
+        make.size.mas_equalTo(CGSizeMake(4*2+13, 13));
+    }];
     
     self.tableView.tableFooterView = [UIView new];
 //    [[UITableViewHeaderFooterView appearance] setTintColor:kAppThemeColor];
@@ -162,6 +207,11 @@ LEShareSheetViewDelegate
     self.newsDetailHeaderView.width = HitoScreenW;
 //    self.newsDetailHeaderView.height = 65;
     [self.newsDetailContentView addSubview:self.newsDetailHeaderView];
+    self.recommendNewsView.top = 0;
+    self.recommendNewsView.left = 12;
+    self.recommendNewsView.width = HitoScreenW-12*2;
+    self.recommendNewsView.height = 0;
+    [self.newsDetailContentView addSubview:self.recommendNewsView];
     self.newsCommentHeadView.top = 0;
     self.newsCommentHeadView.width = HitoScreenW;
     self.newsCommentHeadView.height = 45;
@@ -171,11 +221,15 @@ LEShareSheetViewDelegate
     
     [self addMJ];
     
+    [self refreshCommentCountShow];
+    
 }
 
 - (void)setData{
     
-    CGFloat headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
+    [self refreshCommentCountShow];
+    
+    _headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
     
     NSString *htmlString = nil;
     htmlString = self.newsDetailModel.info.content;
@@ -188,16 +242,47 @@ LEShareSheetViewDelegate
         WeakSelf.newsDetailModel.contentAttributedString = attributedString;
         WeakSelf.newsDetailModel.contentHeight = [NSNumber numberWithFloat:[WeakSelf getAttributedStringHeightWithString:attributedString]];
         [WeakSelf.newsDetailContentView updateWithData:WeakSelf.newsDetailModel];
-        WeakSelf.newsDetailContentView.contentLabel.top = headerHeight + 10;
-        WeakSelf.newsDetailContentView.height = [WeakSelf.newsDetailModel.contentHeight floatValue] + headerHeight + WeakSelf.newsCommentHeadView.height;
-        WeakSelf.newsCommentHeadView.top = [WeakSelf.newsDetailModel.contentHeight floatValue] + headerHeight;
-        WeakSelf.tableView.tableHeaderView = WeakSelf.newsDetailContentView;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshHeadViewShow];
         
     }];
     
     [self.tableView reloadData];
 }
+
+- (void)refreshHeadViewShow{
+    
+    CGFloat recommendViewHeight = self.recommendNewsArray.count*70;
+    if (recommendViewHeight > 0) {
+        recommendViewHeight += 17;
+    }
+    
+    self.newsDetailContentView.contentLabel.top = _headerHeight + 10;
+    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight;
+    self.recommendNewsView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight+5;
+    self.recommendNewsView.height = self.recommendNewsArray.count*70;
+    self.newsCommentHeadView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + recommendViewHeight;
+    self.tableView.tableHeaderView = self.newsDetailContentView;
+    [self.tableView reloadData];
+    
+}
+
+- (void)refreshCommentCountShow{
+    int commentCount = self.newsDetailModel.info.commentCount;
+    self.commentCountTipLabel.hidden = YES;
+    if (commentCount > 0) {
+        self.commentCountTipLabel.hidden = NO;
+        NSString *commentCountStr = [NSString stringWithFormat:@"%d",commentCount];
+        self.commentCountTipLabel.text = commentCountStr;
+        CGFloat width = [WYCommonUtils widthWithText:commentCountStr font:HitoPFSCRegularOfSize(11) lineBreakMode:NSLineBreakByWordWrapping] + 4*2;
+        if (width < 11 + 4*2) {
+            width = 11+4*2;
+        }
+        [self.commentCountTipLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(width);
+        }];
+    }
+}
+
 
 - (void)showCommentDetailVcWithSection:(NSInteger)section{
     if (section < 0 || section >= self.commentLists.count) {
@@ -257,6 +342,98 @@ LEShareSheetViewDelegate
     }
 }
 
+- (NSMutableArray *)outputRecursion:(NSArray *)comments result:(NSMutableArray *)result{
+    
+    [comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+            LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+            [result addObject:replyModel];
+            if (replyModel.children.count > 0) {
+                [self outputRecursion:replyModel.children result:result withReplyModel:replyModel];
+            }
+        }
+    }];
+    return result;
+}
+
+- (void)outputRecursion:(NSArray *)comments result:(NSMutableArray *)result withReplyModel:(LEReplyCommentModel *)replyModel{
+    
+    for (LEReplyCommentModel *childrenModel in comments) {
+        childrenModel.replyuId = replyModel.userId;
+        childrenModel.replyUserName = replyModel.userName;
+        [result addObject:childrenModel];
+        if (childrenModel.children.count > 0) {
+            [self outputRecursion:childrenModel.children result:result withReplyModel:childrenModel];
+        }
+    }
+}
+
+- (void)startTimer{
+    //设置定时器
+    if (_readTimer) {
+        [self stopTimer];
+    }
+    _readTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countReadNewsTime) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:_readTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)stopTimer{
+    [_readTimer invalidate];
+    _readTimer = nil;
+}
+
+- (void)countReadNewsTime{
+    _readDuration ++;
+    LELog(@"read news time:%d秒",_readDuration);
+}
+
+
+- (void)commontLongPressHandle:(CGRect)rect{
+    
+    [self becomeFirstResponder];
+    UIMenuController *menuCtl = [UIMenuController sharedMenuController];
+    NSArray *popMenuItems = [NSArray arrayWithObjects:[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyReplyTextAction:)],[[UIMenuItem alloc]initWithTitle:@"举报" action:@selector(copyReportTextAction:)], nil];
+    
+    [menuCtl setMenuVisible:NO];
+    [menuCtl setMenuItems:popMenuItems];
+    [menuCtl setArrowDirection:UIMenuControllerArrowDown];
+    [menuCtl setTargetRect:rect inView:self.view];
+    [menuCtl setMenuVisible:YES animated:YES];
+}
+
+-(void)copyReplyTextAction:(id)sender
+{
+    UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+    copyBoard.string = _longPressCommentModel.content;
+    [copyBoard setPersistent:YES];
+    _longPressCommentModel = nil;
+}
+
+-(void)copyReportTextAction:(id)sender
+{
+    NSString *commentId = _longPressCommentModel.commentId;
+    [SVProgressHUD showCustomWithStatus:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+    });
+}
+-(BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+//    UIMenuController * menuCtl = [UIMenuController sharedMenuController];
+//    BOOL bSameMenuInst = menuCtl == sender;
+    
+    if (action == @selector(copyReplyTextAction:) || action == @selector(copyReportTextAction:)) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsDetailRequest{
@@ -277,6 +454,47 @@ LEShareSheetViewDelegate
             WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
         }
         [WeakSelf setData];
+        [WeakSelf finishTaskRequest];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
+- (void)getRandomNewsRequest{
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetRandomNews"];
+    [self.networkManager POST:requesUrl needCache:YES caCheKey:nil parameters:nil responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
+        WeakSelf.recommendNewsArray = [NSMutableArray arrayWithArray:array];
+        WeakSelf.recommendNewsView.recommendNewsArray = WeakSelf.recommendNewsArray;
+        [WeakSelf refreshHeadViewShow];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
+- (void)checkFavoriteNewsRequest{
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"CheckFavoriteNews"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        self->_isCollect = [dataObject boolValue];
+        WeakSelf.collectButton.selected = self->_isCollect;
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -292,6 +510,7 @@ LEShareSheetViewDelegate
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    [params setObject:[LELoginUserManager userID]?[LELoginUserManager userID]:@"" forKey:@"userId"];
 
     NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
     BOOL needCache = NO;
@@ -310,25 +529,31 @@ LEShareSheetViewDelegate
         NSMutableArray *comments = [NSMutableArray array];
         [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            NSMutableArray *children = [NSMutableArray array];
+//            NSMutableArray *children = [NSMutableArray array];
             if ([obj isKindOfClass:[LENewsCommentModel class]]) {
                 LENewsCommentModel *commentModel = (LENewsCommentModel *)obj;
-                [commentModel.comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
-                        LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
-                        [children addObject:replyModel];
-                        
-                        for (LEReplyCommentModel *childrenModel in replyModel.children) {
-                            childrenModel.replyuId = replyModel.userId;
-                            childrenModel.replyUserName = replyModel.userName;
-                            [children addObject:childrenModel];
-                        }
-                    }
-                    if ([commentModel.comments lastObject] == obj) {
-                        commentModel.comments = children;
-                        *stop = YES;
-                    }
-                }];
+                
+                NSMutableArray *childrenResult = [NSMutableArray array];
+                [WeakSelf outputRecursion:commentModel.comments result:childrenResult];
+                commentModel.comments = childrenResult;
+                
+//                [commentModel.comments enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                    if ([obj isKindOfClass:[LEReplyCommentModel class]]) {
+//                        LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
+//                        [children addObject:replyModel];
+//
+//                        for (LEReplyCommentModel *childrenModel in replyModel.children) {
+//                            childrenModel.replyuId = replyModel.userId;
+//                            childrenModel.replyUserName = replyModel.userName;
+//                            [children addObject:childrenModel];
+//                        }
+//                    }
+//                    if ([commentModel.comments lastObject] == obj) {
+//                        commentModel.comments = children;
+//                        *stop = YES;
+//                    }
+//                }];
+                
                 [comments addObject:commentModel];
             }
         }];
@@ -426,8 +651,10 @@ LEShareSheetViewDelegate
 //    HitoWeakSelf;
     NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"DoLikeOrUnLike"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     [params setObject:commentModel.commentId forKey:@"commentId"];
     [params setObject:[NSNumber numberWithBool:like] forKey:@"doLike"];
+    [params setObject:[NSNumber numberWithInt:0] forKey:@"isCancel"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
@@ -482,6 +709,41 @@ LEShareSheetViewDelegate
     }];
 }
 
+- (void)finishTaskRequest{
+    
+    if (_isFromPush) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeReadPushInformation];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            if (success) {
+                [MBProgressHUD showCustomGoldTipWithTask:@"阅读推送" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+            }
+        }];
+    }
+}
+
+- (void)saveReadLogRequest{
+    
+//    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SaveReadLog"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    if (self.readDuration <= 0) {
+        return;
+    }
+    [params setObject:[NSNumber numberWithInt:self.readDuration] forKey:@"second"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (CommontHFView *)huView {
@@ -515,6 +777,35 @@ LEShareSheetViewDelegate
         _newsCommentHeadView = [[LENewsCommentHeadView alloc] init];
     }
     return _newsCommentHeadView;
+}
+
+- (LERecommendNewsView *)recommendNewsView{
+    if (!_recommendNewsView) {
+        _recommendNewsView = [[LERecommendNewsView alloc] init];
+        
+        HitoWeakSelf;
+        _recommendNewsView.didSelectRowAtIndex = ^(NSInteger index) {
+            LENewsListModel *newsModel = [WeakSelf.recommendNewsArray objectAtIndex:index];
+            DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+            detail.newsId = newsModel.newsId;
+            [WeakSelf.navigationController pushViewController:detail animated:YES];
+        };
+    }
+    return _recommendNewsView;
+}
+
+- (UILabel *)commentCountTipLabel{
+    if (!_commentCountTipLabel) {
+        _commentCountTipLabel = [[UILabel alloc] init];
+        _commentCountTipLabel.textColor = [UIColor whiteColor];
+        _commentCountTipLabel.font = HitoPFSCRegularOfSize(11);
+        _commentCountTipLabel.textAlignment = NSTextAlignmentCenter;
+        _commentCountTipLabel.layer.cornerRadius = 6.5;
+        _commentCountTipLabel.layer.masksToBounds = YES;
+        _commentCountTipLabel.hidden = YES;
+        _commentCountTipLabel.backgroundColor = [UIColor colorWithHexString:@"ee3626"];
+    }
+    return _commentCountTipLabel;
 }
 
 #pragma mark -
@@ -599,6 +890,7 @@ static int commentMaxCount = 10;
     LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
     
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
+    cell.delegate = self;
     [cell updateHeaderData:replyModel];
     return cell;
 }
@@ -701,6 +993,32 @@ static int commentMaxCount = 10;
     _currentRect = [self.tableView rectForHeaderInSection:section];
     
     [self prepareCommentHandle];
+}
+
+- (void)commontViewLongPressAction:(NSInteger)section headerView:(CommontHeaderView *)headerView{
+    
+    _longPressCommentModel = self.commentLists[section];
+    CGRect rect = [headerView convertRect:headerView.contentLabel.frame toView:self.view];
+    [self commontLongPressHandle:rect];
+}
+
+#pragma mark -
+#pragma mark - LECommentCellDelegate
+- (void)CommentCellLongPressActionWithCell:(CommentCell *)cell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (indexPath) {
+        LENewsCommentModel *commentModel = self.commentLists[indexPath.section];
+        if (indexPath.row == commentModel.comments.count) {
+            return;
+        }
+        _longPressCommentModel = [[LENewsCommentModel alloc] init];
+        LEReplyCommentModel *replyModel = commentModel.comments[indexPath.row];
+        _longPressCommentModel.commentId = replyModel.commentId;
+        _longPressCommentModel.content = replyModel.content;
+        
+        CGRect rect = [cell convertRect:cell.contentView.frame toView:self.view];
+        [self commontLongPressHandle:rect];
+    }
 }
 
 #pragma mark - 键盘

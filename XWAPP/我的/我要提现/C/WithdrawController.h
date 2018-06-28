@@ -10,17 +10,6 @@
 
 @interface WithdrawController : LESuperViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *zfbBtn;
-
-@property (weak, nonatomic) IBOutlet UIButton *wxBtn;
-@property (weak, nonatomic) IBOutlet UIButton *leftBtn;
-@property (weak, nonatomic) IBOutlet UIButton *centerBtn;
-@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
-@property (weak, nonatomic) IBOutlet UIImageView *zfbIM;
-@property (weak, nonatomic) IBOutlet UIImageView *wxIM;
-@property (weak, nonatomic) IBOutlet UIImageView *leftIM;
-@property (weak, nonatomic) IBOutlet UIImageView *centerIM;
-@property (weak, nonatomic) IBOutlet UIImageView *rightIM;
 
 @end

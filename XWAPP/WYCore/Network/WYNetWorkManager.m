@@ -253,7 +253,7 @@
             if (!message && status != WYRequestTypeSuccess) {
                 message = responseObject[kResponseObjectKeyObject];
                 if (message.length > 0) {
-                   [SVProgressHUD showCustomInfoWithStatus:message];
+                    [WYNetWorkExceptionHandling showProgressHUDWith:message URLString:URLString];
                 }
             }
             responseDataObject = responseObject[kResponseObjectKeyObject];
@@ -297,9 +297,11 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         LELog(@"failure error: %@",error);
-        [SVProgressHUD showCustomErrorWithStatus:HitoFaiNetwork];
         
         NSInteger statusCode = [error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode];
+        if (statusCode != WYRequestTypeUnauthorized) {
+            [SVProgressHUD showCustomErrorWithStatus:HitoFaiNetwork];
+        }
         [WYNetWorkExceptionHandling judgeReuqestStatus:statusCode URLString:URLString];
         if (failure) {
             failure(nil, error);

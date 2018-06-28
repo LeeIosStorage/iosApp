@@ -29,7 +29,8 @@ typedef NS_ENUM(NSInteger, LETaskCenterType) {
 @property (nonatomic, strong) NSString *taskTitle;
 @property (nonatomic, strong) NSString *taskDescription;
 @property (nonatomic, assign) LETaskCenterType taskType;
-@property (nonatomic, assign) NSInteger taskStatus;
+@property (nonatomic, assign) NSInteger type;//1新手任务 2日常任务
+@property (nonatomic, assign) NSInteger taskStatus;//0未完成 1已完成
 
 @property (nonatomic, strong) NSString *coin;
 @property (nonatomic, assign) NSInteger coinType;

@@ -12,36 +12,39 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WYShareManager.h"
 #import "UMSocialWechatHandler.h"
+#import <UMCommon/UMCommon.h>
+#import <UMCommonLog/UMCommonLogHeaders.h>
+#import "JPUSHService.h"
+#import "LELinkerHandler.h"
+#import "DetailController.h"
+#import <UserNotifications/UserNotifications.h>
+#import "LELoginAuthManager.h"
 
 @interface AppDelegate ()
+<
+JPUSHRegisterDelegate
+>
+@property (nonatomic, strong) NSDictionary *launchOptions;
+
+@property (nonatomic, assign) BOOL pushNotificationKey;
 
 @end
 
 @implementation AppDelegate
 
-
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [self configUSharePlatforms];
-//    [self confitUShareSettings];
-//    // Override point for customization after application launch.
-//    return YES;
-//}
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    // UMConfigure 通用设置，请参考SDKs集成做统一初始化。
-    // 以下仅列出U-Share初始化部分
+    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+        
+    }];
     
     [SVProgressHUD setCurrentDefaultStyle];
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
     
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
+    _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
     
-    // U-Share 平台设置
+    // 三方SDK注册
     [self configUSharePlatforms];
-    [self confitUShareSettings];
-    
-    // Custom code
     
     
     [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
@@ -52,32 +55,33 @@
     [UINavigationBar appearance].topItem.title = @"";
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:HitoPFSCRegularOfSize(17)}];
     
+    if (launchOptions) {
+        //当程序处于关闭状态收到推送消息时，点击图标调用
+        NSDictionary* pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (pushNotificationKey) {
+            self->_pushNotificationKey = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleReceiveRemoteNotification:pushNotificationKey];
+            });
+        }
+    }
+    
     return YES;
-}
-
-- (void)confitUShareSettings
-{
-    /*
-     * 打开图片水印
-     */
-    //[UMSocialGlobal shareInstance].isUsingWaterMark = YES;
-    
-    /*
-     * 关闭强制验证https，可允许http图片分享，但需要在info.plist设置安全域名
-     <key>NSAppTransportSecurity</key>
-     <dict>
-     <key>NSAllowsArbitraryLoads</key>
-     <true/>
-     </dict>
-     */
-    //[UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
-    
 }
 
 - (void)configUSharePlatforms
 {
+    //友盟统计
+//    [UMCommonLogManager setUpUMCommonLogManager];
+//    [UMConfigure setLogEnabled:YES];
+    [UMConfigure setEncryptEnabled:YES];
+    [UMConfigure initWithAppkey:UMS_APPKEY channel:@"App Store"];
+    [MobClick setScenarioType:E_UM_NORMAL];
+    
     [[UMSocialManager defaultManager] setUmSocialAppkey:UMS_APPKEY];
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WX_ID appSecret:WX_Secret redirectURL:nil];
+
+    [self registerAPService];
     
 }
 
@@ -91,6 +95,7 @@
 //        _isUMSocialLogin = NO;
         return [[UMSocialManager defaultManager] handleOpenURL:url];
     }
+//    [TencentOAuth CanHandleOpenURL:url]
     
     if ([scheme hasPrefix:@"wx"]) {
         return [WXApi handleOpenURL:url delegate:[WYShareManager shareInstance]];
@@ -125,11 +130,20 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+//    [application setApplicationIconBadgeNumber:0];
+    
+    [self resetBageNumber];
+    [JPUSHService resetBadge];
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+//    [application setApplicationIconBadgeNumber:0];
+//    [application cancelAllLocalNotifications];
+//    [JPUSHService resetBadge];
 }
 
 
@@ -142,5 +156,165 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSLog(@"%@", [NSString stringWithFormat:@"Device Token: %@", deviceToken]);
+    [JPUSHService registerDeviceToken:deviceToken];
+}
+
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [JPUSHService handleRemoteNotification:userInfo];
+    LELog(@"收到通知:%@", userInfo);
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    if (state == UIApplicationStateInactive) {
+        //在后台 点击图标调用
+        [self handleReceiveRemoteNotification:userInfo];
+    }
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+//    [JPUSHService handleRemoteNotification:userInfo];
+    LELog(@"收到通知:%@", userInfo);
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        //在前台
+        if ([userInfo objectForKey:@"aps"]) {
+            [self handleReceiveWithApplicationStateActive:userInfo];
+        }
+    }else {
+        //在后台
+//        [self handleReceiveRemoteNotification:userInfo];
+    }
+    
+    completionHandler(UIBackgroundFetchResultNewData);
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    //    [JPUSHService showLocalNotificationAtFront:notification identifierKey:nil];
+}
+
+//不在appIcon上显示推送数量，但是在系统通知栏保留推送通知的方法
+-(void)resetBageNumber{
+    if(HitoiOS11){
+        /*
+         iOS 11后，直接设置badgeNumber = -1就生效了
+         */
+        [UIApplication sharedApplication].applicationIconBadgeNumber = -1;
+    }else{
+        UILocalNotification *clearEpisodeNotification = [[UILocalNotification alloc] init];
+        clearEpisodeNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:(0.3)];
+        clearEpisodeNotification.timeZone = [NSTimeZone defaultTimeZone];
+        clearEpisodeNotification.applicationIconBadgeNumber = -1;
+        [[UIApplication sharedApplication] scheduleLocalNotification:clearEpisodeNotification];
+    }
+}
+
+#pragma mark -
+#pragma mark - JPUSH
+- (void)registerAPService{
+    //JPush注册
+    JPUSHRegisterEntity *entity = [[JPUSHRegisterEntity alloc] init];
+    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
+    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    
+    NSString *advertisingId = [WYCommonUtils UUIDString];
+    [JPUSHService setupWithOption:_launchOptions appKey:JPUSH_APPKEY
+                          channel:JPUSH_CHANNLE apsForProduction:APS_FOR_PRODUCTION advertisingIdentifier:advertisingId];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetJPushTagsAndAlias) name:kJPFNetworkDidLoginNotification object:nil];
+}
+
+- (void)resetJPushTagsAndAlias {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kJPFNetworkDidLoginNotification object:nil];
+    NSString *alias = nil;
+    NSString *testPrefix = @"";
+    if (![[WYAPIGenerate sharedInstance].netWorkHost isEqualToString:defaultNetworkHost]) {
+        testPrefix = @"test_"; //配置测试环境推送
+    }
+    if ([LELoginUserManager userID]) {
+        alias = [NSString stringWithFormat:@"%@member_%@",testPrefix,[LELoginUserManager userID]];
+    }
+    NSMutableSet *mSet = [NSMutableSet setWithObject:[NSString stringWithFormat:@"%@members",testPrefix]];
+    mSet = [NSMutableSet setWithSet:[JPUSHService filterValidTags:mSet]];
+    
+    [JPUSHService setAlias:alias completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        LELog(@"setAlias iResCode:%ld iAlias:%@ seq%ld",iResCode,iAlias,seq);
+    } seq:0];
+    [JPUSHService setTags:mSet completion:^(NSInteger iResCode, NSSet *iTags, NSInteger seq) {
+        LELog(@"setTags iResCode:%ld iTags:%@ seq%ld",iResCode,iTags,seq);
+    } seq:1];
+}
+
+- (void)handleReceiveWithApplicationStateActive:(NSDictionary *)userInfo{
+    
+    if (![[userInfo objectForKey:@"lecategory"] isEqualToString:@"news"]) {
+        return;
+    }
+    NSString *message = [NSString stringWithFormat:@"%@>>>",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"推送要闻" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"忽略" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    HitoWeakSelf;
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"查看详情" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [WeakSelf handleReceiveRemoteNotification:userInfo];
+    }];
+    [alertController addAction:action1];
+    [alertController addAction:action2];
+    [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)handleReceiveRemoteNotification:(NSDictionary *)userInfo{
+    
+    if ([userInfo objectForKey:@"lecategory"]) {
+        NSString *wyHref = [NSString stringWithFormat:@"lecategory://%@?objId=%@",[userInfo objectForKey:@"lecategory"],[userInfo objectForKey:@"leobject"]];
+        UIViewController *pushVc = [LELinkerHandler handleDealWithHref:wyHref From:nil];
+        DetailController *newsDetailVc = nil;
+        if ([pushVc isKindOfClass:[DetailController class]]) {
+            newsDetailVc = (DetailController *)pushVc;
+            newsDetailVc.isFromPush = YES;
+        }
+        if (newsDetailVc) {
+            UIViewController *superViewController = [WYCommonUtils getCurrentVC];
+            [superViewController.navigationController pushViewController:newsDetailVc animated:YES];
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark - JPUSHRegisterDelegate
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler API_AVAILABLE(ios(10.0)){
+
+    NSDictionary * userInfo = notification.request.content.userInfo;
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+    }
+    else {
+        // 本地通知
+    }
+    completionHandler(UNNotificationPresentationOptionSound); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
+}
+
+// iOS 10 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler: (void (^)())completionHandler  API_AVAILABLE(ios(10.0)){
+    NSDictionary * userInfo = response.notification.request.content.userInfo;
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+        
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        if (state == UIApplicationStateInactive && !_pushNotificationKey) {
+            [self handleReceiveRemoteNotification:userInfo];
+        }else{
+            _pushNotificationKey = NO;
+        }
+        
+    }else {
+        // 本地通知
+    }
+    completionHandler();
+}
 
 @end

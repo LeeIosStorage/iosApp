@@ -9,10 +9,19 @@
 #import "WYCommonUtils.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+LEAdd.h"
+#import <AdSupport/AdSupport.h>
 
 #define DAY_SECOND 60*60*24
 
 @implementation WYCommonUtils
+
++ (float)widthWithText:(NSString *)text font:(UIFont *)font lineBreakMode:(NSLineBreakMode)lineBreakMode{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+    paragraphStyle.lineBreakMode = lineBreakMode;
+    NSDictionary *attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle.copy};
+    float titleLabelWidth = [text sizeWithAttributes:attributes].width;
+    return titleLabelWidth;
+}
 
 + (CGSize)sizeWithAttributedText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font width:(float)width{
     
@@ -183,6 +192,39 @@ static bool dateFormatterOFUSInvalid;
     
 }
 
++ (NSString*)dateDayToDayDiscriptionFromDate:(NSDate*)date{
+    
+    NSString *timestamp = nil;
+    NSDate *nowDate = [NSDate date];
+    if (date == nil) {
+        return @"";
+    }
+    int distance = [nowDate timeIntervalSinceDate:date];
+    if (distance < 0) {
+        distance = 0;
+    }
+    NSCalendar *calender = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute |NSCalendarUnitSecond | NSCalendarUnitWeekday;
+    NSDateComponents *comps = [calender components:unitFlags fromDate:date];
+    NSDateComponents *compsNow = [calender components:unitFlags fromDate:nowDate];
+    
+    if (distance > 0) {
+        if (distance < DAY_SECOND) {
+            if (comps.day == compsNow.day){
+                timestamp = @"今天";
+            }else timestamp = @"昨天";
+            
+        }else{
+            timestamp = [NSString stringWithFormat:@"%d月%d日", (int)comps.month, (int)comps.day];
+        }
+    }else{
+        timestamp = [NSString stringWithFormat:@"%d月%d日", (int)comps.month, (int)comps.day];
+    }
+    
+    return timestamp;
+}
+
 + (int)getAgeWithBirthdayDate:(NSDate *)date{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
@@ -214,6 +256,14 @@ static bool dateFormatterOFUSInvalid;
     
     NSString *ts = [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute,second];
     return ts;
+}
+
++(long long)getDateTimeTOMilliSeconds:(NSDate *)datetime{
+    
+    NSTimeInterval interval = [datetime timeIntervalSince1970];
+    long long totalMilliseconds = interval*1000;
+    return totalMilliseconds;
+    
 }
 
 #pragma mark -
@@ -264,6 +314,22 @@ static bool dateFormatterOFUSInvalid;
     }
 }
 
++(NSDictionary *)getParamDictFromUrl:(NSURL *)url{
+    
+    NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    
+    NSMutableDictionary<NSString *, NSString *>* queryParams = [NSMutableDictionary<NSString *, NSString *> new];
+    for (NSURLQueryItem* queryItem in [urlComponents queryItems])
+    {
+        if (queryItem.value == nil)
+        {
+            continue;
+        }
+        [queryParams setObject:queryItem.value forKey:queryItem.name];
+    }
+    return queryParams;
+}
+
 #pragma mark -
 #pragma mark - 动画
 //👍
@@ -302,6 +368,47 @@ static bool dateFormatterOFUSInvalid;
         return YES;
     }
     return NO;
+}
+
+#pragma mark - 设备标识
++ (NSString *)UUIDString{
+    
+//    if (![[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
+//        return nil;
+//    }
+    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    return advertisingId;
+}
+
+#pragma mark - common
++ (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    if ([nextResponder isKindOfClass:[UITabBarController class]]) {
+        NSInteger index = ((UITabBarController *)nextResponder).selectedIndex;
+        UINavigationController *nav = [(UITabBarController *)nextResponder viewControllers][index];
+        nextResponder = [nav.viewControllers lastObject];
+    }
+    result = nextResponder;
+    
+    return result;
 }
 
 @end

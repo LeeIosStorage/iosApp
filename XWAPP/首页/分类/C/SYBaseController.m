@@ -45,6 +45,7 @@ HitoPropertyNSArray(allChannelArray);
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     _viewDidAppear = NO;
+    [MobClick endLogPageView:[NSString stringWithFormat:@"%@",NSStringFromClass([self class])]];
 }
 
 - (void)viewDidLoad {
@@ -62,7 +63,7 @@ HitoPropertyNSArray(allChannelArray);
     self.navigationController.navigationBar.translucent = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     //    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    
+    [MobClick beginLogPageView:[NSString stringWithFormat:@"%@",NSStringFromClass([self class])]];
 }
 
 - (void)tabBarSelectRefreshData{
@@ -227,6 +228,8 @@ HitoPropertyNSArray(allChannelArray);
 }
 
 - (void)actionButton {
+    
+    [MobClick event:kHomeSearchBarClick];
     SearchController *search = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SearchController"];
     [self.navigationController pushViewController:search animated:YES];
 }
@@ -277,6 +280,8 @@ HitoPropertyNSArray(allChannelArray);
 
 - (void)pageController:(WMPageController *)pageController didEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
     if ([viewController isKindOfClass:[SYBaseVC class]]) {
+        SYBaseVC *baseVc = (SYBaseVC *)viewController;
+        [MobClick event:kHomeNewsChannelClick label:baseVc.tagTitle];
         [viewController refreshData];
     }
 }

@@ -19,12 +19,10 @@
             return YES;
             break;
             case WYRequestTypeUnauthorized:
-            [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
             break;
             case WYRequestTypeNotLogin:
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
-
             break;
         default:
             
@@ -33,17 +31,30 @@
     return YES;
 }
 
++ (void)showProgressHUDWith:(NSString *)message URLString:(NSString *)URLString{
+    BOOL isShow = YES;
+    NSURL *realUrl = [NSURL URLWithString:URLString];
+    NSString *urlPath = [realUrl path];
+    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"] || [urlPath isEqualToString:@"/api/user/SaveReadLog"]) {
+        isShow = NO;
+    }
+    if (isShow) {
+        [SVProgressHUD showCustomInfoWithStatus:message];
+    }
+}
+
 + (void)reLogin:(NSString *)URLString requestType:(WYRequestType)type{
     
     BOOL isNeedGotoLogin = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/msg/typeCount"] || [urlPath isEqualToString:@"/my/statistics"] || [urlPath isEqualToString:@"/statistics/userCoin"] ||[urlPath isEqualToString:@"/statistics/todayIncome"]) {
+    if ([urlPath isEqualToString:@"/api/user/CheckFavoriteNews"] || [urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"]) {
         isNeedGotoLogin = NO;
     }
     
     if (isNeedGotoLogin) {
         if (type == WYRequestTypeUnauthorized) {
+            [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling delayLogin];
         }else if (type == WYRequestTypeNotLogin){
             //未登录,需要登录
@@ -62,8 +73,8 @@
 
 + (void)resetLogin{
     
-    __weak UIViewController *currentVC = [WYNetWorkExceptionHandling getCurrentVC];
-    [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:currentVC showCancelButton:YES success:^{
+    __weak UIViewController *currentVC = [WYCommonUtils getCurrentVC];
+    [[LELoginManager sharedInstance] showLoginViewControllerFromPresentViewController:[WYCommonUtils getCurrentVC] showCancelButton:YES success:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
         if ([currentVC isKindOfClass:[LESuperViewController class]]) {
             LESuperViewController *superVc = (LESuperViewController *)currentVC;
@@ -75,36 +86,6 @@
     } cancel:^{
         
     }];
-}
-
-+ (UIViewController *)getCurrentVC
-{
-    UIViewController *result = nil;
-    
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal)
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows)
-        {
-            if (tmpWin.windowLevel == UIWindowLevelNormal)
-            {
-                window = tmpWin;
-                break;
-            }
-        }
-    }
-    
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    if ([nextResponder isKindOfClass:[UITabBarController class]]) {
-        NSInteger index = ((UITabBarController *)nextResponder).selectedIndex;
-        UINavigationController *nav = [(UITabBarController *)nextResponder viewControllers][index];
-        nextResponder = [nav.viewControllers lastObject];
-    }
-    result = nextResponder;
-    
-    return result;
 }
 
 @end

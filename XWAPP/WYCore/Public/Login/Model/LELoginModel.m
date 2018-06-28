@@ -15,6 +15,10 @@
              @"headImgUrl":@"head_img_url",
              @"regTime":@"reg_time",
              @"wxNickname" : @"wechat",
+             @"readDuration" : @"read_duration",
+             @"todayGolds" : @"today_golds",
+             @"totalGolds" : @"total_golds",
+             @"invitationCode" : @"invitation_code",
              };
 }
 

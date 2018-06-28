@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol LECommentCellDelegate;
+
 @interface CommentCell : UITableViewCell
 
+@property (weak, nonatomic) id <LECommentCellDelegate> delegate;
+
 - (void)updateHeaderData:(id)data;
+
+@end
+
+@protocol LECommentCellDelegate <NSObject>
+@optional
+- (void)CommentCellLongPressActionWithCell:(CommentCell *)cell;
 
 @end

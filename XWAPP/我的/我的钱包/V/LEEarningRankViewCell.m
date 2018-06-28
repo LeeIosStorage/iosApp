@@ -43,7 +43,7 @@
     
     self.userIdLabel.text = rankModel.userId;
     self.apprenticeLabel.text = [NSString stringWithFormat:@"%d",rankModel.apprenticeCount];
-    self.moneyLabel.text = rankModel.money;
+    self.moneyLabel.text = [NSString stringWithFormat:@"%.2f",[rankModel.balance floatValue]];
     
     self.topLabel.text = [NSString stringWithFormat:@"%ld",_row+1];
     self.topLabel.hidden = NO;

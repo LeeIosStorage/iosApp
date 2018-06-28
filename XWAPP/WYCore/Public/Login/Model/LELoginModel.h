@@ -24,4 +24,11 @@
 @property (strong, nonatomic) NSString *education;
 @property (strong, nonatomic) NSString *wxNickname;
 
+@property (strong, nonatomic) NSString *invitationCode;
+@property (assign, nonatomic) double readDuration;
+@property (assign, nonatomic) double balance;
+@property (assign, nonatomic) double income;
+@property (assign, nonatomic) NSInteger todayGolds;
+@property (assign, nonatomic) NSInteger totalGolds;
+
 @end

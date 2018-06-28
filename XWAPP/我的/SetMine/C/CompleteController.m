@@ -407,7 +407,9 @@ HitoPropertyNSMutableArray(jobData);
     
     _board = [[[NSBundle mainBundle] loadNibNamed:@"SetKeyBoard" owner:self options:nil] firstObject];
     _board.frame = CGRectMake(0, HitoScreenH, HitoScreenW, 98);
+    _board.nameTF.text = [LELoginUserManager nickName];
     [_board.nameTF becomeFirstResponder];
+    
     
     [_board clickCancelBlock:^{
         [backView removeFromSuperview];
@@ -514,7 +516,8 @@ HitoPropertyNSMutableArray(jobData);
         if (success) {
             [SVProgressHUD dismiss];
             WeakSelf.userModel.wxNickname = [LELoginUserManager wxNickname];
-            [WeakSelf saveUserInfoRequest];
+            [WeakSelf.tableView reloadData];
+            [WeakSelf refreshUserInfo];
         }
     }];
 }

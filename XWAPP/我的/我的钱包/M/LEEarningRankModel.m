@@ -10,4 +10,11 @@
 
 @implementation LEEarningRankModel
 
++ (NSDictionary *)modelCustomPropertyMapper {
+    return @{@"rId"  : @"id",
+             @"userId" : @"uid",
+             @"apprenticeCount" : @"tudi_num",
+             };
+}
+
 @end

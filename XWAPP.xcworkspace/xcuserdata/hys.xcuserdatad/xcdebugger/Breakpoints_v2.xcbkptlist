@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/DetailController.m"
-            timestampString = "550050755.468258"
+            filePath = "XWAPP/WYCore/Network/WYNetWorkManager.m"
+            timestampString = "551757180.165346"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
-            landmarkName = "-setData"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "-setHttpHeader:needHeaderAuth:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/WYCore/Manager/WYShareManager.m"
-            timestampString = "549463774.26773"
+            filePath = "XWAPP/&#x6211;&#x7684;/&#x6211;&#x7684;&#x94b1;&#x5305;/C/MyWallet.m"
+            timestampString = "551758009.588351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
-            landmarkName = "-shareToWb:title:description:webpageUrl:image:VC:isVideo:"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
+            landmarkName = "-sendState:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/Login/C/PhoneLogin.m"
-            timestampString = "550391793.020478"
+            filePath = "XWAPP/APPDelegate/AppDelegate.m"
+            timestampString = "551793555.014378"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
-            landmarkName = "-refreshUserInfoRequest"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "-application:didReceiveRemoteNotification:fetchCompletionHandler:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/LECommentDetailViewController.m"
-            timestampString = "550392344.041214"
+            filePath = "XWAPP/APPDelegate/AppDelegate.m"
+            timestampString = "551793555.014726"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "-getNewsCommentsRequest"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
+            landmarkName = "-handleReceiveRemoteNotification:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,61 +89,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/LECommentDetailViewController.m"
-            timestampString = "550392543.209795"
+            filePath = "XWAPP/WYCore/Manager/LELinkerHandler.m"
+            timestampString = "551698529.892042"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-getNewsCommentsRequest"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "+handleDealWithHref:From:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LECommentDetailViewController getNewsCommentsRequest]"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392543.548071"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "150"
-                  endingLineNumber = "150"
-                  offsetFromSymbolStart = "748">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__55-[LECommentDetailViewController getNewsCommentsRequest]_block_invoke"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392543.55037"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "152"
-                  endingLineNumber = "152"
-                  offsetFromSymbolStart = "96">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.206"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392543.552273"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "150"
-                  endingLineNumber = "150"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -152,61 +105,30 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XWAPP/&#x9996;&#x9875;/Detail/C/LECommentDetailViewController.m"
-            timestampString = "550392591.710005"
+            filePath = "XWAPP/&#x9996;&#x9875;/Detail/V/CommentCell.m"
+            timestampString = "551867365.491472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
-            landmarkName = "-sendCommentRequestWith:"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "-setupSubviews"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LECommentDetailViewController sendCommentRequestWith:]"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392591.935756"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "231"
-                  endingLineNumber = "231"
-                  offsetFromSymbolStart = "1112">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__56-[LECommentDetailViewController sendCommentRequestWith:]_block_invoke"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392591.938199"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "233"
-                  endingLineNumber = "233"
-                  offsetFromSymbolStart = "92">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.240"
-                  moduleName = "XWAPP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hys/iosApp/XWAPP/%E9%A6%96%E9%A1%B5/Detail/C/LECommentDetailViewController.m"
-                  timestampString = "550392591.941304"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "231"
-                  endingLineNumber = "231"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XWAPP/&#x9996;&#x9875;/Detail/V/CommentCell.m"
+            timestampString = "551867365.491539"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "-initWithStyle:reuseIdentifier:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

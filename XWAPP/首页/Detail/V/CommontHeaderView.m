@@ -18,8 +18,6 @@
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UIButton *favourButton;
 
-@property (strong, nonatomic) UILabel *contentLabel;
-
 @end
 
 @implementation CommontHeaderView
@@ -216,6 +214,13 @@
             }
         }];
         [_contentLabel addGestureRecognizer:tap];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
+            if (WeakSelf.delegate && [WeakSelf.delegate respondsToSelector:@selector(commontViewLongPressAction:headerView:)]) {
+                [WeakSelf.delegate commontViewLongPressAction:WeakSelf.section headerView:WeakSelf];
+            }
+        }];
+        [_contentLabel addGestureRecognizer:longPress];
         
     }
     return _contentLabel;

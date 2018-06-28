@@ -135,6 +135,18 @@ CommontHeaderViewDelegate
     
 }
 
+- (void)outputRecursion:(NSArray *)comments result:(NSMutableArray *)result withReplyModel:(LEReplyCommentModel *)replyModel{
+    
+    for (LEReplyCommentModel *childrenModel in comments) {
+        childrenModel.replyuId = replyModel.userId;
+        childrenModel.replyUserName = replyModel.userName;
+        [result addObject:childrenModel];
+        if (childrenModel.children.count > 0) {
+            [self outputRecursion:childrenModel.children result:result withReplyModel:childrenModel];
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsCommentsRequest{
@@ -164,11 +176,7 @@ CommontHeaderViewDelegate
                 LEReplyCommentModel *replyModel = (LEReplyCommentModel *)obj;
                 [children addObject:replyModel];
                 
-                for (LEReplyCommentModel *childrenModel in replyModel.children) {
-                    childrenModel.replyuId = replyModel.userId;
-                    childrenModel.replyUserName = replyModel.userName;
-                    [children addObject:childrenModel];
-                }
+                [WeakSelf outputRecursion:replyModel.children result:children withReplyModel:replyModel];
             }
             if ([array lastObject] == obj) {
                 *stop = YES;
@@ -235,7 +243,7 @@ CommontHeaderViewDelegate
         }
         [SVProgressHUD showCustomSuccessWithStatus:@"评论成功"];
         WeakSelf.huView.hufuTF.text = nil;
-//        [WeakSelf getNewsCommentsRequest];
+        [WeakSelf getNewsCommentsRequest];
         
     } failure:^(id responseObject, NSError *error) {
         

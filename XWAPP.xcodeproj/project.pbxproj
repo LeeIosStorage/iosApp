@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C037EC120E0947F00A0F853 /* LEFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */; };
+		4C037EC220E0947F00A0F853 /* LEFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */; };
+		4C037EC720E0C97800A0F853 /* LEWithdrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */; };
+		4C037ECA20E0CAA600A0F853 /* LEWithdrawItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */; };
 		4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */; };
 		4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */; };
 		4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C20CB9920B26F14003EC050 /* LEBaseModel.m */; };
@@ -48,8 +52,13 @@
 		4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863720AACBDB000D647F /* LESuperViewController.m */; };
 		4C61863B20AB10DB000D647F /* WYCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863A20AB10DB000D647F /* WYCommonUtils.m */; };
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
+		4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */; };
+		4C65760D20DD0D6F0059FCE4 /* StatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C65760C20DD0D6E0059FCE4 /* StatusView.xib */; };
+		4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
+		4CA8158920E39E9B00A42A7D /* LERecommendNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */; };
+		4CA8158C20E4AFC300A42A7D /* LESearchKeywordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */; };
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
@@ -171,7 +180,6 @@
 		EC72BC2A208EDD1F00FADE74 /* BaseTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC28208EDD1F00FADE74 /* BaseTwoCell.m */; };
 		EC72BC2B208EDD1F00FADE74 /* BaseTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC29208EDD1F00FADE74 /* BaseTwoCell.xib */; };
 		EC72BC2E208EDFB200FADE74 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC2D208EDFB200FADE74 /* StatusView.m */; };
-		EC72BC30208EDFB800FADE74 /* StatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC2F208EDFB800FADE74 /* StatusView.xib */; };
 		EC72BC33208F0ACB00FADE74 /* UIView+Xib.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC32208F0ACB00FADE74 /* UIView+Xib.m */; };
 		EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC72BC35208F1D2300FADE74 /* RefrestInfoView.m */; };
 		EC72BC38208F1D2A00FADE74 /* RefrestInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC72BC37208F1D2A00FADE74 /* RefrestInfoView.xib */; };
@@ -212,6 +220,13 @@
 		0A7E330BE5975AA1B157951C /* Pods-XWAPPUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XWAPPUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-XWAPPUITests/Pods-XWAPPUITests.release.xcconfig"; sourceTree = "<group>"; };
 		151DDC3AFFB8B408CE27F06A /* Pods-XWAPPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XWAPPTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XWAPPTests/Pods-XWAPPTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3281F87DD4499B479FB1DE93 /* libPods-XWAPPTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-XWAPPTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C037EBE20E0947F00A0F853 /* LEFeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEFeedbackViewController.h; sourceTree = "<group>"; };
+		4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEFeedbackViewController.m; sourceTree = "<group>"; };
+		4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LEFeedbackViewController.xib; sourceTree = "<group>"; };
+		4C037EC520E0C97800A0F853 /* LEWithdrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWithdrawModel.h; sourceTree = "<group>"; };
+		4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWithdrawModel.m; sourceTree = "<group>"; };
+		4C037EC820E0CAA600A0F853 /* LEWithdrawItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEWithdrawItemView.h; sourceTree = "<group>"; };
+		4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEWithdrawItemView.m; sourceTree = "<group>"; };
 		4C0E5DB220A52FDC009DE9B6 /* CommontHFView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommontHFView.h; sourceTree = "<group>"; };
 		4C0E5DB320A52FDC009DE9B6 /* CommontHFView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommontHFView.m; sourceTree = "<group>"; };
 		4C0E5DB520A52FE3009DE9B6 /* CommontHFView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommontHFView.xib; sourceTree = "<group>"; };
@@ -290,10 +305,20 @@
 		4C61863A20AB10DB000D647F /* WYCommonUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCommonUtils.m; sourceTree = "<group>"; };
 		4C61863C20ABC6B7000D647F /* UIImage+LEAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEAdd.h"; sourceTree = "<group>"; };
 		4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEAdd.m"; sourceTree = "<group>"; };
+		4C65760820D9FAA30059FCE4 /* XWAPP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XWAPP.entitlements; sourceTree = "<group>"; };
+		4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELinkerHandler.h; sourceTree = "<group>"; };
+		4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELinkerHandler.m; sourceTree = "<group>"; };
+		4C65760C20DD0D6E0059FCE4 /* StatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusView.xib; sourceTree = "<group>"; };
+		4C971A8E20D3A10A008DE244 /* MBProgressHUD+LETools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LETools.h"; sourceTree = "<group>"; };
+		4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LETools.m"; sourceTree = "<group>"; };
 		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
 		4CA6877B20B6A56B004588FC /* LESearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchBar.m; sourceTree = "<group>"; };
 		4CA6877D20B79BAF004588FC /* LECommentDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentDetailViewController.h; sourceTree = "<group>"; };
 		4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentDetailViewController.m; sourceTree = "<group>"; };
+		4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERecommendNewsView.h; sourceTree = "<group>"; };
+		4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERecommendNewsView.m; sourceTree = "<group>"; };
+		4CA8158A20E4AFC300A42A7D /* LESearchKeywordView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchKeywordView.h; sourceTree = "<group>"; };
+		4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchKeywordView.m; sourceTree = "<group>"; };
 		4CAA26D420B557AD00B7CF31 /* LEShareSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareSheetView.h; sourceTree = "<group>"; };
 		4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareSheetView.m; sourceTree = "<group>"; };
 		4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareWindow.h; sourceTree = "<group>"; };
@@ -515,7 +540,6 @@
 		EC72BC29208EDD1F00FADE74 /* BaseTwoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseTwoCell.xib; sourceTree = "<group>"; };
 		EC72BC2C208EDFB200FADE74 /* StatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusView.h; sourceTree = "<group>"; };
 		EC72BC2D208EDFB200FADE74 /* StatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusView.m; sourceTree = "<group>"; };
-		EC72BC2F208EDFB800FADE74 /* StatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusView.xib; sourceTree = "<group>"; };
 		EC72BC31208F0ACA00FADE74 /* UIView+Xib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Xib.h"; sourceTree = "<group>"; };
 		EC72BC32208F0ACB00FADE74 /* UIView+Xib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Xib.m"; sourceTree = "<group>"; };
 		EC72BC34208F1D2300FADE74 /* RefrestInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RefrestInfoView.h; sourceTree = "<group>"; };
@@ -587,6 +611,24 @@
 				8BE541F6EDF6A81D327CD89B /* libPods-XWAPPUITests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4C037EC320E0C92000A0F853 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4C037EC820E0CAA600A0F853 /* LEWithdrawItemView.h */,
+				4C037EC920E0CAA600A0F853 /* LEWithdrawItemView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4C037EC420E0C93900A0F853 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4C037EC520E0C97800A0F853 /* LEWithdrawModel.h */,
+				4C037EC620E0C97800A0F853 /* LEWithdrawModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		4C20CB9320B26E7B003EC050 /* Public */ = {
@@ -692,6 +734,8 @@
 				4CAA26DA20B595E100B7CF31 /* WYShareManager.m */,
 				4CB76B7B20C011720092503E /* LELoginAuthManager.h */,
 				4CB76B7C20C011720092503E /* LELoginAuthManager.m */,
+				4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */,
+				4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -797,6 +841,8 @@
 				4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */,
 				4C20CBA220B2BD45003EC050 /* SVProgressHUD+LETools.h */,
 				4C20CBA320B2BD45003EC050 /* SVProgressHUD+LETools.m */,
+				4C971A8E20D3A10A008DE244 /* MBProgressHUD+LETools.h */,
+				4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */,
 				4C3F3C1A20AEFB0300B754AF /* PathHelper.h */,
 				4C3F3C1B20AEFB0400B754AF /* PathHelper.m */,
 				4CB76B5620BD50AE0092503E /* UIImage+ProportionalFill.h */,
@@ -913,6 +959,8 @@
 			isa = PBXGroup;
 			children = (
 				4CF22CB820A2C6A3000904F4 /* C */,
+				4C037EC320E0C92000A0F853 /* View */,
+				4C037EC420E0C93900A0F853 /* Model */,
 			);
 			path = "我要提现";
 			sourceTree = "<group>";
@@ -1167,6 +1215,9 @@
 				4CB76B4A20BD281E0092503E /* LEChangePasswordViewController.h */,
 				4CB76B4B20BD281F0092503E /* LEChangePasswordViewController.m */,
 				4CB76B4C20BD281F0092503E /* LEChangePasswordViewController.xib */,
+				4C037EBE20E0947F00A0F853 /* LEFeedbackViewController.h */,
+				4C037EBF20E0947F00A0F853 /* LEFeedbackViewController.m */,
+				4C037EC020E0947F00A0F853 /* LEFeedbackViewController.xib */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -1289,6 +1340,8 @@
 				4C3F3C0D20ADABA200B754AF /* LENewsDetailHeaderView.m */,
 				4C3F3C1D20AFC79600B754AF /* LENewsCommentHeadView.h */,
 				4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */,
+				4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */,
+				4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -1332,6 +1385,7 @@
 		EC72BBA8208D6EA400FADE74 /* XWAPP */ = {
 			isa = PBXGroup;
 			children = (
+				4C65760820D9FAA30059FCE4 /* XWAPP.entitlements */,
 				EC72BBDC208D747D00FADE74 /* APPDelegate */,
 				4C61862220AAB7A5000D647F /* WYCore */,
 				4CF22CA520A29A91000904F4 /* HTML */,
@@ -1462,7 +1516,7 @@
 				EC72BC24208EDCE300FADE74 /* BaseThirdCell.xib */,
 				EC72BC2C208EDFB200FADE74 /* StatusView.h */,
 				EC72BC2D208EDFB200FADE74 /* StatusView.m */,
-				EC72BC2F208EDFB800FADE74 /* StatusView.xib */,
+				4C65760C20DD0D6E0059FCE4 /* StatusView.xib */,
 				EC72BC34208F1D2300FADE74 /* RefrestInfoView.h */,
 				EC72BC35208F1D2300FADE74 /* RefrestInfoView.m */,
 				EC72BC37208F1D2A00FADE74 /* RefrestInfoView.xib */,
@@ -1587,6 +1641,8 @@
 				EC72BC6120916EDC00FADE74 /* SearchNoData.h */,
 				EC72BC6220916EDC00FADE74 /* SearchNoData.m */,
 				EC72BC6420916EE600FADE74 /* SearchNoData.xib */,
+				4CA8158A20E4AFC300A42A7D /* LESearchKeywordView.h */,
+				4CA8158B20E4AFC300A42A7D /* LESearchKeywordView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -1673,6 +1729,14 @@
 				TargetAttributes = {
 					EC72BBA5208D6EA400FADE74 = {
 						CreatedOnToolsVersion = 9.3;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					EC72BBBD208D6EAD00FADE74 = {
 						CreatedOnToolsVersion = 9.3;
@@ -1728,6 +1792,7 @@
 				4CF22CC720A2E38D000904F4 /* MineNaView.xib in Resources */,
 				4CB76B7020BD77320092503E /* City.plist in Resources */,
 				4CE90D0A20C792C000337617 /* LENoticeViewCell.xib in Resources */,
+				4C037EC220E0947F00A0F853 /* LEFeedbackViewController.xib in Resources */,
 				4C0E5DB620A52FE3009DE9B6 /* CommontHFView.xib in Resources */,
 				4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */,
 				EC72BC26208EDCE300FADE74 /* BaseThirdCell.xib in Resources */,
@@ -1737,9 +1802,9 @@
 				EC72BC6520916EE600FADE74 /* SearchNoData.xib in Resources */,
 				4CF22CB620A2AE25000904F4 /* WalletBottomView.xib in Resources */,
 				EC72BC602090845900FADE74 /* SearchHeader.xib in Resources */,
-				EC72BC30208EDFB800FADE74 /* StatusView.xib in Resources */,
 				EC0DD9F52092B468006C7522 /* MineBottom.xib in Resources */,
 				EC418687209949DB00E57C17 /* SetKeyBoard.xib in Resources */,
+				4C65760D20DD0D6F0059FCE4 /* StatusView.xib in Resources */,
 				4CDE8ABF20A431AD00679959 /* CommontView.xib in Resources */,
 				EC4186D4209AB48F00E57C17 /* SheetShare.xib in Resources */,
 				EC72BBB1208D6EA400FADE74 /* Main.storyboard in Resources */,
@@ -1774,6 +1839,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-XWAPP/Pods-XWAPP-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/QQ/QQSDK/TencentOpenApi_IOS_Bundle.bundle",
 				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
@@ -1782,6 +1848,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKPromptResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TencentOpenApi_IOS_Bundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
@@ -1860,6 +1927,7 @@
 				EC4186D2209AB48800E57C17 /* SheetShare.m in Sources */,
 				4C3F3C1920AED31B00B754AF /* LEDataStoreManager.m in Sources */,
 				4C5FADFA20A012C100893FC8 /* MyWallet.m in Sources */,
+				4C037EC720E0C97800A0F853 /* LEWithdrawModel.m in Sources */,
 				EC0DD9D82091C970006C7522 /* AFNRequest.m in Sources */,
 				4CF3162620A1474B00E81E56 /* TaskCell.m in Sources */,
 				EC72BC18208EC01B00FADE74 /* XLChannelItem.m in Sources */,
@@ -1872,6 +1940,7 @@
 				EC41869420994FE100E57C17 /* SetVC.m in Sources */,
 				4CB76B7120BD77320092503E /* ZJDatePickerView.m in Sources */,
 				4CB76B4120BCF17E0092503E /* HotUpButton.m in Sources */,
+				4CA8158C20E4AFC300A42A7D /* LESearchKeywordView.m in Sources */,
 				4CB76B3620BC079A0092503E /* LESuperTableViewController.m in Sources */,
 				4C3F3BE720AD3CE200B754AF /* DetailController+ContentControl.m in Sources */,
 				4C4D704F20C5133C00DD542B /* LEGoldRecordModel.m in Sources */,
@@ -1880,6 +1949,7 @@
 				4CE90D0220C6B5DC00337617 /* LESegmentedView.m in Sources */,
 				4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */,
 				EC4186BB2099B85F00E57C17 /* PhoneLogin.m in Sources */,
+				4CA8158920E39E9B00A42A7D /* LERecommendNewsView.m in Sources */,
 				4CE90D1820C7DA6700337617 /* LEEarningRankBottomView.m in Sources */,
 				4CE90D0920C792C000337617 /* LENoticeViewCell.m in Sources */,
 				4CF3162E20A14BA900E81E56 /* TaskCellHeader.m in Sources */,
@@ -1898,6 +1968,7 @@
 				EC41869120994F6900E57C17 /* SetCell.m in Sources */,
 				4CE90CFF20C6B29100337617 /* LEEarningRankViewController.m in Sources */,
 				4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */,
+				4C037ECA20E0CAA600A0F853 /* LEWithdrawItemView.m in Sources */,
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
 				ECFC6A582092BE36003CE85D /* MineController.m in Sources */,
@@ -1910,6 +1981,7 @@
 				EC4186A62099733500E57C17 /* CompleteController.m in Sources */,
 				4C20CBA020B27014003EC050 /* LELoginUserManager.m in Sources */,
 				4CF22CBB20A2C6B8000904F4 /* WithdrawController.m in Sources */,
+				4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */,
 				4C20CB9D20B26F9B003EC050 /* LELoginModel.m in Sources */,
 				EC72BC6320916EDC00FADE74 /* SearchNoData.m in Sources */,
 				4CF22CB420A2AE21000904F4 /* WalletBottomView.m in Sources */,
@@ -1928,6 +2000,7 @@
 				EC0DD9EE2092B25E006C7522 /* MineHeader.m in Sources */,
 				4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */,
 				4C61862120AA92FE000D647F /* LENewsListModel.m in Sources */,
+				4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */,
 				4CE90D1020C7CC3100337617 /* LEEarningRankModel.m in Sources */,
 				EC72BC16208EC01A00FADE74 /* XLChannelControl.m in Sources */,
 				4C0E5DB420A52FDC009DE9B6 /* CommontHFView.m in Sources */,
@@ -1968,6 +2041,7 @@
 				EC72BBB9208D6EAD00FADE74 /* main.m in Sources */,
 				4C20CBA420B2BD45003EC050 /* SVProgressHUD+LETools.m in Sources */,
 				4C3F3BF620AD740A00B754AF /* LENewsContentModel.m in Sources */,
+				4C037EC120E0947F00A0F853 /* LEFeedbackViewController.m in Sources */,
 				4C61863320AAB7A5000D647F /* WYAPIGenerate.m in Sources */,
 				4CDE8AC220A4540A00679959 /* CommentCell.m in Sources */,
 				4C3F3C1F20AFC79600B754AF /* LENewsCommentHeadView.m in Sources */,
@@ -2164,8 +2238,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NEZ9Y9WURS;
+				DEVELOPMENT_TEAM = 3S8BMJYW6U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/UMCCommon\"",
@@ -2210,7 +2286,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hys.lett;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2220,8 +2298,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NEZ9Y9WURS;
+				DEVELOPMENT_TEAM = 3S8BMJYW6U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/UMCCommon\"",
@@ -2266,7 +2346,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hys.lett;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

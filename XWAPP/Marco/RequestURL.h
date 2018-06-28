@@ -10,9 +10,15 @@
 #define RequestURL_h
 
 //隐私协议
-#define kAppPrivacyProtocolURL   @"http://www.huiyishe.cn/"
+#define kAppPrivacyProtocolURLPath @"agreement.html"
 //邀请活动
-#define kAppInviteActivityWebURL @"http://www.baidu.com"
+#define kAppInviteActivityWebURLPath @"inviting.html"
+//分享下载得红包
+#define kAppSharePackageWebURLPath @"sharePackage.html"
+
+#define kAppShareInformationWebURLPath @"shareInformation.html"
+
+#define kAppReadingRewardWebURLPath @"readingReward.html"
 
 
 

@@ -63,14 +63,53 @@
 
 - (void)updateSourceConstraints:(NSInteger)type{
     if (type == 0) {
-        [self.sourceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.sourceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.tagLabel.mas_right).offset(15);
+            make.centerY.equalTo(self.tagLabel.mas_centerY);
         }];
     }else{
-        [self.sourceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.sourceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.tagLabel.mas_left);
+            make.centerY.equalTo(self.tagLabel.mas_centerY);
         }];
     }
+}
+
+- (void)updateCellWithData:(LENewsListModel *)newsModel{
+    
+    UIColor *tagColor = [UIColor colorWithHexString:@"f11b1b"];
+    NSString *tagString = @"";
+    if (newsModel.is_hot) {
+        tagString = @" 热门 ";
+    }else if (newsModel.is_top){
+        tagString = @" 置顶 ";
+    }
+    self.tagLabel.textColor = tagColor;
+    self.tagLabel.layer.cornerRadius = 3;
+    self.tagLabel.layer.borderWidth = 0.5;
+    self.tagLabel.layer.borderColor = tagColor.CGColor;
+    self.tagLabel.text = tagString;
+    
+    [self updateSourceConstraints:(tagString.length == 0) ?1: 0];
+    
+    NSMutableString *statusString = [NSMutableString string];
+    if (newsModel.souce.length > 0) {
+        [statusString appendFormat:@"%@    ",newsModel.souce];
+    }
+    int commentCount = newsModel.commentCount;
+    if (commentCount > 0) {
+        [statusString appendFormat:@"%d评    ",commentCount];
+    }
+    NSString *dateString = [WYCommonUtils dateDiscriptionFromNowBk:[WYCommonUtils dateFromUSDateString:newsModel.public_time]];
+    if (dateString.length > 0) {
+        [statusString appendFormat:@"%@",dateString];
+    }
+    
+    //test
+//    [statusString appendFormat:@"  %@",newsModel.newsId];
+    
+    self.sourceLabel.text = statusString;
+    
 }
 
 @end

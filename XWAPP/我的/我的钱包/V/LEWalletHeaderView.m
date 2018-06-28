@@ -8,6 +8,8 @@
 
 #import "LEWalletHeaderView.h"
 #import "PNChart.h"
+#import "LELoginAuthManager.h"
+
 @interface LEWalletHeaderView ()
 
 @property (strong, nonatomic) UIView *topContainerView;
@@ -46,12 +48,12 @@
         make.right.equalTo(self).offset(-13);
     }];
     
-    [self addSubview:self.lineView];
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.top.equalTo(self.topContainerView.mas_bottom).offset(6);
-        make.height.mas_equalTo(30);
-    }];
+//    [self addSubview:self.lineView];
+//    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self);
+//        make.top.equalTo(self.topContainerView.mas_bottom).offset(6);
+//        make.height.mas_equalTo(30);
+//    }];
     
 }
 
@@ -59,21 +61,23 @@
 #pragma mark - Public
 - (void)updateHeaderViewData:(id)data{
     
-    NSString *balanceString = @"¥ 1.61";
+    NSString *balanceString = [NSString stringWithFormat:@"¥ %.2f",[LELoginUserManager balance]];
     NSRange range = [balanceString rangeOfString:@"."];
     NSAttributedString *balanceAttStr = [WYCommonUtils stringToColorAndFontAttributeString:balanceString range:NSMakeRange(1, range.location-1) font:HitoBoldSystemFontOfSize(40) color:[UIColor whiteColor]];
     _balanceLabel.attributedText = balanceAttStr;
     
-    NSString *grossEarningsString = @"¥ 1.61";
+    NSString *grossEarningsString = [NSString stringWithFormat:@"¥ %.2f",[LELoginUserManager income]];
     NSAttributedString *grossEarningsAttStr = [WYCommonUtils stringToColorAndFontAttributeString:grossEarningsString range:NSMakeRange(0, 1) font:HitoPFSCMediumOfSize(15) color:[UIColor whiteColor]];
     _grossEarningsLabel.attributedText = grossEarningsAttStr;
     
-    _dayGoldLabel.text = @"10";
-    _rateLabel.text = @"100金币 =0.1元";
+    _dayGoldLabel.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
+    double coin_rate = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"coin_rate"] doubleValue];
+//    coin_rate = 0.601;
+    double master_coin = (coin_rate*[LELoginUserManager todayGolds])/1000;
+    _rateLabel.text = [NSString stringWithFormat:@"%ld金币 =%.2f元",[LELoginUserManager todayGolds],master_coin];
     _goldTipLabel.text = @"当天赚取的金币按照规则自动转换为零钱";
 
-    
-    self.chartView.backgroundColor = [UIColor colorWithHexString:@"d5d5d5"];
+    /****
     self.chartView.layer.cornerRadius = 13;
     self.chartView.layer.masksToBounds = YES;
     [self.chartView setXLabels:@[@"",@"",@"",@"",@"",@"",@""]];
@@ -115,7 +119,7 @@
     [self.chartView strokeChart];
     
     [self addSubview:self.chartView];
-    
+    ******/
 }
 
 #pragma mark -
@@ -297,7 +301,7 @@
 - (PNLineChart *)chartView{
     if (!_chartView) {
         _chartView = [[PNLineChart alloc] initWithFrame:CGRectMake(12, 265, SCREEN_WIDTH-24, 122.0)];
-        _chartView.backgroundColor = [UIColor darkGrayColor];
+        _chartView.backgroundColor = kAppBackgroundColor;
     }
     return _chartView;
 }

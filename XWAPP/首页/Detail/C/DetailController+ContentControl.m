@@ -26,12 +26,13 @@
     __block NSMutableAttributedString *contentAttributed = [[NSMutableAttributedString alloc] init];
     
     self.imageItemsArray = [NSMutableArray arrayWithCapacity:0];
+    NSMutableArray *tmpImageArray = [NSMutableArray array];
     
     NSMutableParagraphStyle *paragraphStyle = [self getParagraphStyleByCustom];
     
     NSData *htmlData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    NSArray *elements = [xpathParser searchWithXPathQuery:@"//p"];
+    NSArray *elements = [xpathParser searchWithXPathQuery:@"//p | //img"];
     
     
 //    __block int testImageCount = 0;
@@ -39,13 +40,17 @@
     [elements enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[TFHppleElement class]]) {
             
-            LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
-            //先预留设置信息
-            LEElementStyleBox *box = [LEElementStyleBox createBox];
-            
             TFHppleElement *element = (TFHppleElement *)obj;
-            NSArray *childrenArray = element.children;
-//            TFHppleElement *firstChildren = element.firstChild;
+            NSMutableArray *childrenArray = [NSMutableArray arrayWithArray:element.children];
+            
+            //兼容<img />标签  去重
+            NSString *dataImgUrl = [element objectForKey:DataImageUrl_key];
+            if (dataImgUrl.length == 0) {
+                dataImgUrl = [element objectForKey:DataImageUrl2_key];
+            }
+            if (childrenArray.count == 0 && [element.tagName isEqualToString:TagImage_Key] && ![tmpImageArray containsObject:dataImgUrl] && dataImgUrl.length > 0) {
+                [childrenArray addObject:element];
+            }
             
             NSMutableAttributedString *childAttributed = nil;
             for (TFHppleElement *childrenElement in childrenArray) {
@@ -77,6 +82,9 @@
 //                    testImageCount ++;
 //                    NSString *altString = [childrenElement objectForKey:Alt_key];
 //                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
+                    
+                    LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
+                    LEElementStyleBox *box = [LEElementStyleBox createBox];
                     NSString *dataImgUrl = [childrenElement objectForKey:DataImageUrl_key];
                     if (dataImgUrl.length == 0) {
                         dataImgUrl = [childrenElement objectForKey:DataImageUrl2_key];
@@ -86,6 +94,10 @@
 //                    contentModel.content = altString;
                     contentModel.imageUrl = dataImgUrl;
                     contentModel.styleBox = box;
+                    
+                    if (contentModel.imageUrl.length > 0) {
+                        [tmpImageArray addObject:contentModel.imageUrl];
+                    }
                     
                     childAttributed = [WeakSelf mosaicImageAndVideoWithContentModel:contentModel];
                     
@@ -116,7 +128,7 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] init];
     NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:content];
     contentAttributedString.color = kAppTitleColor;
-    contentAttributedString.font = [UIFont systemFontOfSize:16.0f];
+    contentAttributedString.font = [UIFont systemFontOfSize:18.0f];
     contentAttributedString.alignment = NSTextAlignmentLeft;
     
     [attributedText appendAttributedString:contentAttributedString];
@@ -158,7 +170,10 @@
         imageView.size = CGSizeMake(contentModel.styleBox.width, contentModel.styleBox.height);
         
         imageView.userInteractionEnabled = YES;
-        [WYCommonUtils setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] setImage:imageView setbitmapImage:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]]];
+//        [WYCommonUtils setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] setImage:imageView setbitmapImage:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]]];
+        [imageView setImageWithURL:[NSURL URLWithString:contentModel.imageUrl] placeholder:[UIImage imageWithColor:[UIColor colorWithRed:227.f / 255.f green:227.f / 255.f blue:227.f / 255.f alpha:1.f]] options:YYWebImageOptionSetImageWithFadeAnimation completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+            
+        }];
         
         HitoWeakSelf;
         [self.imageItemsArray addObject:contentModel];

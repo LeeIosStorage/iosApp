@@ -22,6 +22,22 @@
 #import "WXApi.h"
 #import "LELoginAuthManager.h"
 #import "LEMessageViewController.h"
+#import "LELoginAuthManager.h"
+
+#define cell_title @"title"
+#define cell_type @"type"
+
+typedef NS_ENUM(NSInteger, LEMineCellType) {
+    LEMineCellTypeNone = 0,
+    LEMineCellTypeRecruit,          //邀请收徒
+    LEMineCellTypeGreenHand,        //新手任务
+    LEMineCellTypeInvitationCode,   //邀请码
+    LEMineCellTypeBindingWeixin,    //绑定微信
+    LEMineCellTypeAttention,        //我的关注
+    LEMineCellTypeCollect,          //我的收藏
+    LEMineCellTypeComment,          //我的评论
+    
+};
 
 @interface MineController ()
 <
@@ -42,10 +58,18 @@ UIScrollViewDelegate
 
 @implementation MineController
 
+#pragma mark -
+#pragma mark - Lifecycle
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setBackgroundImage:[HitoImage(@"mine_top_background") stretchableImageWithLeftCapWidth:HitoScreenW/2 topCapHeight:0] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
+    
+    [self refreshSecondArray];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -66,6 +90,7 @@ UIScrollViewDelegate
     [self navAction];
     
     [self refreshViewUI];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,6 +110,14 @@ UIScrollViewDelegate
     }
 }
 
+- (void)refreshTaskInfoUI:(NSNotification *)notif{
+    [self refreshSecondArray];
+}
+
+- (void)refreshUserInfoUI:(NSNotification *)notif{
+    [self refreshViewUI];
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)refreshUserInfo{
@@ -98,6 +131,16 @@ UIScrollViewDelegate
         }else{
             
         }
+    }];
+    
+    
+    //任务列表刷新
+    [[LELoginAuthManager sharedInstance] refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        [WeakSelf refreshSecondArray];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
     }];
     
 }
@@ -114,12 +157,14 @@ UIScrollViewDelegate
         
         HitoWeakSelf;
         [_header leftClickAction:^{
+            [MobClick event:kMineGoldClick];
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
         
         [_header centerClickAction:^{
+            [MobClick event:kMineBalanceClick];
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
@@ -134,9 +179,9 @@ UIScrollViewDelegate
 
 - (void)refreshViewUI{
     
-    _header.leftMine.bottomLB.text = @"20";
-    _header.centerMine.bottomLB.text = @"30";
-    _header.rightMine.bottomLB.text = @"40";
+    _header.leftMine.bottomLB.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
+    _header.centerMine.bottomLB.text = [NSString stringWithFormat:@"%.2f",[LELoginUserManager balance]];
+    _header.rightMine.bottomLB.text = [NSString stringWithFormat:@"%.1f",[LELoginUserManager readDuration]];
     
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
@@ -148,10 +193,11 @@ UIScrollViewDelegate
     [SVProgressHUD showCustomWithStatus:nil];
     [[LELoginAuthManager sharedInstance] socialAuthBinding:UMSocialPlatformType_WechatSession presentingController:self success:^(BOOL success) {
         if (success) {
-            [SVProgressHUD dismiss];
+            
         }
         [WeakSelf.tableView reloadData];
     }];
+    [SVProgressHUD dismiss];
 }
 
 #pragma mark - setTB
@@ -162,11 +208,40 @@ UIScrollViewDelegate
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.backgroundColor = [UIColor clearColor];
     
-    //初始化数据
-    _secondArr = @[@"每收一名徒弟赚3500金币，可立即领取提现", @"新手任务", @"输入邀请码", @"微信绑定"];
-    _fourArr = @[@"我的收藏", @"我的评论"];//@"我的关注"
-    _imageArr = @[@"http://pic.qiantucdn.com/58pic/17/39/70/64M58PICnFh_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center", @"http://pic.qiantucdn.com/58pic/17/23/89/08y58PIC4HC_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS40LnBuZw==/align/center"];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 80)];
+    footerView.backgroundColor = self.view.backgroundColor;
+    self.tableView.tableFooterView = footerView;
     
+    //初始化数据
+    self.secondArr = [NSMutableArray array];
+    self.fourArr = [NSMutableArray array];
+    
+    [self.fourArr addObject:@{cell_title:@"我的收藏",cell_type:@(LEMineCellTypeCollect)}];
+    [self.fourArr addObject:@{cell_title:@"我的评论",cell_type:@(LEMineCellTypeComment)}];
+    
+    _imageArr = [NSMutableArray arrayWithArray:@[]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTaskInfoUI:) name:kRefreshUITaskInfoNotificationKey object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfoUI:) name:kRefreshUILoginNotificationKey object:nil];
+    
+}
+
+- (void)refreshSecondArray{
+    
+    self.secondArr = [NSMutableArray array];
+    [self.secondArr addObject:@{cell_title:@"每收一名徒弟赚3500金币，可立即领取提现",cell_type:@(LEMineCellTypeRecruit)}];
+    if ([LELoginAuthManager sharedInstance].taskList.count > 0) {
+        if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask]) {
+            [self.secondArr addObject:@{cell_title:@"新手任务",cell_type:@(LEMineCellTypeGreenHand)}];
+        }
+        if (![[LELoginAuthManager sharedInstance] taskCompletedWithTaskType:LETaskCenterTypeInvitationCode]) {
+            [self.secondArr addObject:@{cell_title:@"输入邀请码",cell_type:@(LEMineCellTypeInvitationCode)}];
+        }
+        if (![[LELoginAuthManager sharedInstance] taskCompletedWithTaskType:LETaskCenterTypeBindingWeixin]) {
+            [self.secondArr addObject:@{cell_title:@"微信绑定",cell_type:@(LEMineCellTypeBindingWeixin)}];
+        }
+    }
+    [self.tableView reloadData];
 }
 
 
@@ -182,6 +257,7 @@ UIScrollViewDelegate
 }
 
 - (IBAction)leftBarButton:(UIBarButtonItem *)sender {
+    [MobClick event:kMessageCenterClick];
     LEMessageViewController *messageVc = [[LEMessageViewController alloc] init];
     messageVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:messageVc animated:YES];
@@ -231,10 +307,11 @@ UIScrollViewDelegate
         return cell;
     } else if (indexPath.section == 1) {
         MineSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineSecondCell"];
-        NSString *title = _secondArr[indexPath.row];
-        cell.leftLB.text = title;
+        NSDictionary *dic = _secondArr[indexPath.row];
+        cell.leftLB.text = dic[cell_title];
         cell.rightLabel.hidden = YES;
-        if ([title isEqualToString:@"微信绑定"]) {
+        LEMineCellType cellType = [[dic objectForKey:cell_type] integerValue];
+        if (cellType == LEMineCellTypeBindingWeixin) {
             if ([LELoginUserManager wxNickname].length > 0) {
                 cell.rightLabel.hidden = NO;
                 cell.rightLabel.text = [NSString stringWithFormat:@"已绑定(%@)",[LELoginUserManager wxNickname]];
@@ -246,19 +323,18 @@ UIScrollViewDelegate
 
         SDCycleScrollView *cycle = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, HitoScreenW, cell.frame.size.height) delegate:self placeholderImage:nil];
         cycle.backgroundColor = [UIColor whiteColor];
-        cycle.imageURLStringsGroup = self.imageArr;
+        cycle.localizationImageNamesGroup = [NSArray arrayWithObjects:@"banner_fenxiang",@"banner_fenxiang1",@"banner_fenxiang2", nil];
+//        cycle.imageURLStringsGroup = self.imageArr;
         [cell.centerView addSubview:cycle];
         return cell;
     } else {
         MineSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineSecondCell"];
         cell.rightLabel.hidden = YES;
-        cell.leftLB.text = _fourArr[indexPath.row];
+        NSDictionary *dic = _fourArr[indexPath.row];
+        cell.leftLB.text = dic[cell_title];
         return cell;
     }
-    
-    
 }
-
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 8)];
@@ -293,39 +369,43 @@ UIScrollViewDelegate
         
     } else if (indexPath.section == 1) {
         
-        if (indexPath.row == 0) {
+        NSDictionary *dic = _secondArr[indexPath.row];
+        LEMineCellType cellType = [[dic objectForKey:cell_type] integerValue];
+        
+        if (cellType == LEMineCellTypeRecruit) {
             //邀请活动
-            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:kAppInviteActivityWebURL];
+            NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
             webVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:webVc animated:YES];
-        }else if (indexPath.row == 1){
+        }else if (cellType == LEMineCellTypeGreenHand){
             [self.tabBarController setSelectedIndex:1];
-        }else if (indexPath.row == 2){
+        }else if (cellType == LEMineCellTypeInvitationCode){
             YQMController *yqm = [[YQMController alloc] init];
             yqm.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:yqm animated:YES];
-        }else if (indexPath.row == 3){
+        }else if (cellType == LEMineCellTypeBindingWeixin){
             [self sendAuthRequest];
         }
         
     } else if (indexPath.section == 2) {
         
     } else {
-        NSString *title = _fourArr[indexPath.row];
-        
-        if ([title isEqualToString:@"我的关注"]) {
+        NSDictionary *dic = _fourArr[indexPath.row];
+        LEMineCellType cellType = [[dic objectForKey:cell_type] integerValue];
+        if (cellType == LEMineCellTypeAttention) {
             
             LEAttentionViewController *attentionVc = [[LEAttentionViewController alloc] init];
             attentionVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:attentionVc animated:YES];
             
-        }else if ([title isEqualToString:@"我的收藏"]) {
+        }else if (cellType == LEMineCellTypeCollect) {
             
             LECollectViewController *collectVc = [[LECollectViewController alloc] init];
             collectVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:collectVc animated:YES];
             
-        }else if ([title isEqualToString:@"我的评论"]) {
+        }else if (cellType == LEMineCellTypeComment) {
             
             LECommentListViewController *commentVc = [[LECommentListViewController alloc] init];
             commentVc.hidesBottomBarWhenPushed = YES;
@@ -365,7 +445,8 @@ UIScrollViewDelegate
 #pragma mark - SDCycleScrollViewDelegate  轮播图的点击事件
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     
-    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:@"http://github.com"];
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppInviteActivityWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken]];
+    LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
     webVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webVc animated:YES];
     

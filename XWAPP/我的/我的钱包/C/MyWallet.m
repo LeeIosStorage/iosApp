@@ -16,12 +16,16 @@
 #import "WithdrawController.h"
 #import "LEShareSheetView.h"
 #import "LEEarningRankViewController.h"
+#import "WYShareManager.h"
+#import "LELoginAuthManager.h"
+#import "LETaskListModel.h"
 
 @interface MyWallet ()
 <
 UITableViewDelegate,
 UITableViewDataSource,
-LEShareSheetViewDelegate
+LEShareSheetViewDelegate,
+WXShaerStateDelegate
 >
 {
     LEShareSheetView *_shareSheetView;
@@ -30,6 +34,7 @@ LEShareSheetViewDelegate
 @property (strong, nonatomic) NSMutableArray *goldRecordList;
 @property (strong, nonatomic) NSMutableArray *moneyRecordList;
 @property (assign, nonatomic) NSInteger currentIndex;
+@property (strong, nonatomic) NSMutableDictionary *nextCursorDic;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -44,15 +49,24 @@ LEShareSheetViewDelegate
 
 #pragma mark -
 #pragma mark - Lifecycle
+- (void)dealloc{
+    [WYShareManager shareInstance].delegate = nil;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (_needShare) {
+        [self rightBtnAction:nil];
+        _needShare = NO;
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setView];
-    [self refreshDataRequest];
+    [self refreshDataRequest:0];
+    [self refreshDataRequest:1];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,6 +83,11 @@ LEShareSheetViewDelegate
     self.title = @"我的钱包";
     
     self.currentIndex = 0;
+    self.nextCursorDic = [NSMutableDictionary dictionary];
+    [self.nextCursorDic setObject:[NSNumber numberWithInt:1] forKey:[NSString stringWithFormat:@"%ld",self.currentIndex]];
+    [self.nextCursorDic setObject:[NSNumber numberWithInt:1] forKey:[NSString stringWithFormat:@"%ld",self.currentIndex+1]];
+    self.goldRecordList = [[NSMutableArray alloc] init];
+    self.moneyRecordList = [[NSMutableArray alloc] init];
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,73 +101,94 @@ LEShareSheetViewDelegate
     }];
     
     self.walletHeaderView.width = HitoScreenW;
-    self.walletHeaderView.height = 430;
+    self.walletHeaderView.height = 245;//265  430
     self.tableView.tableHeaderView = self.walletHeaderView;
-    [self.tableView reloadData];
-}
-
-- (void)addBottonView {
-    
-    
-}
-
-- (void)setData{
-    
-    [self.walletHeaderView updateHeaderViewData:nil];
-    
-}
-
-#pragma mark -
-#pragma mark - Request
-- (void)refreshDataRequest{
-    
-    self.goldRecordList = [[NSMutableArray alloc] init];
-    self.moneyRecordList = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < 5; i ++ ) {
-        LEGoldRecordModel *goldRecordModel = [[LEGoldRecordModel alloc] init];
-        goldRecordModel.rId = @"1";
-        goldRecordModel.title = @"分享朋友圈";
-        goldRecordModel.gold = @"+60";
-        goldRecordModel.date = @"2018-06-04 17:56:11";
-        goldRecordModel.recordType = 0;
-        [self.goldRecordList addObject:goldRecordModel];
-    }
-    
-    for (int i = 0; i < 3; i ++ ) {
-        LEGoldRecordModel *goldRecordModel = [[LEGoldRecordModel alloc] init];
-        goldRecordModel.rId = @"1";
-        goldRecordModel.title = @"金币兑换余额";
-        goldRecordModel.gold = @"+0.07";
-        goldRecordModel.date = @"2018-06-04 17:56:11";
-        goldRecordModel.recordType = 1;
-        [self.moneyRecordList addObject:goldRecordModel];
-    }
-    
     [self.tableView reloadData];
     
     [self setData];
 }
 
+- (void)setData{
+    
+    [self.walletHeaderView updateHeaderViewData:nil];
+}
+
+- (void)refreshDataWithIndex:(NSInteger)currentIndex{
+    
+    if (currentIndex == 0) {
+        
+    }else if (currentIndex == 1){
+        
+    }
+    [self.tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark - Request
+- (void)refreshDataRequest:(NSInteger)currentIndex{
+    
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserGoldsChangeLogs"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    if (currentIndex == 0) {
+        [params setObject:@"1" forKey:@"data_type"];
+    }else if (currentIndex == 1){
+        [params setObject:@"2" forKey:@"data_type"];
+    }
+    [params setObject:[self.nextCursorDic objectForKey:[NSString stringWithFormat:@"%ld",currentIndex]] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:50] forKey:@"limit"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
+        }
+        
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LEGoldRecordModel class] json:[dataObject objectForKey:@"data"]];
+        if (currentIndex == 0) {
+            [WeakSelf.goldRecordList addObjectsFromArray:array];
+            
+        }else if (currentIndex == 1){
+            [WeakSelf.moneyRecordList addObjectsFromArray:array];
+        }
+        
+        [WeakSelf.tableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+}
+
 #pragma mark -
 #pragma mark - IBActions
 - (void)btnAction:(UIButton *)sender {
+    [MobClick event:kMineEarningRankClick];
     LEEarningRankViewController *rankVc = [[LEEarningRankViewController alloc] init];
     [self.navigationController pushViewController:rankVc animated:YES];
 }
 
 - (void)rightBtnAction:(UIButton *)sender {
     
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+    
     LEShareModel *shareModel = [LEShareModel new];
-    shareModel.shareTitle = @"在这里看了几天新闻,赚了1.73元,一开始不信,现在我已经爱上这了!";
+    shareModel.shareTitle = [NSString stringWithFormat:@"在这里看了几天新闻,赚了%.2f元,一开始不信,现在我已经爱上这了!",[LELoginUserManager income]];
     shareModel.shareDescription = @"";
-    shareModel.shareWebpageUrl = kAppPrivacyProtocolURL;
+    shareModel.shareWebpageUrl = webUrl;
     shareModel.shareImage = nil;
     
     _shareSheetView = [[LEShareSheetView alloc] init];
     _shareSheetView.owner = self;
     _shareSheetView.shareModel = shareModel;
     [_shareSheetView showShareAction];
+    
+    [WYShareManager shareInstance].delegate = self;
 }
 
 #pragma mark -
@@ -247,8 +287,10 @@ LEShareSheetViewDelegate
     LEGoldRecordModel *model = nil;
     if (self.currentIndex == 0) {
         model = self.goldRecordList[indexPath.row];
+        model.recordType = 0;
     }else if (self.currentIndex == 1){
         model = self.moneyRecordList[indexPath.row];
+        model.recordType = 1;
     }
     [cell updateWalletCellWithData:model];
     
@@ -263,12 +305,12 @@ LEShareSheetViewDelegate
     HitoWeakSelf;
     [header leftBlockAction:^{
         WeakSelf.currentIndex = 0;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshDataWithIndex:WeakSelf.currentIndex];
     }];
     
     [header rightBlockAction:^{
         WeakSelf.currentIndex = 1;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshDataWithIndex:WeakSelf.currentIndex];
     }];
     
     return header;
@@ -282,6 +324,23 @@ LEShareSheetViewDelegate
 #pragma mark - scrollerDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+}
+
+#pragma mark -
+#pragma mark - WXShaerStateDelegate
+- (void)sendState:(int)state{
+    if (state == 1) {
+        LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeShowIncome];
+        [[LELoginAuthManager sharedInstance] updateUserTaskStateRequestWith:taskModel.taskId success:^(BOOL success) {
+            if (success) {
+                [MBProgressHUD showCustomGoldTipWithTask:@"晒收入" gold:[NSString stringWithFormat:@"+%d",[taskModel.coin intValue]]];
+            }else{
+                [SVProgressHUD showCustomInfoWithStatus:@"分享成功"];
+            }
+        }];
+    }else if (state == 2){
+        [SVProgressHUD showCustomInfoWithStatus:@"分享失败"];
+    }
 }
 
 @end

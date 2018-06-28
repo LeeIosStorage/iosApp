@@ -17,11 +17,29 @@
         "control" : "news",
         "action"  : "GetDetail"
     },
+    "GetRandomNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetRandomNews"
+    },
     "NewsQuery": {
         "protocol": "http",
         "module" : "api",
         "control" : "news",
         "action"  : "Query"
+    },
+    "GetAutoCompletedTags": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetAutoCompletedTags"
+    },
+    "GetHotNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetHotNews"
     },
     "GetComment": {
         "protocol": "http",
@@ -83,6 +101,12 @@
         "control" : "user",
         "action"  : "SaveFavoriteNews"
     },
+    "CheckFavoriteNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckFavoriteNews"
+    },
     "DeleteFavoriteNews": {
         "protocol": "http",
         "module" : "api",
@@ -118,5 +142,101 @@
         "module" : "api",
         "control" : "file",
         "action"  : "UploadUserHeadImg"
+    },
+    "GetUserTask": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserTask"
+    },
+    "UpdateUserTaskState": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UpdateUserTaskState"
+    },
+    "CheckContinuousSign": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckContinuousSign"
+    },
+    "AddUserSign": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "AddUserSign"
+    },
+    "GetSignConfig": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetSignConfig"
+    },
+    "GetUserGoldsChangeLogs": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserGoldsChangeLogs"
+    },
+    "CheckCoinBox": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "CheckCoinBox"
+    },
+    "OpenCoinBox": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "OpenCoinBox"
+    },
+    "SaveUninterestedNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveUninterestedNews"
+    },
+    "BindInvitationCode": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "BindInvitationCode"
+    },
+    "GetGlobalTaskConfig": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetGlobalTaskConfig"
+    },
+    "SaveReadLog": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "SaveReadLog"
+    },
+    "GetUserMoneyList": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "GetUserMoneyList"
+    },
+    "SaveFeedback": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "feedback",
+        "action"  : "SaveFeedback"
+    },
+    "GetCashConfig": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "cash",
+        "action"  : "GetCashConfig"
+    },
+    "ApplyCash": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "cash",
+        "action"  : "ApplyCash"
     },
 }

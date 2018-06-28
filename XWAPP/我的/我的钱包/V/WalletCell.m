@@ -73,9 +73,9 @@
     
     LEGoldRecordModel *goldRecordModel = (LEGoldRecordModel *)data;
     self.titleLabel.text = goldRecordModel.title;
-    NSString *goldString = [NSString stringWithFormat:@"%@ 金币",goldRecordModel.gold];
+    NSString *goldString = [NSString stringWithFormat:@"%@",goldRecordModel.gold];
     if (goldRecordModel.recordType == 1) {
-        goldString = [NSString stringWithFormat:@"%@ 元",goldRecordModel.gold];
+        goldString = [NSString stringWithFormat:@"%.2f",goldRecordModel.balance];
     }
     self.goldLabel.text = goldString;
     self.dateLabel.text = [WYCommonUtils dateYearToSecondDiscriptionFromDate:[WYCommonUtils dateFromUSDateString:goldRecordModel.date]];
@@ -107,7 +107,7 @@
     if (!_dateLabel) {
         _dateLabel = [[UILabel alloc] init];
         _dateLabel.textColor = kAppSubTitleColor;
-        _dateLabel.font = HitoPFSCMediumOfSize(11);
+        _dateLabel.font = HitoPFSCRegularOfSize(11);
     }
     return _dateLabel;
 }

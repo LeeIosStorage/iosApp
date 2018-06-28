@@ -14,6 +14,7 @@
 #import "BaseThirdCell.h"
 #import "DetailController.h"
 #import "LEDataStoreManager.h"
+#import "LESearchKeywordView.h"
 
 @interface SearchController ()
 <
@@ -24,8 +25,11 @@ UITableViewDataSource
 
 HitoPropertyNSMutableArray(historyArr);
 HitoPropertyNSMutableArray(searchNewsList);
+HitoPropertyNSMutableArray(keywordArray);
 
 @property (nonatomic, strong) SearchCollectionViewController *collecVC;
+
+@property (nonatomic, strong) LESearchKeywordView *searchKeywordView;
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -55,11 +59,17 @@ HitoPropertyNSMutableArray(searchNewsList);
 #pragma mark - Private
 - (void)setupSubViews{
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
     [self addSearchBar];
     [self addChildVC];
     
     self.nextCursor = 1;
     self.searchNewsList = [[NSMutableArray alloc] init];
+    self.keywordArray = [[NSMutableArray alloc] init];
     
     [self.view addSubview:self.tableView];
     self.tableView.hidden = YES;
@@ -69,6 +79,12 @@ HitoPropertyNSMutableArray(searchNewsList);
     [self.tableView reloadData];
     
     [self addMJ];
+    
+    [self.view addSubview:self.searchKeywordView];
+    [self.searchKeywordView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(self.view);
+        make.height.mas_equalTo(200);
+    }];
 }
 
 - (void)addChildVC {
@@ -103,6 +119,7 @@ HitoPropertyNSMutableArray(searchNewsList);
     //要居中view的宽度
     CGFloat width = title_ve.width;
     self.search = [[LESearchBar alloc] init];
+//    self.search.autocorrectionType = UITextAutocorrectionTypeNo;
     self.search.searchBarStyle = UISearchBarStyleMinimal;
     self.search.userInteractionEnabled = YES;
     self.search.delegate = self;
@@ -152,10 +169,70 @@ HitoPropertyNSMutableArray(searchNewsList);
     
 }
 
+- (void)showViewType:(NSInteger)type{
+    if (type == 0) {
+        self.collecVC.view.hidden = NO;
+        self.searchKeywordView.hidden = YES;
+        [self.searchKeywordView updateViewWithData:nil];
+        self.tableView.hidden = YES;
+        [self.searchNewsList removeAllObjects];
+        [self.tableView reloadData];
+    }else if (type == 1){
+        self.collecVC.view.hidden = YES;
+        self.searchKeywordView.hidden = NO;
+//        [self.searchKeywordView updateViewWithData:nil];
+        self.tableView.hidden = YES;
+        [self.searchNewsList removeAllObjects];
+        [self.tableView reloadData];
+    }else if (type == 2){
+        [self.tableView setHidden:NO];
+        self.searchKeywordView.hidden = YES;
+//        [self.searchKeywordView updateViewWithData:nil];
+        self.collecVC.view.hidden = YES;
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+    //获取键盘的高度
+    NSDictionary *userInfo = [aNotification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int height = keyboardRect.size.height;
+    
+    [self.searchKeywordView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(HitoScreenH-height-HitoTopHeight);
+    }];
+}
+
 #pragma mark -
 #pragma mark - Request
+- (void)getAutoCompletedTags:(NSString *)searchText{
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAutoCompletedTags"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:searchText forKey:@"keyword"];
+    
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        WeakSelf.keywordArray = [[NSMutableArray alloc] init];
+        
+        if ([dataObject isKindOfClass:[NSArray class]]) {
+            WeakSelf.searchKeywordView.searchText = searchText;
+            [WeakSelf.searchKeywordView updateViewWithData:dataObject];
+        }
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
 - (void)searchRequest{
     
+    [self showViewType:2];
     
     NSString *searchText = self.search.text;
     [SVProgressHUD showCustomWithStatus:nil];
@@ -188,8 +265,7 @@ HitoPropertyNSMutableArray(searchNewsList);
             WeakSelf.nextCursor ++;
         }
         
-        [WeakSelf.tableView setHidden:NO];
-        WeakSelf.collecVC.view.hidden = YES;
+        
         [WeakSelf.tableView reloadData];
         
         if (WeakSelf.searchNewsList.count == 0) {
@@ -234,17 +310,63 @@ HitoPropertyNSMutableArray(searchNewsList);
     return _tableView;
 }
 
+- (LESearchKeywordView *)searchKeywordView{
+    if (!_searchKeywordView) {
+        _searchKeywordView = [[LESearchKeywordView alloc] init];
+        _searchKeywordView.hidden = YES;
+        
+        HitoWeakSelf;
+        _searchKeywordView.searchKeywordBlcok = ^(NSString *text) {
+            [WeakSelf beginSearchAction:text];
+        };
+    }
+    return _searchKeywordView;
+}
+
 #pragma mark -
 #pragma mark - UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [self beginSearchAction:_search.text];
 }
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    if (searchBar.text.length == 0) {
+        [self showViewType:0];
+    }else{
+        [self showViewType:1];
+    }
+    return YES;
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    self.collecVC.view.hidden = NO;
-    self.tableView.hidden = YES;
-    [self.searchNewsList removeAllObjects];
-    [self.tableView reloadData];
+    
+//    LELog(@"searchText:%@",searchText);
+    if (searchText.length == 0) {
+        [self showViewType:0];
+    }else{
+        [self showViewType:1];
+        [self getAutoCompletedTags:searchText];
+    }
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    NSMutableString *searchBarText = [NSMutableString stringWithString:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+    if (text.length > 0) {
+        [searchBarText appendString:text];
+    }else{
+        [searchBarText deleteCharactersInRange:NSMakeRange(searchBarText.length-1, 1)];
+    }
+    
+    LELog(@"searchText:%@ --- text:%@",searchBarText,text);
+    if (searchBarText.length == 0) {
+        [self showViewType:0];
+    }else{
+        [self showViewType:1];
+        [self getAutoCompletedTags:searchBarText];
+    }
+    
+    return YES;
 }
 
 #pragma mark - TBDelegate&Datasource
@@ -264,8 +386,9 @@ HitoPropertyNSMutableArray(searchNewsList);
         newsModel = [self.searchNewsList objectAtIndex:indexPath.row];
     }
     NSUInteger count = newsModel.cover.count;
+    NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1) {
+    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
         static NSString *cellIdentifier = @"BaseOneCell";
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
