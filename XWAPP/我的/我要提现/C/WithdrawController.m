@@ -66,6 +66,7 @@
     
     self.withdrawWayArray = [[NSMutableArray alloc] init];
     self.withdrawMoneyArray = [[NSMutableArray alloc] init];
+    /*
     for (int i = 0; i < 2; i ++) {
         LEWithdrawModel *model = [[LEWithdrawModel alloc] init];
         model.title = @"支付宝";
@@ -88,6 +89,7 @@
         [self.withdrawMoneyArray addObject:moneyModel];
         
     }
+    */
     
     [self.view addSubview:self.mainScrollView];
     [self.mainScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -255,12 +257,12 @@
         }
         
         [WeakSelf.withdrawMoneyArray removeAllObjects];
-        for (int i = 0; i < 5; i ++) {
-            LEWithdrawModel *moneyModel = [[LEWithdrawModel alloc] init];
-            moneyModel.money = [NSString stringWithFormat:@"%d",i+1];
-            moneyModel.wId = [NSString stringWithFormat:@"%d",i+1];
-            [WeakSelf.withdrawMoneyArray addObject:moneyModel];
-        }
+//        for (int i = 0; i < 5; i ++) {
+//            LEWithdrawModel *moneyModel = [[LEWithdrawModel alloc] init];
+//            moneyModel.money = [NSString stringWithFormat:@"%d",i+1];
+//            moneyModel.wId = [NSString stringWithFormat:@"%d",i+1];
+//            [WeakSelf.withdrawMoneyArray addObject:moneyModel];
+//        }
         
         [WeakSelf reloadData];
         [WeakSelf refeshUI];
@@ -307,6 +309,9 @@
 }
 
 - (IBAction)withdrawAction:(UIButton *)sender {
+    
+    [SVProgressHUD showCustomInfoWithStatus:@"功能即将上线."];
+    return;
     NSInteger way = 0;
     if (_selectedWayIndex >= 0 && _selectedWayIndex < self.withdrawWayArray.count) {
         LEWithdrawModel *model = self.withdrawWayArray[_selectedWayIndex];
@@ -427,7 +432,7 @@
         }];
         
         UILabel *tipTextLabel = [[UILabel alloc] init];
-        tipTextLabel.text = @"提现申请将在一个工作日内审批，当天申请，隔天到账";
+        tipTextLabel.text = @"我们将很快上线此功能,敬请期待.";//提现申请将在一个工作日内审批，当天申请，隔天到账
         tipTextLabel.textColor = [UIColor colorWithHexString:@"999999"];
         tipTextLabel.font = HitoPFSCRegularOfSize(12);
         _warmTipLabel = tipTextLabel;

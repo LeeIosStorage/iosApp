@@ -63,14 +63,14 @@ UITableViewDataSource
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(44, 0, 44, 0));
+        make.edges.mas_equalTo(UIEdgeInsetsMake(44, 0, 0, 0));
     }];
     
-    [self.view addSubview:self.earningRankBottomView];
-    [self.earningRankBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(44);
-    }];
+//    [self.view addSubview:self.earningRankBottomView];
+//    [self.earningRankBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.bottom.equalTo(self.view);
+//        make.height.mas_equalTo(44);
+//    }];
 }
 
 - (void)segmentedSelectItem:(NSInteger)index{

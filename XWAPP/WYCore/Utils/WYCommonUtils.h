@@ -10,6 +10,15 @@
 
 @interface WYCommonUtils : NSObject
 
+/*! @brief 单纯获取text的Width (Height固定的)
+ *
+ *  @param  text: 文本
+ *  @param  font: 字体
+ *  @param  lineBreakMode: lineBreakMode 默认为NSLineBreakByWordWrapping = 0
+ *  @return text的Width
+ */
++ (float)widthWithText:(NSString *)text font:(UIFont *)font lineBreakMode:(NSLineBreakMode)lineBreakMode;
+
 /**
  *  根据固定的Width 计算 AttributedString 的Size
  *

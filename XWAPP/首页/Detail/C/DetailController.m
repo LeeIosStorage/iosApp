@@ -24,6 +24,7 @@
 #import "LECommentDetailViewController.h"
 #import "LELoginManager.h"
 #import "LELoginAuthManager.h"
+#import "LERecommendNewsView.h"
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -51,8 +52,10 @@ LEShareSheetViewDelegate
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *commentTF;
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIButton *commentButton;
 @property (weak, nonatomic) IBOutlet UIButton *collectButton;
 
+@property (assign, nonatomic) CGFloat headerHeight;
 @property (strong, nonatomic) LENewsDetailHeaderView *newsDetailHeaderView;
 @property (strong, nonatomic) LENewsDetailContentView *newsDetailContentView;
 @property (strong, nonatomic) LENewsCommentHeadView *newsCommentHeadView;
@@ -66,6 +69,11 @@ LEShareSheetViewDelegate
 
 @property (strong, nonatomic) NSTimer *readTimer;
 @property (assign, nonatomic) int readDuration;
+
+@property (strong, nonatomic) LERecommendNewsView *recommendNewsView;
+@property (strong, nonatomic) NSMutableArray *recommendNewsArray;
+
+@property (strong, nonatomic) UILabel *commentCountTipLabel;
 
 @end
 
@@ -105,6 +113,7 @@ LEShareSheetViewDelegate
     [self setupSubViews];
     
     [self getNewsDetailRequest];
+    [self getRandomNewsRequest];
     [self checkFavoriteNewsRequest];
     [self getNewsCommentsRequest];
 }
@@ -153,6 +162,7 @@ LEShareSheetViewDelegate
     self.readDuration = 0;
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
+    self.recommendNewsArray = [[NSMutableArray alloc] init];
     
     UIView *codeView = [[UIView alloc] initWithFrame:CGRectMake(0, 8.5, 13, 13)];
     UIImageView *codeImage = [[UIImageView alloc] initWithFrame:CGRectMake(12, 0, 13, 13)];
@@ -168,6 +178,13 @@ LEShareSheetViewDelegate
     _bottomView.layer.shadowOpacity = 0.8f;
     _bottomView.layer.shadowRadius = 4.0f;
     _bottomView.layer.shadowOffset = CGSizeMake(4,4);
+    
+    [self.bottomView addSubview:self.commentCountTipLabel];
+    [self.commentCountTipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.commentButton.mas_right);
+        make.centerY.equalTo(self.commentButton.mas_top);
+        make.size.mas_equalTo(CGSizeMake(4*2+13, 13));
+    }];
     
     self.tableView.tableFooterView = [UIView new];
 //    [[UITableViewHeaderFooterView appearance] setTintColor:kAppThemeColor];
@@ -187,6 +204,11 @@ LEShareSheetViewDelegate
     self.newsDetailHeaderView.width = HitoScreenW;
 //    self.newsDetailHeaderView.height = 65;
     [self.newsDetailContentView addSubview:self.newsDetailHeaderView];
+    self.recommendNewsView.top = 0;
+    self.recommendNewsView.left = 12;
+    self.recommendNewsView.width = HitoScreenW-12*2;
+    self.recommendNewsView.height = 0;
+    [self.newsDetailContentView addSubview:self.recommendNewsView];
     self.newsCommentHeadView.top = 0;
     self.newsCommentHeadView.width = HitoScreenW;
     self.newsCommentHeadView.height = 45;
@@ -196,11 +218,15 @@ LEShareSheetViewDelegate
     
     [self addMJ];
     
+    [self refreshCommentCountShow];
+    
 }
 
 - (void)setData{
     
-    CGFloat headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
+    [self refreshCommentCountShow];
+    
+    _headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
     
     NSString *htmlString = nil;
     htmlString = self.newsDetailModel.info.content;
@@ -213,16 +239,47 @@ LEShareSheetViewDelegate
         WeakSelf.newsDetailModel.contentAttributedString = attributedString;
         WeakSelf.newsDetailModel.contentHeight = [NSNumber numberWithFloat:[WeakSelf getAttributedStringHeightWithString:attributedString]];
         [WeakSelf.newsDetailContentView updateWithData:WeakSelf.newsDetailModel];
-        WeakSelf.newsDetailContentView.contentLabel.top = headerHeight + 10;
-        WeakSelf.newsDetailContentView.height = [WeakSelf.newsDetailModel.contentHeight floatValue] + headerHeight + WeakSelf.newsCommentHeadView.height;
-        WeakSelf.newsCommentHeadView.top = [WeakSelf.newsDetailModel.contentHeight floatValue] + headerHeight;
-        WeakSelf.tableView.tableHeaderView = WeakSelf.newsDetailContentView;
-        [WeakSelf.tableView reloadData];
+        [WeakSelf refreshHeadViewShow];
         
     }];
     
     [self.tableView reloadData];
 }
+
+- (void)refreshHeadViewShow{
+    
+    CGFloat recommendViewHeight = self.recommendNewsArray.count*70;
+    if (recommendViewHeight > 0) {
+        recommendViewHeight += 17;
+    }
+    
+    self.newsDetailContentView.contentLabel.top = _headerHeight + 10;
+    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight;
+    self.recommendNewsView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight+5;
+    self.recommendNewsView.height = self.recommendNewsArray.count*70;
+    self.newsCommentHeadView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + recommendViewHeight;
+    self.tableView.tableHeaderView = self.newsDetailContentView;
+    [self.tableView reloadData];
+    
+}
+
+- (void)refreshCommentCountShow{
+    int commentCount = self.newsDetailModel.info.commentCount;
+    self.commentCountTipLabel.hidden = YES;
+    if (commentCount > 0) {
+        self.commentCountTipLabel.hidden = NO;
+        NSString *commentCountStr = [NSString stringWithFormat:@"%d",commentCount];
+        self.commentCountTipLabel.text = commentCountStr;
+        CGFloat width = [WYCommonUtils widthWithText:commentCountStr font:HitoPFSCRegularOfSize(11) lineBreakMode:NSLineBreakByWordWrapping] + 4*2;
+        if (width < 11 + 4*2) {
+            width = 11+4*2;
+        }
+        [self.commentCountTipLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(width);
+        }];
+    }
+}
+
 
 - (void)showCommentDetailVcWithSection:(NSInteger)section{
     if (section < 0 || section >= self.commentLists.count) {
@@ -348,8 +405,26 @@ LEShareSheetViewDelegate
             WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
         }
         [WeakSelf setData];
-        //
         [WeakSelf finishTaskRequest];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+}
+
+- (void)getRandomNewsRequest{
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"GetRandomNews"];
+    [self.networkManager POST:requesUrl needCache:YES caCheKey:nil parameters:nil responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
+        WeakSelf.recommendNewsArray = [NSMutableArray arrayWithArray:array];
+        WeakSelf.recommendNewsView.recommendNewsArray = WeakSelf.recommendNewsArray;
+        [WeakSelf refreshHeadViewShow];
         
     } failure:^(id responseObject, NSError *error) {
         
@@ -607,7 +682,7 @@ LEShareSheetViewDelegate
     if (self.readDuration <= 0) {
         return;
     }
-    [params setObject:[NSNumber numberWithInt:self.readDuration] forKey:@"minute"];
+    [params setObject:[NSNumber numberWithInt:self.readDuration] forKey:@"second"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
@@ -653,6 +728,35 @@ LEShareSheetViewDelegate
         _newsCommentHeadView = [[LENewsCommentHeadView alloc] init];
     }
     return _newsCommentHeadView;
+}
+
+- (LERecommendNewsView *)recommendNewsView{
+    if (!_recommendNewsView) {
+        _recommendNewsView = [[LERecommendNewsView alloc] init];
+        
+        HitoWeakSelf;
+        _recommendNewsView.didSelectRowAtIndex = ^(NSInteger index) {
+            LENewsListModel *newsModel = [WeakSelf.recommendNewsArray objectAtIndex:index];
+            DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+            detail.newsId = newsModel.newsId;
+            [WeakSelf.navigationController pushViewController:detail animated:YES];
+        };
+    }
+    return _recommendNewsView;
+}
+
+- (UILabel *)commentCountTipLabel{
+    if (!_commentCountTipLabel) {
+        _commentCountTipLabel = [[UILabel alloc] init];
+        _commentCountTipLabel.textColor = [UIColor whiteColor];
+        _commentCountTipLabel.font = HitoPFSCRegularOfSize(11);
+        _commentCountTipLabel.textAlignment = NSTextAlignmentCenter;
+        _commentCountTipLabel.layer.cornerRadius = 6.5;
+        _commentCountTipLabel.layer.masksToBounds = YES;
+        _commentCountTipLabel.hidden = YES;
+        _commentCountTipLabel.backgroundColor = [UIColor colorWithHexString:@"ee3626"];
+    }
+    return _commentCountTipLabel;
 }
 
 #pragma mark -

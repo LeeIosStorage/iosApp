@@ -77,8 +77,8 @@ UITableViewDataSource
 
 - (void)refreshUI{
     
-    [self.segmentedView updateRedCountWith:2 index:0];
-    [self.segmentedView updateRedCountWith:9 index:1];
+    [self.segmentedView updateRedCountWith:0 index:0];
+    [self.segmentedView updateRedCountWith:0 index:1];
 }
 
 - (void)segmentedSelectItem:(NSInteger)index{
@@ -97,30 +97,30 @@ UITableViewDataSource
 #pragma mark - Request
 - (void)refreshNoticeRequest{
     
-    for (int i = 0; i < 60; i ++) {
-        LEMessageModel *messageModel = [[LEMessageModel alloc] init];
-        if (i == 2 || i == 10 || i == 58) {
-            messageModel.title = @"收徒快速赚金币";
-            messageModel.messageType = LEMessageTypeNone;
-            messageModel.des = @"快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币>>>";
-        }else{
-            messageModel.title = @"系统通知";
-            messageModel.messageType = LEMessageTypeSystem;
-            messageModel.rate = @"0.601";
-            messageModel.gold = @"38";
-        }
-        [self.noticeLists addObject:messageModel];
-    }
-    [self.noticeTableView reloadData];
-    
-    for (int i = 0; i < 50; i ++) {
-        LEMessageModel *messageModel = [[LEMessageModel alloc] init];
-        messageModel.title = @"收徒快速赚金币";
-        messageModel.messageType = LEMessageTypeNone;
-        messageModel.des = @"快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币>>>";
-        [self.messageLists addObject:messageModel];
-    }
-    [self.messageTableView reloadData];
+//    for (int i = 0; i < 60; i ++) {
+//        LEMessageModel *messageModel = [[LEMessageModel alloc] init];
+//        if (i == 2 || i == 10 || i == 58) {
+//            messageModel.title = @"收徒快速赚金币";
+//            messageModel.messageType = LEMessageTypeNone;
+//            messageModel.des = @"快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币>>>";
+//        }else{
+//            messageModel.title = @"系统通知";
+//            messageModel.messageType = LEMessageTypeSystem;
+//            messageModel.rate = @"0.601";
+//            messageModel.gold = @"38";
+//        }
+//        [self.noticeLists addObject:messageModel];
+//    }
+//    [self.noticeTableView reloadData];
+//
+//    for (int i = 0; i < 50; i ++) {
+//        LEMessageModel *messageModel = [[LEMessageModel alloc] init];
+//        messageModel.title = @"收徒快速赚金币";
+//        messageModel.messageType = LEMessageTypeNone;
+//        messageModel.des = @"快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币快速赚金币>>>";
+//        [self.messageLists addObject:messageModel];
+//    }
+//    [self.messageTableView reloadData];
     
 }
 

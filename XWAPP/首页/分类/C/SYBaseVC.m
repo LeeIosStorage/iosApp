@@ -229,7 +229,11 @@
         
         BOOL needRefresh = NO;
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
-        self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
+        if (WeakSelf.downNextCursor == 1) {
+            self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            LELog(@"下拉刷新>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_newestDatapages);
+//            self->_newestDatapages = 2;
+        }
         
         if (isCache) {
             WeakSelf.newsList = [[NSMutableArray alloc] init];
@@ -309,8 +313,10 @@
         }
         
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
-        self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
-        LELog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
+        if (WeakSelf.upNextCursor == 1) {
+            self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            LELog(@"上拉加载>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
+        }
         
         [WeakSelf.newsList addObjectsFromArray:array];
         
@@ -532,12 +538,15 @@
         if (self->_afreshLatestData) {
             weakSelf.downEndUpdatedTime = [NSDate date];
             weakSelf.downStartUpdatedTime = weakSelf.tableView.mj_header.lastUpdatedTime;
+            self->_afreshLatestData = NO;
         }
         NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:weakSelf.downStartUpdatedTime];
         if (timeInterval > refresh_timeInterval) {
+            if (timeInterval > refresh_timeInterval*2) {
+                weakSelf.downNextCursor = 1;
+            }
             weakSelf.downEndUpdatedTime = [NSDate date];
             weakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:weakSelf.downEndUpdatedTime];
-            weakSelf.downNextCursor = 1;
         }
         
         [weakSelf getNewsRequest:0];

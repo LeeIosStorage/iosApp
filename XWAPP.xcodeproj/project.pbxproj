@@ -57,6 +57,7 @@
 		4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
+		4CA8158920E39E9B00A42A7D /* LERecommendNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */; };
 		4CAA26D620B557AD00B7CF31 /* LEShareSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */; };
 		4CAA26D920B55A8200B7CF31 /* LEShareWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26D820B55A8200B7CF31 /* LEShareWindow.m */; };
 		4CAA26DC20B595E200B7CF31 /* WYShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CAA26DA20B595E100B7CF31 /* WYShareManager.m */; };
@@ -313,6 +314,8 @@
 		4CA6877B20B6A56B004588FC /* LESearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LESearchBar.m; sourceTree = "<group>"; };
 		4CA6877D20B79BAF004588FC /* LECommentDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LECommentDetailViewController.h; sourceTree = "<group>"; };
 		4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECommentDetailViewController.m; sourceTree = "<group>"; };
+		4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LERecommendNewsView.h; sourceTree = "<group>"; };
+		4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LERecommendNewsView.m; sourceTree = "<group>"; };
 		4CAA26D420B557AD00B7CF31 /* LEShareSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareSheetView.h; sourceTree = "<group>"; };
 		4CAA26D520B557AD00B7CF31 /* LEShareSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEShareSheetView.m; sourceTree = "<group>"; };
 		4CAA26D720B55A8200B7CF31 /* LEShareWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEShareWindow.h; sourceTree = "<group>"; };
@@ -1334,6 +1337,8 @@
 				4C3F3C0D20ADABA200B754AF /* LENewsDetailHeaderView.m */,
 				4C3F3C1D20AFC79600B754AF /* LENewsCommentHeadView.h */,
 				4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */,
+				4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */,
+				4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -1938,6 +1943,7 @@
 				4CE90D0220C6B5DC00337617 /* LESegmentedView.m in Sources */,
 				4CB76B3920BC2C0F0092503E /* LERefreshFooter.m in Sources */,
 				EC4186BB2099B85F00E57C17 /* PhoneLogin.m in Sources */,
+				4CA8158920E39E9B00A42A7D /* LERecommendNewsView.m in Sources */,
 				4CE90D1820C7DA6700337617 /* LEEarningRankBottomView.m in Sources */,
 				4CE90D0920C792C000337617 /* LENoticeViewCell.m in Sources */,
 				4CF3162E20A14BA900E81E56 /* TaskCellHeader.m in Sources */,
@@ -2227,6 +2233,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2273,6 +2280,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hys.lett;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2284,6 +2293,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = XWAPP/XWAPP.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NEZ9Y9WURS;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2330,6 +2340,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hys.lett;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

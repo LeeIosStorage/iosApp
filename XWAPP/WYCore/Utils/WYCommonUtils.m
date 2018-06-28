@@ -15,6 +15,14 @@
 
 @implementation WYCommonUtils
 
++ (float)widthWithText:(NSString *)text font:(UIFont *)font lineBreakMode:(NSLineBreakMode)lineBreakMode{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+    paragraphStyle.lineBreakMode = lineBreakMode;
+    NSDictionary *attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle.copy};
+    float titleLabelWidth = [text sizeWithAttributes:attributes].width;
+    return titleLabelWidth;
+}
+
 + (CGSize)sizeWithAttributedText:(NSString *)text lineSpacing:(CGFloat)lineSpacing font:(UIFont *)font width:(float)width{
     
     NSUInteger length = [text length];

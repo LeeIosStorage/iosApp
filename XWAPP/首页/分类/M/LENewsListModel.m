@@ -13,7 +13,8 @@
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"newsId"  : @"id",
              @"favoriteId"  : @"fid",
-             @"public_time" : @"publish_time"
+             @"public_time" : @"publish_time",
+             @"commentCount" : @"comments_count"
              };
 }
 

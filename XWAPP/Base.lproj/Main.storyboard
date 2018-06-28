@@ -1794,6 +1794,7 @@
                     <connections>
                         <outlet property="bottomView" destination="pSx-1Z-7oa" id="afQ-FR-4ar"/>
                         <outlet property="collectButton" destination="AdU-Iz-PHe" id="bvb-Cl-GyY"/>
+                        <outlet property="commentButton" destination="Ebe-qq-JgG" id="Nls-Zv-BUR"/>
                         <outlet property="commentTF" destination="Y2g-bd-hkH" id="HwJ-uH-axW"/>
                         <outlet property="tableView" destination="O4E-dc-v67" id="83j-LN-ia6"/>
                     </connections>

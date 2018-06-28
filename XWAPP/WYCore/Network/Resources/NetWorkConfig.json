@@ -17,6 +17,12 @@
         "control" : "news",
         "action"  : "GetDetail"
     },
+    "GetRandomNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetRandomNews"
+    },
     "NewsQuery": {
         "protocol": "http",
         "module" : "api",
