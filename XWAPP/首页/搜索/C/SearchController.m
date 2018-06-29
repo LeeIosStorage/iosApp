@@ -351,6 +351,7 @@ HitoPropertyNSMutableArray(keywordArray);
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     
+    
     NSMutableString *searchBarText = [NSMutableString stringWithString:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
     if (text.length > 0) {
         [searchBarText appendString:text];
