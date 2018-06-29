@@ -227,7 +227,7 @@ JPUSHRegisterDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetJPushTagsAndAlias) name:kJPFNetworkDidLoginNotification object:nil];
 }
 
-- (void)resetJPushTagsAndAlias {
+- (void)resetJPushTagsAndAlias{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kJPFNetworkDidLoginNotification object:nil];
     NSString *alias = nil;
     NSString *testPrefix = @"";

@@ -31,18 +31,19 @@
     return YES;
 }
 
+//show错误信息
 + (void)showProgressHUDWith:(NSString *)message URLString:(NSString *)URLString{
     BOOL isShow = YES;
     NSURL *realUrl = [NSURL URLWithString:URLString];
     NSString *urlPath = [realUrl path];
-    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"] || [urlPath isEqualToString:@"/api/user/SaveReadLog"]) {
+    if ([urlPath isEqualToString:@"/api/user/UpdateUserTaskState"] || [urlPath isEqualToString:@"/api/user/GetGlobalTaskConfig"] || [urlPath isEqualToString:@"/api/user/SaveReadLog"] || [urlPath isEqualToString:@"/api/news/GetAutoCompletedTags"]) {
         isShow = NO;
     }
     if (isShow) {
         [SVProgressHUD showCustomInfoWithStatus:message];
     }
 }
-
+// Token失效 处理
 + (void)reLogin:(NSString *)URLString requestType:(WYRequestType)type{
     
     BOOL isNeedGotoLogin = YES;
