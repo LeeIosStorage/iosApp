@@ -10,6 +10,7 @@
 #import "PassWordLogin.h"
 #import "ForgetPassWord.h"
 #import "LEWebViewController.h"
+#import "AppDelegate.h"
 
 @interface PhoneLogin ()
 
@@ -251,6 +252,9 @@
                 }
             }
             [WeakSelf refreshUserInfoRequest];
+            
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            [appDelegate resetJPushTagsAndAlias];
         }
         
         

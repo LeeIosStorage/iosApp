@@ -8,6 +8,7 @@
 
 #import "PassWordLogin.h"
 #import "LEWebViewController.h"
+#import "AppDelegate.h"
 
 @interface PassWordLogin ()
 
@@ -103,6 +104,9 @@
                 }
             }
             [WeakSelf refreshUserInfoRequest];
+            
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            [appDelegate resetJPushTagsAndAlias];
         }
         
         
