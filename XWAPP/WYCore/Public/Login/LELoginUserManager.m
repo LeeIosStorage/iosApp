@@ -9,6 +9,7 @@
 #import "LELoginUserManager.h"
 #import "LELoginModel.h"
 #import "WYNetWorkManager.h"
+#import "LELoginAuthManager.h"
 
 NSString *const kUserInfoUserID = @"kUserInfoUserID";
 NSString *const kUserInfoNickname = @"kUserInfoNickname";
@@ -194,6 +195,10 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
         LELoginModel *loginModel = [LELoginModel modelWithJSON:dataObject];
         [WeakSelf updateUserInfoWithLoginModel:loginModel];
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
+        
+        [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+            
+        }];
         
         if (success) {
             success(YES,dataObject);

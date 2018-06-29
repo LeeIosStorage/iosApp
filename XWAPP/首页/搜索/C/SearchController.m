@@ -208,6 +208,11 @@ HitoPropertyNSMutableArray(keywordArray);
 #pragma mark -
 #pragma mark - Request
 - (void)getAutoCompletedTags:(NSString *)searchText{
+    
+    if (searchText.length == 0) {
+        return;
+    }
+    
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAutoCompletedTags"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -340,31 +345,40 @@ HitoPropertyNSMutableArray(keywordArray);
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     
-//    LELog(@"searchText:%@",searchText);
+//    LELog(@"textDidChange:%@",searchText);
+//    if (searchText.length == 0) {
+//        [self showViewType:0];
+//    }else{
+//        [self showViewType:1];
+////        [self getAutoCompletedTags:searchText];
+//    }
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    if ([text isEqualToString:@"\n"]) {
+        return YES;
+    }
+    NSMutableString *originalSearchBarText = [NSMutableString stringWithString:searchBar.text];
+    if (text.length > 0) {
+        if (range.length > 0) {
+//            originalSearchBarText = [NSMutableString stringWithString:text];
+            [originalSearchBarText replaceCharactersInRange:range withString:text];
+        }else{
+            [originalSearchBarText insertString:text atIndex:range.location];
+        }
+    }else{
+        [originalSearchBarText deleteCharactersInRange:range];
+    }
+    
+    NSString *searchText = [originalSearchBarText stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    LELog(@"searchText:%@ --- text:%@ -- range:%@",searchText,text,NSStringFromRange(range));
     if (searchText.length == 0) {
         [self showViewType:0];
     }else{
         [self showViewType:1];
         [self getAutoCompletedTags:searchText];
-    }
-}
-
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    
-    
-    NSMutableString *searchBarText = [NSMutableString stringWithString:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
-    if (text.length > 0) {
-        [searchBarText appendString:text];
-    }else{
-        [searchBarText deleteCharactersInRange:NSMakeRange(searchBarText.length-1, 1)];
-    }
-    
-    LELog(@"searchText:%@ --- text:%@",searchBarText,text);
-    if (searchBarText.length == 0) {
-        [self showViewType:0];
-    }else{
-        [self showViewType:1];
-        [self getAutoCompletedTags:searchBarText];
     }
     
     return YES;
