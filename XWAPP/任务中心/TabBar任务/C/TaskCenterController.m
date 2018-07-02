@@ -29,7 +29,9 @@ WXShaerStateDelegate
 {
     BOOL _isGetLastOperateTime;
 }
+
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UILabel *goldTipLabel;
 
 @property (strong, nonatomic) NSTimer *countDownTimer;
 
@@ -94,13 +96,17 @@ WXShaerStateDelegate
     self.secondsCountDown = 0;
     [self refreshBoxViewStatus];
     
-    [self.qiandaoBtn setTitle:@"明日签到可领金币" forState:UIControlStateDisabled];
+    [self.qiandaoBtn setTitle:@"明日签到可领乐币" forState:UIControlStateDisabled];
     [self refreshSignInButtonStatus:NO];
     
     [self addMJ];
     
     self.headerView.height = HitoActureHeight(228) + 165;
     [self.tableView reloadData];
+    
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        self.goldTipLabel.hidden = YES;
+    }
 }
 
 - (void)addMJ {
@@ -166,7 +172,7 @@ WXShaerStateDelegate
         int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+1]] intValue];
         BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",i+1]] boolValue];
         if (isSigned) {
-            int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+1]] intValue];
+            int golds = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d",i+2]] intValue];
             BOOL isSigned = [[_signInConfig objectForKey:[NSString stringWithFormat:@"day%d_is_signed",i+2]] boolValue];
             if (!isSigned) {
                 LELog(@"%@",[NSString stringWithFormat:@"day%d_is_signed",i+2]);
@@ -231,6 +237,12 @@ WXShaerStateDelegate
 
     NSArray *array = [NSArray modelArrayWithClass:[LETaskListModel class] json:dataObject];
     [self.taskLists removeAllObjects];
+    
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        //审核时
+        [self.tableView reloadData];
+        return;
+    }
     
     NSMutableDictionary *mutDic1 = [NSMutableDictionary dictionary];
     NSMutableDictionary *mutDic2 = [NSMutableDictionary dictionary];
@@ -383,7 +395,7 @@ WXShaerStateDelegate
         [WeakSelf refreshUI];
         
         BOOL isSignIn = [[WeakSelf.signInConfig objectForKey:@"today_is_signed"] boolValue];
-        NSString *goldString = [NSString stringWithFormat:@"明日签到可领%d金币",[WeakSelf todaySignInGold]];
+        NSString *goldString = [NSString stringWithFormat:@"明日签到可领%d乐币",[WeakSelf todaySignInGold]];
         [WeakSelf.qiandaoBtn setTitle:goldString forState:UIControlStateDisabled];
         [WeakSelf refreshSignInButtonStatus:!isSignIn];
         

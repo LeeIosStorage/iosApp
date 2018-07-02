@@ -23,6 +23,9 @@
     self.backgroundColor = [UIColor whiteColor];
     [self setupSelfNameXibOnSelf];
     
+    self.tagLabel.layer.masksToBounds = YES;
+    self.sourceLabel.layer.masksToBounds = YES;
+    
     [self.sourceLabel removeFromSuperview];
     [self addSubview:self.sourceLabel];
     [self.sourceLabel mas_makeConstraints:^(MASConstraintMaker *make) {

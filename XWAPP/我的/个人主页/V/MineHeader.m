@@ -15,6 +15,7 @@
     
     self.avatarImageView.layer.cornerRadius = HitoActureHeight(70)/2;
     self.avatarImageView.layer.masksToBounds = YES;
+    
 }
 
 - (void)updateConstraints {

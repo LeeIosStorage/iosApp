@@ -96,7 +96,7 @@ HitoPropertyNSArray(dataSource);
 
 - (NSArray *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐头条评分", @"隐私协议"], @[@"关于我们",@"意见反馈"]];
+        _dataSource = @[@[@"完善资料", @"修改密码", @"清除缓存", @"给乐资讯评分", @"隐私协议"], @[@"关于我们",@"意见反馈"]];
     }
     return _dataSource;
 }
@@ -200,7 +200,7 @@ HitoPropertyNSArray(dataSource);
         CompleteController *complete = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"CompleteController"];
         [self.navigationController pushViewController:complete animated:YES];
         
-    }else if ([title isEqualToString:@"给乐头条评分"]){
+    }else if ([title isEqualToString:@"给乐资讯评分"]){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1404835477"]];//https://itunes.apple.com/cn/app/id1404835477?mt=8
     }else if ([title isEqualToString:@"意见反馈"]){
         LEFeedbackViewController *feedbackVc = [[LEFeedbackViewController alloc] init];

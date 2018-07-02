@@ -248,7 +248,7 @@ WXShaerStateDelegate
         [rightBtn setBackgroundColor:HitoColorFromRGB(0xff4b41)];
         [rightBtn setTitleColor:HitoColorFromRGB(0xffffff) forState:UIControlStateNormal];
         rightBtn.titleLabel.font = HitoPFSCMediumOfSize(14);
-        [rightBtn setTitle:@"分享获得金币" forState:UIControlStateNormal];
+        [rightBtn setTitle:@"分享获得乐币" forState:UIControlStateNormal];
         [rightBtn addTarget:self action:@selector(rightBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [_bottonView addSubview:rightBtn];
         [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -254,6 +254,18 @@ static LELoginAuthManager *_instance = nil;
     
 }
 
+- (void)checkUpdateWithAppID:(NSString *)appID{
+    
+    HitoWeakSelf;
+    [self.netWorkManager checkUpdateWithAppID:appID success:^(NSDictionary *resultDic, BOOL isNewVersion, NSString *newVersion, NSString *currentVersion) {
+        
+        WeakSelf.isInReviewVersion = isNewVersion;
+        
+    } failure:^(NSError *error) {
+        WeakSelf.isInReviewVersion = YES;
+    }];
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (WYNetWorkManager *)netWorkManager{

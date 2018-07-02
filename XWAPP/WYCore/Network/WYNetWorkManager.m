@@ -433,4 +433,46 @@ responseClass:(Class )classType
     return resultUrlString;
 }
 
+#pragma mark - App Store 版本号
+- (void)checkUpdateWithAppID:(NSString *)appID success:(void (^)(NSDictionary *resultDic , BOOL isNewVersion ,NSString * newVersion , NSString * currentVersion))success failure:(void (^)(NSError *error))failure{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer=[AFHTTPRequestSerializer serializer];
+    manager.responseSerializer=[AFHTTPResponseSerializer serializer];
+    
+    //1404835477 乐资讯
+    NSString *encodingUrl = [[@"http://itunes.apple.com/cn/lookup?id=" stringByAppendingString:@"1404835477"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//1113268900
+    
+    [manager GET:encodingUrl parameters:nil progress:^(NSProgress *_Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+        
+        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        //获取AppStore的版本号
+        NSString *versionStr = @"0.0.0";
+        NSArray *results = [resultDic objectForKey:@"results"];
+        if (results.count > 0) {
+            versionStr = [[results objectAtIndex:0] valueForKey:@"version"];
+        }
+        
+        NSString *versionStr_int = [versionStr stringByReplacingOccurrencesOfString:@"."withString:@""];
+        int version = [versionStr_int intValue];
+        //获取本地的版本号
+        NSDictionary *infoDic=[[NSBundle mainBundle] infoDictionary];
+        NSString * currentVersion = [infoDic valueForKey:@"CFBundleShortVersionString"];
+        
+        NSString *currentVersion_int=[currentVersion stringByReplacingOccurrencesOfString:@"."withString:@""];
+        int current = [currentVersion_int intValue];
+        
+        if(current > version){
+            success(resultDic,YES, versionStr,currentVersion);
+        }else{
+            success(resultDic,NO ,versionStr,currentVersion);
+        }
+    } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+        failure(error);
+    }];
+}
+
 @end

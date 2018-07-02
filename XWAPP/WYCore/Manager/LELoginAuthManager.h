@@ -18,6 +18,8 @@ typedef void(^LoginAuthBindingSuccessBlock)(BOOL success);
 @property (strong, nonatomic) NSMutableArray *taskList;
 @property (strong, nonatomic) NSDictionary *globalTaskConfig;
 
+@property (assign, nonatomic) BOOL isInReviewVersion;
+
 + (LELoginAuthManager *)sharedInstance;
 
 //微信授权绑定
@@ -38,5 +40,7 @@ typedef void(^LoginAuthBindingSuccessBlock)(BOOL success);
 - (BOOL)taskCompletedWithGreenHandTask;
 //获取对应的任务信息
 - (LETaskListModel *)getTaskWithTaskType:(LETaskCenterType)taskType;
+
+- (void)checkUpdateWithAppID:(NSString *)appID;
 
 @end

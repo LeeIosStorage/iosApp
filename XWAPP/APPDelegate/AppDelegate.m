@@ -38,6 +38,8 @@ JPUSHRegisterDelegate
         
     }];
     
+    [[LELoginAuthManager sharedInstance] checkUpdateWithAppID:@""];
+    
     [SVProgressHUD setCurrentDefaultStyle];
     [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
     
