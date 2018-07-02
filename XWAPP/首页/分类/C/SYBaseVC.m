@@ -117,7 +117,7 @@
     }
     
     RefrestInfoView *refrest = [[[NSBundle mainBundle] loadNibNamed:@"RefrestInfoView" owner:self options:nil] firstObject];
-    refrest.titleLB.text = [NSString stringWithFormat:@"丨乐%@丨已为你更新 %d条内容", @"头条", updateCount];//self.tagTitle
+    refrest.titleLB.text = [NSString stringWithFormat:@"丨乐%@丨已为你更新 %d条内容", @"资讯", updateCount];//self.tagTitle
     self.tableView.tableHeaderView = refrest;
     self.tableView.mj_header.hidden = YES;
     

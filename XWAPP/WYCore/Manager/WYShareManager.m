@@ -194,7 +194,7 @@ static WYShareManager* wy_shareManager = nil;
     }
     
     WBMessageObject *sendMsg = [WBMessageObject message];
-    NSString* shareTitle = [NSString stringWithFormat:@"%@  %@ %@",title,@"(分享自@乐头条)",webpageUrl];
+    NSString* shareTitle = [NSString stringWithFormat:@"%@  %@ %@",title,@"(分享自@乐资讯)",webpageUrl];
     sendMsg.text = shareTitle;
     
     if (imgData) {

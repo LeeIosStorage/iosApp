@@ -15,8 +15,6 @@ typedef void(^DeleBlock)(void);
 
 @property (weak, nonatomic) IBOutlet UILabel *tagLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sourceLabel;
-@property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *deleButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelCollectButton;

@@ -150,7 +150,7 @@ UIScrollViewDelegate
     if (!_header) {
         _header = [[[NSBundle mainBundle] loadNibNamed:@"MineHeader" owner:self options:nil] firstObject];
 
-        _header.leftMine.topLB.text = @"我的金币(个)";
+        _header.leftMine.topLB.text = @"我的乐币(个)";
         _header.centerMine.topLB.text = @"我的零钱(元)";
         _header.rightMine.topLB.text = @"阅读时长(分钟)";
         _header.rightMine.lineView.hidden = YES;
@@ -158,6 +158,9 @@ UIScrollViewDelegate
         HitoWeakSelf;
         [_header leftClickAction:^{
             [MobClick event:kMineGoldClick];
+            if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+                return ;
+            }
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
@@ -165,10 +168,20 @@ UIScrollViewDelegate
         
         [_header centerClickAction:^{
             [MobClick event:kMineBalanceClick];
+            if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+                return ;
+            }
             MyWallet *wallet = [[MyWallet alloc] init];
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
+        
+        if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+            _header.centerMine.hidden = YES;
+            _header.centerLineView.hidden = NO;
+            _header.leftMine.lineView.hidden = YES;
+        }
+        
     }
     
     UIView *hh = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoActureHeight(134)+39)];
@@ -208,9 +221,12 @@ UIScrollViewDelegate
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.backgroundColor = [UIColor clearColor];
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 80)];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 300)];
     footerView.backgroundColor = self.view.backgroundColor;
     self.tableView.tableFooterView = footerView;
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.bottom = -300;
+    self.tableView.contentInset = insets;
     
     //初始化数据
     self.secondArr = [NSMutableArray array];
@@ -229,9 +245,18 @@ UIScrollViewDelegate
 - (void)refreshSecondArray{
     
     self.secondArr = [NSMutableArray array];
-    [self.secondArr addObject:@{cell_title:@"每收一名徒弟赚3500金币，可立即领取提现",cell_type:@(LEMineCellTypeRecruit)}];
+    LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeInvitationRecruit];
+    NSString *cellTitle = @"每收一名徒弟赚3000乐币";
+    if (taskModel) {
+        cellTitle = [NSString stringWithFormat:@"每收一名徒弟赚%@乐币，可立即领取提现",taskModel.coin];
+    }
+    
+    if (![LELoginAuthManager sharedInstance].isInReviewVersion) {
+        [self.secondArr addObject:@{cell_title:cellTitle,cell_type:@(LEMineCellTypeRecruit)}];
+    }
+    
     if ([LELoginAuthManager sharedInstance].taskList.count > 0) {
-        if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask]) {
+        if (![[LELoginAuthManager sharedInstance] taskCompletedWithGreenHandTask] && ![LELoginAuthManager sharedInstance].isInReviewVersion) {
             [self.secondArr addObject:@{cell_title:@"新手任务",cell_type:@(LEMineCellTypeGreenHand)}];
         }
         if (![[LELoginAuthManager sharedInstance] taskCompletedWithTaskType:LETaskCenterTypeInvitationCode]) {
@@ -353,10 +378,16 @@ UIScrollViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+            return 0;
+        }
         return 71;
     } else if (indexPath.section == 1) {
         return 44;
     } else if (indexPath.section == 2) {
+        if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+            return 0;
+        }
         return HitoActureHeight(61);
     } else {
         return 44;

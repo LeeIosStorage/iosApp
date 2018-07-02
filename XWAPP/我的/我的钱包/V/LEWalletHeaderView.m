@@ -74,8 +74,8 @@
     double coin_rate = [[[LELoginAuthManager sharedInstance].globalTaskConfig objectForKey:@"coin_rate"] doubleValue];
 //    coin_rate = 0.601;
     double master_coin = (coin_rate*[LELoginUserManager todayGolds])/1000;
-    _rateLabel.text = [NSString stringWithFormat:@"%ld金币 =%.2f元",[LELoginUserManager todayGolds],master_coin];
-    _goldTipLabel.text = @"当天赚取的金币按照规则自动转换为零钱";
+    _rateLabel.text = [NSString stringWithFormat:@"%ld乐币 =%.2f元",[LELoginUserManager todayGolds],master_coin];
+    _goldTipLabel.text = @"当天赚取的乐币按照规则自动转换为零钱";
 
     /****
     self.chartView.layer.cornerRadius = 13;
@@ -221,7 +221,7 @@
         UILabel *dayGoldTipLabel = [[UILabel alloc] init];
         dayGoldTipLabel.textColor = [UIColor whiteColor];
         dayGoldTipLabel.font = HitoPFSCRegularOfSize(10);
-        dayGoldTipLabel.text = @"今日金币";
+        dayGoldTipLabel.text = @"今日乐币";
         [_topContainerView addSubview:dayGoldTipLabel];
         [dayGoldTipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(grossEarningsTipLabel.mas_right).offset(80);

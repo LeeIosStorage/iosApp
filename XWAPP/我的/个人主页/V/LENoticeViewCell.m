@@ -44,7 +44,7 @@
     if (messageModel.messageType == LEMessageTypeSystem) {
         
         NSString *rateText = [NSString stringWithFormat:@"昨日汇率：%@\n",messageModel.rate];
-        NSString *goldText = [NSString stringWithFormat:@" %@ 金币",messageModel.gold];
+        NSString *goldText = [NSString stringWithFormat:@" %@ 乐币",messageModel.gold];
         CGFloat cny = ([messageModel.gold floatValue]*[messageModel.rate floatValue])/1000.0;
         NSString *cnyText = [NSString stringWithFormat:@"%.2f 元",cny];
         NSString *desString = [NSString stringWithFormat:@"%@您昨天赚取的%@，已经帮您兑换成零钱：%@。继续加油哦~",rateText,goldText,cnyText];

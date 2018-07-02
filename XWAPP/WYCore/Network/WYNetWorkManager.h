@@ -79,4 +79,7 @@ responseClass:(Class )classType
      success:(WYRequestSuccessBlock)success
      failure:(WYRequestFailureBlock)failure;
 
+#pragma mark - App Store 版本号
+- (void)checkUpdateWithAppID:(NSString *)appID success:(void (^)(NSDictionary *resultDic , BOOL isNewVersion ,NSString * newVersion , NSString * currentVersion))success failure:(void (^)(NSError *error))failure;
+
 @end
