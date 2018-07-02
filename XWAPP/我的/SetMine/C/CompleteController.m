@@ -421,6 +421,10 @@ HitoPropertyNSMutableArray(jobData);
             [SVProgressHUD showCustomInfoWithStatus:@"请输入昵称"];
             return;
         }
+        if (WeakSelf.board.nameTF.text.length > 12) {
+            [SVProgressHUD showCustomInfoWithStatus:@"昵称不能超过12个字符"];
+            return;
+        }
         WeakSelf.userModel.nickname = WeakSelf.board.nameTF.text;
 //        [WeakSelf.tableView reloadData];
         [WeakSelf saveUserInfoRequest];
