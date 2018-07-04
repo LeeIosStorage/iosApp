@@ -22,6 +22,7 @@ typedef void(^CenterClick)(void);
 @property (weak, nonatomic) IBOutlet UIView *centerLineView;
 @property (weak, nonatomic) IBOutlet UIImageView *backIM;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
+@property (weak, nonatomic) IBOutlet UILabel *codeLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *minImageBottom;
 
 @property (nonatomic, copy) LeftClick leftClick;

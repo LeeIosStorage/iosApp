@@ -14,7 +14,11 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - Bugly (2.5.0)
   - CYLTableViewPlaceHolder (1.0.8)
+  - GrowingIO (2.3.2):
+    - GrowingIO/Core (= 2.3.2)
+  - GrowingIO/Core (2.3.2)
   - JCore (1.2.0)
   - JKCountDownButton (1.2.0)
   - JPush (3.0.9):
@@ -63,7 +67,9 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.0)
+  - Bugly
   - CYLTableViewPlaceHolder (~> 1.0.8)
+  - GrowingIO (~> 2.3.2)
   - JKCountDownButton (~> 1.2.0)
   - JPush
   - JSONModel (~> 1.7.0)
@@ -88,7 +94,9 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+    - Bugly
     - CYLTableViewPlaceHolder
+    - GrowingIO
     - JCore
     - JKCountDownButton
     - JPush
@@ -112,7 +120,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CYLTableViewPlaceHolder: 44075c119aab78bbc514c75d771d6565e19938e8
+  GrowingIO: 47082b5644d5d074bc149c0bf8f94d30b32281c7
   JCore: b52e3dd73625eec70afd1244bb9c41038aa06087
   JKCountDownButton: cc72e24c8b73f232b15cc348277422b089d43bff
   JPush: 48041e8c5ad2ef9b48709eb0888af9640b36e9b0
@@ -134,6 +144,6 @@ SPEC CHECKSUMS:
   WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 16701d6393d558d41cd4bff6db6046dfdc1e748f
+PODFILE CHECKSUM: 5980fc392f54491c805f095fb49505df7dbfdce5
 
 COCOAPODS: 1.5.0

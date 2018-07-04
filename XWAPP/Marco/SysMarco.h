@@ -28,6 +28,10 @@
 #define APS_FOR_PRODUCTION 1
 #endif
 
+//Bugly
+#define kBuglyAppID  @"e26d4b0928"
+#define kGrowingIOAppID  @"8f00a97b58a86872"
+
 
 #define MAX_WX_IMAGE_SIZE 32*1024
 #define WY_IMAGE_COMPRESSION_QUALITY 0.4

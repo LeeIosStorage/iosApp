@@ -16,6 +16,9 @@
 #import "LEDataStoreManager.h"
 #import "DetailController.h"
 #import "LESearchBar.h"
+#import "YYFPSLabel.h"
+#import "AppDelegate.h"
+#import "LELoginAuthManager.h"
 
 @interface SYBaseController () <UISearchBarDelegate>
 {
@@ -33,6 +36,15 @@ HitoPropertyNSArray(allChannelArray);
 @end
 
 @implementation SYBaseController
+
+#pragma mark - FPS demo
+- (void)testFPSLabel{
+    YYFPSLabel *_fpsLabel = [YYFPSLabel new];
+    _fpsLabel.frame = CGRectMake(HitoScreenW-50-70, 0, 50, 30);
+    [_fpsLabel sizeToFit];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate.window addSubview:_fpsLabel];
+}
 
 #pragma mark -
 #pragma mark - Lifecycle
@@ -56,6 +68,10 @@ HitoPropertyNSArray(allChannelArray);
     
     [self getNewsChannelRequest];
     
+    
+#ifdef DEBUG
+//    [self testFPSLabel];
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {

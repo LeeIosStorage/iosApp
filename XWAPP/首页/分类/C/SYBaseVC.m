@@ -105,8 +105,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseOneCell" bundle:nil] forCellReuseIdentifier:@"BaseOneCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseTwoCell" bundle:nil] forCellReuseIdentifier:@"BaseTwoCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseThirdCell" bundle:nil] forCellReuseIdentifier:@"BaseThirdCell"];
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.tableFooterView = [UIView new];
 }
 
@@ -397,6 +397,22 @@
     return self.newsList.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    LENewsListModel *newsModel = nil;
+    if (indexPath.row < self.newsList.count) {
+        newsModel = [self.newsList objectAtIndex:indexPath.row];
+    }
+    NSUInteger count = newsModel.cover.count;
+    NSString *coverStr = [[newsModel.cover firstObject] description];
+    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+        return 120;
+    } else if (count == 3) {
+        return 195;
+    } else {
+        return 113;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     

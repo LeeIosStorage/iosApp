@@ -177,14 +177,21 @@ UIScrollViewDelegate
         }];
         
         if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+            UIView *supView = _header.rightMine.superview;
+            [_header.rightMine removeFromSuperview];
+            [supView addSubview:_header.rightMine];
+            [_header.rightMine mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(supView);
+            }];
+            _header.leftMine.hidden = YES;
             _header.centerMine.hidden = YES;
-            _header.centerLineView.hidden = NO;
+            _header.centerLineView.hidden = YES;
             _header.leftMine.lineView.hidden = YES;
         }
         
     }
     
-    UIView *hh = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoActureHeight(134)+39)];
+    UIView *hh = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoActureHeight(188)+39)];
     self.header.frame = hh.frame;
     [hh addSubview:self.header];
     self.tableView.tableHeaderView = hh;
@@ -195,6 +202,7 @@ UIScrollViewDelegate
     _header.leftMine.bottomLB.text = [NSString stringWithFormat:@"%ld",[LELoginUserManager todayGolds]];
     _header.centerMine.bottomLB.text = [NSString stringWithFormat:@"%.2f",[LELoginUserManager balance]];
     _header.rightMine.bottomLB.text = [NSString stringWithFormat:@"%.1f",[LELoginUserManager readDuration]];
+    _header.codeLabel.text = [NSString stringWithFormat:@"我的邀请码：%@",[LELoginUserManager invitationCode]];
     
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:_header.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
@@ -248,7 +256,7 @@ UIScrollViewDelegate
     LETaskListModel *taskModel = [[LELoginAuthManager sharedInstance] getTaskWithTaskType:LETaskCenterTypeInvitationRecruit];
     NSString *cellTitle = @"每收一名徒弟赚3000乐币";
     if (taskModel) {
-        cellTitle = [NSString stringWithFormat:@"每收一名徒弟赚%@乐币，可立即领取提现",taskModel.coin];
+        cellTitle = [NSString stringWithFormat:@"每收一名徒弟赚%@乐币，多邀多得哦",taskModel.coin];
     }
     
     if (![LELoginAuthManager sharedInstance].isInReviewVersion) {

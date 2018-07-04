@@ -12,6 +12,7 @@
 #import "SYBaseController.h"
 #import "TaskCenterController.h"
 #import "MineController.h"
+#import "LELoginAuthManager.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -19,15 +20,36 @@
 
 @implementation RootTabBar
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self resetTabBarTitle];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self resetTabBarTitle];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.delegate = self;
+    [self resetTabBarTitle];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)resetTabBarTitle{
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        for (UITabBarItem *item in self.tabBar.items) {
+            if ([item.title isEqualToString:@"任务中心"]) {
+                item.title = @"发现";
+            }
+        }
+    }
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {

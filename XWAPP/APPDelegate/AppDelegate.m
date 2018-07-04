@@ -19,6 +19,8 @@
 #import "DetailController.h"
 #import <UserNotifications/UserNotifications.h>
 #import "LELoginAuthManager.h"
+#import <Bugly/Bugly.h>
+#import "Growing.h"
 
 @interface AppDelegate ()
 <
@@ -73,6 +75,16 @@ JPUSHRegisterDelegate
 
 - (void)configUSharePlatforms
 {
+    // 腾讯Bugly
+    [Bugly startWithAppId:kBuglyAppID];
+    
+    // GrowingIO统计平台 详情：https://www.growingio.com
+    [Growing startWithAccountId:kGrowingIOAppID];
+    // 开启Growing调试日志 可以开启日志
+#ifdef DEBUG
+    [Growing setEnableLog:NO];
+#endif
+    
     //友盟统计
 //    [UMCommonLogManager setUpUMCommonLogManager];
 //    [UMConfigure setLogEnabled:YES];
@@ -90,6 +102,11 @@ JPUSHRegisterDelegate
 - (BOOL)handleOpenURL:(NSURL *)url {
     LELog(@"query=%@,scheme=%@,host=%@", url.query, url.scheme, url.host);
     NSString *scheme = [url scheme];
+    
+    if ([Growing handleUrl:url]) // 请务必确保该函数被调用
+    {
+        return YES;
+    }
     
     //三方登录
     BOOL isUMSocial = ([[url absoluteString] hasPrefix:[NSString stringWithFormat:@"tencent%@://qzapp",QQ_ID]] || [[url absoluteString] hasPrefix:[NSString stringWithFormat:@"%@://oauth",WX_ID]]);

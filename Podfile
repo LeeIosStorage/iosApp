@@ -54,4 +54,9 @@ pod 'UMCCommonLog'
 pod 'UMCSecurityPlugins'
 pod 'UMCAnalytics' , '~> 5.5.0'
 
+#腾讯bug统计SDK
+pod 'Bugly'
+#数据统计
+pod 'GrowingIO', '~>2.3.2'
+
 end
