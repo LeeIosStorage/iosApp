@@ -23,6 +23,13 @@
     [super awakeFromNib];
     // Initialization code
     self.titleLabel.layer.masksToBounds = YES;
+    
+    self.coverImageView.clipsToBounds = YES;
+    self.coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.coverImageView1.clipsToBounds = YES;
+    self.coverImageView1.contentMode = UIViewContentModeScaleAspectFill;
+    self.coverImageView2.clipsToBounds = YES;
+    self.coverImageView2.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

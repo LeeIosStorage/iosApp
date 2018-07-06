@@ -80,12 +80,20 @@
 
 - (void)updateCellWithData:(LENewsListModel *)newsModel{
     
+    self.sourceLabel.hidden = NO;
+    self.deleButton.hidden = NO;
     UIColor *tagColor = [UIColor colorWithHexString:@"f11b1b"];
     NSString *tagString = @"";
     if (newsModel.is_hot) {
         tagString = @" 热门 ";
     }else if (newsModel.is_top){
         tagString = @" 置顶 ";
+    }
+    if (newsModel.is_ad) {
+        tagString = @" 广告 ";
+        tagColor = [UIColor colorWithHexString:@"999999"];
+        self.sourceLabel.hidden = YES;
+        self.deleButton.hidden = YES;
     }
     self.tagLabel.textColor = tagColor;
     self.tagLabel.layer.cornerRadius = 3;

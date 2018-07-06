@@ -23,6 +23,8 @@ typedef void(^handleSuccessBlock)(NSMutableAttributedString *attributedString);
 
 @property (assign, nonatomic) BOOL isFromPush;
 
+@property (assign, nonatomic) BOOL isVideo;
+
 - (instancetype)initWithNewsId:(NSString *)newsId;
 
 - (void)showImageDetailWithImageView:(YYAnimatedImageView *)imageView;

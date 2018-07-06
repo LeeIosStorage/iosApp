@@ -25,6 +25,13 @@
 #import "LELoginManager.h"
 #import "LELoginAuthManager.h"
 #import "LERecommendNewsView.h"
+#import "HotUpButton.h"
+#import "LENewsSourceView.h"
+
+typedef NS_ENUM(NSInteger, LENewsDetailViewCType) {
+    LENewsDetailViewCTypeNone         = 0,//图文
+    LENewsDetailViewCTypeVideo        = 1,//视频
+};
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -47,8 +54,12 @@ LECommentCellDelegate
     LEShareSheetView *_shareSheetView;
     
     BOOL _isCollect;
-    
+ 
+    BOOL _bStatusBarHidden;
+    UIStatusBarStyle _currentStatusBarStyle;
 }
+
+@property (assign, nonatomic) LENewsDetailViewCType vcType;
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
 
@@ -78,6 +89,10 @@ LECommentCellDelegate
 
 @property (strong, nonatomic) UILabel *commentCountTipLabel;
 
+@property (strong, nonatomic) LENewsSourceView *newsSourceView;//新闻来源
+
+@property (strong, nonatomic) UIView *videoContainerView;//视频视图
+
 @end
 
 @implementation DetailController
@@ -97,6 +112,29 @@ LECommentCellDelegate
     return self;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return _bStatusBarHidden;
+}
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    return _currentStatusBarStyle;
+//}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (self.vcType == LENewsDetailViewCTypeVideo) {
+//        [self.navigationItem setHidesBackButton:YES];
+//        [self.navigationController.navigationBar setHidden:YES];
+//        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+//        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
+        _bStatusBarHidden = YES;
+        _currentStatusBarStyle = UIStatusBarStyleLightContent;
+        [self setNeedsStatusBarAppearanceUpdate];
+        [self addVideoView];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self startTimer];
@@ -104,6 +142,9 @@ LECommentCellDelegate
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self stopTimer];
+//    [self.navigationController.navigationBar setHidden:NO];
+//    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -161,7 +202,7 @@ LECommentCellDelegate
 - (void)setupSubViews{
     
 //    self.view.backgroundColor = kAppBackgroundColor;
-    
+
     self.readDuration = 0;
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
@@ -207,15 +248,22 @@ LECommentCellDelegate
     self.newsDetailHeaderView.width = HitoScreenW;
 //    self.newsDetailHeaderView.height = 65;
     [self.newsDetailContentView addSubview:self.newsDetailHeaderView];
+    
+    self.newsSourceView.top = 0;
+    self.newsSourceView.width = HitoScreenW;
+    [self.newsDetailContentView addSubview:self.newsSourceView];
+    
     self.recommendNewsView.top = 0;
     self.recommendNewsView.left = 12;
     self.recommendNewsView.width = HitoScreenW-12*2;
     self.recommendNewsView.height = 0;
     [self.newsDetailContentView addSubview:self.recommendNewsView];
+    
     self.newsCommentHeadView.top = 0;
     self.newsCommentHeadView.width = HitoScreenW;
     self.newsCommentHeadView.height = 45;
     [self.newsDetailContentView addSubview:self.newsCommentHeadView];
+    
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
     
@@ -230,14 +278,13 @@ LECommentCellDelegate
     [self refreshCommentCountShow];
     
     _headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
+    [self.newsSourceView updateWithData:self.newsDetailModel.info];
     
     NSString *htmlString = nil;
     htmlString = self.newsDetailModel.info.content;
     
     HitoWeakSelf;
     [self parserContentWithHtmlString:htmlString handleSuccessBlcok:^(NSMutableAttributedString *attributedString) {
-        
-        
         
         WeakSelf.newsDetailModel.contentAttributedString = attributedString;
         WeakSelf.newsDetailModel.contentHeight = [NSNumber numberWithFloat:[WeakSelf getAttributedStringHeightWithString:attributedString]];
@@ -256,11 +303,23 @@ LECommentCellDelegate
         recommendViewHeight += 17;
     }
     
+    CGFloat newsSourceHeight = self.newsSourceView.height;
+    if (newsSourceHeight == 0) {
+        newsSourceHeight = 45;
+    }
+    
     self.newsDetailContentView.contentLabel.top = _headerHeight + 10;
-    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight;
-    self.recommendNewsView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight+5;
+    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight + newsSourceHeight;
+    
+    self.newsSourceView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight;
+    self.newsSourceView.height = newsSourceHeight;
+//    self.newsSourceView.backgroundColor = kAppThemeColor;
+    
+    self.recommendNewsView.top = self.newsSourceView.top + self.newsSourceView.height;
     self.recommendNewsView.height = self.recommendNewsArray.count*70;
-    self.newsCommentHeadView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + recommendViewHeight;
+    
+    self.newsCommentHeadView.top = self.recommendNewsView.top + recommendViewHeight;
+    
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
     
@@ -432,6 +491,36 @@ LECommentCellDelegate
         return YES;
     }
     return NO;
+}
+
+#pragma mark - 视频
+- (void)addVideoView{
+    
+    if (!self.videoContainerView) {
+        self.videoContainerView = [[UIView alloc] init];
+//        self.videoContainerView.backgroundColor = kAppThemeColor;
+        [self.view addSubview:self.videoContainerView];
+        [self.videoContainerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.top.equalTo(self.view).offset(0);
+            make.height.mas_equalTo(HitoActureHeight(200));
+        }];
+        
+        HotUpButton *backButton = [HotUpButton buttonWithType:UIButtonTypeSystem];
+        [backButton setImage:[UIImage imageNamed:@"btn_back_pre"] forState:UIControlStateNormal];
+        [backButton setTintColor:[UIColor whiteColor]];
+        [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.videoContainerView addSubview:backButton];
+        [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.videoContainerView).offset(12);
+            make.top.equalTo(self.videoContainerView).offset(20);
+            make.size.mas_equalTo(CGSizeMake(20, 20));
+        }];
+        
+        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsMake(HitoActureHeight(200), 0, 0, 0));
+        }];
+    }
 }
 
 #pragma mark -
@@ -746,6 +835,13 @@ LECommentCellDelegate
 
 #pragma mark -
 #pragma mark - Set And Getters
+- (void)setIsVideo:(BOOL)isVideo{
+    _isVideo = isVideo;
+    if (_isVideo) {
+        self.vcType = LENewsDetailViewCTypeVideo;
+    }
+}
+
 - (CommontHFView *)huView {
     if (!_huView) {
         _huView = [[[NSBundle mainBundle] loadNibNamed:@"CommontHFView" owner:self options:nil] firstObject];
@@ -808,12 +904,22 @@ LECommentCellDelegate
     return _commentCountTipLabel;
 }
 
+- (LENewsSourceView *)newsSourceView{
+    if (!_newsSourceView) {
+        _newsSourceView = [[LENewsSourceView alloc] init];
+    }
+    return _newsSourceView;
+}
+
 #pragma mark -
 #pragma mark - IBActions
+- (void)backAction:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (IBAction)favoAction:(UIButton *)sender {
     [self collectRequest];
 }
-
 
 - (IBAction)commentAction:(UIButton *)sender {
     

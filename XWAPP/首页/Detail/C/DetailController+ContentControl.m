@@ -25,6 +25,11 @@
     
     __block NSMutableAttributedString *contentAttributed = [[NSMutableAttributedString alloc] init];
     
+    if (htmlString.length == 0) {
+        successBlock(contentAttributed);
+        return;
+    }
+    
     self.imageItemsArray = [NSMutableArray arrayWithCapacity:0];
     NSMutableArray *tmpImageArray = [NSMutableArray array];
     
@@ -35,7 +40,6 @@
     NSArray *elements = [xpathParser searchWithXPathQuery:@"//p | //img"];
     
     
-//    __block int testImageCount = 0;
     HitoWeakSelf;
     [elements enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[TFHppleElement class]]) {
@@ -79,10 +83,6 @@
                 //图片解析
                 if ([childrenElement.tagName isEqualToString:TagImage_Key]) {
                     
-//                    testImageCount ++;
-//                    NSString *altString = [childrenElement objectForKey:Alt_key];
-//                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
-                    
                     LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
                     LEElementStyleBox *box = [LEElementStyleBox createBox];
                     NSString *dataImgUrl = [childrenElement objectForKey:DataImageUrl_key];
@@ -115,7 +115,6 @@
             }
             
             if ([elements lastObject] == obj) {
-//                LELog(@"此篇新闻图片数量-------------------------(%d)",testImageCount);
                 successBlock(contentAttributed);
                 *stop = YES;
             }

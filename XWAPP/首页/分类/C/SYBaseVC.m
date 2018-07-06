@@ -16,10 +16,15 @@
 #import "DetailController.h"
 #import "SYDetailController.h"
 #import "LENewsListModel.h"
+#import "LEWebViewController.h"
+#import <SafariServices/SafariServices.h>
 
 #define refresh_timeInterval  5*60
 
 @interface SYBaseVC ()
+<
+SFSafariViewControllerDelegate
+>
 {
     UIView *_cellMaskView;
     BOOL _shieldingCellMaskView;
@@ -169,6 +174,13 @@
 }
 
 - (void)sortNewsListArray{
+    
+    //test 视频
+//    LENewsListModel *firstModel = [self.newsList firstObject];
+//    firstModel.is_video = YES;
+    
+    
+    
     //置顶操作
     NSMutableArray *tmpArray = [NSMutableArray array];
     NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
@@ -191,6 +203,35 @@
         tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 2)];
     }
     [self.newsList insertObjects:tmpArray atIndex:0];
+}
+
+- (void)insertADToNewsList:(NSArray *)array index:(NSInteger)index adModel:(LENewsListModel *)adModel animation:(BOOL)animation{
+    return;
+    if (array.count == 0) {
+        return;
+    }
+    
+    if (self.newsList.count >= index) {
+        LENewsListModel *indexModel = [self.newsList objectAtIndex:index];
+        if (indexModel.is_ad) {
+            return;
+        }
+        [self.newsList insertObject:adModel atIndex:index];
+        
+        if (animation) {
+            [CATransaction begin];
+            [self.tableView beginUpdates];
+            [CATransaction setCompletionBlock:^{
+                //动画结束 回调
+            }];
+            [self.tableView insertRow:index inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+            [CATransaction commit];
+        }else{
+            [self.tableView reloadData];
+        }
+    }
+    
 }
 
 #pragma mark -
@@ -257,6 +298,9 @@
             
             if (needRefresh) {
                 WeakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:[NSDate date]];
+                //test
+                WeakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval*60 sinceDate:[NSDate date]];
+                
                 [WeakSelf getNewsRequest:1];
             }
             
@@ -280,6 +324,20 @@
         [WeakSelf sortNewsListArray];
         
         [WeakSelf.tableView reloadData];
+        
+        //添加广告
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LENewsListModel *adModel = [[LENewsListModel alloc] init];
+            adModel.is_ad = YES;
+            adModel.title = @"慧一舍棋牌游戏先行者";
+            adModel.cover = [NSArray arrayWithObjects:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530704113914&di=dbc4e909286b3b4c758392a37db370b5&imgtype=0&src=http%3A%2F%2Fwww.zshouyou.com%2Fud%2Fallimg%2F171026%2F16320T126-0.png", nil];
+            adModel.adUrl = @"http://www.huiyishe.cn";
+//            adModel.adUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-sd/8a4da8c4692d4b15a14dd3d16097b5c0/sd.mp4";
+            //http://html2.qktoutiao.com/detail/2018/06/26/108079647.html
+            //http://v4.qutoutiao.net/Act-ss-mp4-sd/8a4da8c4692d4b15a14dd3d16097b5c0/sd.mp4
+            adModel.adType = 0;
+            [WeakSelf insertADToNewsList:array index:1 adModel:adModel animation:YES];
+        });
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf removeCellMaskView];
@@ -335,6 +393,18 @@
         [WeakSelf sortNewsListArray];
         
         [WeakSelf.tableView reloadData];
+        
+        //添加广告
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LENewsListModel *adModel = [[LENewsListModel alloc] init];
+            adModel.is_ad = YES;
+            adModel.title = @"足球宝贝";
+            adModel.cover = [NSArray arrayWithObjects:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530707693966&di=abc86e4d7da0465e0b99c027f75800b0&imgtype=0&src=http%3A%2F%2Fimg2.ph.126.net%2FI8P3Eq4u62gn_jX9DOMNJw%3D%3D%2F1554304821414308681.jpg", nil];
+            adModel.adType = 1;
+            NSInteger index = WeakSelf.newsList.count - array.count;
+            
+            [WeakSelf insertADToNewsList:array index:index adModel:adModel animation:YES];
+        });
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf removeCellMaskView];
@@ -458,9 +528,56 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
+    
+    if (newsModel.is_ad) {
+        [self adJumphandle:newsModel];
+        return;
+    }
+    
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
+    detail.isVideo = newsModel.is_video;
     [self.navigationController pushViewController:detail animated:YES];
+}
+
+#pragma mark -
+#pragma mark - 广告跳转
+- (void)adJumphandle:(LENewsListModel *)model{
+    
+    switch (model.adType) {
+        case 1:
+            [self jumpSafariViewController:model];
+            break;
+            
+        default:{
+            NSString *webUrl = model.adUrl;
+            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
+            webVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:webVc animated:YES];
+        }
+            break;
+    }
+}
+
+- (void)jumpSafariViewController:(LENewsListModel *)model{
+    //Safari百度搜索
+    NSString *webUrl = model.adUrl;
+    webUrl = [NSString stringWithFormat:@"https://www.baidu.com/s?wd=%@",model.title];
+    NSString *encodedUrl = [webUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if (@available(iOS 9.0, *)) {
+        SFSafariViewController *svc =[[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:encodedUrl]];
+        svc.delegate = self;
+        [self.navigationController presentViewController:svc animated:true completion:nil];
+    } else {
+        // Fallback on earlier versions
+        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:encodedUrl];
+        webVc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:webVc animated:YES];
+    }
+}
+#pragma mark - SFSafariViewControllerDelegate
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller API_AVAILABLE(ios(9.0)){
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - 删除按钮

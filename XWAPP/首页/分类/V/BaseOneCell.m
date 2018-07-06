@@ -20,6 +20,9 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.titleLabel.layer.masksToBounds = YES;
+    
+    self.coverImageView.clipsToBounds = YES;
+    self.coverImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

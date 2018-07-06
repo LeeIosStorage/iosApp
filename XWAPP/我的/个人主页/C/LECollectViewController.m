@@ -200,14 +200,14 @@ HitoPropertyNSMutableArray(collectNewsList);
             NSArray *cells = [[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:nil options:nil];
             cell = [cells objectAtIndex:0];
         }
-        cell.statusView.deleButton.hidden = YES;
-        cell.statusView.cancelCollectButton.hidden = NO;
         
         [cell.statusView deleblockAction:^{
             [weakSelf cancelCollectWithCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
+        cell.statusView.cancelCollectButton.hidden = NO;
         
         return cell;
     } else if (count == 3) {
@@ -218,13 +218,14 @@ HitoPropertyNSMutableArray(collectNewsList);
             NSArray *cells = [[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:nil options:nil];
             cell = [cells objectAtIndex:0];
         }
-        cell.statusView.deleButton.hidden = YES;
-        cell.statusView.cancelCollectButton.hidden = NO;
+        
         [cell.statusView deleblockAction:^{
             [weakSelf cancelCollectWithCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
+        cell.statusView.cancelCollectButton.hidden = NO;
         
         return cell;
     } else {
@@ -234,13 +235,14 @@ HitoPropertyNSMutableArray(collectNewsList);
             NSArray *cells = [[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:nil options:nil];
             cell = [cells objectAtIndex:0];
         }
-        cell.statusView.deleButton.hidden = YES;
-        cell.statusView.cancelCollectButton.hidden = NO;
+        
         [cell.statusView deleblockAction:^{
             [weakSelf cancelCollectWithCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
+        cell.statusView.cancelCollectButton.hidden = NO;
         
         return cell;
     }

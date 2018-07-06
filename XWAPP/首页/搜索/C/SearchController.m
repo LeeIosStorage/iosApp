@@ -411,12 +411,13 @@ HitoPropertyNSMutableArray(keywordArray);
             cell = [cells objectAtIndex:0];
         }
         
-        cell.statusView.deleButton.hidden = YES;
+        
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
         
         return cell;
     } else if (count == 3) {
@@ -428,12 +429,13 @@ HitoPropertyNSMutableArray(keywordArray);
             cell = [cells objectAtIndex:0];
         }
         
-        cell.statusView.deleButton.hidden = YES;
+        
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
         
         return cell;
     } else {
@@ -444,12 +446,12 @@ HitoPropertyNSMutableArray(keywordArray);
             cell = [cells objectAtIndex:0];
         }
         
-        cell.statusView.deleButton.hidden = YES;
         [cell.statusView deleblockAction:^{
             [weakSelf deleNew:indexPath curCell:cell];
         }];
         
         [cell updateCellWithData:newsModel];
+        cell.statusView.deleButton.hidden = YES;
         
         return cell;
     }

@@ -54,6 +54,7 @@
 		4C61863E20ABC6B7000D647F /* UIImage+LEAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61863D20ABC6B7000D647F /* UIImage+LEAdd.m */; };
 		4C65760B20DA0DF90059FCE4 /* LELinkerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */; };
 		4C65760D20DD0D6F0059FCE4 /* StatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C65760C20DD0D6E0059FCE4 /* StatusView.xib */; };
+		4C8EE1DA20EF1763009A7816 /* LENewsSourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C8EE1D920EF1763009A7816 /* LENewsSourceView.m */; };
 		4C971A9020D3A10A008DE244 /* MBProgressHUD+LETools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */; };
 		4CA6877C20B6A56B004588FC /* LESearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877B20B6A56B004588FC /* LESearchBar.m */; };
 		4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6877E20B79BAF004588FC /* LECommentDetailViewController.m */; };
@@ -311,6 +312,8 @@
 		4C65760920DA0DF90059FCE4 /* LELinkerHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LELinkerHandler.h; sourceTree = "<group>"; };
 		4C65760A20DA0DF90059FCE4 /* LELinkerHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LELinkerHandler.m; sourceTree = "<group>"; };
 		4C65760C20DD0D6E0059FCE4 /* StatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusView.xib; sourceTree = "<group>"; };
+		4C8EE1D820EF1763009A7816 /* LENewsSourceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsSourceView.h; sourceTree = "<group>"; };
+		4C8EE1D920EF1763009A7816 /* LENewsSourceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsSourceView.m; sourceTree = "<group>"; };
 		4C971A8E20D3A10A008DE244 /* MBProgressHUD+LETools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LETools.h"; sourceTree = "<group>"; };
 		4C971A8F20D3A10A008DE244 /* MBProgressHUD+LETools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LETools.m"; sourceTree = "<group>"; };
 		4CA6877A20B6A56B004588FC /* LESearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LESearchBar.h; sourceTree = "<group>"; };
@@ -1359,6 +1362,8 @@
 				4C3F3C1E20AFC79600B754AF /* LENewsCommentHeadView.m */,
 				4CA8158720E39E9B00A42A7D /* LERecommendNewsView.h */,
 				4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */,
+				4C8EE1D820EF1763009A7816 /* LENewsSourceView.h */,
+				4C8EE1D920EF1763009A7816 /* LENewsSourceView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -2082,6 +2087,7 @@
 				EC72BC2A208EDD1F00FADE74 /* BaseTwoCell.m in Sources */,
 				4CDE8AB920A400CC00679959 /* SYDetailController.m in Sources */,
 				4C61863820AACBDB000D647F /* LESuperViewController.m in Sources */,
+				4C8EE1DA20EF1763009A7816 /* LENewsSourceView.m in Sources */,
 				EC72BBAB208D6EA400FADE74 /* AppDelegate.m in Sources */,
 				4C3F3C2520AFDDC300B754AF /* LECommentFooterView.m in Sources */,
 				4CADAF8D20EC6958004AE23B /* LESettingTableCell.m in Sources */,

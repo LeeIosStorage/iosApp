@@ -22,8 +22,17 @@
 @property (nonatomic, assign) BOOL is_hot;
 @property (nonatomic, assign) BOOL is_top;
 
+@property (nonatomic, assign) BOOL is_video;//视频
+
+//广告
+@property (nonatomic, assign) BOOL is_ad;//是广告
+@property (nonatomic, strong) NSString *adUrl;//广告链接
+@property (nonatomic, assign) NSInteger adType;//广告类型
+
+//详情
 @property (nonatomic, strong) NSString *content;//正文
 
+//收藏
 @property (nonatomic, strong) NSString *favoriteId;//收藏id
 
 @end
