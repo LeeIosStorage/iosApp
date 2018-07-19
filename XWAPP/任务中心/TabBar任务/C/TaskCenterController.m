@@ -21,6 +21,7 @@
 #import "LESettingTableCell.h"
 #import "SearchController.h"
 #import "HoitPointController.h"
+#import "LESignInRulesView.h"
 
 #define BoxTimeInterval  4*60*60
 
@@ -691,6 +692,11 @@ WXShaerStateDelegate
     if (self.secondsCountDown <= 0 && _isGetLastOperateTime) {
         [self openBoxRequest];
     }
+}
+
+- (IBAction)qiandaoRulesAction:(id)sender{
+    LESignInRulesView *ruleView = [[LESignInRulesView alloc] init];
+    [ruleView show];
 }
 
 #pragma mark -

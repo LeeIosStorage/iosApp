@@ -43,7 +43,7 @@ JPUSHRegisterDelegate
     [[LELoginAuthManager sharedInstance] checkUpdateWithAppID:@""];
     
     [SVProgressHUD setCurrentDefaultStyle];
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkPreRelease;//defaultNetworkHost defaultNetworkHostTest
     
     _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
     
@@ -230,6 +230,10 @@ JPUSHRegisterDelegate
         clearEpisodeNotification.applicationIconBadgeNumber = -1;
         [[UIApplication sharedApplication] scheduleLocalNotification:clearEpisodeNotification];
     }
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark -

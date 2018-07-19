@@ -11,12 +11,12 @@
 extern NSString* const kNetworkHostCacheKey;
 
 static NSString* defaultNetworkHost =  @"api.hangzhouhaniu.com";//线上
-static NSString* defaultNetworkPreRelease = @"47.96.123.144:5001";//预发布地址
-static NSString* defaultNetworkHostTest = @"192.168.60.170:5001";//测试地址
+static NSString* defaultNetworkPreRelease = @"47.96.123.144:8080/rest";//预发布地址
+static NSString* defaultNetworkHostTest = @"192.168.60.187:8080";//测试地址
 
 static NSString* defaultWebHost = @"app.hangzhouhaniu.com/h5";//线上web
 static NSString* defaultWebPreRelease = @"47.96.123.144";//预发布web
-static NSString* defaultWebHostTest = @"192.168.60.170";//测试地址web
+static NSString* defaultWebHostTest = @"192.168.60.187:8080";//测试地址web
 
 @interface WYAPIGenerate : NSObject
 /**

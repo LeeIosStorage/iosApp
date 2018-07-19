@@ -198,7 +198,7 @@ HitoPropertyNSMutableArray(jobData);
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"UploadUserHeadImg"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 //    [params setObject:imageData forKey:@"img"];
-    [self.networkManager POST:requestUrl formFileName:@"img" fileName:@"img.jpg" fileData:imageData mimeType:@"image/jpeg" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl formFileName:@"file" fileName:@"img.jpg" fileData:imageData mimeType:@"image/jpeg" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;

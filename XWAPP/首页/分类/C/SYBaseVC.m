@@ -175,12 +175,6 @@ SFSafariViewControllerDelegate
 
 - (void)sortNewsListArray{
     
-    //test 视频
-//    LENewsListModel *firstModel = [self.newsList firstObject];
-//    firstModel.is_video = YES;
-    
-    
-    
     //置顶操作
     NSMutableArray *tmpArray = [NSMutableArray array];
     NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
@@ -206,7 +200,7 @@ SFSafariViewControllerDelegate
 }
 
 - (void)insertADToNewsList:(NSArray *)array index:(NSInteger)index adModel:(LENewsListModel *)adModel animation:(BOOL)animation{
-    return;
+//    return;
     if (array.count == 0) {
         return;
     }
@@ -267,7 +261,10 @@ SFSafariViewControllerDelegate
             }
             return ;
         }
-        
+        if ([dataObject isEqual:[NSNull null]]) {
+            [WeakSelf.tableView.mj_header endRefreshing];
+            return;
+        }
         BOOL needRefresh = NO;
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
         if (WeakSelf.downNextCursor == 1) {
@@ -369,7 +366,9 @@ SFSafariViewControllerDelegate
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
         if (WeakSelf.upNextCursor == 1) {
             self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
@@ -528,6 +527,7 @@ SFSafariViewControllerDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
+//    newsModel.newsId = @"2053323";
     
     if (newsModel.is_ad) {
         [self adJumphandle:newsModel];

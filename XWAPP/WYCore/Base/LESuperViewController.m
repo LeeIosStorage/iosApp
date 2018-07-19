@@ -93,6 +93,15 @@ UIGestureRecognizerDelegate
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
 }
 
+- (void)setLeftBarButtonItemWithTitle:(NSString *)title color:(UIColor *)color{
+    
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonClicked:)];
+    leftBarButtonItem.tintColor = color;
+    [leftBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:HitoPFSCRegularOfSize(14)} forState:UIControlStateNormal];
+    [leftBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:HitoPFSCRegularOfSize(14)} forState:UIControlStateSelected];
+    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+}
+
 - (void)needTapGestureRecognizer
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped)];
@@ -107,6 +116,11 @@ UIGestureRecognizerDelegate
 }
 
 - (void)rightButtonClicked:(id)sender
+{
+    
+}
+
+- (void)leftButtonClicked:(id)sender
 {
     
 }

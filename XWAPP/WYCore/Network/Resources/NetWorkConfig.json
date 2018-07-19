@@ -143,6 +143,12 @@
         "control" : "file",
         "action"  : "UploadUserHeadImg"
     },
+    "uploadVideo": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "uploadVideo"
+    },
     "GetUserTask": {
         "protocol": "http",
         "module" : "api",
@@ -238,5 +244,17 @@
         "module" : "api",
         "control" : "cash",
         "action"  : "ApplyCash"
+    },
+    "getNotice": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "notice",
+        "action"  : "getNotice"
+    },
+    "emptyNotice": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "notice",
+        "action"  : "empty"
     },
 }

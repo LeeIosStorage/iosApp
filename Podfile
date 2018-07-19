@@ -22,7 +22,7 @@ target 'XWAPP' do
 pod 'AFNetworking', '~> 3.2.0'
 pod 'WMPageController', '~> 2.5.2'
 pod 'MJRefresh', '~> 3.1.15.3'
-pod 'SDWebImage', '~> 4.3.3'
+pod 'SDWebImage', '~> 4.4.1'
 pod 'SVProgressHUD', '~> 2.2.5'
 pod 'JKCountDownButton', '~> 1.2.0'
 pod 'KMNavigationBarTransition', '~> 1.1.5'
@@ -58,5 +58,13 @@ pod 'UMCAnalytics' , '~> 5.5.0'
 pod 'Bugly'
 #数据统计
 pod 'GrowingIO', '~>2.3.2'
+
+pod 'INTUAnimationEngine'
+
+#切圆角
+pod 'JMRoundedCorner'
+
+#图片选择器
+pod 'HXPhotoPicker', '~> 2.1.9'
 
 end

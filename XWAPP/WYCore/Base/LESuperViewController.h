@@ -19,11 +19,14 @@
 
 //右边BarButton设置文字
 - (void)setRightBarButtonItemWithTitle:(NSString *)title color:(UIColor *)color;
+- (void)setLeftBarButtonItemWithTitle:(NSString *)title color:(UIColor *)color;
 
 /**
  *  如果设置了rightButton或者setRightBarButtonItemWithTitle:则需要在子类中重写此方法
  */
 - (void)rightButtonClicked:(id)sender;
+
+- (void)leftButtonClicked:(id)sender;
 
 /** 登录成功后刷新页面
  *

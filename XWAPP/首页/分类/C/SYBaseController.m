@@ -19,6 +19,9 @@
 #import "YYFPSLabel.h"
 #import "AppDelegate.h"
 #import "LELoginAuthManager.h"
+#import "LEMenuView.h"
+#import "LENavigationController.h"
+#import "LEPublishNewsViewController.h"
 
 @interface SYBaseController () <UISearchBarDelegate>
 {
@@ -117,8 +120,29 @@ HitoPropertyNSArray(allChannelArray);
     
 }
 
-#pragma mark - NavColor
+#pragma mark -
+#pragma mark - Private
+- (void)publishTextAction{
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypePhoto;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:YES completion:^{
+        
+    }];
+}
 
+- (void)publishVideoAction{
+    
+}
+
+- (void)shootVideoAction{
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypeVideo;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:YES completion:^{
+        
+    }];
+}
 
 #pragma mark - addBtn
 
@@ -156,7 +180,21 @@ HitoPropertyNSArray(allChannelArray);
     }];
 }
 
-
+- (IBAction)rightBarButton:(UIBarButtonItem *)sender {
+    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-135-7, 64, 135, 140)];
+    [menuView show];
+    
+    HitoWeakSelf;
+    menuView.menuViewClickBlock = ^(NSInteger index) {
+        if (index == 0) {
+            [WeakSelf publishTextAction];
+        }else if (index == 1){
+            [WeakSelf shootVideoAction];
+        }else if (index == 2){
+            [WeakSelf publishVideoAction];
+        }
+    };
+}
 
 
 #pragma mark -

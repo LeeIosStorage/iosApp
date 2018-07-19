@@ -120,6 +120,9 @@ HitoPropertyNSMutableArray(collectNewsList);
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
         
         if (WeakSelf.nextCursor == 1) {

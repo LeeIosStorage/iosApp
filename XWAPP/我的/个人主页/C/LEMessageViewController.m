@@ -97,6 +97,51 @@ UITableViewDataSource
 #pragma mark - Request
 - (void)refreshNoticeRequest{
     
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"getNotice"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"offset"];
+    [params setObject:[NSNumber numberWithInteger:1] forKey:@"limit"];
+    
+    NSString *caCheKey = [NSString stringWithFormat:@"getNotice%@",@""];
+    BOOL needCache = NO;
+//    if (self.nextCursor == 1) needCache = YES;
+    
+    [self.networkManager POST:requestUrl needCache:needCache caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+//        if (!isCache) {
+//            [WeakSelf.tableView.mj_header endRefreshing];
+//            [WeakSelf.tableView.mj_footer endRefreshing];
+//        }
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LEMessageModel class] json:dataObject];
+//
+//        if (WeakSelf.nextCursor == 1) {
+//            WeakSelf.commentLists = [[NSMutableArray alloc] init];
+//        }
+        [WeakSelf.noticeLists addObjectsFromArray:array];
+//
+//        if (!isCache) {
+//            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+//                [WeakSelf.tableView.mj_footer setHidden:YES];
+//            }else{
+//                [WeakSelf.tableView.mj_footer setHidden:NO];
+//                WeakSelf.nextCursor ++;
+//            }
+//        }
+//
+        [WeakSelf.noticeTableView reloadData];
+        
+        
+    } failure:^(id responseObject, NSError *error) {
+//        [WeakSelf.tableView.mj_header endRefreshing];
+//        [WeakSelf.tableView.mj_footer endRefreshing];
+    }];
+    
 //    for (int i = 0; i < 60; i ++) {
 //        LEMessageModel *messageModel = [[LEMessageModel alloc] init];
 //        if (i == 2 || i == 10 || i == 58) {
@@ -125,6 +170,23 @@ UITableViewDataSource
 }
 
 - (void)clearRecordRequest{
+    
+    HitoWeakSelf;
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"emptyNotice"];
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:nil responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD showCustomInfoWithStatus:@"清除成功"];
+        [WeakSelf.noticeLists removeAllObjects];
+        [WeakSelf.noticeTableView reloadData];
+        [WeakSelf.messageLists removeAllObjects];
+        [WeakSelf.messageTableView reloadData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
     
 }
 

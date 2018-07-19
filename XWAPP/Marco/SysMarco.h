@@ -9,6 +9,7 @@
 #ifndef SysMarco_h
 #define SysMarco_h
 
+#define Itunes_APPID   @"1404835477"
 
 #define QQ_ID                       @"1106905716"
 #define QQ_Key                      @"oRHhd5NAPbKZeX9o"
@@ -49,6 +50,7 @@
 #define kNewsRealHotClick                        @"NewsRealHotClick"
 #define kHomeSearchBarClick                      @"HomeSearchBarClick"
 #define kHomeNewsChannelClick                    @"HomeNewsChannelClick"
+#define kHomeVideoChannelClick                   @"kHomeVideoChannelClick"
 #define kTaskCenterSignInClick                   @"TaskCenterSignInClick"
 #define kTaskCenterOpenBoxClick                  @"TaskCenterOpenBoxClick"
 #define kTaskCenterBingWXClick                   @"TaskCenterBingWXClick"
@@ -247,6 +249,9 @@
 
 //蒙层黑色
 #define kAppMaskOpaqueBlackColor HitoRGBA(0,0,0,0.4)
+
+//图片预加载默认背景色
+#define kAppLoadingPlaceholderImageColor [UIColor colorWithHexString:@"bfbfbf"]
 
 ///颜色 a代表透明度,1为不透明,0为透明
 

@@ -25,6 +25,8 @@ typedef void(^handleSuccessBlock)(NSMutableAttributedString *attributedString);
 
 @property (assign, nonatomic) BOOL isVideo;
 
+@property (assign, nonatomic) BOOL locateCommentSection;
+
 - (instancetype)initWithNewsId:(NSString *)newsId;
 
 - (void)showImageDetailWithImageView:(YYAnimatedImageView *)imageView;

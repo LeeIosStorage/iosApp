@@ -326,7 +326,10 @@ responseClass:(Class )classType
     }
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    AFHTTPResponseSerializer
+    AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
+    jsonReponseSerializer.acceptableContentTypes = nil;
+    manager.responseSerializer = jsonReponseSerializer;
     
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
     
@@ -338,22 +341,28 @@ responseClass:(Class )classType
         //        manager.requestSerializer = [AFJSONRequestSerializer serializer];
         NSString *authorization = [NSString stringWithFormat:@"Bearer %@",[LELoginUserManager authToken]];
         [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+//        [request setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     }
     
-    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        LELog(@"上传进度:(count:%lld--%lld)----<%@>---(%@)",uploadProgress.totalUnitCount,uploadProgress.completedUnitCount,uploadProgress.localizedDescription,uploadProgress.localizedAdditionalDescription);
+        
+    } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         NSString *message = nil;
-        NSError *parserError = nil;
+//        NSError *parserError = nil;
         NSInteger status = WYRequestTypeFailed;
-        NSDictionary *jsonValue = [NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:&parserError];
+//        NSDictionary *jsonValue = [NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:&parserError];
+        LELog(@"\nPOST url = %@\n responseObject=%@",response.URL,responseObject);
         id responseDataObject = nil;
-        if (jsonValue) {
-            message = [jsonValue objectForKey:kResponseObjectKeyResult];
-            NSNumber* statusCode = [jsonValue objectForKey:kResponseObjectKeyCode];
+        if (responseObject) {
+            message = [responseObject objectForKey:kResponseObjectKeyResult];
+            NSNumber* statusCode = [responseObject objectForKey:kResponseObjectKeyCode];
             if (statusCode) {
                 status = statusCode.integerValue;
             }
-            responseDataObject = jsonValue[kResponseObjectKeyObject];
+            responseDataObject = responseObject[kResponseObjectKeyObject];
             //此处有两种情况发生，正常的是json，非正常是一个常规string
             if ([responseDataObject isKindOfClass:[NSString class]]) {
 //                NSData *data = [responseDataObject dataUsingEncoding:NSUTF8StringEncoding];
@@ -441,7 +450,7 @@ responseClass:(Class )classType
     manager.responseSerializer=[AFHTTPResponseSerializer serializer];
     
     //1404835477 乐资讯
-    NSString *encodingUrl = [[@"http://itunes.apple.com/cn/lookup?id=" stringByAppendingString:@"1404835477"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//1113268900
+    NSString *encodingUrl = [[@"http://itunes.apple.com/cn/lookup?id=" stringByAppendingString:Itunes_APPID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//1113268900
     
     [manager GET:encodingUrl parameters:nil progress:^(NSProgress *_Nonnull downloadProgress) {
         

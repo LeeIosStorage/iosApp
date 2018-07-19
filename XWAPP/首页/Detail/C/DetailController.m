@@ -27,6 +27,7 @@
 #import "LERecommendNewsView.h"
 #import "HotUpButton.h"
 #import "LENewsSourceView.h"
+#import "LEVideoCustomViewController.h"
 
 typedef NS_ENUM(NSInteger, LENewsDetailViewCType) {
     LENewsDetailViewCTypeNone         = 0,//图文
@@ -91,7 +92,8 @@ LECommentCellDelegate
 
 @property (strong, nonatomic) LENewsSourceView *newsSourceView;//新闻来源
 
-@property (strong, nonatomic) UIView *videoContainerView;//视频视图
+@property (strong, nonatomic) UIImageView *videoCoverImageView;//视频封面
+@property (strong, nonatomic) LEVideoCustomViewController *videoViewController;
 
 @end
 
@@ -115,10 +117,10 @@ LECommentCellDelegate
 - (BOOL)prefersStatusBarHidden {
     return _bStatusBarHidden;
 }
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//    return _currentStatusBarStyle;
-//}
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return _currentStatusBarStyle;
+}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -138,6 +140,7 @@ LECommentCellDelegate
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self startTimer];
+    [self.videoViewController play];
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -145,6 +148,7 @@ LECommentCellDelegate
 //    [self.navigationController.navigationBar setHidden:NO];
 //    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.videoViewController pause];
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -275,6 +279,10 @@ LECommentCellDelegate
 
 - (void)setData{
     
+    if (self.vcType == LENewsDetailViewCTypeVideo) {
+        self.videoViewController.titleString = self.newsDetailModel.info.title;
+    }
+    
     [self refreshCommentCountShow];
     
     _headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
@@ -291,6 +299,10 @@ LECommentCellDelegate
         [WeakSelf.newsDetailContentView updateWithData:WeakSelf.newsDetailModel];
         [WeakSelf refreshHeadViewShow];
         
+        //定位到评论区
+        if (self.locateCommentSection) {
+            [self commentAction:nil];
+        }
     }];
     
     [self.tableView reloadData];
@@ -322,7 +334,7 @@ LECommentCellDelegate
     
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
-    
+
 }
 
 - (void)refreshCommentCountShow{
@@ -444,7 +456,7 @@ LECommentCellDelegate
 
 - (void)countReadNewsTime{
     _readDuration ++;
-    LELog(@"read news time:%d秒",_readDuration);
+//    LELog(@"read news time:%d秒",_readDuration);
 }
 
 
@@ -496,31 +508,57 @@ LECommentCellDelegate
 #pragma mark - 视频
 - (void)addVideoView{
     
-    if (!self.videoContainerView) {
-        self.videoContainerView = [[UIView alloc] init];
-//        self.videoContainerView.backgroundColor = kAppThemeColor;
-        [self.view addSubview:self.videoContainerView];
-        [self.videoContainerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    if (!_videoCoverImageView) {
+        //封面
+        [self.view addSubview:self.videoCoverImageView];
+        [self.videoCoverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.view);
             make.top.equalTo(self.view).offset(0);
-            make.height.mas_equalTo(HitoActureHeight(200));
+            make.height.mas_equalTo(VideoHeight);
         }];
-        
-        HotUpButton *backButton = [HotUpButton buttonWithType:UIButtonTypeSystem];
-        [backButton setImage:[UIImage imageNamed:@"btn_back_pre"] forState:UIControlStateNormal];
-        [backButton setTintColor:[UIColor whiteColor]];
-        [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.videoContainerView addSubview:backButton];
-        [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.videoContainerView).offset(12);
-            make.top.equalTo(self.videoContainerView).offset(20);
-            make.size.mas_equalTo(CGSizeMake(20, 20));
-        }];
-        
-        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(UIEdgeInsetsMake(HitoActureHeight(200), 0, 0, 0));
-        }];
+        [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:@"http://static.1sapp.com/lw/img/2018/07/02/85a2b73ac40de59f6ca98e5ab601073a?imageView2/2/w/1000/h/600/q/70"] placeholder:nil];
     }
+    
+    if (!self.videoViewController) {
+        NSString *videoUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-hd/cfaa48d3873c4939a6cc8d12aac3c053/hd.mp4";
+        self.videoViewController = [[LEVideoCustomViewController alloc] initWithUrl:videoUrl];
+        [self.videoViewController showViewInView:self.view];
+        [self addChildViewController:self.videoViewController];
+        self.videoViewController.titleString = self.newsDetailModel.info.title;
+        
+        HitoWeakSelf;
+        self.videoViewController.toFullBlock = ^(BOOL toFull) {
+            //                CGRect bounds = [UIScreen mainScreen].bounds;
+            if (toFull) {
+                [WeakSelf.videoViewController showFullAnimation];
+//                self->_bStatusBarHidden = YES;
+//                [WeakSelf setNeedsStatusBarAppearanceUpdate];
+                
+            }else{
+                [WeakSelf.videoViewController showNormalAnimation];
+//                self->_bStatusBarHidden = NO;
+//                [WeakSelf setNeedsStatusBarAppearanceUpdate];
+            }
+        };
+        self.videoViewController.playerBackBlock = ^{
+            [WeakSelf backAction:nil];
+        };
+        
+    }
+    
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(VideoHeight, 0, 0, 0));
+    }];
+}
+
+- (void)resetPlayerWith:(LENewsListModel *)model{
+    
+    [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:@"http://static.1sapp.com/lw/img/2018/07/12/9195002b6a2c34ef90cc65ddaf495a98?imageView2/2/w/1000/h/600/q/70"] placeholder:nil];
+    
+    NSString *videoUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-ld/8558732df3de4d64a6a3661da69c99fc/ld.mp4";
+    [self.videoViewController resetPlayerWithURL:videoUrl];
+    self.videoViewController.titleString = model.title;
+    
 }
 
 #pragma mark -
@@ -842,6 +880,11 @@ LECommentCellDelegate
     }
 }
 
+- (void)setLocateCommentSection:(BOOL)locateCommentSection{
+    _locateCommentSection = locateCommentSection;
+    
+}
+
 - (CommontHFView *)huView {
     if (!_huView) {
         _huView = [[[NSBundle mainBundle] loadNibNamed:@"CommontHFView" owner:self options:nil] firstObject];
@@ -881,10 +924,15 @@ LECommentCellDelegate
         
         HitoWeakSelf;
         _recommendNewsView.didSelectRowAtIndex = ^(NSInteger index) {
+            
             LENewsListModel *newsModel = [WeakSelf.recommendNewsArray objectAtIndex:index];
-            DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
-            detail.newsId = newsModel.newsId;
-            [WeakSelf.navigationController pushViewController:detail animated:YES];
+            if (index == 0) {
+                [WeakSelf resetPlayerWith:newsModel];
+            }else{
+                DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
+                detail.newsId = newsModel.newsId;
+                [WeakSelf.navigationController pushViewController:detail animated:YES];
+            }
         };
     }
     return _recommendNewsView;
@@ -910,6 +958,15 @@ LECommentCellDelegate
     }
     return _newsSourceView;
 }
+
+- (UIImageView *)videoCoverImageView{
+    if (!_videoCoverImageView) {
+        _videoCoverImageView = [[UIImageView alloc] init];
+        _videoCoverImageView.backgroundColor = [UIColor blackColor];
+    }
+    return _videoCoverImageView;
+}
+
 
 #pragma mark -
 #pragma mark - IBActions
@@ -1196,7 +1253,7 @@ static int commentMaxCount = 10;
     
     UIWindow *window = HitoApplication;
     _tempView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoScreenH)];
-    _tempView.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.3];
+    _tempView.backgroundColor = kAppMaskOpaqueBlackColor;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBV)];
     [_tempView addGestureRecognizer:tap];
     

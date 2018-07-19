@@ -23,6 +23,7 @@
 @property (nonatomic, assign) BOOL is_top;
 
 @property (nonatomic, assign) BOOL is_video;//视频
+@property (nonatomic, assign) BOOL isAttention;
 
 //广告
 @property (nonatomic, assign) BOOL is_ad;//是广告
