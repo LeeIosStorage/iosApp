@@ -198,7 +198,7 @@ HitoPropertyNSMutableArray(jobData);
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"UploadUserHeadImg"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 //    [params setObject:imageData forKey:@"img"];
-    [self.networkManager POST:requestUrl formFileName:@"file" fileName:@"img.jpg" fileData:imageData mimeType:@"image/jpeg" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl formFileName:@"file" fileName:@"img.jpg" fileData:[NSArray arrayWithObject:imageData] mimeType:@"image/jpeg" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -206,6 +206,8 @@ HitoPropertyNSMutableArray(jobData);
 //        LELog(@"上传文件:%@",dataObject);
         WeakSelf.userModel.headImgUrl = dataObject;
         [WeakSelf saveUserInfoRequest];
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } failure:^(id responseObject, NSError *error) {
         

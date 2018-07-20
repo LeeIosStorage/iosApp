@@ -314,11 +314,12 @@
 - (void)POST:(NSString *)URLString
 formFileName:(NSString *)formFileName
     fileName:(NSString *)fileName
-    fileData:(NSData *)fileData
+    fileData:(NSArray *)fileData
     mimeType:(NSString *)mimeType
   parameters:(id )parameters
 responseClass:(Class )classType
      success:(WYRequestSuccessBlock)success
+    progress:(WYRequestProgressBlock)progress
      failure:(WYRequestFailureBlock)failure{
     
     if (!fileData) {
@@ -334,7 +335,9 @@ responseClass:(Class )classType
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:requestURLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:fileData name:formFileName fileName:fileName mimeType:mimeType];
+        for (NSData *data in fileData) {
+            [formData appendPartWithFileData:data name:formFileName fileName:fileName mimeType:mimeType];
+        }
     } error:nil];
     //将Token封装入请求头
     if ([LELoginUserManager authToken]) {
@@ -346,7 +349,7 @@ responseClass:(Class )classType
     
     NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
-        LELog(@"上传进度:(count:%lld--%lld)----<%@>---(%@)",uploadProgress.totalUnitCount,uploadProgress.completedUnitCount,uploadProgress.localizedDescription,uploadProgress.localizedAdditionalDescription);
+        progress(uploadProgress);
         
     } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         
@@ -362,6 +365,14 @@ responseClass:(Class )classType
             if (statusCode) {
                 status = statusCode.integerValue;
             }
+            
+            if (!message && status != WYRequestTypeSuccess) {
+                message = responseObject[kResponseObjectKeyObject];
+                if (message.length > 0) {
+                    [WYNetWorkExceptionHandling showProgressHUDWith:message URLString:URLString];
+                }
+            }
+            
             responseDataObject = responseObject[kResponseObjectKeyObject];
             //此处有两种情况发生，正常的是json，非正常是一个常规string
             if ([responseDataObject isKindOfClass:[NSString class]]) {

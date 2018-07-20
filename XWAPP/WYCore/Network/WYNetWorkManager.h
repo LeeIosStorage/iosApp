@@ -72,11 +72,12 @@
 - (void)POST:(NSString *)URLString
 formFileName:(NSString *)formFileName
     fileName:(NSString *)fileName
-    fileData:(NSData *)fileData
+    fileData:(NSArray *)fileData
     mimeType:(NSString *)mimeType
   parameters:(id )parameters
 responseClass:(Class )classType
      success:(WYRequestSuccessBlock)success
+    progress:(WYRequestProgressBlock)progress
      failure:(WYRequestFailureBlock)failure;
 
 #pragma mark - App Store 版本号

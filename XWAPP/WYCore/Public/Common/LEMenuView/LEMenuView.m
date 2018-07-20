@@ -50,36 +50,40 @@
     }];
 //    self.menuView.backgroundColor = kAppThemeColor;
     
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    UIVisualEffectView *effe = [[UIVisualEffectView alloc] initWithEffect:blur];
-    effe.frame = CGRectMake(0, 0 , _rect.size.width, _rect.size.height);
-    [self.menuView insertSubview:effe atIndex:0];
+//    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+//    UIVisualEffectView *effe = [[UIVisualEffectView alloc] initWithEffect:blur];
+//    effe.frame = CGRectMake(0, 0 , _rect.size.width, _rect.size.height);
+//    [self.menuView insertSubview:effe atIndex:0];
     
-    NSArray *itemArray = [NSArray arrayWithObjects:@"发图文",@"拍小视频",@"上传视频", nil];
+    NSArray *itemArray = [NSArray arrayWithObjects:@"  发图文   ",@"  拍小视频",@"  上传视频", nil];
     
     for (int i = 0; i < itemArray.count; i ++) {
         NSString *item = itemArray[i];
+        NSString *image = @"home_xiala_fatuwen";
+        if (i == 1) image = @"home_xiala_paishipin";
+        if (i == 2) image = @"home_xiala_shangchuan";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitle:item forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button.titleLabel setFont:HitoPFSCRegularOfSize(14)];
+        [button setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithHexString:@"cfcfcf"] forState:UIControlStateNormal];
+        [button.titleLabel setFont:HitoPFSCRegularOfSize(15)];
         button.tag = i;
         [button addTarget:self action:@selector(itemClickAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.menuView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.menuView);
             make.height.mas_equalTo(40);
-            make.top.equalTo(self.menuView).offset(10+i*40);
+            make.top.equalTo(self.menuView).offset(10+i*42);
         }];
         
         UIImageView *lineImageView = [[UIImageView alloc] init];
-        lineImageView.backgroundColor = LineColor;
+        lineImageView.backgroundColor = [UIColor colorWithHexString:@"3f3f3f"];
         [self.menuView addSubview:lineImageView];
         [lineImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.menuView).offset(13);
             make.right.equalTo(self.menuView).offset(-13);
             make.top.equalTo(button.mas_bottom);
-            make.height.mas_equalTo(1);
+            make.height.mas_equalTo(0.5);
         }];
     }
     
@@ -114,6 +118,13 @@
 - (UIView *)menuView{
     if (!_menuView) {
         _menuView = [[UIView alloc] init];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"home_tougaoxiala"] stretchableImageWithLeftCapWidth:20 topCapHeight:30]];
+        [_menuView addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self->_menuView);
+        }];
+        
     }
     return _menuView;
 }

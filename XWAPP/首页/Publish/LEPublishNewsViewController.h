@@ -17,4 +17,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) LEPublishNewsVcType vcType;
 
+@property (nonatomic, assign) BOOL videoCamera;
+
 @end

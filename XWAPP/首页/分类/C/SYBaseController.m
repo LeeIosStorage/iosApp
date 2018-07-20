@@ -69,6 +69,13 @@ HitoPropertyNSArray(allChannelArray);
     [self setPGController];
     [self setNaStyle];
     
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"home_touao"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButton:)];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
+                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                       target:nil action:nil];
+    negativeSpacer.width = -7;
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer,rightBarButtonItem];;
+    
     [self getNewsChannelRequest];
     
     
@@ -132,14 +139,20 @@ HitoPropertyNSArray(allChannelArray);
 }
 
 - (void)publishVideoAction{
-    
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypeVideo;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:NO completion:^{
+        
+    }];
 }
 
 - (void)shootVideoAction{
     LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
     publishVc.vcType = LEPublishNewsVcTypeVideo;
+    publishVc.videoCamera = YES;
     LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
-    [self presentViewController:nav animated:YES completion:^{
+    [self presentViewController:nav animated:NO completion:^{
         
     }];
 }
@@ -180,8 +193,8 @@ HitoPropertyNSArray(allChannelArray);
     }];
 }
 
-- (IBAction)rightBarButton:(UIBarButtonItem *)sender {
-    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-135-7, 64, 135, 140)];
+- (IBAction)rightBarButton:(id)sender {
+    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-141-7, 64, 141, 135)];
     [menuView show];
     
     HitoWeakSelf;

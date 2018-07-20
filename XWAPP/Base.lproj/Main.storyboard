@@ -920,7 +920,7 @@
                                 <segue destination="oTi-nd-TY0" kind="show" id="EJA-de-cWX"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="home_nav_redian_nor" id="qgs-8l-tcz">
+                        <barButtonItem key="rightBarButtonItem" image="home_touao" id="qgs-8l-tcz">
                             <connections>
                                 <action selector="rightBarButton:" destination="v97-VW-gnm" id="dp7-YL-srJ"/>
                             </connections>
@@ -2682,10 +2682,11 @@
         <image name="btn_delete_nor" width="11" height="11"/>
         <image name="home_fenxiang_nor" width="21" height="21"/>
         <image name="home_more_nor" width="14" height="14"/>
-        <image name="home_nav_redian_nor" width="20" height="20"/>
+        <image name="home_nav_redian_nor" width="24" height="24"/>
         <image name="home_pinglun_nor" width="21" height="21"/>
         <image name="home_shoucang_nor" width="22" height="22"/>
         <image name="home_shoucnag_sel" width="22" height="22"/>
+        <image name="home_touao" width="32" height="32"/>
         <image name="login_return" width="20" height="20"/>
         <image name="login_wangjimima" width="12" height="12"/>
         <image name="login_xieyi_nor" width="12" height="12"/>

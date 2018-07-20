@@ -520,7 +520,7 @@ LECommentCellDelegate
     }
     
     if (!self.videoViewController) {
-        NSString *videoUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-hd/cfaa48d3873c4939a6cc8d12aac3c053/hd.mp4";
+        NSString *videoUrl = @"http://47.96.123.144:8080/Files/video/2018/07/19/9d46a9627a9241dfafec28c509681b23.mp4";//http://v4.qutoutiao.net/Act-ss-mp4-hd/cfaa48d3873c4939a6cc8d12aac3c053/hd.mp4
         self.videoViewController = [[LEVideoCustomViewController alloc] initWithUrl:videoUrl];
         [self.videoViewController showViewInView:self.view];
         [self addChildViewController:self.videoViewController];

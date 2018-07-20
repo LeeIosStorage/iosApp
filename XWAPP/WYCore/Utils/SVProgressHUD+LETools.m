@@ -24,8 +24,16 @@
 
 + (void)showCustomWithStatus:(NSString *)status{
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
     [SVProgressHUD resetOffsetFromCenter];
     [SVProgressHUD showWithStatus:status];
+}
+
++ (void)showCustomProgress:(float)progress status:(NSString*)status{
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
+    [SVProgressHUD resetOffsetFromCenter];
+    [SVProgressHUD showProgress:progress status:status];
 }
 
 + (void)showCustomSuccessWithStatus:(NSString *)status{

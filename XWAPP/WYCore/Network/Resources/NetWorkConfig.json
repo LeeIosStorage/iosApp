@@ -149,6 +149,12 @@
         "control" : "file",
         "action"  : "uploadVideo"
     },
+    "uploadNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "uploadNews"
+    },
     "GetUserTask": {
         "protocol": "http",
         "module" : "api",
