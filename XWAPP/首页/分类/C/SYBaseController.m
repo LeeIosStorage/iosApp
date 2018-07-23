@@ -69,12 +69,12 @@ HitoPropertyNSArray(allChannelArray);
     [self setPGController];
     [self setNaStyle];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"home_touao"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButton:)];
-    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
-                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                       target:nil action:nil];
-    negativeSpacer.width = -7;
-    self.navigationItem.rightBarButtonItems = @[negativeSpacer,rightBarButtonItem];;
+//    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"home_touao"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButton:)];
+//    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
+//                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+//                                       target:nil action:nil];
+//    negativeSpacer.width = -7;
+//    self.navigationItem.rightBarButtonItems = @[rightBarButtonItem];;
     
     [self getNewsChannelRequest];
     
@@ -106,7 +106,9 @@ HitoPropertyNSArray(allChannelArray);
     
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAllChannel"];
-    [self.networkManager POST:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:nil responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:[NSNumber numberWithInteger:0] forKey:@"type"];
+    [self.networkManager POST:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;

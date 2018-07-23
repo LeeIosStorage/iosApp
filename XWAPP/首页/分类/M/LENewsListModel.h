@@ -16,11 +16,13 @@
 @property (nonatomic, strong) NSString *share_url;
 @property (nonatomic, strong) NSString *public_time;
 @property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, strong) NSString *imgUrl;
 @property (nonatomic, strong) NSArray *cover;
 @property (nonatomic, assign) int commentCount;
+@property (nonatomic, assign) int readCount;
 @property (nonatomic, assign) int type;
-@property (nonatomic, assign) BOOL is_hot;
-@property (nonatomic, assign) BOOL is_top;
+@property (nonatomic, assign) BOOL isHot;
+@property (nonatomic, assign) BOOL isTop;
 
 @property (nonatomic, assign) BOOL is_video;//视频
 @property (nonatomic, assign) BOOL isAttention;

@@ -74,7 +74,7 @@
 - (HotUpButton *)cancelButton{
     if (!_cancelButton) {
         _cancelButton = [HotUpButton buttonWithType:UIButtonTypeSystem];
-        [_cancelButton setImage:[UIImage imageNamed:@"btn_back_pre"] forState:UIControlStateNormal];
+        [_cancelButton setImage:[UIImage imageNamed:@"le_btn_back_white"] forState:UIControlStateNormal];
         [_cancelButton setTintColor:[UIColor whiteColor]];
         [_cancelButton addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
     }

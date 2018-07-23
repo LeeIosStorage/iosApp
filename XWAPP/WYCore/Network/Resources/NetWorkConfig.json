@@ -11,6 +11,12 @@
         "control" : "news",
         "action"  : "GetNews"
     },
+    "getVideoNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "getVideoNews"
+    },
     "GetDetail": {
         "protocol": "http",
         "module" : "api",

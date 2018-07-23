@@ -84,9 +84,9 @@
     self.deleButton.hidden = NO;
     UIColor *tagColor = [UIColor colorWithHexString:@"f11b1b"];
     NSString *tagString = @"";
-    if (newsModel.is_hot) {
+    if (newsModel.isHot) {
         tagString = @" 热门 ";
-    }else if (newsModel.is_top){
+    }else if (newsModel.isTop){
         tagString = @" 置顶 ";
     }
     if (newsModel.is_ad) {

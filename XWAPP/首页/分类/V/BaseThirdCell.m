@@ -19,6 +19,18 @@
 
 @implementation BaseThirdCell
 
+- (void)setCellType:(LENewsListCellType)cellType{
+    _cellType = cellType;
+    if (cellType == LENewsListCellTypePersonal) {
+        [self.contentView addSubview:self.newsBottomInfoView];
+        [self.newsBottomInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(-3);
+            make.height.mas_equalTo(38);
+        }];
+    }
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -58,8 +70,23 @@
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:imageUrl1] setImage:self.coverImageView1 setbitmapImage:nil];
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:imageUrl2] setImage:self.coverImageView2 setbitmapImage:nil];
     
-    [self.statusView updateCellWithData:newsModel];
+    if (_cellType == LENewsListCellTypePersonal) {
+        [self.newsBottomInfoView updateViewWithData:newsModel];
+        self.statusView.hidden = YES;
+    }else{
+        self.statusView.hidden = NO;
+        [self.statusView updateCellWithData:newsModel];
+    }
     
+}
+
+#pragma mark -
+#pragma mark - Set And Getters
+- (LENewsBottomInfoView *)newsBottomInfoView{
+    if (!_newsBottomInfoView) {
+        _newsBottomInfoView = [[LENewsBottomInfoView alloc] init];
+    }
+    return _newsBottomInfoView;
 }
 
 @end

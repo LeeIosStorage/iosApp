@@ -23,6 +23,7 @@
 #import "LELoginAuthManager.h"
 #import "LEMessageViewController.h"
 #import "LELoginAuthManager.h"
+#import "LEPersonalNewsViewController.h"
 
 #define cell_title @"title"
 #define cell_type @"type"
@@ -290,6 +291,7 @@ UIScrollViewDelegate
 }
 
 - (IBAction)leftBarButton:(UIBarButtonItem *)sender {
+    
     [MobClick event:kMessageCenterClick];
     LEMessageViewController *messageVc = [[LEMessageViewController alloc] init];
     messageVc.hidesBottomBarWhenPushed = YES;

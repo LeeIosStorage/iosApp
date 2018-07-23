@@ -11,7 +11,8 @@
 @implementation LEChannelModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"channelId"  : @"id",
+    return @{@"channelId"  : @[@"id", @"channelId"],
+             @"name"  : @[@"name", @"channelName"],
              };
 }
 
