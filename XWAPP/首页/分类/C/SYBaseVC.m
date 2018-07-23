@@ -182,7 +182,7 @@ SFSafariViewControllerDelegate
         if (![categoryArray containsObject:model]) {
             [categoryArray addObject:model];
         }
-        if (model.is_top && !model.is_hot) {
+        if (model.isTop && !model.isHot) {
             if (![tmpArray containsObject:model]) {
                 [tmpArray addObject:model];
             }
@@ -251,7 +251,7 @@ SFSafariViewControllerDelegate
     BOOL needCache = NO;
     if (self.downNextCursor == 1 && self.downStartUpdatedTime) needCache = YES;
     
-    [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         [WeakSelf removeCellMaskView];
         
@@ -266,7 +266,7 @@ SFSafariViewControllerDelegate
             return;
         }
         BOOL needRefresh = NO;
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.downNextCursor == 1) {
             self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
             LELog(@"下拉刷新>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_newestDatapages);

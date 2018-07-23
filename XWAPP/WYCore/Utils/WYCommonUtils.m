@@ -352,6 +352,17 @@ static bool dateFormatterOFUSInvalid;
     return queryParams;
 }
 
++(NSString *)numberFormatWithNum:(int)num{
+    NSString *numStr = [NSString stringWithFormat:@"%d",num];
+    if (num > 0) {
+        if (num >= 10000) {
+            float f = num/10000.0;
+            numStr = [NSString stringWithFormat:@"%.1f万",f];
+        }
+    }
+    return numStr;
+}
+
 #pragma mark -
 #pragma mark - 动画
 //👍

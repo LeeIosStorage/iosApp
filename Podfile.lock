@@ -19,6 +19,7 @@ PODS:
   - GrowingIO (2.3.3):
     - GrowingIO/Core (= 2.3.3)
   - GrowingIO/Core (2.3.3)
+  - HJTabViewController (1.0.6)
   - HXPhotoPicker (2.1.9):
     - SDWebImage (~> 4.4.1)
   - INTUAnimationEngine (1.4.2):
@@ -76,6 +77,7 @@ DEPENDENCIES:
   - Bugly
   - CYLTableViewPlaceHolder (~> 1.0.8)
   - GrowingIO (~> 2.3.2)
+  - HJTabViewController (~> 1.0)
   - HXPhotoPicker (~> 2.1.9)
   - INTUAnimationEngine
   - JKCountDownButton (~> 1.2.0)
@@ -106,6 +108,7 @@ SPEC REPOS:
     - Bugly
     - CYLTableViewPlaceHolder
     - GrowingIO
+    - HJTabViewController
     - HXPhotoPicker
     - INTUAnimationEngine
     - JCore
@@ -135,6 +138,7 @@ SPEC CHECKSUMS:
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CYLTableViewPlaceHolder: 44075c119aab78bbc514c75d771d6565e19938e8
   GrowingIO: 0ac60d755bda18abd0d342986be884f43cd30ec7
+  HJTabViewController: 578a5bbab471587e7cc49a2f0f49fc8601c833bf
   HXPhotoPicker: abe7b21f5439eea491ca5d21903b7dc384ae9f06
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   JCore: b52e3dd73625eec70afd1244bb9c41038aa06087
@@ -159,6 +163,6 @@ SPEC CHECKSUMS:
   WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: e218a6c63ec296bb71b88a13def1a5689761e6c1
+PODFILE CHECKSUM: 5dfdd04e0ec68ec79654aaaecf0854767d61c37d
 
 COCOAPODS: 1.5.0

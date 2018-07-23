@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LEVideoStatusView.h"
+#import "LENewsBottomInfoView.h"
 
 @protocol LEVideoListViewCellDelegate;
 
@@ -16,6 +17,10 @@
 @property (weak, nonatomic) id <LEVideoListViewCellDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet LEVideoStatusView *statusView;
+
+@property (strong, nonatomic) LENewsBottomInfoView *newsBottomInfoView;
+
+@property (assign, nonatomic) LENewsListCellType cellType;
 
 - (void)updateCellWithData:(id)data;
 

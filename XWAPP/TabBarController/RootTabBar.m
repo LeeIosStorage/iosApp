@@ -13,7 +13,7 @@
 #import "TaskCenterController.h"
 #import "MineController.h"
 #import "LELoginAuthManager.h"
-#import "LEVideoListViewController.h"
+#import "LEVideoTabBarViewController.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -91,8 +91,8 @@
         if ([currentVc isKindOfClass:[SYBaseController class]]) {
             SYBaseController *vc = (SYBaseController *)currentVc;
             [vc tabBarSelectRefreshData];
-        }else if ([currentVc isKindOfClass:[LEVideoListViewController class]]){
-            LEVideoListViewController *vc = (LEVideoListViewController *)currentVc;
+        }else if ([currentVc isKindOfClass:[LEVideoTabBarViewController class]]){
+            LEVideoTabBarViewController *vc = (LEVideoTabBarViewController *)currentVc;
             [vc tabBarSelectRefreshData];
         }else if ([currentVc isKindOfClass:[TaskCenterController class]]){
             TaskCenterController *vc = (TaskCenterController *)currentVc;

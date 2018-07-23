@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "StatusView.h"
 #import "LENewsListModel.h"
+#import "LENewsBottomInfoView.h"
 
 @interface BaseTwoCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet StatusView *statusView;
+
+@property (strong, nonatomic) LENewsBottomInfoView *newsBottomInfoView;
+
+@property (assign, nonatomic) LENewsListCellType cellType;
 
 - (void)updateCellWithData:(LENewsListModel *)newsModel;
 

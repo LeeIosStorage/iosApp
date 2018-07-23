@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    LENewsListCellTypeNormal   = 0,        // 默认的样式(首页)
+    LENewsListCellTypePersonal = 1,        // 个人主页样式
+} LENewsListCellType;
+
 @interface WYCommonUtils : NSObject
 
 /*! @brief 单纯获取text的Width (Height固定的)
@@ -76,6 +81,8 @@
 
 //url的Param
 +(NSDictionary *)getParamDictFromUrl:(NSURL *)url;
+
++(NSString *)numberFormatWithNum:(int)num;
 
 #pragma mark -
 #pragma mark - 动画

@@ -268,7 +268,7 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
     }
 //
     double duration = CMTimeGetSeconds(playerDuration);
-    LELog(@"视频总时间duration:(%f) -- 已播放时间:(%f)",duration,currentSecond);
+//    LELog(@"视频总时间duration:(%f) -- 已播放时间:(%f)",duration,currentSecond);
     if (isfinite(duration)) {
         float minValue = [self.playControlBar.loadingView.playSlider minimumValue];
         float maxValue = [self.playControlBar.loadingView.playSlider maximumValue];

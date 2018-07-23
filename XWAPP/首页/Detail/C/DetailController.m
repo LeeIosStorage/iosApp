@@ -576,10 +576,11 @@ LECommentCellDelegate
             return ;
         }
         WeakSelf.newsDetailModel = [[LENewsDetailModel alloc] init];
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
-        if (array.count > 0) {
-            WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
-        }
+        WeakSelf.newsDetailModel.info = [LENewsListModel modelWithJSON:dataObject];
+//        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
+//        if (array.count > 0) {
+//            WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
+//        }
         [WeakSelf setData];
         [WeakSelf finishTaskRequest];
         

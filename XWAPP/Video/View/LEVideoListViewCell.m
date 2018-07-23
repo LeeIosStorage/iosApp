@@ -28,6 +28,18 @@
 
 @implementation LEVideoListViewCell
 
+- (void)setCellType:(LENewsListCellType)cellType{
+    _cellType = cellType;
+    if (cellType == LENewsListCellTypePersonal) {
+        [self.contentView addSubview:self.newsBottomInfoView];
+        [self.newsBottomInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(0);
+            make.height.equalTo(self.statusView.mas_height);
+        }];
+    }
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -62,10 +74,15 @@
     }
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:coverUrl] setImage:self.coverImageView setbitmapImage:nil];
     
-    [WYCommonUtils setImageWithURL:[NSURL URLWithString:coverUrl] setImageView:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"] radius:25];
-  
-    
-    [self.statusView updateWithData:model];
+    if (_cellType == LENewsListCellTypePersonal) {
+        [self.newsBottomInfoView updateViewWithData:model];
+        self.avatarView.hidden = YES;
+    }else{
+        [WYCommonUtils setImageWithURL:[NSURL URLWithString:coverUrl] setImageView:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"] radius:25];
+        self.avatarView.hidden = NO;
+        self.avatarView.hidden = NO;
+        [self.statusView updateWithData:model];
+    }
 
     self.playerStatusView.playStatus = LEplayStatus_playing;
     [self.playerStatusView.playbutton setImage:[UIImage imageNamed:@"le_player_play_bottom_window"] forState:UIControlStateDisabled];
@@ -74,6 +91,15 @@
     self.totalTimeLabel.text = [NSString stringWithFormat:@"   %@   ",@"02:39"];
     
     self.videoTitleLabel.text = model.title;
+}
+
+#pragma mark -
+#pragma mark - Set And Getters
+- (LENewsBottomInfoView *)newsBottomInfoView{
+    if (!_newsBottomInfoView) {
+        _newsBottomInfoView = [[LENewsBottomInfoView alloc] init];
+    }
+    return _newsBottomInfoView;
 }
 
 @end

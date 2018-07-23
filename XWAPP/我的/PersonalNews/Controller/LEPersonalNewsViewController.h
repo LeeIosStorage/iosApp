@@ -7,8 +7,9 @@
 //
 
 #import "LESuperViewController.h"
+#import <HJTabViewController/HJTabViewController.h>
 
-@interface LEPersonalNewsViewController : LESuperViewController
+@interface LEPersonalNewsViewController : HJTabViewController
 
 @property (strong, nonatomic) NSString *userId;
 

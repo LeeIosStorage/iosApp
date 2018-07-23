@@ -67,4 +67,7 @@ pod 'JMRoundedCorner'
 #图片选择器
 pod 'HXPhotoPicker', '~> 2.1.9'
 
+#
+pod 'HJTabViewController', '~> 1.0'
+
 end

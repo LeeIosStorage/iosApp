@@ -220,7 +220,7 @@ static const CGFloat kAnimationDuration = .4;
 - (HotUpButton *)backButton{
     if (!_backButton) {
         _backButton = [HotUpButton buttonWithType:UIButtonTypeSystem];
-        [_backButton setImage:[UIImage imageNamed:@"btn_back_pre"] forState:UIControlStateNormal];
+        [_backButton setImage:[UIImage imageNamed:@"le_btn_back_white"] forState:UIControlStateNormal];
         [_backButton setTintColor:[UIColor whiteColor]];
         [_backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
     }
