@@ -304,6 +304,28 @@ static LELoginAuthManager *_instance = nil;
     }
 }
 
+- (void)userAttentionWithUserId:(NSString *)userId isAttention:(BOOL)isAttention result:(LERequestStatusBlock)result{
+//    HitoWeakSelf;
+    NSString *api = @"attention";
+    if (!isAttention) {
+        api = @"unAttention";
+    }
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:api];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (userId.length > 0) [params setObject:userId forKey:@"userId"];
+    [self.netWorkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            result(NO);
+            return;
+        }
+        result(YES);
+        
+    } failure:^(id responseObject, NSError *error) {
+        result(NO);
+    }];
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (WYNetWorkManager *)netWorkManager{

@@ -77,7 +77,7 @@ HitoPropertyNSArray(allChannelArray);
     self.menuItemWidth = 60;
     self.titleFontName = @"PingFangSC-Medium";
     self.titleColorSelected = kAppThemeColor;
-    self.progressColor = HitoBlueColor;
+//    self.progressColor = HitoBlueColor;
 }
 
 - (void)addLineView{

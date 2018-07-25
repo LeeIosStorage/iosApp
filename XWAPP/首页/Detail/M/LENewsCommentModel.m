@@ -11,12 +11,12 @@
 @implementation LEReplyCommentModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"commentId"  : @"id",
-             @"date"  : @"public_time",
-             @"favourNum" : @"like_count",
-             @"userName"  : @"nickname",
-             @"avatarUrl" : @"head_img_url",
-             @"userId"    : @"uid",
+    return @{@"commentId"  : @"commentId",
+             @"date"  : @"createTime",
+             @"favourNum" : @"likeCount",
+             @"userName"  : @"nickName",
+             @"avatarUrl" : @"userHeadImg",
+             @"userId"    : @"userId",
              };
 }
 
@@ -31,16 +31,16 @@
 @implementation LENewsCommentModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"commentId"  : @"id",
-             @"date"  : @"public_time",
-             @"favourNum" : @"like_count",
-             @"userName"  : @"nickname",
-             @"avatarUrl" : @"head_img_url",
-             @"userId"    : @"uid",
+    return @{@"commentId"  : @"commentId",
+             @"date"  : @"createTime",
+             @"favourNum" : @"likeCount",
+             @"userName"  : @"nickName",
+             @"avatarUrl" : @"userHeadImg",
+             @"userId"    : @"userId",
              @"comments"  : @"children",
-             @"newsId"  : @"news_id",
-             @"newsUrl"  : @"news_img",
-             @"newsTitle"  : @"news_title",
+             @"newsId"  : @"newsId",
+             @"newsUrl"  : @"newsImg",
+             @"newsTitle"  : @"newsTitle",
              @"favour" : @"islike",
              };
 }

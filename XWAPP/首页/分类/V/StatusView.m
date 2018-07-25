@@ -104,9 +104,9 @@
     [self updateSourceConstraints:(tagString.length == 0) ?1: 0];
     
     NSMutableString *statusString = [NSMutableString string];
-    if (newsModel.souce.length > 0) {
-        [statusString appendFormat:@"%@    ",newsModel.souce];
-    }
+//    if (newsModel.souce.length > 0) {
+//        [statusString appendFormat:@"%@    ",newsModel.souce];
+//    }
     int commentCount = newsModel.commentCount;
     if (commentCount > 0) {
         [statusString appendFormat:@"%d评    ",commentCount];

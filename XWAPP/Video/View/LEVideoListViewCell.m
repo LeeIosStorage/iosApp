@@ -78,7 +78,7 @@
         [self.newsBottomInfoView updateViewWithData:model];
         self.avatarView.hidden = YES;
     }else{
-        [WYCommonUtils setImageWithURL:[NSURL URLWithString:coverUrl] setImageView:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"] radius:25];
+        [WYCommonUtils setImageWithURL:[NSURL URLWithString:model.userHeadImg] setImageView:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"] radius:25];
         self.avatarView.hidden = NO;
         self.avatarView.hidden = NO;
         [self.statusView updateWithData:model];
@@ -89,6 +89,7 @@
     self.playerStatusView.playbutton.enabled = NO;
     
     self.totalTimeLabel.text = [NSString stringWithFormat:@"   %@   ",@"02:39"];
+    self.totalTimeLabel.hidden = YES;
     
     self.videoTitleLabel.text = model.title;
 }

@@ -202,7 +202,7 @@
     CGFloat contentHeight = textLayout.textBoundingSize.height;
     self.newsDetailModel.textLayout = textLayout;
     if (contentHeight < 50.f) {
-        contentHeight = 50.f;
+        contentHeight = 10.f;
         return contentHeight;
     }else{
         return contentHeight + 20.f;

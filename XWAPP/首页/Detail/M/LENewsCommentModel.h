@@ -42,5 +42,6 @@
 @property (strong, nonatomic) NSString *newsId;
 @property (strong, nonatomic) NSString *newsUrl;
 @property (strong, nonatomic) NSString *newsTitle;
+@property (nonatomic, assign) int typeId;//0图文1视频
 
 @end

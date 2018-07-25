@@ -15,7 +15,7 @@
         "protocol": "http",
         "module" : "api",
         "control" : "news",
-        "action"  : "getVideoNews"
+        "action"  : "GetVideoNews"
     },
     "GetDetail": {
         "protocol": "http",
@@ -153,13 +153,13 @@
         "protocol": "http",
         "module" : "api",
         "control" : "file",
-        "action"  : "uploadVideo"
+        "action"  : "UploadVideo"
     },
     "uploadNews": {
         "protocol": "http",
         "module" : "api",
         "control" : "file",
-        "action"  : "uploadNews"
+        "action"  : "UploadNews"
     },
     "GetUserTask": {
         "protocol": "http",
@@ -261,12 +261,36 @@
         "protocol": "http",
         "module" : "api",
         "control" : "notice",
-        "action"  : "getNotice"
+        "action"  : "GetNotice"
     },
     "emptyNotice": {
         "protocol": "http",
         "module" : "api",
         "control" : "notice",
-        "action"  : "empty"
+        "action"  : "Empty"
+    },
+    "userHome": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UserHome"
+    },
+    "attention": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Attention"
+    },
+    "unAttention": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UnAttention"
+    },
+    "GetUserHomeNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetUserHomeNews"
     },
 }

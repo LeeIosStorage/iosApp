@@ -18,6 +18,9 @@ NSString *const kUserInfoMobile = @"kUserInfoMobile";
 NSString *const kUserInfoSex = @"kUserInfoSex";
 NSString *const kUserInfoAge = @"kUserInfoAge";
 NSString *const kUserInfoRegTime = @"kUserInfoRegTime";
+NSString *const kUserInfoIntro = @"kUserInfoIntro";
+NSString *const kUserInfoAnnouncementNum = @"kUserInfoAnnouncementNum";
+NSString *const kUserInfoNoticeNum = @"kUserInfoNoticeNum";
 NSString *const kUserInfoWxNickname = @"kUserInfoWxNickname";
 NSString *const kUserInfoOccupation = @"kUserInfoOccupation";
 NSString *const kUserInfoEducation = @"kUserInfoEducation";
@@ -85,6 +88,27 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
 }
 + (void)setRegTime:(NSString *)regTime{
     [self saveToUserDefaultsObject:regTime forKey:kUserInfoRegTime];
+}
+
++ (NSString *)introduction{
+    return [self objectFromUserDefaultsKey:kUserInfoIntro];
+}
++ (void)setIntroduction:(NSString *)introduction{
+    [self saveToUserDefaultsObject:introduction forKey:kUserInfoIntro];
+}
+
++ (int)announcementNum{
+    return [[self objectFromUserDefaultsKey:kUserInfoAnnouncementNum] intValue];
+}
++ (void)setAnnouncementNum:(int)announcementNum{
+    [self saveToUserDefaultsObject:[NSNumber numberWithInt:announcementNum] forKey:kUserInfoAnnouncementNum];
+}
+
++ (int)noticeNum{
+    return [[self objectFromUserDefaultsKey:kUserInfoNoticeNum] intValue];
+}
++ (void)setNoticeNum:(int)noticeNum{
+    [self saveToUserDefaultsObject:[NSNumber numberWithInt:noticeNum] forKey:kUserInfoNoticeNum];
 }
 
 + (NSString *)wxNickname{
@@ -196,9 +220,9 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
         [WeakSelf updateUserInfoWithLoginModel:loginModel];
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshUILoginNotificationKey object:nil];
         
-        [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
-            
-        }];
+//        [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+//
+//        }];
         
         if (success) {
             success(YES,dataObject);
@@ -220,6 +244,9 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setHeadImgUrl:loginModel.headImgUrl];
     [LELoginUserManager setSex:loginModel.sex];
     [LELoginUserManager setAge:loginModel.age];
+    [LELoginUserManager setIntroduction:loginModel.introduction];
+    [LELoginUserManager setAnnouncementNum:loginModel.announcementNum];
+    [LELoginUserManager setNoticeNum:loginModel.noticeNum];
     [LELoginUserManager setWxNickname:loginModel.wxNickname];
     [LELoginUserManager setOccupation:loginModel.occupation];
     [LELoginUserManager setEducation:loginModel.education];
@@ -245,6 +272,9 @@ NSString *const kUserInfoAuthToken = @"kUserInfoAuthToken";
     [LELoginUserManager setOccupation:nil];
     [LELoginUserManager setEducation:nil];
     [LELoginUserManager setInvitationCode:nil];
+    [LELoginUserManager setIntroduction:nil];
+    [LELoginUserManager setAnnouncementNum:0];
+    [LELoginUserManager setNoticeNum:0];
     [LELoginUserManager setReadDuration:0];
     [LELoginUserManager setBalance:0.0];
     [LELoginUserManager setIncome:0.0];

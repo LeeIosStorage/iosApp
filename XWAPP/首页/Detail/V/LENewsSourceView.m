@@ -31,6 +31,8 @@
 #pragma mark -
 #pragma mark - Private
 - (void)setup{
+//    self.backgroundColor = kAppThemeColor;
+    
     [self addSubview:self.sourceLabel];
     [self.sourceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(12);
@@ -44,11 +46,11 @@
     CGFloat height = 45;
     
     LENewsListModel *model = (LENewsListModel *)data;
-    NSString *sourceStr = [NSString stringWithFormat:@"本文及配图均为乐资讯自媒体用户上传，不代表平台观点。"];
-    if ([model.souce isEqualToString:@"中国新闻网"] || [model.souce isEqualToString:@"中青网娱乐"] || [model.souce isEqualToString:@"光明网"] || [model.souce isEqualToString:@"中国青年网"] || [model.souce containsString:@"中国"]) {
-        sourceStr = [NSString stringWithFormat:@"本文为%@上传，不代表平台观点。",model.souce];
+    BOOL isUserPublish = (model.userId.length > 0 && model.nickName.length > 0 && model.userHeadImg.length > 0);
+    NSString *sourceStr = [NSString stringWithFormat:@"本文来源于%@，不代表平台观点。",@"网络"];//model.souce
+    if (isUserPublish) {
+        sourceStr = [NSString stringWithFormat:@"本文及配图均为乐资讯用户上传，不代表平台观点。"];
     }
-    
     self.sourceLabel.text = sourceStr;
     
     return height;

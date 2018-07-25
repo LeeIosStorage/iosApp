@@ -12,4 +12,6 @@
 
 @property (assign, nonatomic) NSInteger vcType;//0文章 1视频
 
+@property (strong, nonatomic) NSString *userId;
+
 @end

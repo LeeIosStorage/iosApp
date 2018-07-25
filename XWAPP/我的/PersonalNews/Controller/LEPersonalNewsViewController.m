@@ -14,6 +14,9 @@
 #import <HJTabViewController/HJTabViewControllerPlugin_TabViewBar.h>
 #import <HJTabViewController/HJTabViewControllerPlugin_HeaderScroll.h>
 #import "LECustomNavBar.h"
+#import "LELoginAuthManager.h"
+#import "LEUserInfoModel.h"
+#import "LELoginManager.h"
 
 @interface LEPersonalNewsViewController ()
 <
@@ -23,7 +26,13 @@ HJDefaultTabViewBarDelegate
 >
 {
     UIStatusBarStyle _currentStatusBarStyle;
+    
+    BOOL _isAttention;
 }
+
+@property (strong, nonatomic) LEUserInfoModel *userInfoModel;
+
+@property (strong, nonatomic) WYNetWorkManager *netWorkManager;
 
 @property (strong, nonatomic) LECustomNavBar *customNavBar;
 
@@ -50,6 +59,7 @@ HJDefaultTabViewBarDelegate
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setup];
+    [self setNaStyle];
     [self getUserInfo];
 }
 
@@ -66,6 +76,9 @@ HJDefaultTabViewBarDelegate
 #pragma mark -
 #pragma mark - Private
 - (void)setup{
+    
+    self.userInfoModel = [[LEUserInfoModel alloc] init];
+    self.userInfoModel.userId = self.userId;
     
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     _currentStatusBarStyle = UIStatusBarStyleLightContent;
@@ -87,22 +100,53 @@ HJDefaultTabViewBarDelegate
         make.left.right.top.equalTo(self.view);
         make.height.mas_equalTo(HitoTopHeight);
     }];
+    
+    [self.headerView updateViewWithData:self.userInfoModel];
 }
 
 - (void)setData{
-    [self.headerView updateViewWithData:nil];
-    self.customNavBar.titleLabel.text = @"用户昵称";
+    [self.headerView updateViewWithData:self.userInfoModel];
+    self.customNavBar.titleLabel.text = self.userInfoModel.nickName;
 }
 
 #pragma mark -
 #pragma mark - Request
 - (void)getUserInfo{
     
-    [self setData];
+    HitoWeakSelf;
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"userHome"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (self.userId.length > 0) [params setObject:_userId forKey:@"userId"];
+    [self.netWorkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return;
+        }
+        
+        WeakSelf.userInfoModel = [LEUserInfoModel modelWithJSON:dataObject];
+        
+        [WeakSelf setData];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
 }
 
 - (void)attentionRequest{
     
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+//    HitoWeakSelf;
+    NSString *userId = self.userId;
+    _isAttention = YES;
+    [[LELoginAuthManager sharedInstance] userAttentionWithUserId:userId isAttention:_isAttention result:^(BOOL success) {
+        if (success) {
+            self->_isAttention = !self->_isAttention;
+        }else{
+            
+        }
+    }];
 }
 
 #pragma mark -
@@ -113,6 +157,13 @@ HJDefaultTabViewBarDelegate
 
 #pragma mark -
 #pragma mark - Set And Getters
+- (WYNetWorkManager *)netWorkManager{
+    if (!_netWorkManager) {
+        _netWorkManager = [[WYNetWorkManager alloc] init];
+    }
+    return _netWorkManager;
+}
+
 - (LEPersonalHeaderView *)headerView{
     if (!_headerView) {
         _headerView = [[LEPersonalHeaderView alloc] init];
@@ -160,7 +211,7 @@ HJDefaultTabViewBarDelegate
 #pragma mark -
 #pragma mark - HJTabViewControllerDataSource
 - (void)tabViewController:(HJTabViewController *)tabViewController scrollViewVerticalScroll:(CGFloat)contentPercentY {
-    LELog(@"contentPercentY=%f",contentPercentY);
+//    LELog(@"contentPercentY=%f",contentPercentY);
     self.customNavBar.backgroundColor = [UIColor colorWithWhite:1 alpha:contentPercentY];
     if (contentPercentY >= 0.65) {
         self.customNavBar.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
@@ -183,6 +234,7 @@ HJDefaultTabViewBarDelegate
 
 - (UIViewController *)tabViewController:(HJTabViewController *)tabViewController viewControllerForIndex:(NSInteger)index {
     LENewsTabBaseViewController *vc = [[LENewsTabBaseViewController alloc] init];
+    vc.userId = self.userId;
     vc.vcType = index;
     return vc;
 }

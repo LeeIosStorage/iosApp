@@ -17,6 +17,8 @@
 @property (copy, nonatomic) void (^playerBackBlock)(void);
 @property (copy, nonatomic) void (^toFullBlock)(BOOL );
 
+@property (nonatomic, copy) VideoShareClickedBlock videoShareClickedBlock;
+
 @property (strong, nonatomic) LEVideoPlayerView *videoPlayerView;
 
 @property (strong, nonatomic) NSString          *titleString;

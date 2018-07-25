@@ -44,6 +44,12 @@
     }
 }
 
+- (IBAction)avatarAction:(id)sender{
+    if (self.avatarClick) {
+        self.avatarClick();
+    }
+}
+
 - (IBAction)codePasteAction:(id)sender{
     if (![LELoginUserManager invitationCode]) {
         return;

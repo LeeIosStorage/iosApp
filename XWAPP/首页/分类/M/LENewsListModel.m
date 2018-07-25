@@ -23,4 +23,8 @@
     return [urlStr componentsSeparatedByString:@","];
 }
 
+- (NSString *)userHeadImg{
+    return [_userHeadImg stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+}
+
 @end

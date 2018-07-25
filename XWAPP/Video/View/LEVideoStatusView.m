@@ -47,7 +47,7 @@
 
 - (void)updateWithData:(id)data{
     LENewsListModel *model = (LENewsListModel *)data;
-    self.nameLabel.text = model.souce;
+    self.nameLabel.text = model.nickName;
     
     self.attentionButton.selected = model.isAttention;
     if (model.isAttention) {
@@ -55,6 +55,13 @@
     }else{
         [self.attentionButton setImage:[UIImage imageNamed:@"home_shipin_guanzhu"] forState:UIControlStateNormal];
     }
+    
+    NSString *commentCount = @"  评论";
+    if (model.commentCount > 0) {
+        commentCount = [NSString stringWithFormat:@"  %d",model.commentCount];
+    }
+    
+    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
 }
 
 @end

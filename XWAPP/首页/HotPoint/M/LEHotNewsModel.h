@@ -13,6 +13,9 @@
 @property (nonatomic, strong) NSString *newsId;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *public_time;
+@property (nonatomic, strong) NSString *imgUrl;
 @property (nonatomic, strong) NSArray *cover;
+
+@property (nonatomic, assign) int typeId;//0图文1视频
 
 @end

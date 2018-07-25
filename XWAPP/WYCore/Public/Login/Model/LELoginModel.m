@@ -11,15 +11,20 @@
 @implementation LELoginModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"userID":@"id",
-             @"headImgUrl":@"head_img_url",
+    return @{@"userID":@"userId",
+             @"headImgUrl":@"userHeadImg",
+             @"nickname":@"nickName",
              @"regTime":@"reg_time",
              @"wxNickname" : @"wechat",
              @"readDuration" : @"read_duration",
              @"todayGolds" : @"today_golds",
              @"totalGolds" : @"total_golds",
-             @"invitationCode" : @"invitation_code",
+//             @"invitationCode" : @"invitation_code",
              };
+}
+
+- (NSString *)headImgUrl{
+    return [_headImgUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
 }
 
 @end

@@ -12,6 +12,7 @@
 
 typedef void(^LeftClick)(void);
 typedef void(^CenterClick)(void);
+typedef void(^AvatarClick)(void);
 
 @interface MineHeader : UIView
 
@@ -27,6 +28,7 @@ typedef void(^CenterClick)(void);
 
 @property (nonatomic, copy) LeftClick leftClick;
 @property (nonatomic, copy) CenterClick centerClick;
+@property (nonatomic, copy) AvatarClick avatarClick;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerBigView;
 
 - (void)leftClickAction:(LeftClick)leftClick;

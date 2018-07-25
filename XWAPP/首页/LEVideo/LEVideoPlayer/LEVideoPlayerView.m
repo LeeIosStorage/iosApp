@@ -368,11 +368,12 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 
 - (void)tapPlayerViewAction:(UITapGestureRecognizer *)gesture
 {
+    if (self.playerStatusView.playStatus == LEplayStatus_end) {
+        return;
+    }
+    
     _isVideoToolbarHidden = !_isVideoToolbarHidden;
-//    if (self.playerViewTappedBlock) {
-//        self.playerViewTappedBlock(gesture);
-//    }
-//
+
     [self.playControlBar showBottomBarWithIsHidden];
     [self.playerStatusView showViewWithIsHidden];
     
@@ -417,6 +418,19 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
         _playerStatusView = [[LEPlayerStatusView alloc] init];
     }
     return _playerStatusView;
+}
+
+- (LEVideoShareView *)videoShareView{
+    if (!_videoShareView) {
+        _videoShareView = [[LEVideoShareView alloc] init];
+        
+        HitoWeakSelf
+        _videoShareView.replayClickedBlock = ^{
+            [WeakSelf resumePlay];
+            [WeakSelf.videoShareView removeFromSuperview];
+        };
+    }
+    return _videoShareView;
 }
 
 #pragma mark -
@@ -606,6 +620,19 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 //    [self useDelegateWith:LPAVPlayerStatusPlayEnd];
     self.playerStatusView.playStatus = LEplayStatus_end;
     [self.player seekToTime:kCMTimeZero];
+    
+    if (self.isFullScreen) {
+        self.isFullScreen = NO;
+        [self toChangeViewOrientationToFull:self.isFullScreen];
+    }
+    self.playControlBar.hidden = YES;
+//    self.playerTitleView.hidden = YES;
+    self.playerStatusView.hidden = YES;
+    [self addSubview:self.videoShareView];
+    [self.videoShareView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    
 }
 /** 视频异常中断 */
 - (void)videoPlayError:(NSNotification *)notic
@@ -622,12 +649,18 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 - (void)videoPlayBecomeActive:(NSNotification *)notic
 {
     self.isFromBackgroundCallBack = YES;
-    [self playAction];
+    if (self.playerStatusView.playStatus != LEplayStatus_end) {
+        [self playAction];
+    }
 }
 
 #pragma mark -
 #pragma mark - 横竖屏约束
 - (void)orientationChanged:(NSNotification *)notification {
+    
+    if (self.playerStatusView.playStatus == LEplayStatus_end) {
+        return;
+    }
     
     UIDeviceOrientation currentOrientation = [UIDevice currentDevice].orientation;
     if (currentOrientation == UIDeviceOrientationFaceUp) return;

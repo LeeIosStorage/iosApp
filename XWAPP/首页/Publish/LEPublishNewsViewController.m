@@ -198,11 +198,13 @@ UITextFieldDelegate
     
     self.publishButton.enabled = NO;
     
+    self.titleTextField.text = [self.titleTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
     HitoWeakSelf;
     [SVProgressHUD showCustomWithStatus:@"正在提交..."];
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"uploadVideo"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"视屏新闻标题--我发布的" forKey:@"title"];
+    if (self.titleTextField.text.length > 0) [params setObject:self.titleTextField.text forKey:@"title"];
     [self.networkManager POST:requestUrl formFileName:@"file" fileName:@"video.mp4" fileData:videoData mimeType:@"video/mp4" parameters:params responseClass:nil success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {

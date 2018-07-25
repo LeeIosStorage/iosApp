@@ -66,14 +66,14 @@
     if (dateString.length > 0) {
         [statusString appendFormat:@"%@    ",dateString];
     }
-    int readCount = 1231;
+    int readCount = newsModel.readCount;
     [statusString appendFormat:@"阅读%@",[WYCommonUtils numberFormatWithNum:readCount]];
     self.dateLabel.text = statusString;
     
     int commentCount = newsModel.commentCount;
     [self.commentButton setTitle:[NSString stringWithFormat:@" %d",commentCount] forState:UIControlStateNormal];
     
-    [self.favourButton setTitle:[NSString stringWithFormat:@" %d",123] forState:UIControlStateNormal];
+    [self.favourButton setTitle:[NSString stringWithFormat:@" %d",newsModel.likeCount] forState:UIControlStateNormal];
 }
 
 #pragma mark -

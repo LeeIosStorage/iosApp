@@ -123,7 +123,7 @@ HitoPropertyNSMutableArray(collectNewsList);
         if ([dataObject isEqual:[NSNull null]]) {
             return;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         
         if (WeakSelf.nextCursor == 1) {
             WeakSelf.collectNewsList = [[NSMutableArray alloc] init];
@@ -162,7 +162,8 @@ HitoPropertyNSMutableArray(collectNewsList);
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"DeleteFavoriteNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:newsModel.favoriteId forKey:@"favoriteId"];
+    if (newsModel.newsId.length) [params setObject:newsModel.newsId forKey:@"newsId"];
+//    [params setObject:newsModel.favoriteId forKey:@"favoriteId"];
     [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
 
         if (requestType != WYRequestTypeSuccess) {
@@ -196,7 +197,7 @@ HitoPropertyNSMutableArray(collectNewsList);
     }
     NSUInteger count = newsModel.cover.count;
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1) {
+    if (count == 1) {
         static NSString *cellIdentifier = @"BaseOneCell";
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
@@ -255,8 +256,12 @@ HitoPropertyNSMutableArray(collectNewsList);
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.collectNewsList objectAtIndex:indexPath.row];
+    if (newsModel.newsId.length == 0) {
+        return;
+    }
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

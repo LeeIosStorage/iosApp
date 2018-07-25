@@ -22,6 +22,8 @@ UITableViewDataSource
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 
+@property (assign, nonatomic) int nextCursor;
+
 @end
 
 @implementation LENewsTabBaseViewController
@@ -47,6 +49,7 @@ UITableViewDataSource
 #pragma mark -
 #pragma mark - Private
 - (void)setup{
+    self.nextCursor = 1;
     self.dataArray = [NSMutableArray array];
     
     [self.view addSubview:self.tableView];
@@ -54,44 +57,64 @@ UITableViewDataSource
         make.edges.equalTo(self.view);
     }];
     [self.tableView reloadData];
+    
+    [self addMJ];
+}
+
+- (void)addMJ {
+    //下拉刷新
+    MJWeakSelf;
+    //上拉加载
+    self.tableView.mj_footer = [LERefreshFooter footerWithRefreshingBlock:^{
+        
+        [weakSelf getNewsRequest:weakSelf.vcType];
+    }];
+    [self.tableView.mj_footer setHidden:YES];
 }
 
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsRequest:(NSInteger)type{
     
-    NSDate *downEndUpdatedTime = [NSDate date];
-    NSDate *downStartUpdatedTime = [NSDate dateWithTimeInterval:-5*60 sinceDate:downEndUpdatedTime];
-    
     HitoWeakSelf;
-    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetNews"];
+    NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserHomeNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"255" forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:1] forKey:@"page"];
-    [params setObject:[NSNumber numberWithInteger:50] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
+    [params setObject:[NSNumber numberWithInteger:type] forKey:@"type"];
+    if (self.userId) [params setObject:self.userId forKey:@"userId"];
     
-    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:downStartUpdatedTime]] forKey:@"start"];
-    [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:downEndUpdatedTime]] forKey:@"end"];
-    
-    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
+        [WeakSelf.tableView.mj_footer endRefreshing];
         if (requestType != WYRequestTypeSuccess) {
             
             return ;
         }
         if ([dataObject isEqual:[NSNull null]]) {
-            [WeakSelf.tableView.mj_header endRefreshing];
+//            [WeakSelf.tableView.mj_header endRefreshing];
             return;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         
-        WeakSelf.dataArray = [NSMutableArray array];
+        if (WeakSelf.nextCursor == 1) {
+            WeakSelf.dataArray = [[NSMutableArray alloc] init];
+        }
         [WeakSelf.dataArray addObjectsFromArray:array];
+        
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:YES];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.nextCursor ++;
+            }
+        }
+        
         [WeakSelf.tableView reloadData];
         
     } failure:^(id responseObject, NSError *error) {
-        
+        [WeakSelf.tableView.mj_footer endRefreshing];
     }];
     
 }
@@ -132,7 +155,7 @@ UITableViewDataSource
     }
     NSUInteger count = newsModel.cover.count;
     NSString *coverStr = [[newsModel.cover firstObject] description];
-    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+    if (count == 1 && coverStr.length > 0) {
         return 120;
     } else if (count == 3) {
         return 195;
@@ -149,7 +172,7 @@ UITableViewDataSource
         }
         NSUInteger count = newsModel.cover.count;
         NSString *coverStr = [[newsModel.cover firstObject] description];
-        if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+        if (count == 1 && coverStr.length > 0) {
             static NSString *cellIdentifier = @"BaseOneCell";
             BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (cell == nil) {
@@ -207,13 +230,12 @@ UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.dataArray objectAtIndex:indexPath.row];
-    if (self.vcType == 1) {
-        newsModel.is_video = YES;
+    if (newsModel.newsId.length == 0) {
+        return;
     }
-    
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
-    detail.isVideo = newsModel.is_video;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

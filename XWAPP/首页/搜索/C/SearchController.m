@@ -257,7 +257,7 @@ HitoPropertyNSMutableArray(keywordArray);
             return ;
         }
         [SVProgressHUD dismiss];
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.nextCursor == 1) {
             WeakSelf.searchNewsList = [[NSMutableArray alloc] init];
         }
@@ -403,7 +403,7 @@ HitoPropertyNSMutableArray(keywordArray);
     NSUInteger count = newsModel.cover.count;
     NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+    if (count == 1 && coverStr.length > 0) {
         static NSString *cellIdentifier = @"BaseOneCell";
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
@@ -463,6 +463,7 @@ HitoPropertyNSMutableArray(keywordArray);
     LENewsListModel *newsModel = [self.searchNewsList objectAtIndex:indexPath.row];
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

@@ -24,6 +24,9 @@
 #import "LEMessageViewController.h"
 #import "LELoginAuthManager.h"
 #import "LEPersonalNewsViewController.h"
+#import "SetVC.h"
+#import "CompleteController.h"
+#import "LEChangePasswordViewController.h"
 
 #define cell_title @"title"
 #define cell_type @"type"
@@ -37,6 +40,9 @@ typedef NS_ENUM(NSInteger, LEMineCellType) {
     LEMineCellTypeAttention,        //我的关注
     LEMineCellTypeCollect,          //我的收藏
     LEMineCellTypeComment,          //我的评论
+    LEMineCellTypeEditProfile,      //完善资料
+    LEMineCellTypePassword,         //修改密码
+    LEMineCellTypeSet,              //设置
     
 };
 
@@ -136,13 +142,13 @@ UIScrollViewDelegate
     
     
     //任务列表刷新
-    [[LELoginAuthManager sharedInstance] refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
-        
-        [WeakSelf refreshSecondArray];
-        
-    } failure:^(id responseObject, NSError *error) {
-        
-    }];
+//    [[LELoginAuthManager sharedInstance] refreshTaskInfoRequestSuccess:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+//        
+//        [WeakSelf refreshSecondArray];
+//        
+//    } failure:^(id responseObject, NSError *error) {
+//        
+//    }];
     
 }
 
@@ -176,6 +182,13 @@ UIScrollViewDelegate
             wallet.hidesBottomBarWhenPushed = YES;
             [WeakSelf.navigationController pushViewController:wallet animated:YES];
         }];
+        
+        _header.avatarClick = ^{
+            LEPersonalNewsViewController *personalNewsVc = [[LEPersonalNewsViewController alloc] init];
+            personalNewsVc.userId = [LELoginUserManager userID];
+            personalNewsVc.hidesBottomBarWhenPushed = YES;
+            [WeakSelf.navigationController pushViewController:personalNewsVc animated:YES];
+        };
         
         if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
             UIView *supView = _header.rightMine.superview;
@@ -243,6 +256,10 @@ UIScrollViewDelegate
     
     [self.fourArr addObject:@{cell_title:@"我的收藏",cell_type:@(LEMineCellTypeCollect)}];
     [self.fourArr addObject:@{cell_title:@"我的评论",cell_type:@(LEMineCellTypeComment)}];
+    [self.fourArr addObject:@{cell_title:@"完善资料",cell_type:@(LEMineCellTypeEditProfile)}];
+    [self.fourArr addObject:@{cell_title:@"修改密码",cell_type:@(LEMineCellTypePassword)}];
+    [self.fourArr addObject:@{cell_title:@"设置",cell_type:@(LEMineCellTypeSet)}];
+    
     
     _imageArr = [NSMutableArray arrayWithArray:@[]];
     
@@ -452,6 +469,18 @@ UIScrollViewDelegate
             commentVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:commentVc animated:YES];
             
+        }else if (cellType == LEMineCellTypeEditProfile){
+            CompleteController *complete = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"CompleteController"];
+            complete.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:complete animated:YES];
+        }else if (cellType == LEMineCellTypePassword){
+            LEChangePasswordViewController *changePasswordVc = [[LEChangePasswordViewController alloc] init];
+            changePasswordVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:changePasswordVc animated:YES];
+            
+        }else if (cellType == LEMineCellTypeSet){
+            SetVC *setVc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetVC"];
+            [self.navigationController pushViewController:setVc animated:YES];
         }
     }
 }

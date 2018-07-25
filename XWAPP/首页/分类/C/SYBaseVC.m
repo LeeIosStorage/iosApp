@@ -369,7 +369,7 @@ SFSafariViewControllerDelegate
         if ([dataObject isEqual:[NSNull null]]) {
             return;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.upNextCursor == 1) {
             self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
             LELog(@"上拉加载>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
@@ -474,7 +474,7 @@ SFSafariViewControllerDelegate
     }
     NSUInteger count = newsModel.cover.count;
     NSString *coverStr = [[newsModel.cover firstObject] description];
-    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+    if (count == 1 && coverStr.length > 0) {
         return 120;
     } else if (count == 3) {
         return 195;
@@ -492,7 +492,7 @@ SFSafariViewControllerDelegate
     NSUInteger count = newsModel.cover.count;
     NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+    if (count == 1 && coverStr.length > 0) {
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseOneCell"];
         
         [cell.statusView deleblockAction:^{
@@ -527,7 +527,6 @@ SFSafariViewControllerDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
-//    newsModel.newsId = @"2053323";
     
     if (newsModel.is_ad) {
         [self adJumphandle:newsModel];
@@ -536,7 +535,7 @@ SFSafariViewControllerDelegate
     
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
-    detail.isVideo = newsModel.is_video;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

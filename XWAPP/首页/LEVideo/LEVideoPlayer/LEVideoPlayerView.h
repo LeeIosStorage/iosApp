@@ -11,6 +11,7 @@
 #import "LEPlayControlBar.h"
 #import "LEPlayerTitleView.h"
 #import "LEPlayerStatusView.h"
+#import "LEVideoShareView.h"
 
 typedef void(^PlayerChangeOrientationToFull) (BOOL );
 typedef void(^PlayerErrorHandleBlock) (NSError *);
@@ -35,6 +36,8 @@ typedef NS_ENUM(NSInteger, PlayerStatus) {
 @property (strong, nonatomic) LEPlayControlBar                  *playControlBar;//底部Bar
 @property (strong, nonatomic) LEPlayerTitleView                 *playerTitleView;//头部Bar
 @property (strong, nonatomic) LEPlayerStatusView                *playerStatusView;//播放状态View
+
+@property (strong, nonatomic) LEVideoShareView                  *videoShareView;//结束之后分享view
 
 //所有错误经过可选择经过此处回调
 @property (copy, nonatomic) PlayerErrorHandleBlock              playerErrorHandleBlock;

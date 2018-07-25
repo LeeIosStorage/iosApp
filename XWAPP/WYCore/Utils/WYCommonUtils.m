@@ -270,7 +270,7 @@ static bool dateFormatterOFUSInvalid;
 #pragma mark -
 #pragma mark - Other
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage{
-//    imageView.backgroundColor = kAppLoadingPlaceholderImageColor;
+    imageView.backgroundColor = kAppLoadingPlaceholderImageColor;
     
     if (![url isEqual:[NSNull null]]) {
         

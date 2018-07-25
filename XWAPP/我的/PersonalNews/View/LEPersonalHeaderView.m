@@ -7,6 +7,7 @@
 //
 
 #import "LEPersonalHeaderView.h"
+#import "LEUserInfoModel.h"
 
 @interface LEPersonalHeaderView ()
 
@@ -73,13 +74,24 @@
 #pragma mark -
 #pragma mark - Public
 - (void)updateViewWithData:(id)data{
-    [WYCommonUtils setImageWithURL:[NSURL URLWithString:[LELoginUserManager headImgUrl]] setImage:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
-    self.introLabel.text = @"这人比较懒,还没留下个人简介~";
+    LEUserInfoModel *userInfo = (LEUserInfoModel *)data;
     
-    [self.fansNumButton setTitle:[NSString stringWithFormat:@"粉丝%@",[WYCommonUtils numberFormatWithNum:6666]] forState:UIControlStateNormal];
-    [self.readNumButton setTitle:[NSString stringWithFormat:@"阅读%@",[WYCommonUtils numberFormatWithNum:12000]] forState:UIControlStateNormal];
-    [self.newsNumButton setTitle:[NSString stringWithFormat:@"发表%@篇",[WYCommonUtils numberFormatWithNum:0]] forState:UIControlStateNormal];
+    [WYCommonUtils setImageWithURL:[NSURL URLWithString:userInfo.userHeadImg] setImage:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
+    NSString *intro = userInfo.introduction;
+    if (intro.length == 0) {
+        intro = @"这人比较懒,还没留下个人简介~";
+    }
+    self.introLabel.text = intro;
+    
+    [self.fansNumButton setTitle:[NSString stringWithFormat:@"粉丝%@",[WYCommonUtils numberFormatWithNum:userInfo.attentionCount]] forState:UIControlStateNormal];
+    [self.readNumButton setTitle:[NSString stringWithFormat:@"阅读%@",[WYCommonUtils numberFormatWithNum:userInfo.readCount]] forState:UIControlStateNormal];
+    [self.newsNumButton setTitle:[NSString stringWithFormat:@"发表%@篇",[WYCommonUtils numberFormatWithNum:userInfo.newsCount]] forState:UIControlStateNormal];
+    
+    self.attentionButton.hidden = NO;
+    if ([[userInfo.userId description] isEqualToString:[LELoginUserManager userID]]) {
+        self.attentionButton.hidden = YES;
+    }
 }
 
 #pragma mark -

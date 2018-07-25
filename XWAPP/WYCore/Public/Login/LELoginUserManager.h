@@ -37,6 +37,15 @@ typedef void(^LELoginUserInfoBlock)(BOOL isSuccess, NSString *message);
 + (NSString *)regTime;
 + (void)setRegTime:(NSString *)regTime;
 
++ (NSString *)introduction;
++ (void)setIntroduction:(NSString *)introduction;
+
++ (int)announcementNum;
++ (void)setAnnouncementNum:(int)announcementNum;
+
++ (int)noticeNum;
++ (void)setNoticeNum:(int)noticeNum;
+
 + (NSString *)wxNickname;
 + (void)setWxNickname:(NSString *)wxNickname;
 

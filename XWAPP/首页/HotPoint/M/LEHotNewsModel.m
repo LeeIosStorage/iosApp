@@ -11,9 +11,13 @@
 @implementation LEHotNewsModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"newsId"  : @"id",
-             @"public_time" : @"publish_time"
+    return @{@"public_time" : @"createTime"
              };
+}
+
+- (NSArray *)cover{
+    NSString *urlStr = [_imgUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+    return [urlStr componentsSeparatedByString:@","];
 }
 
 @end

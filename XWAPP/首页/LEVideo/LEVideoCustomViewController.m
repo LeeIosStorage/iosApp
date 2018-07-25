@@ -143,6 +143,12 @@ static const CGFloat kAnimationDuration = .4;
             [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
         }
     };
+    
+    self.videoPlayerView.videoShareView.videoShareClickedBlock = ^(NSInteger index) {
+        if (weakSelf.videoShareClickedBlock) {
+            weakSelf.videoShareClickedBlock(index);
+        }
+    };
 }
 
 - (void)showFullAnimation

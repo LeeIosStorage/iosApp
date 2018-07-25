@@ -139,6 +139,9 @@
 		4CF018F42101FDBF0046CD76 /* HJDefaultTabViewBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018F32101FDBF0046CD76 /* HJDefaultTabViewBar.m */; };
 		4CF018F7210571B00046CD76 /* LECustomNavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018F6210571B00046CD76 /* LECustomNavBar.m */; };
 		4CF018FA2105AD1D0046CD76 /* LENewsBottomInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018F92105AD1D0046CD76 /* LENewsBottomInfoView.m */; };
+		4CF018FD2105F5410046CD76 /* LEDetailUserInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018FC2105F5410046CD76 /* LEDetailUserInfoView.m */; };
+		4CF019002106C9070046CD76 /* LEVideoShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018FF2106C9070046CD76 /* LEVideoShareView.m */; };
+		4CF01903210719E20046CD76 /* LEUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF01902210719E20046CD76 /* LEUserInfoModel.m */; };
 		4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CA820A29ABD000904F4 /* DetailController.m */; };
 		4CF22CAC20A2A0BE000904F4 /* WalletHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CAB20A2A0BE000904F4 /* WalletHeader.m */; };
 		4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CF22CAD20A2A0C4000904F4 /* WalletHeader.xib */; };
@@ -494,6 +497,12 @@
 		4CF018F6210571B00046CD76 /* LECustomNavBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LECustomNavBar.m; sourceTree = "<group>"; };
 		4CF018F82105AD1D0046CD76 /* LENewsBottomInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENewsBottomInfoView.h; sourceTree = "<group>"; };
 		4CF018F92105AD1D0046CD76 /* LENewsBottomInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENewsBottomInfoView.m; sourceTree = "<group>"; };
+		4CF018FB2105F5410046CD76 /* LEDetailUserInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEDetailUserInfoView.h; sourceTree = "<group>"; };
+		4CF018FC2105F5410046CD76 /* LEDetailUserInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEDetailUserInfoView.m; sourceTree = "<group>"; };
+		4CF018FE2106C9070046CD76 /* LEVideoShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEVideoShareView.h; sourceTree = "<group>"; };
+		4CF018FF2106C9070046CD76 /* LEVideoShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEVideoShareView.m; sourceTree = "<group>"; };
+		4CF01901210719E20046CD76 /* LEUserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEUserInfoModel.h; sourceTree = "<group>"; };
+		4CF01902210719E20046CD76 /* LEUserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEUserInfoModel.m; sourceTree = "<group>"; };
 		4CF22CA720A29ABD000904F4 /* DetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailController.h; sourceTree = "<group>"; };
 		4CF22CA820A29ABD000904F4 /* DetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailController.m; sourceTree = "<group>"; };
 		4CF22CAA20A2A0BE000904F4 /* WalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHeader.h; sourceTree = "<group>"; };
@@ -985,6 +994,8 @@
 		4C86670020FF14D400A3D5D1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4CF01901210719E20046CD76 /* LEUserInfoModel.h */,
+				4CF01902210719E20046CD76 /* LEUserInfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1047,6 +1058,8 @@
 		4C8EE1E220F602DA009A7816 /* LEVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				4C8EE1E920F75193009A7816 /* LEPlayerTitleView.h */,
+				4C8EE1EA20F75193009A7816 /* LEPlayerTitleView.m */,
 				4C8EE1E620F75168009A7816 /* LEPlayControlBar.h */,
 				4C8EE1E720F75168009A7816 /* LEPlayControlBar.m */,
 				4C5B478920F7777000805CBB /* LEVideoLoadingView.h */,
@@ -1055,8 +1068,8 @@
 				4C5B479320F885E800805CBB /* LESlider.m */,
 				4C5B479520F88C7400805CBB /* LEPlayerStatusView.h */,
 				4C5B479620F88C7400805CBB /* LEPlayerStatusView.m */,
-				4C8EE1E920F75193009A7816 /* LEPlayerTitleView.h */,
-				4C8EE1EA20F75193009A7816 /* LEPlayerTitleView.m */,
+				4CF018FE2106C9070046CD76 /* LEVideoShareView.h */,
+				4CF018FF2106C9070046CD76 /* LEVideoShareView.m */,
 				4C5B479020F8363A00805CBB /* LEVideoPlayerView+PlayerUtils.m */,
 				4C8EE1E320F60301009A7816 /* LEVideoPlayerView.h */,
 				4C8EE1E420F60301009A7816 /* LEVideoPlayerView.m */,
@@ -1558,6 +1571,8 @@
 				4CA8158820E39E9B00A42A7D /* LERecommendNewsView.m */,
 				4C8EE1D820EF1763009A7816 /* LENewsSourceView.h */,
 				4C8EE1D920EF1763009A7816 /* LENewsSourceView.m */,
+				4CF018FB2105F5410046CD76 /* LEDetailUserInfoView.h */,
+				4CF018FC2105F5410046CD76 /* LEDetailUserInfoView.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -2157,6 +2172,7 @@
 				EC0DD9D82091C970006C7522 /* AFNRequest.m in Sources */,
 				4CF3162620A1474B00E81E56 /* TaskCell.m in Sources */,
 				4C162FF220FCCCD50014360C /* LEVideoTabBarViewController.m in Sources */,
+				4CF019002106C9070046CD76 /* LEVideoShareView.m in Sources */,
 				EC72BC18208EC01B00FADE74 /* XLChannelItem.m in Sources */,
 				EC72BC17208EC01B00FADE74 /* XLChannelHeader.m in Sources */,
 				4CF018F7210571B00046CD76 /* LECustomNavBar.m in Sources */,
@@ -2200,6 +2216,7 @@
 				4CE90CFF20C6B29100337617 /* LEEarningRankViewController.m in Sources */,
 				4C8EE1E820F75168009A7816 /* LEPlayControlBar.m in Sources */,
 				4C3F3BF020AD575C00B754AF /* TFHppleElement.m in Sources */,
+				4CF01903210719E20046CD76 /* LEUserInfoModel.m in Sources */,
 				4C037ECA20E0CAA600A0F853 /* LEWithdrawItemView.m in Sources */,
 				4CDE8ABD20A431A500679959 /* CommontView.m in Sources */,
 				EC72BC572090764500FADE74 /* SearchCollectionViewController.m in Sources */,
@@ -2259,6 +2276,7 @@
 				4C20CBAB20B51D56003EC050 /* LERefreshHeader.m in Sources */,
 				EC4186CB209AA19C00E57C17 /* PassWordLogin.m in Sources */,
 				4CA6877F20B79BAF004588FC /* LECommentDetailViewController.m in Sources */,
+				4CF018FD2105F5410046CD76 /* LEDetailUserInfoView.m in Sources */,
 				4C20CB9A20B26F14003EC050 /* LEBaseModel.m in Sources */,
 				4CB8ED1C20A0614200FD9C4C /* MineSecondCell.m in Sources */,
 				4C162FF520FD843E0014360C /* LEVideoListViewController.m in Sources */,

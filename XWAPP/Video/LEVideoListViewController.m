@@ -12,6 +12,7 @@
 #import "DetailController.h"
 #import "LEPersonalNewsViewController.h"
 #import "LEPersonalNewsViewController.h"
+#import "LEShareSheetView.h"
 
 #define refresh_timeInterval  5*60
 
@@ -19,12 +20,15 @@
 <
 UITableViewDataSource,
 UITableViewDelegate,
-LEVideoListViewCellDelegate
+LEVideoListViewCellDelegate,
+LEShareSheetViewDelegate
 >
 {
     BOOL _afreshLatestData;
     int _newestDatapages;
     int _upNewestDatapages;
+    
+    LEShareSheetView *_shareSheetView;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -156,6 +160,7 @@ LEVideoListViewCellDelegate
 //默认type=0  =1时新数据小于10条再去加载老数据
 - (void)getNewsRequest:(int)type{
     
+    self.downNextCursor = 1;
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"getVideoNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -176,6 +181,8 @@ LEVideoListViewCellDelegate
     
     [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
+        [WeakSelf.tableView.mj_header endRefreshing];
+        
         if (requestType != WYRequestTypeSuccess) {
             if (!isCache) {
                 [WeakSelf.tableView.mj_header endRefreshing];
@@ -188,6 +195,22 @@ LEVideoListViewCellDelegate
         }
         BOOL needRefresh = NO;
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
+        
+        if (WeakSelf.downNextCursor == 1) {
+            WeakSelf.videoList = [[NSMutableArray alloc] init];
+        }
+        [WeakSelf.videoList addObjectsFromArray:array];
+        
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:YES];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.downNextCursor ++;
+            }
+        }
+        
+        /*
         if (WeakSelf.downNextCursor == 1) {
             self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
             LELog(@"下拉刷新>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_newestDatapages);
@@ -238,8 +261,8 @@ LEVideoListViewCellDelegate
                 [WeakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
-        
-//        [WeakSelf sortNewsListArray];
+        [WeakSelf sortNewsListArray];
+        */
         
         [WeakSelf.tableView reloadData];
         
@@ -288,7 +311,22 @@ LEVideoListViewCellDelegate
         if ([dataObject isEqual:[NSNull null]]) {
             return;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
+        
+        
+        [WeakSelf.videoList addObjectsFromArray:array];
+        
+        if (!isCache) {
+            if (array.count < DATA_LOAD_PAGESIZE_COUNT) {
+                [WeakSelf.tableView.mj_footer setHidden:YES];
+            }else{
+                [WeakSelf.tableView.mj_footer setHidden:NO];
+                WeakSelf.downNextCursor ++;
+            }
+        }
+        
+        
+        /*
         if (WeakSelf.upNextCursor == 1) {
             self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
             LELog(@"上拉加载>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
@@ -309,6 +347,7 @@ LEVideoListViewCellDelegate
         [WeakSelf.tableView.mj_footer resetNoMoreData];
         
 //        [WeakSelf sortNewsListArray];
+        */
         
         [WeakSelf.tableView reloadData];
         
@@ -386,11 +425,10 @@ LEVideoListViewCellDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.videoList objectAtIndex:indexPath.row];
-    newsModel.is_video = YES;
     
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
-    detail.isVideo = newsModel.is_video;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 
@@ -400,7 +438,7 @@ LEVideoListViewCellDelegate
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     LENewsListModel *model = self.videoList[indexPath.row];
     LEPersonalNewsViewController *personalNewsVc = [[LEPersonalNewsViewController alloc] init];
-    personalNewsVc.userId = [LELoginUserManager userID];
+    personalNewsVc.userId = model.userId;
     personalNewsVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:personalNewsVc animated:YES];
 }
@@ -415,17 +453,23 @@ LEVideoListViewCellDelegate
 - (void)commentClickCell:(LEVideoListViewCell *)cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     LENewsListModel *newsModel = [self.videoList objectAtIndex:indexPath.row];
-    newsModel.is_video = YES;
     
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
-    detail.isVideo = newsModel.is_video;
+    detail.isVideo = (newsModel.typeId == 1);
     detail.locateCommentSection = YES;
     [self.navigationController pushViewController:detail animated:YES];
 }
 
 - (void)shareClickCell:(LEVideoListViewCell *)cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    LENewsListModel *newsModel = [self.videoList objectAtIndex:indexPath.row];
+    
+    _shareSheetView = [[LEShareSheetView alloc] init];
+    _shareSheetView.owner = self;
+    _shareSheetView.newsModel = newsModel;
+    [_shareSheetView showShareAction];
+    
 }
 
 @end

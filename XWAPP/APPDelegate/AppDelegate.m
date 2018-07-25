@@ -36,9 +36,9 @@ JPUSHRegisterDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
-        
-    }];
+//    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+//
+//    }];
     
     [[LELoginAuthManager sharedInstance] checkUpdateWithAppID:@""];
     
