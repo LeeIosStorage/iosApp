@@ -182,7 +182,7 @@ SFSafariViewControllerDelegate
         if (![categoryArray containsObject:model]) {
             [categoryArray addObject:model];
         }
-        if (model.isTop && !model.isHot) {
+        if (model.isTop) {
             if (![tmpArray containsObject:model]) {
                 [tmpArray addObject:model];
             }
@@ -200,7 +200,7 @@ SFSafariViewControllerDelegate
 }
 
 - (void)insertADToNewsList:(NSArray *)array index:(NSInteger)index adModel:(LENewsListModel *)adModel animation:(BOOL)animation{
-//    return;
+    return;
     if (array.count == 0) {
         return;
     }
@@ -239,7 +239,9 @@ SFSafariViewControllerDelegate
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downStartUpdatedTime]] forKey:@"start"];
     if (!self.downEndUpdatedTime) [NSDate date];
@@ -268,7 +270,10 @@ SFSafariViewControllerDelegate
         BOOL needRefresh = NO;
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.downNextCursor == 1) {
-            self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            self->_newestDatapages = [[dataObject objectForKey:@"pages"] intValue];
+            if (self->_newestDatapages == 0) {
+                self->_newestDatapages = 1;
+            }
             LELog(@"下拉刷新>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_newestDatapages);
 //            self->_newestDatapages = 2;
         }
@@ -329,9 +334,6 @@ SFSafariViewControllerDelegate
             adModel.title = @"慧一舍棋牌游戏先行者";
             adModel.cover = [NSArray arrayWithObjects:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530704113914&di=dbc4e909286b3b4c758392a37db370b5&imgtype=0&src=http%3A%2F%2Fwww.zshouyou.com%2Fud%2Fallimg%2F171026%2F16320T126-0.png", nil];
             adModel.adUrl = @"http://www.huiyishe.cn";
-//            adModel.adUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-sd/8a4da8c4692d4b15a14dd3d16097b5c0/sd.mp4";
-            //http://html2.qktoutiao.com/detail/2018/06/26/108079647.html
-            //http://v4.qutoutiao.net/Act-ss-mp4-sd/8a4da8c4692d4b15a14dd3d16097b5c0/sd.mp4
             adModel.adType = 0;
             [WeakSelf insertADToNewsList:array index:1 adModel:adModel animation:YES];
         });
@@ -351,7 +353,9 @@ SFSafariViewControllerDelegate
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.upNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upStartUpdatedTime]] forKey:@"start"];
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upEndUpdatedTime]] forKey:@"end"];
@@ -371,7 +375,10 @@ SFSafariViewControllerDelegate
         }
         NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.upNextCursor == 1) {
-            self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            self->_upNewestDatapages = [[dataObject objectForKey:@"pages"] intValue];
+            if (self->_upNewestDatapages == 0) {
+                self->_upNewestDatapages = 1;
+            }
             LELog(@"上拉加载>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
         }
         

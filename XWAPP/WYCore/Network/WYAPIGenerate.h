@@ -40,4 +40,6 @@ static NSString* defaultWebHostTest = @"192.168.60.187:8080";//测试地址web
 
 - (NSString*)API:(NSString*)apiName;
 
+- (NSString*)API:(NSString*)apiName urlHost:(NSString *)urlHost;
+
 @end

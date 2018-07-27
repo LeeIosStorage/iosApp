@@ -190,7 +190,9 @@ UITableViewDataSource
 - (void)pushNewsDetailWith:(NSIndexPath *)indexPath{
     
     LENewsCommentModel *commentModel = self.commentLists[indexPath.row];
-//    commentModel.newsId = @"2540";
+    if (commentModel.newsId.length == 0) {
+        return;
+    }
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = commentModel.newsId;
     detail.isVideo = (commentModel.typeId == 1);

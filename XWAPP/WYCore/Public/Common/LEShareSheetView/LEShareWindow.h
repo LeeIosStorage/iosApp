@@ -25,6 +25,8 @@
 
 @property (strong, nonatomic) NSMutableArray *shareItemArray;
 
+@property (strong, nonatomic) NSMutableArray *handleItemArray;
+
 - (void)setCustomerSheet;
 
 @end

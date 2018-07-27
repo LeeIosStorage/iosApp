@@ -137,12 +137,18 @@ HJDefaultTabViewBarDelegate
     if ([[LELoginManager sharedInstance] needUserLogin:self]) {
         return;
     }
-//    HitoWeakSelf;
     NSString *userId = self.userId;
-    _isAttention = YES;
-    [[LELoginAuthManager sharedInstance] userAttentionWithUserId:userId isAttention:_isAttention result:^(BOOL success) {
+    if ([[userId description] isEqualToString:[LELoginUserManager userID]]) {
+        [SVProgressHUD showCustomInfoWithStatus:@"不能关注自己"];
+        return;
+    }
+    HitoWeakSelf;
+    
+    BOOL isAttention = !self.userInfoModel.isAttention;
+    [[LELoginAuthManager sharedInstance] userAttentionWithUserId:userId isAttention:isAttention result:^(BOOL success) {
         if (success) {
-            self->_isAttention = !self->_isAttention;
+            WeakSelf.userInfoModel.isAttention = isAttention;
+            [WeakSelf.headerView updateViewWithData:WeakSelf.userInfoModel];
         }else{
             
         }

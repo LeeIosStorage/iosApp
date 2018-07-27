@@ -196,7 +196,7 @@ HitoPropertyNSArray(allChannelArray);
 }
 
 - (IBAction)rightBarButton:(id)sender {
-    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-141-7, 64, 141, 135)];
+    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-141-7, HitoTopHeight, 141, 135)];
     [menuView show];
     
     HitoWeakSelf;

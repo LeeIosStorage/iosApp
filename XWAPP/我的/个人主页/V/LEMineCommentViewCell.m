@@ -63,7 +63,11 @@
     self.dateLabel.text = areaAndDateString;
     self.contentLabel.text = commentModel.content;
     
-    [WYCommonUtils setImageWithURL:[NSURL URLWithString:commentModel.newsUrl] setImage:self.newsImageView setbitmapImage:nil];
+    NSString *newsUrl = nil;
+    if (commentModel.cover.count > 0) {
+        newsUrl = commentModel.cover[0];
+    }
+    [WYCommonUtils setImageWithURL:[NSURL URLWithString:newsUrl] setImage:self.newsImageView setbitmapImage:nil];
     self.newsTitleLabel.text = commentModel.newsTitle;
 }
 

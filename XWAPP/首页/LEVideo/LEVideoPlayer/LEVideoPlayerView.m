@@ -113,7 +113,10 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 }
 
 - (void)pauseAction{
-//    [self.playControlBar setPlayButtonPlayImage];
+    if (self.playerStatusView.playStatus == LEplayStatus_end) {
+        return;
+    }
+    
     self.playerStatusView.playStatus = LEplayStatus_pause;
     if (self.statusModel.status == PlayerItemStatus_ReadyToPlay) {
         //容错处理，如果网络特别差，player没有数据，直接侧滑返回会引起crash

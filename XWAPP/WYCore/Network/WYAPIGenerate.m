@@ -70,6 +70,12 @@ static NSString* const apiFileExtension = @"json";
 
 - (NSString*)API:(NSString*)apiName
 {
+    return [self API:apiName urlHost:nil];
+    
+}
+
+- (NSString*)API:(NSString*)apiName urlHost:(NSString *)urlHost{
+    
     if (!apiName || apiName.length == 0) {
         return nil;
     }
@@ -90,6 +96,10 @@ static NSString* const apiFileExtension = @"json";
     apiProtocol=[dic objectForKey:@"protocol"] ? [dic objectForKey:@"protocol"]:@"http";
     if ([apiProtocol isEqual:@"http"]) {
         host = self.netWorkHost;
+    }
+    
+    if (urlHost.length > 0) {
+        host = urlHost;
     }
     
     //拼接主机地址

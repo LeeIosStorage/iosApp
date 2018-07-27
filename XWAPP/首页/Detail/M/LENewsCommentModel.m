@@ -26,6 +26,10 @@
              };
 }
 
+- (NSString *)avatarUrl{
+    return [_avatarUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+}
+
 @end
 
 @implementation LENewsCommentModel
@@ -39,8 +43,8 @@
              @"userId"    : @"userId",
              @"comments"  : @"children",
              @"newsId"  : @"newsId",
-             @"newsUrl"  : @"newsImg",
-             @"newsTitle"  : @"newsTitle",
+             @"newsUrl"  : @"imgUrl",
+             @"newsTitle"  : @"title",
              @"favour" : @"islike",
              };
 }
@@ -49,6 +53,15 @@
     return @{
              @"comments"   : [LEReplyCommentModel class],
              };
+}
+
+- (NSString *)avatarUrl{
+    return [_avatarUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+}
+
+- (NSArray *)cover{
+    NSString *urlStr = [_newsUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+    return [urlStr componentsSeparatedByString:@","];
 }
 
 @end

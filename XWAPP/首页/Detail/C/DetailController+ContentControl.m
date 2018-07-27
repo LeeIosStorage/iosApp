@@ -67,10 +67,10 @@
                         if ([[childrenElement content] isEqualToString:@"\n"]) {
                             continue;
                         }
-                        //兼容标签重复解析的错误
-                        if ([WeakSelf.beforeContent isEqualToString:[childrenElement content]]) {
-                            continue;
-                        }
+//                        //兼容标签重复解析的错误  解开注释会导致缓存时文字显示网咯文字不显示问题
+//                        if ([WeakSelf.beforeContent isEqualToString:[childrenElement content]]) {
+//                            continue;
+//                        }
                         
                         childAttributed = [WeakSelf mosaicContentWithContent:[childrenElement content]];
                         WeakSelf.beforeContent = [childrenElement content];

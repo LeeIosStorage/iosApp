@@ -17,5 +17,6 @@
 @property (assign, nonatomic) int readCount;
 @property (assign, nonatomic) int newsCount;
 @property (assign, nonatomic) int attentionCount;
+@property (assign, nonatomic) BOOL isAttention;
 
 @end

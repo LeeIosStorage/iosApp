@@ -684,6 +684,7 @@ LECommentCellDelegate
     [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     [params setObject:[LELoginUserManager userID]?[LELoginUserManager userID]:@"" forKey:@"userId"];
+    [params setObject:@"0" forKey:@"parentId"];
 
     NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
     BOOL needCache = NO;
@@ -696,7 +697,7 @@ LECommentCellDelegate
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"records"]];
         
         //重新计算评论array
         NSMutableArray *comments = [NSMutableArray array];
@@ -781,7 +782,7 @@ LECommentCellDelegate
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if (text.length) [params setObject:text forKey:@"content"];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
-    NSString *parentId = nil;
+    NSString *parentId = @"0";
     if (_currentCommentModel) {
         parentId = _currentCommentModel.commentId;
     }else if (_currentReplyModel){

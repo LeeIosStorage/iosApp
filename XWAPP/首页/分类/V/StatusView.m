@@ -86,7 +86,8 @@
     NSString *tagString = @"";
     if (newsModel.isHot) {
         tagString = @" 热门 ";
-    }else if (newsModel.isTop){
+    }
+    if (newsModel.isTop){
         tagString = @" 置顶 ";
     }
     if (newsModel.is_ad) {

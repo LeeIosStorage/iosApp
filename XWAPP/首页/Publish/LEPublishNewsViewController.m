@@ -152,9 +152,10 @@ UITextFieldDelegate
         return;
     }
     self.titleTextField.text = [self.titleTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-//    if (self.titleTextField.text.length == 0) {
-//
-//    }
+    if (self.titleTextField.text.length == 0) {
+        [SVProgressHUD showCustomInfoWithStatus:@"请输入文章标题"];
+        return;
+    }
     
     NSArray *imageDatas = [NSArray arrayWithArray:self.uploadImageDatas];
     
@@ -199,6 +200,10 @@ UITextFieldDelegate
     self.publishButton.enabled = NO;
     
     self.titleTextField.text = [self.titleTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (self.titleTextField.text.length == 0) {
+        [SVProgressHUD showCustomInfoWithStatus:@"请输入文章标题"];
+        return;
+    }
     
     HitoWeakSelf;
     [SVProgressHUD showCustomWithStatus:@"正在提交..."];
@@ -458,8 +463,8 @@ UITextFieldDelegate
         _tipTextLabel.textColor = kAppSubTitleColor;
         _tipTextLabel.font = HitoPFSCRegularOfSize(12);
         _tipTextLabel.numberOfLines = 0;
-        NSString *text = @"注：若您未输入文章标题，则默认您同意授权本平台自拟标题";
-        _tipTextLabel.attributedText = [WYCommonUtils stringToColorAndFontAttributeString:text range:NSMakeRange(0, 2) font:HitoPFSCRegularOfSize(12) color:kAppThemeColor];
+//        NSString *text = @"注：若您未输入文章标题，则默认您同意授权本平台自拟标题";
+//        _tipTextLabel.attributedText = [WYCommonUtils stringToColorAndFontAttributeString:text range:NSMakeRange(0, 2) font:HitoPFSCRegularOfSize(12) color:kAppThemeColor];
     }
     return _tipTextLabel;
 }

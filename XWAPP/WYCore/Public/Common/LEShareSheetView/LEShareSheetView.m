@@ -52,10 +52,11 @@ LEShareWindowDelegate
 #pragma mark - Public
 - (void)showShareAction{
     
+    [self shareContent];
+    
     self.shareSheet.delegate = self;
     [self.shareSheet setCustomerSheet];
     
-    [self shareContent];
 }
 
 - (void)shareContent{
@@ -105,6 +106,31 @@ LEShareWindowDelegate
     [[WYShareManager shareInstance] shareToWb:^(WBSendMessageToWeiboResponse *response) {
         
     } title:self.shareTitle description:self.shareDescription webpageUrl:self.shareWebpageUrl image:self.shareImage VC:_owner isVideo:_isVideo];
+}
+
+- (void)copylink{
+    if (self.shareWebpageUrl.length == 0) {
+        return;
+    }
+    UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+    copyBoard.string = self.shareWebpageUrl;
+    [copyBoard setPersistent:YES];
+    [SVProgressHUD showCustomSuccessWithStatus:@"复制成功"];
+}
+
+- (void)collectAction{
+    if (self.owner && [self.owner respondsToSelector:@selector(shareSheetCollectAction)]) {
+        [self.owner shareSheetCollectAction];
+    }
+}
+
+- (void)reportAction{
+    
+    [SVProgressHUD showCustomWithStatus:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+    });
+    
 }
 
 #pragma mark -

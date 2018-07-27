@@ -13,6 +13,8 @@
 #import "LEPersonalNewsViewController.h"
 #import "LEPersonalNewsViewController.h"
 #import "LEShareSheetView.h"
+#import "LELoginManager.h"
+#import "LELoginAuthManager.h"
 
 #define refresh_timeInterval  5*60
 
@@ -167,7 +169,9 @@ LEShareSheetViewDelegate
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downStartUpdatedTime]] forKey:@"start"];
     if (!self.downEndUpdatedTime) [NSDate date];
@@ -292,9 +296,11 @@ LEShareSheetViewDelegate
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"getVideoNews"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:self.channelId forKey:@"cid"];
-    [params setObject:[NSNumber numberWithInteger:self.upNextCursor] forKey:@"page"];
+    [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upStartUpdatedTime]] forKey:@"start"];
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upEndUpdatedTime]] forKey:@"end"];
@@ -369,6 +375,31 @@ LEShareSheetViewDelegate
     
 }
 
+- (void)attentionClickAction:(LENewsListModel *)model indexPath:(NSIndexPath *)indexPath{
+    
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
+    NSString *userId = model.userId;
+    if ([[userId description] isEqualToString:[LELoginUserManager userID]]) {
+        [SVProgressHUD showCustomInfoWithStatus:@"不能关注自己"];
+        return;
+    }
+    HitoWeakSelf;
+    
+    BOOL isAttention = !model.isAttention;
+    [[LELoginAuthManager sharedInstance] userAttentionWithUserId:userId isAttention:isAttention result:^(BOOL success) {
+        if (success) {
+            model.isAttention = isAttention;
+            [WeakSelf.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
+        }else{
+            
+        }
+    }];
+    
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (UITableView *)tableView{
@@ -382,6 +413,12 @@ LEShareSheetViewDelegate
         _tableView.rowHeight = UITableViewAutomaticDimension;
     }
     return _tableView;
+}
+
+#pragma mark -
+#pragma mark - LEShareSheetViewDelegate
+- (void)shareSheetCollectAction{
+    
 }
 
 #pragma mark -
@@ -446,8 +483,8 @@ LEShareSheetViewDelegate
 - (void)attentionClickCell:(LEVideoListViewCell *)cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     LENewsListModel *model = self.videoList[indexPath.row];
-    model.isAttention = !model.isAttention;
-    [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self attentionClickAction:model indexPath:indexPath];
 }
 
 - (void)commentClickCell:(LEVideoListViewCell *)cell{

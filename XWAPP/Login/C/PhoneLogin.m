@@ -202,7 +202,7 @@
     [SVProgressHUD showCustomWithStatus:@"请求中..."];
     
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SmsSend"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SmsSend" urlHost:defaultNetworkHost];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (_phoneTF.text.length) [params setObject:_phoneTF.text forKey:@"mobile"];
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {

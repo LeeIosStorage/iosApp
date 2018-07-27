@@ -12,6 +12,7 @@
 
 @protocol LEShareSheetViewDelegate <NSObject>
 @optional
+- (void)shareSheetCollectAction;
 
 @end
 

@@ -80,7 +80,7 @@
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:userInfo.userHeadImg] setImage:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     NSString *intro = userInfo.introduction;
     if (intro.length == 0) {
-        intro = @"这人比较懒,还没留下个人简介~";
+        intro = @"这人比较懒,还没留下个人简介~这人比较懒,还没留下个人简介~这人比较懒,还没留下个人简介~";
     }
     self.introLabel.text = intro;
     
@@ -92,6 +92,12 @@
     if ([[userInfo.userId description] isEqualToString:[LELoginUserManager userID]]) {
         self.attentionButton.hidden = YES;
     }
+    
+    self.attentionButton.selected = userInfo.isAttention;
+    self.attentionButton.backgroundColor = kAppThemeColor;
+    if (self.attentionButton.selected) {
+        self.attentionButton.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:75.0f/255.0f blue:65.0f/255.0f alpha:0.7f];
+    }
 }
 
 #pragma mark -
@@ -99,11 +105,6 @@
 - (void)attentionClickAction:(id)sender{
     if (self.attentionClickBlock) {
         self.attentionClickBlock();
-    }
-    self.attentionButton.selected = !self.attentionButton.selected;
-    self.attentionButton.backgroundColor = kAppThemeColor;
-    if (self.attentionButton.selected) {
-        self.attentionButton.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:75.0f/255.0f blue:65.0f/255.0f alpha:0.7f];
     }
 }
 
