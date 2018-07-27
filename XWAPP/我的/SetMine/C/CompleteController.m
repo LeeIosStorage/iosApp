@@ -165,7 +165,7 @@ HitoPropertyNSMutableArray(jobData);
     
     NSMutableDictionary *jsonDic = [NSMutableDictionary dictionary];
     if ([LELoginUserManager userID]) [jsonDic setObject:[LELoginUserManager userID] forKey:@"id"];
-    [jsonDic setObject:self.userModel.nickname?self.userModel.nickname:@"" forKey:@"nickname"];
+    [jsonDic setObject:self.userModel.nickname?self.userModel.nickname:@"" forKey:@"nickName"];
     [jsonDic setObject:self.userModel.headImgUrl?self.userModel.headImgUrl:@"" forKey:@"headimg"];
     [jsonDic setObject:self.userModel.sex?self.userModel.sex:@"1" forKey:@"sex"];
     [jsonDic setObject:[NSNumber numberWithInt:[self.userModel.age intValue]] forKey:@"age"];

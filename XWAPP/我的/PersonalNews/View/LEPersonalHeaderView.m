@@ -80,7 +80,7 @@
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:userInfo.userHeadImg] setImage:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     NSString *intro = userInfo.introduction;
     if (intro.length == 0) {
-        intro = @"这人比较懒,还没留下个人简介~这人比较懒,还没留下个人简介~这人比较懒,还没留下个人简介~";
+        intro = @"这人比较懒,还没留下个人简介~";
     }
     self.introLabel.text = intro;
     
@@ -200,6 +200,7 @@
         _introLabel = [[UILabel alloc] init];
         _introLabel.textColor = [UIColor colorWithHexString:@"666666"];
         _introLabel.font = HitoPFSCRegularOfSize(14);
+        _introLabel.numberOfLines = 2;
     }
     return _introLabel;
 }

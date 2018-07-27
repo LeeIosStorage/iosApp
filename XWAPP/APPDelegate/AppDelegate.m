@@ -43,6 +43,7 @@ JPUSHRegisterDelegate
     [[LELoginAuthManager sharedInstance] checkUpdateWithAppID:@""];
     
     [SVProgressHUD setCurrentDefaultStyle];
+//    defaultNetworkPreRelease = @"api.hangzhouhaniu.com";
     [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkPreRelease;//defaultNetworkHost defaultNetworkHostTest
     
     _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
