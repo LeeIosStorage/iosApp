@@ -130,11 +130,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>需要使用您的相册是否允许打开相机？</string>
+	<string>需要在投稿和更换头像功能时使用到您的相机</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>是否允许此App使用你的麦克风</string>
+	<string>需要在投稿功能时使用你的麦克风</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要使用您的相册是否允许打开相册？</string>
+	<string>需要在投稿和更换头像功能时使用您的相册</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

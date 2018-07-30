@@ -10,7 +10,7 @@
 
 extern NSString* const kNetworkHostCacheKey;
 
-static NSString* defaultNetworkHost =  @"api.hangzhouhaniu.com";//线上
+static NSString* defaultNetworkHost =  @"api.hangzhouhaniu.com/rest";//线上
 static NSString* defaultNetworkPreRelease = @"47.96.123.144:8080/rest";//预发布地址
 static NSString* defaultNetworkHostTest = @"192.168.60.187:8080";//测试地址
 

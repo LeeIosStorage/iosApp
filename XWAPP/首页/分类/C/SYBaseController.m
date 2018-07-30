@@ -11,7 +11,6 @@
 #import "XLChannelControl.h"
 #import "SearchController.h"
 #import "WYNetWorkManager.h"
-#import "WYNetWorkManager.h"
 #import "LEChannelModel.h"
 #import "LEDataStoreManager.h"
 #import "DetailController.h"
@@ -68,13 +67,12 @@ HitoPropertyNSArray(allChannelArray);
     // Do any additional setup after loading the view.
     [self setPGController];
     [self setNaStyle];
-    
-//    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"home_touao"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButton:)];
-//    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
-//                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-//                                       target:nil action:nil];
-//    negativeSpacer.width = -7;
-//    self.navigationItem.rightBarButtonItems = @[rightBarButtonItem];;
+
+    CGFloat left = 0;
+    if (HitoScreenW > 375.f) {
+        left = 6;
+    }
+    [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, left, 0, -left)];
     
     [self getNewsChannelRequest];
     

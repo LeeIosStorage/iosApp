@@ -47,6 +47,18 @@
         "control" : "news",
         "action"  : "GetHotNews"
     },
+    "NewsReport": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "NewsReport"
+    },
+    "CommentReport": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "CommentReport"
+    },
     "GetComment": {
         "protocol": "http",
         "module" : "api",

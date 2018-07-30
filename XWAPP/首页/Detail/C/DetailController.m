@@ -529,9 +529,31 @@ LECommentCellDelegate
 {
     NSString *commentId = _longPressCommentModel.commentId;
     [SVProgressHUD showCustomWithStatus:nil];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"CommentReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (commentId) [params setObject:commentId forKey:@"reportId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) {
+        userId = @"";
+    }
+    [params setObject:userId forKey:@"userId"];
+    [params setObject:@"" forKey:@"content"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
         [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
-    });
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+//    [SVProgressHUD showCustomWithStatus:nil];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+//    });
 }
 -(BOOL)canBecomeFirstResponder
 {
@@ -560,7 +582,7 @@ LECommentCellDelegate
             make.top.equalTo(self.view).offset(0);
             make.height.mas_equalTo(VideoHeight);
         }];
-        [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:nil] placeholder:nil];
+        [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:@""] placeholder:nil];
     }
     
     if (!self.videoViewController) {

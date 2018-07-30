@@ -193,8 +193,8 @@ SFSafariViewControllerDelegate
     [self.newsList addObjectsFromArray:categoryArray];
     
     //暂时先这样处理, 需要后台配合
-    if (tmpArray.count > 2) {
-        tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 2)];
+    if (tmpArray.count > 1) {
+        tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 1)];
     }
     [self.newsList insertObjects:tmpArray atIndex:0];
 }

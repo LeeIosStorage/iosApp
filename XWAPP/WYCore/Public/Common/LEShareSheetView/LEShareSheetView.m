@@ -12,6 +12,7 @@
 #import <objc/message.h>
 #import "WYShareManager.h"
 #import "SDImageCache.h"
+#import "WYNetWorkManager.h"
 
 @interface LEShareSheetView ()
 <
@@ -19,6 +20,9 @@ LEShareWindowDelegate
 >
 {
 }
+
+@property (strong, nonatomic) WYNetWorkManager *networkManager;
+
 @property (strong, nonatomic) LEShareWindow *shareSheet;
 
 @property (nonatomic, strong) NSString *shareTitle;
@@ -127,9 +131,26 @@ LEShareWindowDelegate
 - (void)reportAction{
     
     [SVProgressHUD showCustomWithStatus:nil];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"NewsReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsModel.newsId) [params setObject:_newsModel.newsId forKey:@"reportId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) {
+        userId = @"";
+    }
+    [params setObject:userId forKey:@"userId"];
+    [params setObject:@"" forKey:@"content"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
         [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
-    });
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
     
 }
 
@@ -141,6 +162,13 @@ LEShareWindowDelegate
         _shareSheet.delegate = self;
     }
     return _shareSheet;
+}
+
+- (WYNetWorkManager *)networkManager{
+    if (!_networkManager) {
+        _networkManager = [[WYNetWorkManager alloc] init];
+    }
+    return _networkManager;
 }
 
 #pragma mark -

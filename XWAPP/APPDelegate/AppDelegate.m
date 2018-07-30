@@ -44,7 +44,7 @@ JPUSHRegisterDelegate
     
     [SVProgressHUD setCurrentDefaultStyle];
 //    defaultNetworkPreRelease = @"api.hangzhouhaniu.com";
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkPreRelease;//defaultNetworkHost defaultNetworkHostTest
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
     
     _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
     

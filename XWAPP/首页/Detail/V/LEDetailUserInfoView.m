@@ -86,7 +86,7 @@
     LENewsListModel *model = (LENewsListModel *)data;
     [WYCommonUtils setImageWithURL:[NSURL URLWithString:model.userHeadImg] setImage:self.avatarImageView setbitmapImage:[UIImage imageNamed:@"LOGO"]];
     
-    self.userNameLabel.text = model.souce;
+    self.userNameLabel.text = model.nickName;
     self.fansLabel.text = [NSString stringWithFormat:@"%@粉丝",[WYCommonUtils numberFormatWithNum:model.attentionCount]];
     self.attentionButton.selected = model.isAttention;
     self.attentionButton.backgroundColor = kAppThemeColor;
