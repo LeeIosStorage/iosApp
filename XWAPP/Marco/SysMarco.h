@@ -44,6 +44,7 @@
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 #define kRefreshUITaskInfoNotificationKey @"kRefreshUITaskInfoNotificationKey"
+#define kMonitorNetworkingNotificationKey @"kMonitorNetworkingNotificationKey"
 
 #pragma mark -
 #pragma mark - UM事件统计

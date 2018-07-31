@@ -12,6 +12,7 @@
 #import "LEPlayerTitleView.h"
 #import "LEPlayerStatusView.h"
 #import "LEVideoShareView.h"
+#import "LENetworkStatusView.h"
 
 typedef void(^PlayerChangeOrientationToFull) (BOOL );
 typedef void(^PlayerErrorHandleBlock) (NSError *);
@@ -38,6 +39,8 @@ typedef NS_ENUM(NSInteger, PlayerStatus) {
 @property (strong, nonatomic) LEPlayerStatusView                *playerStatusView;//播放状态View
 
 @property (strong, nonatomic) LEVideoShareView                  *videoShareView;//结束之后分享view
+
+@property (strong, nonatomic) LENetworkStatusView               *networkStatusView;//网络状态view
 
 //所有错误经过可选择经过此处回调
 @property (copy, nonatomic) PlayerErrorHandleBlock              playerErrorHandleBlock;

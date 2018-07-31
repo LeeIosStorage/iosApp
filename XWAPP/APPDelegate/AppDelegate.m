@@ -44,12 +44,15 @@ JPUSHRegisterDelegate
     
     [SVProgressHUD setCurrentDefaultStyle];
 //    defaultNetworkPreRelease = @"api.hangzhouhaniu.com";
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
     
     _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
     
     // 三方SDK注册
     [self configUSharePlatforms];
+    
+    //检测网络
+    [self monitorNetworking];
     
     
     [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
@@ -339,6 +342,40 @@ JPUSHRegisterDelegate
         // 本地通知
     }
     completionHandler();
+}
+
+#pragma mark -
+#pragma mark - ------------- 监测网络状态 -------------
+- (void)monitorNetworking
+{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                LELog(@"未知网络");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                LELog(@"网络不可用");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMonitorNetworkingNotificationKey object:@"1" userInfo:nil];
+            }
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMonitorNetworkingNotificationKey object:@"2" userInfo:nil];
+            }
+                break;
+            default:
+                break;
+        }
+//        if (status == AFNetworkReachabilityStatusReachableViaWWAN || status == AFNetworkReachabilityStatusReachableViaWiFi) {
+//            NSLog(@"有网");
+//        }else{
+//            NSLog(@"没网");
+//        }
+    }];
 }
 
 @end

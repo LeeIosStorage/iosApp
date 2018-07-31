@@ -142,6 +142,7 @@
 		4CF018FD2105F5410046CD76 /* LEDetailUserInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018FC2105F5410046CD76 /* LEDetailUserInfoView.m */; };
 		4CF019002106C9070046CD76 /* LEVideoShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF018FF2106C9070046CD76 /* LEVideoShareView.m */; };
 		4CF01903210719E20046CD76 /* LEUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF01902210719E20046CD76 /* LEUserInfoModel.m */; };
+		4CF01906211008030046CD76 /* LENetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF01905211008030046CD76 /* LENetworkStatusView.m */; };
 		4CF22CA920A29ABD000904F4 /* DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CA820A29ABD000904F4 /* DetailController.m */; };
 		4CF22CAC20A2A0BE000904F4 /* WalletHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF22CAB20A2A0BE000904F4 /* WalletHeader.m */; };
 		4CF22CAE20A2A0C4000904F4 /* WalletHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CF22CAD20A2A0C4000904F4 /* WalletHeader.xib */; };
@@ -503,6 +504,8 @@
 		4CF018FF2106C9070046CD76 /* LEVideoShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEVideoShareView.m; sourceTree = "<group>"; };
 		4CF01901210719E20046CD76 /* LEUserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LEUserInfoModel.h; sourceTree = "<group>"; };
 		4CF01902210719E20046CD76 /* LEUserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LEUserInfoModel.m; sourceTree = "<group>"; };
+		4CF01904211008030046CD76 /* LENetworkStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LENetworkStatusView.h; sourceTree = "<group>"; };
+		4CF01905211008030046CD76 /* LENetworkStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LENetworkStatusView.m; sourceTree = "<group>"; };
 		4CF22CA720A29ABD000904F4 /* DetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailController.h; sourceTree = "<group>"; };
 		4CF22CA820A29ABD000904F4 /* DetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailController.m; sourceTree = "<group>"; };
 		4CF22CAA20A2A0BE000904F4 /* WalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHeader.h; sourceTree = "<group>"; };
@@ -1068,6 +1071,8 @@
 				4C5B479320F885E800805CBB /* LESlider.m */,
 				4C5B479520F88C7400805CBB /* LEPlayerStatusView.h */,
 				4C5B479620F88C7400805CBB /* LEPlayerStatusView.m */,
+				4CF01904211008030046CD76 /* LENetworkStatusView.h */,
+				4CF01905211008030046CD76 /* LENetworkStatusView.m */,
 				4CF018FE2106C9070046CD76 /* LEVideoShareView.h */,
 				4CF018FF2106C9070046CD76 /* LEVideoShareView.m */,
 				4C5B479020F8363A00805CBB /* LEVideoPlayerView+PlayerUtils.m */,
@@ -2266,6 +2271,7 @@
 				4CB76B6E20BD77320092503E /* ZJMultipleAssociatedPickerView.m in Sources */,
 				EC72BC36208F1D2300FADE74 /* RefrestInfoView.m in Sources */,
 				4C5FADFE20A031F200893FC8 /* SearchHeaderSecond.m in Sources */,
+				4CF01906211008030046CD76 /* LENetworkStatusView.m in Sources */,
 				4CB76B7720BE49180092503E /* LEAttentionViewController.m in Sources */,
 				4CB8ED1920A060F600FD9C4C /* MineFirstCell.m in Sources */,
 				EC72BC5B20907A6700FADE74 /* SearchCollecViewCell.m in Sources */,

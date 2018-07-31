@@ -32,6 +32,8 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 
 //@property (nonatomic, assign) PlayStatus                                            playStatus;
 
+@property (strong, nonatomic) NSURL *videoURL;
+
 @property (readwrite, strong, setter = setPlayer:, getter = player) AVPlayer        *avPlayer;
 
 @property (strong, nonatomic) AVPlayerItem                                          *playerItem;
@@ -41,6 +43,9 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 
 @property (assign, nonatomic) BOOL                                                  isSeeking;
 @property (assign, nonatomic) BOOL                                                  isVideoToolbarHidden;
+
+/** 是否已经显示移动网络提示alert */
+@property (assign, nonatomic) BOOL isShowWWANAlert;
 
 @end
 
@@ -67,6 +72,7 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 #pragma mark -
 #pragma mark - Public
 - (void)setupPlayerWith:(NSURL *)videoURL{
+    self.videoURL = videoURL;
     if (!videoURL) {
         return;
     }
@@ -83,11 +89,35 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 
 - (void)playAction{
     
-    NSArray *layers = self.layer.sublayers;
-    NSLog(@"layerslayerslayerslayerslayerslayerslayerslayerslayers=%@",layers);
-    
     if (self.isFromBackgroundCallBack) {
-//        [self.playControlBar setPlayButtonPauseImage];
+        
+        HitoWeakSelf;
+        AFNetworkReachabilityStatus status = [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
+        if (status == AFNetworkReachabilityStatusNotReachable) {
+//            [SVProgressHUD showCustomInfoWithStatus:@"网络不可用"];
+            [self showWWANNetWorkAlert:0];
+            self.networkStatusView.continueClickedBlock = ^{
+                [WeakSelf.networkStatusView removeFromSuperview];
+                WeakSelf.networkStatusView = nil;
+//                [WeakSelf playAction];
+                [WeakSelf setupPlayerWith:WeakSelf.videoURL];
+            };
+            return;
+        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
+            if (!self.isShowWWANAlert) {
+                [self showWWANNetWorkAlert:1];
+                self.networkStatusView.continueClickedBlock = ^{
+                    [WeakSelf.networkStatusView removeFromSuperview];
+                    WeakSelf.networkStatusView = nil;
+                    [WeakSelf playAction];
+                };
+                return;
+            }
+            if (self.networkStatusView.superview) {
+                return;
+            }
+        }
+        
         if(self.statusModel.status == PlayerItemStatus_ReadyToPlay) {
             NSError *error = nil;
             AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -143,6 +173,8 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
 //    if (!videoURL) {
 //        return;
 //    }
+    self.videoURL = videoURL;
+    
     [self stopPlaying];
     [self removePlayerLayer];
     [self initPlayerData];
@@ -353,6 +385,27 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
     };
 }
 
+//type=0 失败 / type=1 4G播放
+- (void)showWWANNetWorkAlert:(NSInteger)type
+{
+    if (type == 1) {
+        self.isShowWWANAlert = YES;
+    }
+    
+    self.playerStatusView.playStatus = LEplayStatus_end;
+    if (self.isFullScreen) {
+        self.isFullScreen = NO;
+        [self toChangeViewOrientationToFull:self.isFullScreen];
+    }
+    self.playControlBar.hidden = YES;
+    self.playerStatusView.hidden = YES;
+    [self.networkStatusView refreshUIWith:type];
+    [self addSubview:self.networkStatusView];
+    [self.networkStatusView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+}
+
 #pragma mark -
 #pragma mark - Handel Actions
 - (void)changePlayStatus
@@ -436,10 +489,27 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
     return _videoShareView;
 }
 
+- (LENetworkStatusView *)networkStatusView{
+    if (!_networkStatusView) {
+        _networkStatusView = [[LENetworkStatusView alloc] init];
+    }
+    return _networkStatusView;
+}
+
 #pragma mark -
 #pragma mark --- Prepare to play asset, URL
 - (void)setPlayerSessionWithSourceURL:(NSURL *)sourceUrl{
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:sourceUrl options:nil];
+    
+//    NSArray *array = asset.tracks;
+//    CGSize videoSize = CGSizeZero;
+//    for (AVAssetTrack *track in array) {
+//        if ([track.mediaType isEqualToString:AVMediaTypeVideo]) {
+//            videoSize = track.naturalSize;
+//        }
+//    }
+//    LELog(@"videoSize------------------%@",NSStringFromCGSize(videoSize));
+    
     NSArray *requestedKeys = @[@"playable"];
     [asset loadValuesAsynchronouslyForKeys:requestedKeys completionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -563,6 +633,10 @@ static void *AVPlayerPlayloadingViewControllerloadedTimeRangesObservationContext
                 break;
             case AVPlayerItemStatusReadyToPlay:
             {
+                
+//                CGSize size = self.playerItem.presentationSize;
+//                LELog(@"presentationSize------------------%@",NSStringFromCGSize(size));
+                
                 self.statusModel.status = PlayerItemStatus_ReadyToPlay;
                 self.playControlBar.loadingView.playSlider.enabled = YES;
                 CGFloat totalSecond = self.player.currentItem.duration.value / (float)self.playerItem.duration.timescale;// 转换成秒
