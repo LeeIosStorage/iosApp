@@ -9,6 +9,7 @@
 #ifndef SysMarco_h
 #define SysMarco_h
 
+#define Itunes_APPID   @"1404835477"
 
 #define QQ_ID                       @"1106905716"
 #define QQ_Key                      @"oRHhd5NAPbKZeX9o"
@@ -28,6 +29,10 @@
 #define APS_FOR_PRODUCTION 1
 #endif
 
+//Bugly
+#define kBuglyAppID  @"e26d4b0928"
+#define kGrowingIOAppID  @"8f00a97b58a86872"
+
 
 #define MAX_WX_IMAGE_SIZE 32*1024
 #define WY_IMAGE_COMPRESSION_QUALITY 0.4
@@ -39,12 +44,14 @@
 
 #define kRefreshUILoginNotificationKey @"kRefreshUILoginNotificationKey"
 #define kRefreshUITaskInfoNotificationKey @"kRefreshUITaskInfoNotificationKey"
+#define kMonitorNetworkingNotificationKey @"kMonitorNetworkingNotificationKey"
 
 #pragma mark -
 #pragma mark - UM事件统计
 #define kNewsRealHotClick                        @"NewsRealHotClick"
 #define kHomeSearchBarClick                      @"HomeSearchBarClick"
 #define kHomeNewsChannelClick                    @"HomeNewsChannelClick"
+#define kHomeVideoChannelClick                   @"kHomeVideoChannelClick"
 #define kTaskCenterSignInClick                   @"TaskCenterSignInClick"
 #define kTaskCenterOpenBoxClick                  @"TaskCenterOpenBoxClick"
 #define kTaskCenterBingWXClick                   @"TaskCenterBingWXClick"
@@ -243,6 +250,9 @@
 
 //蒙层黑色
 #define kAppMaskOpaqueBlackColor HitoRGBA(0,0,0,0.4)
+
+//图片预加载默认背景色
+#define kAppLoadingPlaceholderImageColor [UIColor colorWithHexString:@"bfbfbf"]
 
 ///颜色 a代表透明度,1为不透明,0为透明
 

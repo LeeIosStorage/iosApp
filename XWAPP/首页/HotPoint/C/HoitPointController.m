@@ -89,7 +89,7 @@
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LEHotNewsModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LEHotNewsModel class] json:[dataObject objectForKey:@"records"]];
         
         NSMutableArray *todayArray = [NSMutableArray array];
         NSMutableArray *yesterdayArray = [NSMutableArray array];
@@ -201,6 +201,7 @@
     LEHotNewsModel *model = array[indexPath.row];
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = model.newsId;
+    detail.isVideo = (model.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

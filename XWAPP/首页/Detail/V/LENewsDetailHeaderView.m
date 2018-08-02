@@ -77,7 +77,7 @@
     
 //    self.titleLabel.attributedText = attString;
     self.dateLabel.text = [WYCommonUtils dateDiscriptionFromDate:[WYCommonUtils dateFromUSDateString:model.public_time]];
-    self.sourceLabel.text = model.souce;
+//    self.sourceLabel.text = model.souce;
     
     //算高度不太准确
 //    CGSize textSize = [attString boundingRectWithSize:CGSizeMake(HitoScreenW-12*2, HUGE) options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;

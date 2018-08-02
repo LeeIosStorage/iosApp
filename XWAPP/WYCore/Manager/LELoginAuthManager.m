@@ -10,6 +10,8 @@
 #import "WXApi.h"
 #import "LELoginUserManager.h"
 
+#define kIsInReviewVersionKey @"isInReviewVersionKey"
+
 @interface LELoginAuthManager ()
 
 @property (strong, nonatomic) WYNetWorkManager *netWorkManager;
@@ -34,6 +36,10 @@ static LELoginAuthManager *_instance = nil;
     if (self) {
         self.taskList = [[NSMutableArray alloc] init];
         self.globalTaskConfig = [[NSDictionary alloc] init];
+        
+        NSUserDefaults *originalDefaults = [NSUserDefaults standardUserDefaults];
+        id object = [originalDefaults objectForKey:kIsInReviewVersionKey];
+        self.isInReviewVersion = [object boolValue];
     }
     return self;
 }
@@ -261,8 +267,62 @@ static LELoginAuthManager *_instance = nil;
         
         WeakSelf.isInReviewVersion = isNewVersion;
         
+        NSUserDefaults *originalDefaults = [NSUserDefaults standardUserDefaults];
+        [originalDefaults setObject:[NSNumber numberWithBool:isNewVersion] forKey:kIsInReviewVersionKey];
+        [originalDefaults synchronize];
+        
+        [WeakSelf resetTabBarTitle];
+        
     } failure:^(NSError *error) {
         WeakSelf.isInReviewVersion = YES;
+    }];
+}
+
+- (void)resetTabBarTitle{
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        if (window.windowLevel != UIWindowLevelNormal){
+            NSArray *windows = [[UIApplication sharedApplication] windows];
+            for(UIWindow * tmpWin in windows){
+                if (tmpWin.windowLevel == UIWindowLevelNormal){
+                    window = tmpWin;
+                    break;
+                }
+            }
+        }
+        UIView *frontView = [[window subviews] objectAtIndex:0];
+        id nextResponder = [frontView nextResponder];
+        if ([nextResponder isKindOfClass:[UITabBarController class]]) {
+            UITabBarController *tabBarVc = (UITabBarController *)nextResponder;
+            for (UITabBarItem *item in tabBarVc.tabBar.items) {
+                if ([item.title isEqualToString:@"任务中心"]) {
+                    item.title = @"发现";
+                }
+            }
+        }
+    }
+}
+
+- (void)userAttentionWithUserId:(NSString *)userId isAttention:(BOOL)isAttention result:(LERequestStatusBlock)result{
+//    HitoWeakSelf;
+    NSString *api = @"attention";
+    if (!isAttention) {
+        api = @"unAttention";
+    }
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:api];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (userId.length > 0) [params setObject:userId forKey:@"userId"];
+    [self.netWorkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            result(NO);
+            return;
+        }
+        result(YES);
+        
+    } failure:^(id responseObject, NSError *error) {
+        result(NO);
     }];
 }
 

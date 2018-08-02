@@ -14,9 +14,20 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - Bugly (2.5.0)
   - CYLTableViewPlaceHolder (1.0.8)
+  - GrowingIO (2.3.3):
+    - GrowingIO/Core (= 2.3.3)
+  - GrowingIO/Core (2.3.3)
+  - HJTabViewController (1.0.6)
+  - HXPhotoPicker (2.1.9):
+    - SDWebImage (~> 4.4.1)
+  - INTUAnimationEngine (1.4.2):
+    - INTUAnimationEngine/SpringSolver (= 1.4.2)
+  - INTUAnimationEngine/SpringSolver (1.4.2)
   - JCore (1.2.0)
   - JKCountDownButton (1.2.0)
+  - JMRoundedCorner (1.2.1)
   - JPush (3.0.9):
     - JCore (~> 1.2.0)
   - JSONModel (1.7.0)
@@ -28,14 +39,14 @@ PODS:
     - UICountingLabel (~> 1.2.0)
   - SDCycleScrollView (1.75):
     - SDWebImage (>= 4.0.0)
-  - SDWebImage (4.3.3):
-    - SDWebImage/Core (= 4.3.3)
-  - SDWebImage/Core (4.3.3)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - SVProgressHUD (2.2.5)
   - UICountingLabel (1.2.0)
   - UMCAnalytics (5.5.0):
     - UMCCommon
-  - UMCCommon (1.5.1)
+  - UMCCommon (1.5.2)
   - UMCCommonLog (1.0.0)
   - UMCSecurityPlugins (1.0.6)
   - UMengUShare/Core (6.4.8.2):
@@ -63,8 +74,14 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.0)
+  - Bugly
   - CYLTableViewPlaceHolder (~> 1.0.8)
+  - GrowingIO (~> 2.3.2)
+  - HJTabViewController (~> 1.0)
+  - HXPhotoPicker (~> 2.1.9)
+  - INTUAnimationEngine
   - JKCountDownButton (~> 1.2.0)
+  - JMRoundedCorner
   - JPush
   - JSONModel (~> 1.7.0)
   - KMNavigationBarTransition (~> 1.1.5)
@@ -73,7 +90,7 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.15.3)
   - PNChart (~> 0.8.9)
   - SDCycleScrollView (~> 1.75)
-  - SDWebImage (~> 4.3.3)
+  - SDWebImage (~> 4.4.1)
   - SVProgressHUD (~> 2.2.5)
   - UMCAnalytics (~> 5.5.0)
   - UMCCommon
@@ -88,9 +105,15 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+    - Bugly
     - CYLTableViewPlaceHolder
+    - GrowingIO
+    - HJTabViewController
+    - HXPhotoPicker
+    - INTUAnimationEngine
     - JCore
     - JKCountDownButton
+    - JMRoundedCorner
     - JPush
     - JSONModel
     - KMNavigationBarTransition
@@ -112,9 +135,15 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CYLTableViewPlaceHolder: 44075c119aab78bbc514c75d771d6565e19938e8
+  GrowingIO: 0ac60d755bda18abd0d342986be884f43cd30ec7
+  HJTabViewController: 578a5bbab471587e7cc49a2f0f49fc8601c833bf
+  HXPhotoPicker: abe7b21f5439eea491ca5d21903b7dc384ae9f06
+  INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   JCore: b52e3dd73625eec70afd1244bb9c41038aa06087
   JKCountDownButton: cc72e24c8b73f232b15cc348277422b089d43bff
+  JMRoundedCorner: 214e56c2a7e3a0916e8d6040c66d85519cc1be87
   JPush: 48041e8c5ad2ef9b48709eb0888af9640b36e9b0
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
@@ -123,17 +152,17 @@ SPEC CHECKSUMS:
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
-  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
   UMCAnalytics: 4667788559a72f2fa5077117d1b8802a3b6eb6bb
-  UMCCommon: 16b674e9de0616d3a6128c551348a686d869c3c7
+  UMCCommon: 4392868ac47ff1b101663106bb114ba616fabbad
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMengUShare: 370d180101e13ee0227ae657ab119ba97243d2b3
   WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 16701d6393d558d41cd4bff6db6046dfdc1e748f
+PODFILE CHECKSUM: 5dfdd04e0ec68ec79654aaaecf0854767d61c37d
 
 COCOAPODS: 1.5.0

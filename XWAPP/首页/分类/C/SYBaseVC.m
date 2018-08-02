@@ -16,10 +16,15 @@
 #import "DetailController.h"
 #import "SYDetailController.h"
 #import "LENewsListModel.h"
+#import "LEWebViewController.h"
+#import <SafariServices/SafariServices.h>
 
 #define refresh_timeInterval  5*60
 
 @interface SYBaseVC ()
+<
+SFSafariViewControllerDelegate
+>
 {
     UIView *_cellMaskView;
     BOOL _shieldingCellMaskView;
@@ -105,8 +110,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseOneCell" bundle:nil] forCellReuseIdentifier:@"BaseOneCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseTwoCell" bundle:nil] forCellReuseIdentifier:@"BaseTwoCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"BaseThirdCell" bundle:nil] forCellReuseIdentifier:@"BaseThirdCell"];
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.tableFooterView = [UIView new];
 }
 
@@ -169,6 +174,7 @@
 }
 
 - (void)sortNewsListArray{
+    
     //置顶操作
     NSMutableArray *tmpArray = [NSMutableArray array];
     NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
@@ -176,7 +182,7 @@
         if (![categoryArray containsObject:model]) {
             [categoryArray addObject:model];
         }
-        if (model.is_top && !model.is_hot) {
+        if (model.isTop) {
             if (![tmpArray containsObject:model]) {
                 [tmpArray addObject:model];
             }
@@ -187,10 +193,39 @@
     [self.newsList addObjectsFromArray:categoryArray];
     
     //暂时先这样处理, 需要后台配合
-    if (tmpArray.count > 2) {
-        tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 2)];
+    if (tmpArray.count > 1) {
+        tmpArray = [tmpArray subarrayWithRange:NSMakeRange(0, 1)];
     }
     [self.newsList insertObjects:tmpArray atIndex:0];
+}
+
+- (void)insertADToNewsList:(NSArray *)array index:(NSInteger)index adModel:(LENewsListModel *)adModel animation:(BOOL)animation{
+    return;
+    if (array.count == 0) {
+        return;
+    }
+    
+    if (self.newsList.count >= index) {
+        LENewsListModel *indexModel = [self.newsList objectAtIndex:index];
+        if (indexModel.is_ad) {
+            return;
+        }
+        [self.newsList insertObject:adModel atIndex:index];
+        
+        if (animation) {
+            [CATransaction begin];
+            [self.tableView beginUpdates];
+            [CATransaction setCompletionBlock:^{
+                //动画结束 回调
+            }];
+            [self.tableView insertRow:index inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+            [CATransaction commit];
+        }else{
+            [self.tableView reloadData];
+        }
+    }
+    
 }
 
 #pragma mark -
@@ -204,7 +239,9 @@
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.downNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.downStartUpdatedTime]] forKey:@"start"];
     if (!self.downEndUpdatedTime) [NSDate date];
@@ -216,7 +253,7 @@
     BOOL needCache = NO;
     if (self.downNextCursor == 1 && self.downStartUpdatedTime) needCache = YES;
     
-    [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    [self.networkManager POST:requestUrl needCache:NO caCheKey:caCheKey parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         [WeakSelf removeCellMaskView];
         
@@ -226,11 +263,17 @@
             }
             return ;
         }
-        
+        if ([dataObject isEqual:[NSNull null]]) {
+            [WeakSelf.tableView.mj_header endRefreshing];
+            return;
+        }
         BOOL needRefresh = NO;
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.downNextCursor == 1) {
-            self->_newestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            self->_newestDatapages = [[dataObject objectForKey:@"pages"] intValue];
+            if (self->_newestDatapages == 0) {
+                self->_newestDatapages = 1;
+            }
             LELog(@"下拉刷新>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_newestDatapages);
 //            self->_newestDatapages = 2;
         }
@@ -257,6 +300,9 @@
             
             if (needRefresh) {
                 WeakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval sinceDate:[NSDate date]];
+                //test
+                WeakSelf.downStartUpdatedTime = [NSDate dateWithTimeInterval:-refresh_timeInterval*60 sinceDate:[NSDate date]];
+                
                 [WeakSelf getNewsRequest:1];
             }
             
@@ -281,6 +327,17 @@
         
         [WeakSelf.tableView reloadData];
         
+        //添加广告
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LENewsListModel *adModel = [[LENewsListModel alloc] init];
+            adModel.is_ad = YES;
+            adModel.title = @"慧一舍棋牌游戏先行者";
+            adModel.cover = [NSArray arrayWithObjects:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530704113914&di=dbc4e909286b3b4c758392a37db370b5&imgtype=0&src=http%3A%2F%2Fwww.zshouyou.com%2Fud%2Fallimg%2F171026%2F16320T126-0.png", nil];
+            adModel.adUrl = @"http://www.huiyishe.cn";
+            adModel.adType = 0;
+            [WeakSelf insertADToNewsList:array index:1 adModel:adModel animation:YES];
+        });
+        
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf removeCellMaskView];
         [WeakSelf.tableView.mj_header endRefreshing];
@@ -296,7 +353,9 @@
     [params setObject:self.channelId forKey:@"cid"];
     [params setObject:[NSNumber numberWithInteger:self.upNextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) userId = @"0";
+    [params setObject:userId forKey:@"userId"];
     
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upStartUpdatedTime]] forKey:@"start"];
     [params setObject:[NSNumber numberWithLongLong:[WYCommonUtils getDateTimeTOMilliSeconds:self.upEndUpdatedTime]] forKey:@"end"];
@@ -311,10 +370,15 @@
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"data"]];
+        if ([dataObject isEqual:[NSNull null]]) {
+            return;
+        }
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:[dataObject objectForKey:@"records"]];
         if (WeakSelf.upNextCursor == 1) {
-            self->_upNewestDatapages = [[dataObject objectForKey:@"page"] intValue];
+            self->_upNewestDatapages = [[dataObject objectForKey:@"pages"] intValue];
+            if (self->_upNewestDatapages == 0) {
+                self->_upNewestDatapages = 1;
+            }
             LELog(@"上拉加载>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>获取数据的page数%d",self->_upNewestDatapages);
         }
         
@@ -335,6 +399,18 @@
         [WeakSelf sortNewsListArray];
         
         [WeakSelf.tableView reloadData];
+        
+        //添加广告
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LENewsListModel *adModel = [[LENewsListModel alloc] init];
+            adModel.is_ad = YES;
+            adModel.title = @"足球宝贝";
+            adModel.cover = [NSArray arrayWithObjects:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530707693966&di=abc86e4d7da0465e0b99c027f75800b0&imgtype=0&src=http%3A%2F%2Fimg2.ph.126.net%2FI8P3Eq4u62gn_jX9DOMNJw%3D%3D%2F1554304821414308681.jpg", nil];
+            adModel.adType = 1;
+            NSInteger index = WeakSelf.newsList.count - array.count;
+            
+            [WeakSelf insertADToNewsList:array index:index adModel:adModel animation:YES];
+        });
         
     } failure:^(id responseObject, NSError *error) {
         [WeakSelf removeCellMaskView];
@@ -397,6 +473,22 @@
     return self.newsList.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    LENewsListModel *newsModel = nil;
+    if (indexPath.row < self.newsList.count) {
+        newsModel = [self.newsList objectAtIndex:indexPath.row];
+    }
+    NSUInteger count = newsModel.cover.count;
+    NSString *coverStr = [[newsModel.cover firstObject] description];
+    if (count == 1 && coverStr.length > 0) {
+        return 120;
+    } else if (count == 3) {
+        return 195;
+    } else {
+        return 113;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -407,7 +499,7 @@
     NSUInteger count = newsModel.cover.count;
     NSString *coverStr = [[newsModel.cover firstObject] description];
     MJWeakSelf;
-    if (count == 1 && newsModel.type != 1 && coverStr.length > 0) {
+    if (count == 1 && coverStr.length > 0) {
         BaseOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BaseOneCell"];
         
         [cell.statusView deleblockAction:^{
@@ -442,9 +534,56 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     LENewsListModel *newsModel = [self.newsList objectAtIndex:indexPath.row];
+    
+    if (newsModel.is_ad) {
+        [self adJumphandle:newsModel];
+        return;
+    }
+    
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = newsModel.newsId;
+    detail.isVideo = (newsModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
+}
+
+#pragma mark -
+#pragma mark - 广告跳转
+- (void)adJumphandle:(LENewsListModel *)model{
+    
+    switch (model.adType) {
+        case 1:
+            [self jumpSafariViewController:model];
+            break;
+            
+        default:{
+            NSString *webUrl = model.adUrl;
+            LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:webUrl];
+            webVc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:webVc animated:YES];
+        }
+            break;
+    }
+}
+
+- (void)jumpSafariViewController:(LENewsListModel *)model{
+    //Safari百度搜索
+    NSString *webUrl = model.adUrl;
+    webUrl = [NSString stringWithFormat:@"https://www.baidu.com/s?wd=%@",model.title];
+    NSString *encodedUrl = [webUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if (@available(iOS 9.0, *)) {
+        SFSafariViewController *svc =[[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:encodedUrl]];
+        svc.delegate = self;
+        [self.navigationController presentViewController:svc animated:true completion:nil];
+    } else {
+        // Fallback on earlier versions
+        LEWebViewController *webVc = [[LEWebViewController alloc] initWithURLString:encodedUrl];
+        webVc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:webVc animated:YES];
+    }
+}
+#pragma mark - SFSafariViewControllerDelegate
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller API_AVAILABLE(ios(9.0)){
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - 删除按钮

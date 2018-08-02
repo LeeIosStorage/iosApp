@@ -167,7 +167,7 @@ CommontHeaderViewDelegate
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LEReplyCommentModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LEReplyCommentModel class] json:[dataObject objectForKey:@"records"]];
         
         //重新计算评论array
         NSMutableArray *children = [NSMutableArray array];

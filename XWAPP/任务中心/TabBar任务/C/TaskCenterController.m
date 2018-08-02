@@ -18,6 +18,10 @@
 #import "WYShareManager.h"
 #import <SDWebImageManager.h>
 #import "LELoginAuthManager.h"
+#import "LESettingTableCell.h"
+#import "SearchController.h"
+#import "HoitPointController.h"
+#import "LESignInRulesView.h"
 
 #define BoxTimeInterval  4*60*60
 
@@ -28,6 +32,8 @@ WXShaerStateDelegate
 >
 {
     BOOL _isGetLastOperateTime;
+    
+    BOOL _isInReviewVersion;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
@@ -39,6 +45,10 @@ WXShaerStateDelegate
 
 @property (strong, nonatomic) NSDate *lastOperateTime;
 @property (assign, nonatomic) int secondsCountDown;
+
+//发现
+@property (strong, nonatomic) NSMutableArray *discoverArray;
+//@property (strong, nonatomic) UITableView *discoverTableView;
 
 @end
 
@@ -66,6 +76,8 @@ WXShaerStateDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _isInReviewVersion = [LELoginAuthManager sharedInstance].isInReviewVersion;
     [self setNaStyle];
     [self setUpNormalView];
     
@@ -82,8 +94,29 @@ WXShaerStateDelegate
     }
 }
 
+#pragma mark -
+#pragma mark - 发现
+- (void)discoverSetupSubView{
+    self.title = @"发现";
+    self.discoverArray = [NSMutableArray array];
+    [self.discoverArray addObject:@"24小时热文"];
+    [self.discoverArray addObject:@"猜你喜欢"];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, 20)];
+    view.backgroundColor = [UIColor clearColor];
+    self.tableView.tableHeaderView = view;
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark - setNormalView
 - (void)setUpNormalView {
+    
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        //审核时
+        [self discoverSetupSubView];
+        return;
+    }
     
     self.title = @"任务中心";
     self.daySuper.backgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
@@ -478,10 +511,18 @@ WXShaerStateDelegate
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (_isInReviewVersion) {
+        return 1;
+    }
     return self.taskLists.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if (_isInReviewVersion) {
+        return self.discoverArray.count;
+    }
+    
     NSDictionary *dic = self.taskLists[section];
     NSArray *array = dic[@"data"];
     return array.count;
@@ -489,6 +530,18 @@ WXShaerStateDelegate
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (_isInReviewVersion) {
+        static NSString *cellIdentifier = @"LESettingTableCell";
+        LESettingTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (!cell) {
+            cell = [[LESettingTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        
+        NSString *info = self.discoverArray[indexPath.row];
+        cell.titleLabel.text = info;
+        return cell;
+    }
     
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaskCell" forIndexPath:indexPath];
     NSDictionary *sectionDic = [self.taskLists objectAtIndex:indexPath.section];
@@ -511,6 +564,9 @@ WXShaerStateDelegate
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (_isInReviewVersion) {
+        return nil;
+    }
     TaskCellHeader *header = [[[NSBundle mainBundle] loadNibNamed:@"TaskCellHeader" owner:self options:nil] firstObject];
 
     NSDictionary *sectionDic = [self.taskLists objectAtIndex:section];
@@ -521,6 +577,19 @@ WXShaerStateDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (_isInReviewVersion) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        NSString *info = self.discoverArray[indexPath.row];
+        if ([info isEqualToString:@"24小时热文"]) {
+            HoitPointController *hoitPoint = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"HoitPointController"];
+            [self.navigationController pushViewController:hoitPoint animated:YES];
+        }else if ([info isEqualToString:@"猜你喜欢"]){
+            SearchController *search = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SearchController"];
+            [self.navigationController pushViewController:search animated:YES];
+        }
+        return;
+    }
     NSDictionary *sectionDic = [self.taskLists objectAtIndex:indexPath.section];
     NSArray *sectionArray = sectionDic[@"data"];
     LETaskListModel *taskModel = [sectionArray objectAtIndex:indexPath.row];
@@ -598,10 +667,16 @@ WXShaerStateDelegate
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (_isInReviewVersion) {
+        return 0;
+    }
     return 43;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_isInReviewVersion) {
+        return 44;
+    }
     return 44;
 }
 
@@ -617,6 +692,11 @@ WXShaerStateDelegate
     if (self.secondsCountDown <= 0 && _isGetLastOperateTime) {
         [self openBoxRequest];
     }
+}
+
+- (IBAction)qiandaoRulesAction:(id)sender{
+    LESignInRulesView *ruleView = [[LESignInRulesView alloc] init];
+    [ruleView show];
 }
 
 #pragma mark -

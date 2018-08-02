@@ -19,6 +19,9 @@
 @property (strong, nonatomic) NSString *birthdayDate;
 @property (strong, nonatomic) NSString *age;
 @property (strong, nonatomic) NSString *regTime;
+@property (strong, nonatomic) NSString *introduction;
+@property (assign, nonatomic) int announcementNum;
+@property (assign, nonatomic) int noticeNum;
 
 @property (strong, nonatomic) NSString *occupation;
 @property (strong, nonatomic) NSString *education;

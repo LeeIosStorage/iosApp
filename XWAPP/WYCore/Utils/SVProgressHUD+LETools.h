@@ -23,6 +23,13 @@
 + (void)showCustomWithStatus:(NSString *)status;
 
 /**
+ *  进度条
+ *
+ *  @param status 提示语
+ */
++ (void)showCustomProgress:(float)progress status:(NSString*)status;
+
+/**
  *  成功提示
  *
  *  @param status 提示语

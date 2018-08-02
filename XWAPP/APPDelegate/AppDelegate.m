@@ -19,6 +19,8 @@
 #import "DetailController.h"
 #import <UserNotifications/UserNotifications.h>
 #import "LELoginAuthManager.h"
+#import <Bugly/Bugly.h>
+#import "Growing.h"
 
 @interface AppDelegate ()
 <
@@ -34,19 +36,23 @@ JPUSHRegisterDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
-        
-    }];
+//    [[LELoginAuthManager sharedInstance] getGlobalTaskConfigRequestSuccess:^(BOOL success) {
+//
+//    }];
     
     [[LELoginAuthManager sharedInstance] checkUpdateWithAppID:@""];
     
     [SVProgressHUD setCurrentDefaultStyle];
-    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;//defaultNetworkHost defaultNetworkHostTest
+//    defaultNetworkPreRelease = @"api.hangzhouhaniu.com";
+    [WYAPIGenerate sharedInstance].netWorkHost = defaultNetworkHost;
     
     _launchOptions = [NSDictionary dictionaryWithDictionary:launchOptions];
     
     // 三方SDK注册
     [self configUSharePlatforms];
+    
+    //检测网络
+    [self monitorNetworking];
     
     
     [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"btn_back_nor"]];
@@ -73,6 +79,16 @@ JPUSHRegisterDelegate
 
 - (void)configUSharePlatforms
 {
+    // 腾讯Bugly
+    [Bugly startWithAppId:kBuglyAppID];
+    
+    // GrowingIO统计平台 详情：https://www.growingio.com
+    [Growing startWithAccountId:kGrowingIOAppID];
+    // 开启Growing调试日志 可以开启日志
+#ifdef DEBUG
+    [Growing setEnableLog:NO];
+#endif
+    
     //友盟统计
 //    [UMCommonLogManager setUpUMCommonLogManager];
 //    [UMConfigure setLogEnabled:YES];
@@ -90,6 +106,11 @@ JPUSHRegisterDelegate
 - (BOOL)handleOpenURL:(NSURL *)url {
     LELog(@"query=%@,scheme=%@,host=%@", url.query, url.scheme, url.host);
     NSString *scheme = [url scheme];
+    
+    if ([Growing handleUrl:url]) // 请务必确保该函数被调用
+    {
+        return YES;
+    }
     
     //三方登录
     BOOL isUMSocial = ([[url absoluteString] hasPrefix:[NSString stringWithFormat:@"tencent%@://qzapp",QQ_ID]] || [[url absoluteString] hasPrefix:[NSString stringWithFormat:@"%@://oauth",WX_ID]]);
@@ -215,6 +236,10 @@ JPUSHRegisterDelegate
     }
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark -
 #pragma mark - JPUSH
 - (void)registerAPService{
@@ -317,6 +342,40 @@ JPUSHRegisterDelegate
         // 本地通知
     }
     completionHandler();
+}
+
+#pragma mark -
+#pragma mark - ------------- 监测网络状态 -------------
+- (void)monitorNetworking
+{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                LELog(@"未知网络");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                LELog(@"网络不可用");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMonitorNetworkingNotificationKey object:@"1" userInfo:nil];
+            }
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMonitorNetworkingNotificationKey object:@"2" userInfo:nil];
+            }
+                break;
+            default:
+                break;
+        }
+//        if (status == AFNetworkReachabilityStatusReachableViaWWAN || status == AFNetworkReachabilityStatusReachableViaWiFi) {
+//            NSLog(@"有网");
+//        }else{
+//            NSLog(@"没网");
+//        }
+    }];
 }
 
 @end

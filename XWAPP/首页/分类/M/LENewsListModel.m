@@ -11,11 +11,20 @@
 @implementation LENewsListModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"newsId"  : @"id",
+    return @{@"souce"  : @"source",
              @"favoriteId"  : @"fid",
-             @"public_time" : @"publish_time",
-             @"commentCount" : @"comments_count"
+             @"public_time" : @"createTime",
+             @"commentCount" : @"commentsCount"
              };
+}
+
+- (NSArray *)cover{
+    NSString *urlStr = [_imgUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+    return [urlStr componentsSeparatedByString:@","];
+}
+
+- (NSString *)userHeadImg{
+    return [_userHeadImg stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
 }
 
 @end

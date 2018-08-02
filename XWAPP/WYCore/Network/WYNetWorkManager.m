@@ -314,11 +314,12 @@
 - (void)POST:(NSString *)URLString
 formFileName:(NSString *)formFileName
     fileName:(NSString *)fileName
-    fileData:(NSData *)fileData
+    fileData:(NSArray *)fileData
     mimeType:(NSString *)mimeType
   parameters:(id )parameters
 responseClass:(Class )classType
      success:(WYRequestSuccessBlock)success
+    progress:(WYRequestProgressBlock)progress
      failure:(WYRequestFailureBlock)failure{
     
     if (!fileData) {
@@ -326,34 +327,53 @@ responseClass:(Class )classType
     }
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    AFHTTPResponseSerializer
+    AFJSONResponseSerializer *jsonReponseSerializer = [AFJSONResponseSerializer serializer];
+    jsonReponseSerializer.acceptableContentTypes = nil;
+    manager.responseSerializer = jsonReponseSerializer;
     
     NSString *requestURLString = [self urlStringAddCommonParamForSourceURLString:URLString outUserId:NO outToken:NO];
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:requestURLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:fileData name:formFileName fileName:fileName mimeType:mimeType];
+        for (NSData *data in fileData) {
+            [formData appendPartWithFileData:data name:formFileName fileName:fileName mimeType:mimeType];
+        }
     } error:nil];
     //将Token封装入请求头
     if ([LELoginUserManager authToken]) {
         //        manager.requestSerializer = [AFJSONRequestSerializer serializer];
         NSString *authorization = [NSString stringWithFormat:@"Bearer %@",[LELoginUserManager authToken]];
         [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+//        [request setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     }
     
-    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        progress(uploadProgress);
+        
+    } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         NSString *message = nil;
-        NSError *parserError = nil;
+//        NSError *parserError = nil;
         NSInteger status = WYRequestTypeFailed;
-        NSDictionary *jsonValue = [NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:&parserError];
+//        NSDictionary *jsonValue = [NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:&parserError];
+        LELog(@"\nPOST url = %@\n responseObject=%@",response.URL,responseObject);
         id responseDataObject = nil;
-        if (jsonValue) {
-            message = [jsonValue objectForKey:kResponseObjectKeyResult];
-            NSNumber* statusCode = [jsonValue objectForKey:kResponseObjectKeyCode];
+        if (responseObject) {
+            message = [responseObject objectForKey:kResponseObjectKeyResult];
+            NSNumber* statusCode = [responseObject objectForKey:kResponseObjectKeyCode];
             if (statusCode) {
                 status = statusCode.integerValue;
             }
-            responseDataObject = jsonValue[kResponseObjectKeyObject];
+            
+            if (!message && status != WYRequestTypeSuccess) {
+                message = responseObject[kResponseObjectKeyObject];
+                if (message.length > 0) {
+                    [WYNetWorkExceptionHandling showProgressHUDWith:message URLString:URLString];
+                }
+            }
+            
+            responseDataObject = responseObject[kResponseObjectKeyObject];
             //此处有两种情况发生，正常的是json，非正常是一个常规string
             if ([responseDataObject isKindOfClass:[NSString class]]) {
 //                NSData *data = [responseDataObject dataUsingEncoding:NSUTF8StringEncoding];
@@ -435,44 +455,46 @@ responseClass:(Class )classType
 
 #pragma mark - App Store 版本号
 - (void)checkUpdateWithAppID:(NSString *)appID success:(void (^)(NSDictionary *resultDic , BOOL isNewVersion ,NSString * newVersion , NSString * currentVersion))success failure:(void (^)(NSError *error))failure{
+
+    success(nil,YES, nil,nil);
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer=[AFHTTPRequestSerializer serializer];
-    manager.responseSerializer=[AFHTTPResponseSerializer serializer];
-    
-    //1404835477 乐资讯
-    NSString *encodingUrl = [[@"http://itunes.apple.com/cn/lookup?id=" stringByAppendingString:@"1404835477"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//1113268900
-    
-    [manager GET:encodingUrl parameters:nil progress:^(NSProgress *_Nonnull downloadProgress) {
-        
-    } success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-        
-        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        //获取AppStore的版本号
-        NSString *versionStr = @"0.0.0";
-        NSArray *results = [resultDic objectForKey:@"results"];
-        if (results.count > 0) {
-            versionStr = [[results objectAtIndex:0] valueForKey:@"version"];
-        }
-        
-        NSString *versionStr_int = [versionStr stringByReplacingOccurrencesOfString:@"."withString:@""];
-        int version = [versionStr_int intValue];
-        //获取本地的版本号
-        NSDictionary *infoDic=[[NSBundle mainBundle] infoDictionary];
-        NSString * currentVersion = [infoDic valueForKey:@"CFBundleShortVersionString"];
-        
-        NSString *currentVersion_int=[currentVersion stringByReplacingOccurrencesOfString:@"."withString:@""];
-        int current = [currentVersion_int intValue];
-        
-        if(current > version){
-            success(resultDic,YES, versionStr,currentVersion);
-        }else{
-            success(resultDic,NO ,versionStr,currentVersion);
-        }
-    } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-        failure(error);
-    }];
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.requestSerializer=[AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer=[AFHTTPResponseSerializer serializer];
+//
+//    //1404835477 乐资讯
+//    NSString *encodingUrl = [[@"http://itunes.apple.com/cn/lookup?id=" stringByAppendingString:Itunes_APPID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//1113268900
+//
+//    [manager GET:encodingUrl parameters:nil progress:^(NSProgress *_Nonnull downloadProgress) {
+//
+//    } success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+//
+//        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//
+//        //获取AppStore的版本号
+//        NSString *versionStr = @"0.0.0";
+//        NSArray *results = [resultDic objectForKey:@"results"];
+//        if (results.count > 0) {
+//            versionStr = [[results objectAtIndex:0] valueForKey:@"version"];
+//        }
+//
+//        NSString *versionStr_int = [versionStr stringByReplacingOccurrencesOfString:@"."withString:@""];
+//        int version = [versionStr_int intValue];
+//        //获取本地的版本号
+//        NSDictionary *infoDic=[[NSBundle mainBundle] infoDictionary];
+//        NSString * currentVersion = [infoDic valueForKey:@"CFBundleShortVersionString"];
+//
+//        NSString *currentVersion_int=[currentVersion stringByReplacingOccurrencesOfString:@"."withString:@""];
+//        int current = [currentVersion_int intValue];
+//
+//        if(current > version){
+//            success(resultDic,YES, versionStr,currentVersion);
+//        }else{
+//            success(resultDic,NO ,versionStr,currentVersion);
+//        }
+//    } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+//        failure(error);
+//    }];
 }
 
 @end

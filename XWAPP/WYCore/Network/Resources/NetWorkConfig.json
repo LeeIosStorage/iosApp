@@ -11,6 +11,12 @@
         "control" : "news",
         "action"  : "GetNews"
     },
+    "getVideoNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetVideoNews"
+    },
     "GetDetail": {
         "protocol": "http",
         "module" : "api",
@@ -40,6 +46,18 @@
         "module" : "api",
         "control" : "news",
         "action"  : "GetHotNews"
+    },
+    "NewsReport": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "NewsReport"
+    },
+    "CommentReport": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "comment",
+        "action"  : "CommentReport"
     },
     "GetComment": {
         "protocol": "http",
@@ -143,6 +161,18 @@
         "control" : "file",
         "action"  : "UploadUserHeadImg"
     },
+    "uploadVideo": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "UploadVideo"
+    },
+    "uploadNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "file",
+        "action"  : "UploadNews"
+    },
     "GetUserTask": {
         "protocol": "http",
         "module" : "api",
@@ -238,5 +268,41 @@
         "module" : "api",
         "control" : "cash",
         "action"  : "ApplyCash"
+    },
+    "getNotice": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "notice",
+        "action"  : "GetNotice"
+    },
+    "emptyNotice": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "notice",
+        "action"  : "Empty"
+    },
+    "userHome": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UserHome"
+    },
+    "attention": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "Attention"
+    },
+    "unAttention": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "user",
+        "action"  : "UnAttention"
+    },
+    "GetUserHomeNews": {
+        "protocol": "http",
+        "module" : "api",
+        "control" : "news",
+        "action"  : "GetUserHomeNews"
     },
 }

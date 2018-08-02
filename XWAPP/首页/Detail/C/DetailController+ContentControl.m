@@ -25,6 +25,11 @@
     
     __block NSMutableAttributedString *contentAttributed = [[NSMutableAttributedString alloc] init];
     
+    if (htmlString.length == 0) {
+        successBlock(contentAttributed);
+        return;
+    }
+    
     self.imageItemsArray = [NSMutableArray arrayWithCapacity:0];
     NSMutableArray *tmpImageArray = [NSMutableArray array];
     
@@ -35,7 +40,6 @@
     NSArray *elements = [xpathParser searchWithXPathQuery:@"//p | //img"];
     
     
-//    __block int testImageCount = 0;
     HitoWeakSelf;
     [elements enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[TFHppleElement class]]) {
@@ -63,10 +67,10 @@
                         if ([[childrenElement content] isEqualToString:@"\n"]) {
                             continue;
                         }
-                        //兼容标签重复解析的错误
-                        if ([WeakSelf.beforeContent isEqualToString:[childrenElement content]]) {
-                            continue;
-                        }
+//                        //兼容标签重复解析的错误  解开注释会导致缓存时文字显示网咯文字不显示问题
+//                        if ([WeakSelf.beforeContent isEqualToString:[childrenElement content]]) {
+//                            continue;
+//                        }
                         
                         childAttributed = [WeakSelf mosaicContentWithContent:[childrenElement content]];
                         WeakSelf.beforeContent = [childrenElement content];
@@ -78,10 +82,6 @@
                 }
                 //图片解析
                 if ([childrenElement.tagName isEqualToString:TagImage_Key]) {
-                    
-//                    testImageCount ++;
-//                    NSString *altString = [childrenElement objectForKey:Alt_key];
-//                    NSString *dataSize = [childrenElement objectForKey:DataSize_key];
                     
                     LENewsContentModel *contentModel = [[LENewsContentModel alloc] init];
                     LEElementStyleBox *box = [LEElementStyleBox createBox];
@@ -115,7 +115,6 @@
             }
             
             if ([elements lastObject] == obj) {
-//                LELog(@"此篇新闻图片数量-------------------------(%d)",testImageCount);
                 successBlock(contentAttributed);
                 *stop = YES;
             }
@@ -203,7 +202,7 @@
     CGFloat contentHeight = textLayout.textBoundingSize.height;
     self.newsDetailModel.textLayout = textLayout;
     if (contentHeight < 50.f) {
-        contentHeight = 50.f;
+        contentHeight = 10.f;
         return contentHeight;
     }else{
         return contentHeight + 20.f;

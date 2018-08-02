@@ -12,6 +12,8 @@
 
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"messageId"  : @"id",
+             @"des" : @"content",
+//             @"messageType" : @"type",
              };
 }
 

@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    LENewsListCellTypeNormal   = 0,        // 默认的样式(首页)
+    LENewsListCellTypePersonal = 1,        // 个人主页样式
+} LENewsListCellType;
+
 @interface WYCommonUtils : NSObject
 
 /*! @brief 单纯获取text的Width (Height固定的)
@@ -71,8 +76,13 @@
 #pragma mark - Other
 //加载图片 默认背景颜色
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage;
+//圆角图片
++ (void)setImageWithURL:(NSURL *)url setImageView:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage radius:(CGFloat)radius;
+
 //url的Param
 +(NSDictionary *)getParamDictFromUrl:(NSURL *)url;
+
++(NSString *)numberFormatWithNum:(int)num;
 
 #pragma mark -
 #pragma mark - 动画
@@ -80,6 +90,8 @@
 + (void)popOutsideWithDuration:(NSTimeInterval)duration view:(UIView *)view;
 //👎
 + (void)popInsideWithDuration:(NSTimeInterval)duration view:(UIView *)view;
+//添加阴影 mode=1从下往上渐变
++ (void)addShadowWithView:(UIView *)view mode:(NSInteger)mode size:(CGSize)size;
 
 #pragma mark - string 比较
 + (BOOL)isEqualWithUserId:(NSString *)uid;

@@ -65,18 +65,19 @@
 
 /**
  *  上传文件的POST请求
- *  @param formFileName   for examples:@"pic"
- *  @param fileName       for examples:@"pic"
- *  @param mimeType       for examples:@"image/png"
+ *  @param formFileName   for examples:@"file" 服务器参数名称
+ *  @param fileName       for examples:@"img.jpg" 文件名称 图片:xxx.jpg,xxx.png 视频:video.mov
+ *  @param mimeType       for examples:@"image/png" 文件类型 图片:image/jpg,image/png 视频:video/quicktime
  */
 - (void)POST:(NSString *)URLString
 formFileName:(NSString *)formFileName
     fileName:(NSString *)fileName
-    fileData:(NSData *)fileData
+    fileData:(NSArray *)fileData
     mimeType:(NSString *)mimeType
   parameters:(id )parameters
 responseClass:(Class )classType
      success:(WYRequestSuccessBlock)success
+    progress:(WYRequestProgressBlock)progress
      failure:(WYRequestFailureBlock)failure;
 
 #pragma mark - App Store 版本号

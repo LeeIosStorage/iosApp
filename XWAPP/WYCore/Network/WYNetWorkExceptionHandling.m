@@ -21,6 +21,9 @@
             case WYRequestTypeUnauthorized:
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
             break;
+            case WYRequestTypeUnauthorized2:
+            [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
+            break;
             case WYRequestTypeNotLogin:
             [WYNetWorkExceptionHandling reLogin:URLString requestType:type];
             break;
@@ -54,7 +57,7 @@
     }
     
     if (isNeedGotoLogin) {
-        if (type == WYRequestTypeUnauthorized) {
+        if (type == WYRequestTypeUnauthorized || type == WYRequestTypeUnauthorized2) {
             [SVProgressHUD showCustomErrorWithStatus:@"登录失效,请重新登录."];
             [WYNetWorkExceptionHandling delayLogin];
         }else if (type == WYRequestTypeNotLogin){

@@ -11,12 +11,12 @@
 @implementation LEReplyCommentModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"commentId"  : @"id",
-             @"date"  : @"public_time",
-             @"favourNum" : @"like_count",
-             @"userName"  : @"nickname",
-             @"avatarUrl" : @"head_img_url",
-             @"userId"    : @"uid",
+    return @{@"commentId"  : @"commentId",
+             @"date"  : @"createTime",
+             @"favourNum" : @"likeCount",
+             @"userName"  : @"nickName",
+             @"avatarUrl" : @"userHeadImg",
+             @"userId"    : @"userId",
              };
 }
 
@@ -26,21 +26,25 @@
              };
 }
 
+- (NSString *)avatarUrl{
+    return [_avatarUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+}
+
 @end
 
 @implementation LENewsCommentModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"commentId"  : @"id",
-             @"date"  : @"public_time",
-             @"favourNum" : @"like_count",
-             @"userName"  : @"nickname",
-             @"avatarUrl" : @"head_img_url",
-             @"userId"    : @"uid",
+    return @{@"commentId"  : @"commentId",
+             @"date"  : @"createTime",
+             @"favourNum" : @"likeCount",
+             @"userName"  : @"nickName",
+             @"avatarUrl" : @"userHeadImg",
+             @"userId"    : @"userId",
              @"comments"  : @"children",
-             @"newsId"  : @"news_id",
-             @"newsUrl"  : @"news_img",
-             @"newsTitle"  : @"news_title",
+             @"newsId"  : @"newsId",
+             @"newsUrl"  : @"imgUrl",
+             @"newsTitle"  : @"title",
              @"favour" : @"islike",
              };
 }
@@ -49,6 +53,15 @@
     return @{
              @"comments"   : [LEReplyCommentModel class],
              };
+}
+
+- (NSString *)avatarUrl{
+    return [_avatarUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+}
+
+- (NSArray *)cover{
+    NSString *urlStr = [_newsUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+    return [urlStr componentsSeparatedByString:@","];
 }
 
 @end

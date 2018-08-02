@@ -12,6 +12,7 @@
 #import <objc/message.h>
 #import "WYShareManager.h"
 #import "SDImageCache.h"
+#import "WYNetWorkManager.h"
 
 @interface LEShareSheetView ()
 <
@@ -19,6 +20,9 @@ LEShareWindowDelegate
 >
 {
 }
+
+@property (strong, nonatomic) WYNetWorkManager *networkManager;
+
 @property (strong, nonatomic) LEShareWindow *shareSheet;
 
 @property (nonatomic, strong) NSString *shareTitle;
@@ -52,10 +56,11 @@ LEShareWindowDelegate
 #pragma mark - Public
 - (void)showShareAction{
     
+    [self shareContent];
+    
     self.shareSheet.delegate = self;
     [self.shareSheet setCustomerSheet];
     
-    [self shareContent];
 }
 
 - (void)shareContent{
@@ -107,6 +112,48 @@ LEShareWindowDelegate
     } title:self.shareTitle description:self.shareDescription webpageUrl:self.shareWebpageUrl image:self.shareImage VC:_owner isVideo:_isVideo];
 }
 
+- (void)copylink{
+    if (self.shareWebpageUrl.length == 0) {
+        return;
+    }
+    UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+    copyBoard.string = self.shareWebpageUrl;
+    [copyBoard setPersistent:YES];
+    [SVProgressHUD showCustomSuccessWithStatus:@"复制成功"];
+}
+
+- (void)collectAction{
+    if (self.owner && [self.owner respondsToSelector:@selector(shareSheetCollectAction)]) {
+        [self.owner shareSheetCollectAction];
+    }
+}
+
+- (void)reportAction{
+    
+    [SVProgressHUD showCustomWithStatus:nil];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"NewsReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (_newsModel.newsId) [params setObject:_newsModel.newsId forKey:@"reportId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) {
+        userId = @"";
+    }
+    [params setObject:userId forKey:@"userId"];
+    [params setObject:@"" forKey:@"content"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
+        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+}
+
 #pragma mark -
 #pragma mark - Set And Getters
 - (LEShareWindow *)shareSheet{
@@ -115,6 +162,13 @@ LEShareWindowDelegate
         _shareSheet.delegate = self;
     }
     return _shareSheet;
+}
+
+- (WYNetWorkManager *)networkManager{
+    if (!_networkManager) {
+        _networkManager = [[WYNetWorkManager alloc] init];
+    }
+    return _networkManager;
 }
 
 #pragma mark -

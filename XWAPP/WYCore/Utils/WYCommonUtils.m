@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+LEAdd.h"
 #import <AdSupport/AdSupport.h>
+#import <JMRoundedCorner/UIView+RoundedCorner.h>
 
 #define DAY_SECOND 60*60*24
 
@@ -269,6 +270,8 @@ static bool dateFormatterOFUSInvalid;
 #pragma mark -
 #pragma mark - Other
 + (void)setImageWithURL:(NSURL *)url setImage:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage{
+    imageView.backgroundColor = kAppLoadingPlaceholderImageColor;
+    
     if (![url isEqual:[NSNull null]]) {
         
         __block BOOL isBig = NO;
@@ -314,6 +317,25 @@ static bool dateFormatterOFUSInvalid;
     }
 }
 
++ (void)setImageWithURL:(NSURL *)url setImageView:(UIImageView *)imageView setbitmapImage:(UIImage *)bitmapImage radius:(CGFloat)radius{
+    
+    if (bitmapImage) {
+        bitmapImage = [bitmapImage jm_imageWithRoundedCornersAndSize:CGSizeMake(radius*2, radius*2) andCornerRadius:radius];;
+    }
+    if (!url || [url isEqual:[NSNull null]]) {
+        [imageView setImage:bitmapImage];
+    }
+    
+    __weak UIImageView *weakImageView = imageView;
+    [imageView setImageWithURL:url placeholder:bitmapImage options:YYWebImageOptionSetImageWithFadeAnimation completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        if (image) {
+            [weakImageView jm_setCornerRadius:25 withImage:image];
+        }else{
+            [weakImageView setImage:bitmapImage];
+        }
+    }];
+}
+
 +(NSDictionary *)getParamDictFromUrl:(NSURL *)url{
     
     NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
@@ -328,6 +350,17 @@ static bool dateFormatterOFUSInvalid;
         [queryParams setObject:queryItem.value forKey:queryItem.name];
     }
     return queryParams;
+}
+
++(NSString *)numberFormatWithNum:(int)num{
+    NSString *numStr = [NSString stringWithFormat:@"%d",num];
+    if (num > 0) {
+        if (num >= 10000) {
+            float f = num/10000.0;
+            numStr = [NSString stringWithFormat:@"%.1f万",f];
+        }
+    }
+    return numStr;
 }
 
 #pragma mark -
@@ -360,6 +393,27 @@ static bool dateFormatterOFUSInvalid;
             view.transform = CGAffineTransformMakeScale(1.0f, 1.0f); //恢复原样
         }];
     } completion:nil];
+}
+
++ (void)addShadowWithView:(UIView *)view mode:(NSInteger)mode size:(CGSize)size{
+    
+    UIColor *colorOne = [UIColor colorWithRed:(0/255.0)  green:(0/255.0)  blue:(0/255.0)  alpha:0.7];
+    UIColor *colorTwo = [UIColor colorWithRed:(0/255.0)  green:(0/255.0)  blue:(0/255.0)  alpha:0.0];
+    NSArray *colors = [NSArray arrayWithObjects:(id)colorOne.CGColor, colorTwo.CGColor, nil];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    //设置开始和结束位置(设置渐变的方向)
+    if (mode == 0) {
+        gradient.startPoint = CGPointMake(0, 0);
+        gradient.endPoint = CGPointMake(0, 1);
+    }else if (mode == 1){
+        gradient.startPoint = CGPointMake(0, 1);
+        gradient.endPoint = CGPointMake(0, 0);
+//        colors = [NSArray arrayWithObjects:(id)colorTwo.CGColor, colorOne.CGColor, nil];
+    }
+    gradient.colors = colors;
+    gradient.frame = CGRectMake(0, 0, size.width, size.height);
+    [view.layer insertSublayer:gradient atIndex:0];
 }
 
 #pragma mark - string 比较

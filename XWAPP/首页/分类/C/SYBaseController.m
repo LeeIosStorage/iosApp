@@ -11,11 +11,16 @@
 #import "XLChannelControl.h"
 #import "SearchController.h"
 #import "WYNetWorkManager.h"
-#import "WYNetWorkManager.h"
 #import "LEChannelModel.h"
 #import "LEDataStoreManager.h"
 #import "DetailController.h"
 #import "LESearchBar.h"
+#import "YYFPSLabel.h"
+#import "AppDelegate.h"
+#import "LELoginAuthManager.h"
+#import "LEMenuView.h"
+#import "LENavigationController.h"
+#import "LEPublishNewsViewController.h"
 
 @interface SYBaseController () <UISearchBarDelegate>
 {
@@ -33,6 +38,15 @@ HitoPropertyNSArray(allChannelArray);
 @end
 
 @implementation SYBaseController
+
+#pragma mark - FPS demo
+- (void)testFPSLabel{
+    YYFPSLabel *_fpsLabel = [YYFPSLabel new];
+    _fpsLabel.frame = CGRectMake(HitoScreenW-50-70, 0, 50, 30);
+    [_fpsLabel sizeToFit];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate.window addSubview:_fpsLabel];
+}
 
 #pragma mark -
 #pragma mark - Lifecycle
@@ -53,16 +67,26 @@ HitoPropertyNSArray(allChannelArray);
     // Do any additional setup after loading the view.
     [self setPGController];
     [self setNaStyle];
+
+    CGFloat left = 0;
+    if (HitoScreenW > 375.f) {
+        left = 6;
+    }
+    [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, left, 0, -left)];
     
     [self getNewsChannelRequest];
     
+    
+#ifdef DEBUG
+    [self testFPSLabel];
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    //    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(HitoScreenW, HitoTopHeight)] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
     [MobClick beginLogPageView:[NSString stringWithFormat:@"%@",NSStringFromClass([self class])]];
 }
 
@@ -80,7 +104,9 @@ HitoPropertyNSArray(allChannelArray);
     
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetAllChannel"];
-    [self.networkManager POST:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:nil responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:[NSNumber numberWithInteger:0] forKey:@"type"];
+    [self.networkManager POST:requestUrl needCache:YES caCheKey:@"GetAllChannel" parameters:params responseClass:nil needHeaderAuth:NO success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
         if (requestType != WYRequestTypeSuccess) {
             return ;
@@ -101,8 +127,35 @@ HitoPropertyNSArray(allChannelArray);
     
 }
 
-#pragma mark - NavColor
+#pragma mark -
+#pragma mark - Private
+- (void)publishTextAction{
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypePhoto;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:YES completion:^{
+        
+    }];
+}
 
+- (void)publishVideoAction{
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypeVideo;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:NO completion:^{
+        
+    }];
+}
+
+- (void)shootVideoAction{
+    LEPublishNewsViewController *publishVc = [[LEPublishNewsViewController alloc] init];
+    publishVc.vcType = LEPublishNewsVcTypeVideo;
+    publishVc.videoCamera = YES;
+    LENavigationController *nav = [[LENavigationController alloc] initWithRootViewController:publishVc];
+    [self presentViewController:nav animated:NO completion:^{
+        
+    }];
+}
 
 #pragma mark - addBtn
 
@@ -140,7 +193,21 @@ HitoPropertyNSArray(allChannelArray);
     }];
 }
 
-
+- (IBAction)rightBarButton:(id)sender {
+    LEMenuView *menuView = [[LEMenuView alloc] initWithFrame:CGRectMake(HitoScreenW-141-7, HitoTopHeight, 141, 135)];
+    [menuView show];
+    
+    HitoWeakSelf;
+    menuView.menuViewClickBlock = ^(NSInteger index) {
+        if (index == 0) {
+            [WeakSelf publishTextAction];
+        }else if (index == 1){
+            [WeakSelf shootVideoAction];
+        }else if (index == 2){
+            [WeakSelf publishVideoAction];
+        }
+    };
+}
 
 
 #pragma mark -

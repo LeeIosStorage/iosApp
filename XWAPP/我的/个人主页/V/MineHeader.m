@@ -15,7 +15,7 @@
     
     self.avatarImageView.layer.cornerRadius = HitoActureHeight(70)/2;
     self.avatarImageView.layer.masksToBounds = YES;
-    
+    [self.codeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)updateConstraints {
@@ -42,6 +42,22 @@
     if (_centerClick) {
         _centerClick();
     }
+}
+
+- (IBAction)avatarAction:(id)sender{
+    if (self.avatarClick) {
+        self.avatarClick();
+    }
+}
+
+- (IBAction)codePasteAction:(id)sender{
+    if (![LELoginUserManager invitationCode]) {
+        return;
+    }
+    UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+    copyBoard.string = [LELoginUserManager invitationCode];
+    [copyBoard setPersistent:YES];
+    [SVProgressHUD showCustomInfoWithStatus:@"已成功复制邀请码"];
 }
 
 - (void)leftClickAction:(LeftClick)leftClick {

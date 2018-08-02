@@ -41,6 +41,8 @@
 //关于我的评论的字段
 @property (strong, nonatomic) NSString *newsId;
 @property (strong, nonatomic) NSString *newsUrl;
+@property (strong, nonatomic) NSArray *cover;
 @property (strong, nonatomic) NSString *newsTitle;
+@property (assign, nonatomic) int typeId;//0图文1视频
 
 @end

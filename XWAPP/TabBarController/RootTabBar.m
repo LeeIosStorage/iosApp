@@ -12,6 +12,8 @@
 #import "SYBaseController.h"
 #import "TaskCenterController.h"
 #import "MineController.h"
+#import "LELoginAuthManager.h"
+#import "LEVideoTabBarViewController.h"
 
 @interface RootTabBar () <UITabBarControllerDelegate>
 
@@ -19,15 +21,46 @@
 
 @implementation RootTabBar
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self resetTabBarTitle];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self resetTabBarTitle];
+}
+
+-(BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.delegate = self;
+    [self resetTabBarTitle];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)resetTabBarTitle{
+    if ([LELoginAuthManager sharedInstance].isInReviewVersion) {
+        for (UITabBarItem *item in self.tabBar.items) {
+            if ([item.title isEqualToString:@"任务中心"]) {
+                item.title = @"发现";
+            }
+        }
+    }
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
@@ -57,6 +90,9 @@
         UIViewController *currentVc = [nav.viewControllers lastObject];
         if ([currentVc isKindOfClass:[SYBaseController class]]) {
             SYBaseController *vc = (SYBaseController *)currentVc;
+            [vc tabBarSelectRefreshData];
+        }else if ([currentVc isKindOfClass:[LEVideoTabBarViewController class]]){
+            LEVideoTabBarViewController *vc = (LEVideoTabBarViewController *)currentVc;
             [vc tabBarSelectRefreshData];
         }else if ([currentVc isKindOfClass:[TaskCenterController class]]){
             TaskCenterController *vc = (TaskCenterController *)currentVc;

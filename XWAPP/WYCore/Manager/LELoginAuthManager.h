@@ -12,6 +12,7 @@
 #import "LETaskListModel.h"
 
 typedef void(^LoginAuthBindingSuccessBlock)(BOOL success);
+typedef void(^LERequestStatusBlock)(BOOL success);
 
 @interface LELoginAuthManager : NSObject
 
@@ -42,5 +43,8 @@ typedef void(^LoginAuthBindingSuccessBlock)(BOOL success);
 - (LETaskListModel *)getTaskWithTaskType:(LETaskCenterType)taskType;
 
 - (void)checkUpdateWithAppID:(NSString *)appID;
+
+//关注取消关注 isAttention:NO取消关注
+- (void)userAttentionWithUserId:(NSString *)userId isAttention:(BOOL)isAttention result:(LERequestStatusBlock)result;
 
 @end

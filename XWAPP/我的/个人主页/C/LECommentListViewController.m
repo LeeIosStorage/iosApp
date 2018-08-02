@@ -83,10 +83,10 @@ UITableViewDataSource
     HitoWeakSelf;
     NSString *requestUrl = [[WYAPIGenerate sharedInstance] API:@"GetUserComment"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
+//    if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
-//    [params setObject:@"1" forKey:@"parentId"];
+    [params setObject:@"0" forKey:@"parentId"];
     
     NSString *caCheKey = [NSString stringWithFormat:@"GetUserComment%@",@""];
     BOOL needCache = NO;
@@ -102,7 +102,7 @@ UITableViewDataSource
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"records"]];
         
         if (WeakSelf.nextCursor == 1) {
             WeakSelf.commentLists = [[NSMutableArray alloc] init];
@@ -190,9 +190,12 @@ UITableViewDataSource
 - (void)pushNewsDetailWith:(NSIndexPath *)indexPath{
     
     LENewsCommentModel *commentModel = self.commentLists[indexPath.row];
-//    commentModel.newsId = @"2540";
+    if (commentModel.newsId.length == 0) {
+        return;
+    }
     DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
     detail.newsId = commentModel.newsId;
+    detail.isVideo = (commentModel.typeId == 1);
     [self.navigationController pushViewController:detail animated:YES];
 }
 

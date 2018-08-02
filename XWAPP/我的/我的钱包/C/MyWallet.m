@@ -149,7 +149,7 @@ WXShaerStateDelegate
             return;
         }
         
-        NSArray *array = [NSArray modelArrayWithClass:[LEGoldRecordModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LEGoldRecordModel class] json:[dataObject objectForKey:@"records"]];
         if (currentIndex == 0) {
             [WeakSelf.goldRecordList addObjectsFromArray:array];
             

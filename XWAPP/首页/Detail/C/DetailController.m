@@ -25,6 +25,17 @@
 #import "LELoginManager.h"
 #import "LELoginAuthManager.h"
 #import "LERecommendNewsView.h"
+#import "HotUpButton.h"
+#import "LENewsSourceView.h"
+#import "LEVideoCustomViewController.h"
+#import "LEDetailUserInfoView.h"
+#import "LEPersonalNewsViewController.h"
+#import "WYShareManager.h"
+
+typedef NS_ENUM(NSInteger, LENewsDetailViewCType) {
+    LENewsDetailViewCTypeNone         = 0,//图文
+    LENewsDetailViewCTypeVideo        = 1,//视频
+};
 
 @interface DetailController ()
 <UIWebViewDelegate,
@@ -47,8 +58,12 @@ LECommentCellDelegate
     LEShareSheetView *_shareSheetView;
     
     BOOL _isCollect;
-    
+ 
+    BOOL _bStatusBarHidden;
+    UIStatusBarStyle _currentStatusBarStyle;
 }
+
+@property (assign, nonatomic) LENewsDetailViewCType vcType;
 
 @property (assign, nonatomic) CGFloat keyBoardHeight;
 
@@ -59,9 +74,10 @@ LECommentCellDelegate
 @property (weak, nonatomic) IBOutlet UIButton *collectButton;
 
 @property (assign, nonatomic) CGFloat headerHeight;
-@property (strong, nonatomic) LENewsDetailHeaderView *newsDetailHeaderView;
-@property (strong, nonatomic) LENewsDetailContentView *newsDetailContentView;
-@property (strong, nonatomic) LENewsCommentHeadView *newsCommentHeadView;
+@property (strong, nonatomic) LENewsDetailHeaderView *newsDetailHeaderView;//标题
+@property (strong, nonatomic) LEDetailUserInfoView *detailUserInfoView;//用户信息区
+@property (strong, nonatomic) LENewsDetailContentView *newsDetailContentView;//正文
+@property (strong, nonatomic) LENewsCommentHeadView *newsCommentHeadView;//评论区
 
 @property (nonatomic, strong) UIView *tempView;
 @property (nonatomic, strong) CommontView *comView;
@@ -73,10 +89,15 @@ LECommentCellDelegate
 @property (strong, nonatomic) NSTimer *readTimer;
 @property (assign, nonatomic) int readDuration;
 
-@property (strong, nonatomic) LERecommendNewsView *recommendNewsView;
+@property (strong, nonatomic) LERecommendNewsView *recommendNewsView;//推荐区
 @property (strong, nonatomic) NSMutableArray *recommendNewsArray;
 
 @property (strong, nonatomic) UILabel *commentCountTipLabel;
+
+@property (strong, nonatomic) LENewsSourceView *newsSourceView;//新闻来源
+
+@property (strong, nonatomic) UIImageView *videoCoverImageView;//视频封面
+@property (strong, nonatomic) LEVideoCustomViewController *videoViewController;
 
 @end
 
@@ -97,13 +118,43 @@ LECommentCellDelegate
     return self;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return _bStatusBarHidden;
+}
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return _currentStatusBarStyle;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (self.vcType == LENewsDetailViewCTypeVideo) {
+//        [self.navigationItem setHidesBackButton:YES];
+//        [self.navigationController.navigationBar setHidden:YES];
+//        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+//        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
+        _bStatusBarHidden = YES;
+        _currentStatusBarStyle = UIStatusBarStyleLightContent;
+        [self setNeedsStatusBarAppearanceUpdate];
+        [self addVideoView];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self startTimer];
+    if (self.videoViewController.videoPlayerView.playerStatusView.playStatus != LEplayStatus_end) {
+        [self.videoViewController play];
+    }
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self stopTimer];
+//    [self.navigationController.navigationBar setHidden:NO];
+//    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.videoViewController pause];
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -161,7 +212,7 @@ LECommentCellDelegate
 - (void)setupSubViews{
     
 //    self.view.backgroundColor = kAppBackgroundColor;
-    
+
     self.readDuration = 0;
     self.nextCursor = 1;
     self.commentLists = [[NSMutableArray alloc] init];
@@ -207,15 +258,29 @@ LECommentCellDelegate
     self.newsDetailHeaderView.width = HitoScreenW;
 //    self.newsDetailHeaderView.height = 65;
     [self.newsDetailContentView addSubview:self.newsDetailHeaderView];
+    
+    if (_vcType == LENewsDetailViewCTypeVideo) {
+        self.detailUserInfoView.width = HitoScreenW;
+        self.detailUserInfoView.top = 0;
+        self.detailUserInfoView.height = 64;
+        [self.newsDetailContentView addSubview:self.detailUserInfoView];
+    }
+    
+    self.newsSourceView.top = 0;
+    self.newsSourceView.width = HitoScreenW;
+    [self.newsDetailContentView addSubview:self.newsSourceView];
+    
     self.recommendNewsView.top = 0;
     self.recommendNewsView.left = 12;
     self.recommendNewsView.width = HitoScreenW-12*2;
     self.recommendNewsView.height = 0;
     [self.newsDetailContentView addSubview:self.recommendNewsView];
+    
     self.newsCommentHeadView.top = 0;
     self.newsCommentHeadView.width = HitoScreenW;
     self.newsCommentHeadView.height = 45;
     [self.newsDetailContentView addSubview:self.newsCommentHeadView];
+    
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
     
@@ -227,6 +292,10 @@ LECommentCellDelegate
 
 - (void)setData{
     
+    if (self.vcType == LENewsDetailViewCTypeVideo) {
+        self.videoViewController.titleString = self.newsDetailModel.info.title;
+    }
+    
     [self refreshCommentCountShow];
     
     _headerHeight = [self.newsDetailHeaderView updateWithData:self.newsDetailModel.info];
@@ -234,16 +303,46 @@ LECommentCellDelegate
     NSString *htmlString = nil;
     htmlString = self.newsDetailModel.info.content;
     
+    BOOL isUserPublish = (self.newsDetailModel.info.userId.length > 0 && self.newsDetailModel.info.nickName.length > 0 && self.newsDetailModel.info.userHeadImg.length > 0);//用户发表的
+    if (_vcType == LENewsDetailViewCTypeVideo || isUserPublish) {
+        _headerHeight += 38;
+        self.newsDetailHeaderView.height = _headerHeight;
+        
+        if (_vcType != LENewsDetailViewCTypeVideo) {
+            self.detailUserInfoView.width = HitoScreenW;
+            self.detailUserInfoView.height = 64;
+            self.detailUserInfoView.lineImageView.hidden = YES;
+            [self.newsDetailContentView addSubview:self.detailUserInfoView];
+        }
+        self.detailUserInfoView.bottom = _headerHeight;
+        [self.detailUserInfoView updateViewWithData:self.newsDetailModel.info];
+        
+        if (_vcType == LENewsDetailViewCTypeVideo) {
+            htmlString = nil;
+            NSString *videoUrl = self.newsDetailModel.info.content;
+            videoUrl = [videoUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+            videoUrl = [videoUrl stringByReplacingOccurrencesOfString:@"<p><br></p>" withString:@""];
+            [self.videoViewController resetPlayerWithURL:videoUrl];
+        }
+    }
+    
+    
+    [self.newsSourceView updateWithData:self.newsDetailModel.info];
+    
+    
+    
     HitoWeakSelf;
     [self parserContentWithHtmlString:htmlString handleSuccessBlcok:^(NSMutableAttributedString *attributedString) {
-        
-        
         
         WeakSelf.newsDetailModel.contentAttributedString = attributedString;
         WeakSelf.newsDetailModel.contentHeight = [NSNumber numberWithFloat:[WeakSelf getAttributedStringHeightWithString:attributedString]];
         [WeakSelf.newsDetailContentView updateWithData:WeakSelf.newsDetailModel];
         [WeakSelf refreshHeadViewShow];
         
+        //定位到评论区
+        if (self.locateCommentSection) {
+            [self commentAction:nil];
+        }
     }];
     
     [self.tableView reloadData];
@@ -256,14 +355,30 @@ LECommentCellDelegate
         recommendViewHeight += 17;
     }
     
+    CGFloat newsSourceHeight = self.newsSourceView.height;
+    if (newsSourceHeight == 0) {
+        newsSourceHeight = 30;
+    }
+    if (_vcType == LENewsDetailViewCTypeVideo) {
+        newsSourceHeight = 0;
+        self.newsSourceView.height = 0;
+        self.newsSourceView.hidden = YES;
+    }
+    
     self.newsDetailContentView.contentLabel.top = _headerHeight + 10;
-    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight;
-    self.recommendNewsView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight+5;
+    self.newsDetailContentView.height = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + self.newsCommentHeadView.height + recommendViewHeight + newsSourceHeight;
+    
+    self.newsSourceView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight;
+    self.newsSourceView.height = newsSourceHeight;
+    
+    self.recommendNewsView.top = self.newsSourceView.top + self.newsSourceView.height;
     self.recommendNewsView.height = self.recommendNewsArray.count*70;
-    self.newsCommentHeadView.top = [self.newsDetailModel.contentHeight floatValue] + _headerHeight + recommendViewHeight;
+    
+    self.newsCommentHeadView.top = self.recommendNewsView.top + recommendViewHeight;
+    
     self.tableView.tableHeaderView = self.newsDetailContentView;
     [self.tableView reloadData];
-    
+
 }
 
 - (void)refreshCommentCountShow{
@@ -385,7 +500,7 @@ LECommentCellDelegate
 
 - (void)countReadNewsTime{
     _readDuration ++;
-    LELog(@"read news time:%d秒",_readDuration);
+//    LELog(@"read news time:%d秒",_readDuration);
 }
 
 
@@ -414,9 +529,31 @@ LECommentCellDelegate
 {
     NSString *commentId = _longPressCommentModel.commentId;
     [SVProgressHUD showCustomWithStatus:nil];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"CommentReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (commentId) [params setObject:commentId forKey:@"reportId"];
+    NSString *userId = [LELoginUserManager userID];
+    if (!userId) {
+        userId = @"";
+    }
+    [params setObject:userId forKey:@"userId"];
+    [params setObject:@"" forKey:@"content"];
+    
+    [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
+        
+        if (requestType != WYRequestTypeSuccess) {
+            return ;
+        }
         [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
-    });
+        
+    } failure:^(id responseObject, NSError *error) {
+        
+    }];
+    
+//    [SVProgressHUD showCustomWithStatus:nil];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [SVProgressHUD showCustomSuccessWithStatus:@"举报成功"];
+//    });
 }
 -(BOOL)canBecomeFirstResponder
 {
@@ -434,6 +571,63 @@ LECommentCellDelegate
     return NO;
 }
 
+#pragma mark - 视频
+- (void)addVideoView{
+    
+    if (!_videoCoverImageView) {
+        //封面
+        [self.view addSubview:self.videoCoverImageView];
+        [self.videoCoverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.top.equalTo(self.view).offset(0);
+            make.height.mas_equalTo(VideoHeight);
+        }];
+        [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:@""] placeholder:nil];
+    }
+    
+    if (!self.videoViewController) {
+        NSString *videoUrl = nil;//http://v4.qutoutiao.net/Act-ss-mp4-hd/cfaa48d3873c4939a6cc8d12aac3c053/hd.mp4
+        self.videoViewController = [[LEVideoCustomViewController alloc] initWithUrl:videoUrl];
+        [self.videoViewController showViewInView:self.view];
+        [self addChildViewController:self.videoViewController];
+        self.videoViewController.titleString = self.newsDetailModel.info.title;
+        
+        HitoWeakSelf;
+        self.videoViewController.toFullBlock = ^(BOOL toFull) {
+            if (toFull) {
+                [WeakSelf.videoViewController showFullAnimation];
+//                self->_bStatusBarHidden = YES;
+//                [WeakSelf setNeedsStatusBarAppearanceUpdate];
+            }else{
+                [WeakSelf.videoViewController showNormalAnimation];
+//                self->_bStatusBarHidden = NO;
+//                [WeakSelf setNeedsStatusBarAppearanceUpdate];
+            }
+        };
+        self.videoViewController.playerBackBlock = ^{
+            [WeakSelf backAction:nil];
+        };
+        self.videoViewController.videoShareClickedBlock = ^(NSInteger index) {
+            [WeakSelf videoShareClickIndex:index];
+        };
+        
+    }
+    
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(VideoHeight, 0, 0, 0));
+    }];
+}
+
+- (void)resetPlayerWith:(LENewsListModel *)model{
+    
+    [self.videoCoverImageView setImageWithURL:[NSURL URLWithString:@"http://static.1sapp.com/lw/img/2018/07/12/9195002b6a2c34ef90cc65ddaf495a98?imageView2/2/w/1000/h/600/q/70"] placeholder:nil];
+    
+    NSString *videoUrl = @"http://v4.qutoutiao.net/Act-ss-mp4-ld/8558732df3de4d64a6a3661da69c99fc/ld.mp4";
+    [self.videoViewController resetPlayerWithURL:videoUrl];
+    self.videoViewController.titleString = model.title;
+    
+}
+
 #pragma mark -
 #pragma mark - Request
 - (void)getNewsDetailRequest{
@@ -449,10 +643,11 @@ LECommentCellDelegate
             return ;
         }
         WeakSelf.newsDetailModel = [[LENewsDetailModel alloc] init];
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
-        if (array.count > 0) {
-            WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
-        }
+        WeakSelf.newsDetailModel.info = [LENewsListModel modelWithJSON:dataObject];
+//        NSArray *array = [NSArray modelArrayWithClass:[LENewsListModel class] json:dataObject];
+//        if (array.count > 0) {
+//            WeakSelf.newsDetailModel.info = [array objectAtIndex:0];
+//        }
         [WeakSelf setData];
         [WeakSelf finishTaskRequest];
         
@@ -511,6 +706,7 @@ LECommentCellDelegate
     [params setObject:[NSNumber numberWithInteger:self.nextCursor] forKey:@"page"];
     [params setObject:[NSNumber numberWithInteger:DATA_LOAD_PAGESIZE_COUNT] forKey:@"limit"];
     [params setObject:[LELoginUserManager userID]?[LELoginUserManager userID]:@"" forKey:@"userId"];
+    [params setObject:@"0" forKey:@"parentId"];
 
     NSString *caCheKey = [NSString stringWithFormat:@"GetComment%@",_newsId];
     BOOL needCache = NO;
@@ -523,7 +719,7 @@ LECommentCellDelegate
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"data"]];
+        NSArray *array = [NSArray modelArrayWithClass:[LENewsCommentModel class] json:[dataObject objectForKey:@"records"]];
         
         //重新计算评论array
         NSMutableArray *comments = [NSMutableArray array];
@@ -608,7 +804,7 @@ LECommentCellDelegate
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if (text.length) [params setObject:text forKey:@"content"];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
-    NSString *parentId = nil;
+    NSString *parentId = @"0";
     if (_currentCommentModel) {
         parentId = _currentCommentModel.commentId;
     }else if (_currentReplyModel){
@@ -690,22 +886,35 @@ LECommentCellDelegate
         return;
     }
     
+    NSString *api = @"SaveFavoriteNews";
+    if (_isCollect) {
+        api = @"DeleteFavoriteNews";
+    }
+    
+    self.collectButton.enabled = NO;
+    
     HitoWeakSelf;
-    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:@"SaveFavoriteNews"];
+    NSString *requesUrl = [[WYAPIGenerate sharedInstance] API:api];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (_newsId.length) [params setObject:_newsId forKey:@"newsId"];
     if ([LELoginUserManager userID]) [params setObject:[LELoginUserManager userID] forKey:@"userId"];
     
     [self.networkManager POST:requesUrl needCache:NO caCheKey:nil parameters:params responseClass:nil needHeaderAuth:YES success:^(WYRequestType requestType, NSString *message, BOOL isCache, id dataObject) {
         
+        WeakSelf.collectButton.enabled = YES;
         if (requestType != WYRequestTypeSuccess) {
             return ;
         }
-        [SVProgressHUD showCustomInfoWithStatus:@"收藏成功"];
-        WeakSelf.collectButton.selected = !WeakSelf.collectButton.selected;
+        if (self->_isCollect) {
+            [SVProgressHUD showCustomInfoWithStatus:@"取消收藏成功"];
+        }else{
+            [SVProgressHUD showCustomInfoWithStatus:@"收藏成功"];
+        }
+        self->_isCollect = !self->_isCollect;
+        WeakSelf.collectButton.selected = self->_isCollect;
         
     } failure:^(id responseObject, NSError *error) {
-        
+        WeakSelf.collectButton.enabled = YES;
     }];
 }
 
@@ -746,6 +955,18 @@ LECommentCellDelegate
 
 #pragma mark -
 #pragma mark - Set And Getters
+- (void)setIsVideo:(BOOL)isVideo{
+    _isVideo = isVideo;
+    if (_isVideo) {
+        self.vcType = LENewsDetailViewCTypeVideo;
+    }
+}
+
+- (void)setLocateCommentSection:(BOOL)locateCommentSection{
+    _locateCommentSection = locateCommentSection;
+    
+}
+
 - (CommontHFView *)huView {
     if (!_huView) {
         _huView = [[[NSBundle mainBundle] loadNibNamed:@"CommontHFView" owner:self options:nil] firstObject];
@@ -763,6 +984,21 @@ LECommentCellDelegate
         _newsDetailHeaderView = [[LENewsDetailHeaderView alloc] init];
     }
     return _newsDetailHeaderView;
+}
+
+- (LEDetailUserInfoView *)detailUserInfoView{
+    if (!_detailUserInfoView) {
+        _detailUserInfoView = [[LEDetailUserInfoView alloc] init];
+        
+        HitoWeakSelf;
+        _detailUserInfoView.attentionClickBlock = ^{
+            [WeakSelf attentionClickAction];
+        };
+        _detailUserInfoView.avatarClickBlock = ^{
+            [WeakSelf avatarClickAction];
+        };
+    }
+    return _detailUserInfoView;
 }
 
 - (LENewsDetailContentView *)newsDetailContentView{
@@ -785,9 +1021,15 @@ LECommentCellDelegate
         
         HitoWeakSelf;
         _recommendNewsView.didSelectRowAtIndex = ^(NSInteger index) {
+            
             LENewsListModel *newsModel = [WeakSelf.recommendNewsArray objectAtIndex:index];
+            BOOL isVideo = (newsModel.typeId == 1);
+            
+//            [WeakSelf resetPlayerWith:newsModel];//直接在本页面切换
+            
             DetailController *detail = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DetailController"];
             detail.newsId = newsModel.newsId;
+            detail.isVideo = isVideo;
             [WeakSelf.navigationController pushViewController:detail animated:YES];
         };
     }
@@ -808,12 +1050,31 @@ LECommentCellDelegate
     return _commentCountTipLabel;
 }
 
+- (LENewsSourceView *)newsSourceView{
+    if (!_newsSourceView) {
+        _newsSourceView = [[LENewsSourceView alloc] init];
+    }
+    return _newsSourceView;
+}
+
+- (UIImageView *)videoCoverImageView{
+    if (!_videoCoverImageView) {
+        _videoCoverImageView = [[UIImageView alloc] init];
+        _videoCoverImageView.backgroundColor = [UIColor blackColor];
+    }
+    return _videoCoverImageView;
+}
+
+
 #pragma mark -
 #pragma mark - IBActions
+- (void)backAction:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (IBAction)favoAction:(UIButton *)sender {
     [self collectRequest];
 }
-
 
 - (IBAction)commentAction:(UIButton *)sender {
     
@@ -833,6 +1094,60 @@ LECommentCellDelegate
     
 //    LEShareWindow *shareWindow = [[LEShareWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 //    [shareWindow setCustomerSheet];
+}
+
+- (void)videoShareClickIndex:(NSInteger)index{
+    LELog(@"分享点击:%ld",index);
+    NSString *shareTitle = self.newsDetailModel.info.title;
+    NSString *webUrl = [NSString stringWithFormat:@"%@/%@?userId=%@&token=%@&code=%@",[WYAPIGenerate sharedInstance].baseWebUrl,kAppSharePackageWebURLPath,[LELoginUserManager userID],[LELoginUserManager authToken],[LELoginUserManager invitationCode]];
+    BOOL isVideo = (_vcType == LENewsDetailViewCTypeVideo);
+    if (index == 0) {
+        [[WYShareManager shareInstance] shareToWXWithScene:WXSceneTimeline title:shareTitle description:nil webpageUrl:webUrl image:nil isVideo:isVideo];
+    }else if (index == 1){
+        [[WYShareManager shareInstance] shareToWXWithScene:WXSceneSession title:shareTitle description:nil webpageUrl:webUrl image:nil isVideo:isVideo];
+    }else if (index == 2){
+        
+        [[WYShareManager shareInstance] shareToQQTitle:shareTitle description:nil webpageUrl:webUrl image:nil isVideo:isVideo];
+        
+    }else if (index == 3){
+        
+        UIPasteboard *copyBoard = [UIPasteboard generalPasteboard];
+        copyBoard.string = webUrl;
+        [copyBoard setPersistent:YES];
+        [SVProgressHUD showCustomSuccessWithStatus:@"复制成功"];
+    }
+}
+
+- (void)attentionClickAction{
+    
+    if ([[LELoginManager sharedInstance] needUserLogin:self]) {
+        return;
+    }
+    
+    NSString *userId = self.newsDetailModel.info.userId;
+    if ([[userId description] isEqualToString:[LELoginUserManager userID]]) {
+        [SVProgressHUD showCustomInfoWithStatus:@"不能关注自己"];
+        return;
+    }
+    HitoWeakSelf;
+    
+    BOOL isAttention = !self.newsDetailModel.info.isAttention;
+    [[LELoginAuthManager sharedInstance] userAttentionWithUserId:userId isAttention:isAttention result:^(BOOL success) {
+        if (success) {
+            self.newsDetailModel.info.isAttention = isAttention;
+            [WeakSelf.detailUserInfoView updateViewWithData:WeakSelf.newsDetailModel.info];
+        }else{
+            
+        }
+    }];
+    
+}
+
+- (void)avatarClickAction{
+    LEPersonalNewsViewController *personalNewsVc = [[LEPersonalNewsViewController alloc] init];
+    personalNewsVc.userId = self.newsDetailModel.info.userId;
+    personalNewsVc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:personalNewsVc animated:YES];
 }
 
 static int commentMaxCount = 10;
@@ -1090,7 +1405,7 @@ static int commentMaxCount = 10;
     
     UIWindow *window = HitoApplication;
     _tempView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HitoScreenW, HitoScreenH)];
-    _tempView.backgroundColor = [UIColor colorWithWhite:0.4 alpha:0.3];
+    _tempView.backgroundColor = kAppMaskOpaqueBlackColor;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBV)];
     [_tempView addGestureRecognizer:tap];
     
